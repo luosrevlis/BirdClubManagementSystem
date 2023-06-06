@@ -12,8 +12,8 @@ namespace BirdClubManagementSystem.Models
 
         public bool PaymentReceived { get; set; }
 
-        public Bird Bird { get; set; }
+        public Bird Bird { get; set; } = new Bird();
 
-        public Tournament Tournament { get; set; }
+        public Tournament Tournament { get; set; } = new Tournament();
     }
 }

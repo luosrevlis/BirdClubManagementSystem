@@ -9,6 +9,6 @@ namespace BirdClubManagementSystem.Models
         [Required]
         public string Name { get; set; } = string.Empty;
 
-        public ICollection<Post> Posts { get; set; }
+        public ICollection<Post> Posts { get; set; } = new List<Post>();
     }
 }

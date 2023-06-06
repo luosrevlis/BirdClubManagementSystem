@@ -12,8 +12,8 @@ namespace BirdClubManagementSystem.Models
 
         public bool PaymentReceived { get; set; }
 
-        public User User { get; set; }
+        public User User { get; set; } = new User();
 
-        public FieldTrip FieldTrip { get; set; }
+        public FieldTrip FieldTrip { get; set; } = new FieldTrip();
     }
 }

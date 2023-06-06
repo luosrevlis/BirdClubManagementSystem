@@ -12,10 +12,10 @@ namespace BirdClubManagementSystem.Models
         public int PostId { get; set; }
 
         [Required]
-        public string Contents { get; set; }
+        public string Contents { get; set; } = string.Empty;
 
-        public User User { get; set; }
+        public User User { get; set; } = new User();
 
-        public Post Post { get; set; }
+        public Post Post { get; set; } = new Post();
     }
 }

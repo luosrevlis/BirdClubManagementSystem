@@ -1,16 +1,22 @@
-﻿namespace BirdClubManagementSystem.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace BirdClubManagementSystem.Models
 {
     public class MembershipRequest
     {
         public int Id { get; set; }
 
-        public string Name { get; set; }
+        [Required]
+        public string Name { get; set; } = string.Empty;
 
-        public string Address { get; set; }
+        [Required]
+        public string Address { get; set; } = string.Empty;
 
-        public string PhoneNumber { get; set; }
+        [Required]
+        public string PhoneNumber { get; set; } = string.Empty;
 
-        public string Email { get; set; }
+        [Required]
+        public string Email { get; set; } = string.Empty;
 
     }
 }
