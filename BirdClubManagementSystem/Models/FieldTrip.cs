@@ -13,5 +13,7 @@
         public int Fee { get; set; }
 
         public bool IsAvailable { get; set; }
+
+        public ICollection<FieldTripRegistration> FieldTripRegistrations { get; set; }
     }
 }
