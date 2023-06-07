@@ -27,7 +27,7 @@ namespace BirdClubManagementSystem.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return BadRequest();
             }
             User? user = _dbContext.Users.Find(id);
             if (user == null)
@@ -66,7 +66,7 @@ namespace BirdClubManagementSystem.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return BadRequest();
             }
             User? user = _dbContext.Users.Find(id);
             if (user == null)
@@ -99,7 +99,7 @@ namespace BirdClubManagementSystem.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return BadRequest();
             }
             User? user = _dbContext.Users.Find(id);
             if (user == null)
@@ -116,7 +116,7 @@ namespace BirdClubManagementSystem.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return BadRequest();
             }
             User? user = _dbContext.Users.Find(id);
             if (user == null)
