@@ -4,11 +4,11 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BirdClubManagementSystem.Controllers
 {
-    public class ClubEventController : Controller
+    public class ClubEventsController : Controller
     {
         private readonly BcmsDbContext _dbContext;
 
-        public ClubEventController(BcmsDbContext dbContext)
+        public ClubEventsController(BcmsDbContext dbContext)
         {
             _dbContext = dbContext;
         }

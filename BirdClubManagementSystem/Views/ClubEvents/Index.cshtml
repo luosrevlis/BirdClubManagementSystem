@@ -4,7 +4,13 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Events</h1>
+
+<p>
+    <a asp-action="Create" asp-controller="FieldTrips">New Field Trip</a> |
+    <a asp-action="Create" asp-controller="Meetings">New Meeting</a> |
+    <a asp-action="Create" asp-controller="Tournaments">New Tournament</a>
+</p>
 <table class="table">
     <thead>
         <tr>
@@ -33,13 +39,13 @@
                         switch (item)
                         {
                             case FieldTrip:
-                                controller = "FieldTrip";
+                                controller = "FieldTrips";
                                 break;
                             case Meeting:
-                                controller = "Meeting";
+                                controller = "Meetings";
                                 break;
                             case Tournament:
-                                controller = "Tournament";
+                                controller = "Tournaments";
                                 break;
                             default:
                                 break;

@@ -125,7 +125,7 @@ namespace BirdClubManagementSystem.Controllers
             }
             _dbContext.Users.Remove(user);
             _dbContext.SaveChanges();
-            return RedirectToAction("Index");
+            return View("Index");
         }
     }
 }

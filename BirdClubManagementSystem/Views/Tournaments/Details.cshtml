@@ -1,4 +1,4 @@
-﻿@model BirdClubManagementSystem.Models.Meeting
+﻿@model BirdClubManagementSystem.Models.Tournament
 
 @{
     ViewData["Title"] = "Details";
@@ -7,7 +7,7 @@
 <h1>Details</h1>
 
 <div>
-    <h4>Meeting</h4>
+    <h4>Tournament</h4>
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
@@ -44,5 +44,5 @@
 </div>
 <div>
     <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index" asp-controller="ClubEvent">Back to List</a>
+    <a asp-action="Index" asp-controller="ClubEvents">Back to List</a>
 </div>
