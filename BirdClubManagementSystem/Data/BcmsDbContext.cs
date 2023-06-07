@@ -29,6 +29,8 @@ namespace BirdClubManagementSystem.Data
 
         public DbSet<FieldTripRegistration> FieldTripRegistrations { get; set; }
 
+        public DbSet<MeetingRegistration> MeetingRegistrations { get; set; }
+
         public DbSet<TournamentRegistration> TournamentRegistrations { get; set; }
     }
 }

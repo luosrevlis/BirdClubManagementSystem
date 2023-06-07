@@ -2,7 +2,7 @@
 
 namespace BirdClubManagementSystem.Models
 {
-    public class FieldTrip
+    public class FieldTrip : IClubEvent
     {
         public int Id { get; set; }
 

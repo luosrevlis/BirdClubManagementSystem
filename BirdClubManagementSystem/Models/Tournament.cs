@@ -2,7 +2,7 @@
 
 namespace BirdClubManagementSystem.Models
 {
-    public class Tournament
+    public class Tournament :IClubEvent
     {
         public int Id { get; set; }
 

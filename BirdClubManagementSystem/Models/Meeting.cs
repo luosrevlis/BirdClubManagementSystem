@@ -2,7 +2,7 @@
 
 namespace BirdClubManagementSystem.Models
 {
-    public class Meeting
+    public class Meeting : IClubEvent
     {
         public int Id { get; set; }
 
@@ -14,6 +14,10 @@ namespace BirdClubManagementSystem.Models
         [Required]
         public string Description { get; set; } = string.Empty;
 
+        public int Fee { get; set; } = 0;
+
         public bool IsAvailable { get; set; }
+
+        public ICollection<MeetingRegistration> MeetingRegistrations { get; set; } = new List<MeetingRegistration>();
     }
 }
