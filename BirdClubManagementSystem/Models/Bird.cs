@@ -11,6 +11,8 @@ namespace BirdClubManagementSystem.Models
         [Required]
         public string Description { get; set; } = string.Empty;
 
+        public string Species { get; set; } = string.Empty;
+
         public User User { get; set; } = new User();
 
         public ICollection<TournamentRegistration> TournamentRegistrations { get; set; } = new List<TournamentRegistration>();
