@@ -14,13 +14,13 @@ namespace BirdClubManagementSystem.Controllers
         }
 
         // GET: MeetingsController
-        public ActionResult Index()
+        public IActionResult Index()
         {
             return View();
         }
 
         // GET: MeetingsController/Details/5
-        public ActionResult Details(int? id)
+        public IActionResult Details(int? id)
         {
             if (id == null)
             {
@@ -35,7 +35,7 @@ namespace BirdClubManagementSystem.Controllers
         }
 
         // GET: MeetingsController/Create
-        public ActionResult Create()
+        public IActionResult Create()
         {
             return View();
         }
@@ -43,7 +43,7 @@ namespace BirdClubManagementSystem.Controllers
         // POST: MeetingsController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Meeting meeting)
+        public IActionResult Create(Meeting meeting)
         {
             if (ModelState.IsValid)
             {
@@ -55,7 +55,7 @@ namespace BirdClubManagementSystem.Controllers
         }
 
         // GET: MeetingsController/Edit/5
-        public ActionResult Edit(int? id)
+        public IActionResult Edit(int? id)
         {
             if (id == null)
             {
@@ -72,7 +72,7 @@ namespace BirdClubManagementSystem.Controllers
         // POST: MeetingController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(Meeting meeting)
+        public IActionResult Edit(Meeting meeting)
         {
             if (ModelState.IsValid)
             {
@@ -84,7 +84,7 @@ namespace BirdClubManagementSystem.Controllers
         }
 
         // GET: MeetingController/Delete/5
-        public ActionResult Delete(int? id)
+        public IActionResult Delete(int? id)
         {
             if (id == null)
             {
@@ -101,7 +101,7 @@ namespace BirdClubManagementSystem.Controllers
         // POST: MeetingController/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int? id)
+        public IActionResult DeleteConfirmed(int? id)
         {
             if (id == null)
             {

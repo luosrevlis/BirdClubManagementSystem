@@ -1,81 +1,68 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using BirdClubManagementSystem.Data;
+﻿using BirdClubManagementSystem.Data;
 using BirdClubManagementSystem.Models;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 
 namespace BirdClubManagementSystem.Controllers
 {
     public class FieldTripsController : Controller
     {
-        private readonly BcmsDbContext _context;
+        private readonly BcmsDbContext _dbContext;
 
-        public FieldTripsController(BcmsDbContext context)
+        public FieldTripsController(BcmsDbContext dbContext)
         {
-            _context = context;
+            _dbContext = dbContext;
         }
 
-        // GET: FieldTrips
-        public async Task<IActionResult> Index()
+        // GET: FieldTripsController
+        public IActionResult Index()
         {
-              return _context.FieldTrips != null ? 
-                          View(await _context.FieldTrips.ToListAsync()) :
-                          Problem("Entity set 'BcmsDbContext.FieldTrips'  is null.");
+            return View();
         }
 
-        // GET: FieldTrips/Details/5
-        public async Task<IActionResult> Details(int? id)
+        // GET: FieldTripsController/Details/5
+        public IActionResult Details(int? id)
         {
-            if (id == null || _context.FieldTrips == null)
+            if (id == null)
             {
-                return NotFound();
+                return BadRequest();
             }
-
-            var fieldTrip = await _context.FieldTrips
-                .FirstOrDefaultAsync(m => m.Id == id);
+            FieldTrip? fieldTrip = _dbContext.FieldTrips.Find(id);
             if (fieldTrip == null)
             {
                 return NotFound();
             }
-
             return View(fieldTrip);
         }
 
-        // GET: FieldTrips/Create
+        // GET: FieldTripsController/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: FieldTrips/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // POST: FieldTripsController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Date,Description,Fee,IsAvailable")] FieldTrip fieldTrip)
+        public IActionResult Create(FieldTrip fieldTrip)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(fieldTrip);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                _dbContext.FieldTrips.Add(fieldTrip);
+                _dbContext.SaveChanges();
+                return RedirectToAction("Index", "ClubEvents");
             }
             return View(fieldTrip);
         }
 
-        // GET: FieldTrips/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        // GET: FieldTripsController/Edit/5
+        public IActionResult Edit(int? id)
         {
-            if (id == null || _context.FieldTrips == null)
+            if (id == null)
             {
-                return NotFound();
+                return BadRequest();
             }
-
-            var fieldTrip = await _context.FieldTrips.FindAsync(id);
+            FieldTrip? fieldTrip = _dbContext.FieldTrips.Find(id);
             if (fieldTrip == null)
             {
                 return NotFound();
@@ -83,81 +70,52 @@ namespace BirdClubManagementSystem.Controllers
             return View(fieldTrip);
         }
 
-        // POST: FieldTrips/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // POST: FieldTripsController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Date,Description,Fee,IsAvailable")] FieldTrip fieldTrip)
+        public IActionResult Edit(FieldTrip fieldTrip)
         {
-            if (id != fieldTrip.Id)
-            {
-                return NotFound();
-            }
-
             if (ModelState.IsValid)
             {
-                try
-                {
-                    _context.Update(fieldTrip);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!FieldTripExists(fieldTrip.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                _dbContext.FieldTrips.Update(fieldTrip);
+                _dbContext.SaveChanges();
+                return RedirectToAction("Index", "ClubEvents");
             }
             return View(fieldTrip);
         }
 
-        // GET: FieldTrips/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        // GET: FieldTripsController/Delete/5
+        public IActionResult Delete(int? id)
         {
-            if (id == null || _context.FieldTrips == null)
+            if (id == null)
             {
-                return NotFound();
+                return BadRequest();
             }
-
-            var fieldTrip = await _context.FieldTrips
-                .FirstOrDefaultAsync(m => m.Id == id);
+            FieldTrip? fieldTrip = _dbContext.FieldTrips.Find(id);
             if (fieldTrip == null)
             {
                 return NotFound();
             }
-
             return View(fieldTrip);
         }
 
-        // POST: FieldTrips/Delete/5
+        // POST: FieldTripsController/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public IActionResult DeleteConfirmed(int? id)
         {
-            if (_context.FieldTrips == null)
+            if (id == null)
             {
-                return Problem("Entity set 'BcmsDbContext.FieldTrips'  is null.");
+                return BadRequest();
             }
-            var fieldTrip = await _context.FieldTrips.FindAsync(id);
-            if (fieldTrip != null)
+            FieldTrip? fieldTrip = _dbContext.FieldTrips.Find(id);
+            if (fieldTrip == null)
             {
-                _context.FieldTrips.Remove(fieldTrip);
+                return NotFound();
             }
-            
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
-
-        private bool FieldTripExists(int id)
-        {
-          return (_context.FieldTrips?.Any(e => e.Id == id)).GetValueOrDefault();
+            _dbContext.FieldTrips.Remove(fieldTrip);
+            _dbContext.SaveChanges();
+            return RedirectToAction("Index", "ClubEvents");
         }
     }
 }

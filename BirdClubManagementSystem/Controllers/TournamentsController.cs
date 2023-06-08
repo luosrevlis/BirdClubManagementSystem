@@ -15,13 +15,13 @@ namespace BirdClubManagementSystem.Controllers
         }
 
         // GET: TournamentsController
-        public ActionResult Index()
+        public IActionResult Index()
         {
             return View();
         }
 
         // GET: TournamentsController/Details/5
-        public ActionResult Details(int? id)
+        public IActionResult Details(int? id)
         {
             if (id == null)
             {
@@ -36,7 +36,7 @@ namespace BirdClubManagementSystem.Controllers
         }
 
         // GET: TournamentsController/Create
-        public ActionResult Create()
+        public IActionResult Create()
         {
             return View();
         }
@@ -44,58 +44,78 @@ namespace BirdClubManagementSystem.Controllers
         // POST: TournamentsController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public IActionResult Create(Tournament tournament)
         {
-            try
+            if (ModelState.IsValid)
             {
-                return RedirectToAction(nameof(Index));
+                _dbContext.Tournaments.Add(tournament);
+                _dbContext.SaveChanges();
+                return RedirectToAction("Index", "ClubEvents");
             }
-            catch
-            {
-                return View();
-            }
+            return View(tournament);
         }
 
         // GET: TournamentsController/Edit/5
-        public ActionResult Edit(int id)
+        public IActionResult Edit(int? id)
         {
-            return View();
+            if (id == null)
+            {
+                return BadRequest();
+            }
+            Tournament? tournament = _dbContext.Tournaments.Find(id);
+            if (tournament == null)
+            {
+                return NotFound();
+            }
+            return View(tournament);
         }
 
         // POST: TournamentsController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public IActionResult Edit(Tournament tournament)
         {
-            try
+            if (ModelState.IsValid)
             {
-                return RedirectToAction(nameof(Index));
+                _dbContext.Tournaments.Update(tournament);
+                _dbContext.SaveChanges();
+                return RedirectToAction("Index", "ClubEvents");
             }
-            catch
-            {
-                return View();
-            }
+            return View(tournament);
         }
 
         // GET: TournamentsController/Delete/5
-        public ActionResult Delete(int id)
+        public IActionResult Delete(int? id)
         {
-            return View();
+            if (id == null)
+            {
+                return BadRequest();
+            }
+            Tournament? tournament = _dbContext.Tournaments.Find(id);
+            if (tournament == null)
+            {
+                return NotFound();
+            }
+            return View(tournament);
         }
 
         // POST: TournamentsController/Delete/5
-        [HttpPost]
+        [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public IActionResult DeleteConfirmed(int? id)
         {
-            try
+            if (id == null)
             {
-                return RedirectToAction(nameof(Index));
+                return BadRequest();
             }
-            catch
+            Tournament? tournament = _dbContext.Tournaments.Find(id);
+            if (tournament == null)
             {
-                return View();
+                return NotFound();
             }
+            _dbContext.Tournaments.Remove(tournament);
+            _dbContext.SaveChanges();
+            return RedirectToAction("Index", "ClubEvents");
         }
     }
 }

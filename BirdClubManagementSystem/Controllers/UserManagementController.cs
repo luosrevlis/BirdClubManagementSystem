@@ -16,14 +16,14 @@ namespace BirdClubManagementSystem.Controllers
         }
 
         // GET: UserManagementController
-        public ActionResult Index()
+        public IActionResult Index()
         {
             List<User> userList = _dbContext.Users.ToList(); 
             return View(userList);
         }
 
         // GET: UserManagementController/Details/5
-        public ActionResult Details(int? id)
+        public IActionResult Details(int? id)
         {
             if (id == null)
             {
@@ -38,7 +38,7 @@ namespace BirdClubManagementSystem.Controllers
         }
 
         // GET: UserManagementController/Create
-        public ActionResult Create()
+        public IActionResult Create()
         {
             return View();
         }
@@ -46,7 +46,7 @@ namespace BirdClubManagementSystem.Controllers
         // POST: UserManagementController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(User user)
+        public IActionResult Create(User user)
         {
             if (user.Role != "Admin" && user.Role != "Staff" && user.Role != "Member")
             {
@@ -62,7 +62,7 @@ namespace BirdClubManagementSystem.Controllers
         }
 
         // GET: UserManagementController/Edit/5
-        public ActionResult Edit(int? id)
+        public IActionResult Edit(int? id)
         {
             if (id == null)
             {
@@ -79,7 +79,7 @@ namespace BirdClubManagementSystem.Controllers
         // POST: UserManagementController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(User user)
+        public IActionResult Edit(User user)
         {
             if (user.Role != "Admin" && user.Role != "Staff" && user.Role != "Member")
             {
@@ -95,7 +95,7 @@ namespace BirdClubManagementSystem.Controllers
         }
 
         // GET: UserManagementController/Delete/5
-        public ActionResult Delete(int? id)
+        public IActionResult Delete(int? id)
         {
             if (id == null)
             {
@@ -112,7 +112,7 @@ namespace BirdClubManagementSystem.Controllers
         // POST: UserManagementController/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int? id)
+        public IActionResult DeleteConfirmed(int? id)
         {
             if (id == null)
             {
