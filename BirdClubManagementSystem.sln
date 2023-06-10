@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.33627.172
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BirdClubManagementSystem", "BirdClubManagementSystem\BirdClubManagementSystem.csproj", "{8C5ADC0D-202E-4E88-8F11-4EA6154D3230}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BirdClubManagementSystem", "BirdClubManagementSystem\BirdClubManagementSystem.csproj", "{8C5ADC0D-202E-4E88-8F11-4EA6154D3230}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BirdClubInfoHub", "BirdClubInfoHub\BirdClubInfoHub.csproj", "{B6A665F2-5340-43FB-8B29-867131450C1A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{8C5ADC0D-202E-4E88-8F11-4EA6154D3230}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8C5ADC0D-202E-4E88-8F11-4EA6154D3230}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8C5ADC0D-202E-4E88-8F11-4EA6154D3230}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B6A665F2-5340-43FB-8B29-867131450C1A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B6A665F2-5340-43FB-8B29-867131450C1A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B6A665F2-5340-43FB-8B29-867131450C1A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B6A665F2-5340-43FB-8B29-867131450C1A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
