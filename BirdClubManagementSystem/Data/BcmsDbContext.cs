@@ -32,5 +32,7 @@ namespace BirdClubManagementSystem.Data
         public DbSet<MeetingRegistration> MeetingRegistrations { get; set; }
 
         public DbSet<TournamentRegistration> TournamentRegistrations { get; set; }
+
+        public DbSet<TournamentStanding> TournamentStandings { get; set; }
     }
 }
