@@ -1,20 +1,23 @@
-﻿using BirdClubInfoHub.Models;
+﻿using BirdClubInfoHub.Data;
+using BirdClubInfoHub.Models;
 using Microsoft.AspNetCore.Mvc;
+using System.Configuration;
 using System.Diagnostics;
 
 namespace BirdClubInfoHub.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly BcmsDbContext _dbContext;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(BcmsDbContext dbContext)
         {
-            _logger = logger;
+            _dbContext = dbContext;
         }
 
         public IActionResult Index()
         {
+            ViewBag.Message = HttpContext.Session.GetString("USER_NAME");
             return View();
         }
 
