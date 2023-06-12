@@ -21,12 +21,8 @@ namespace BirdClubManagementSystem.Controllers
         }
 
         // GET: TournamentsController/Details/5
-        public IActionResult Details(int? id)
+        public IActionResult Details(int id)
         {
-            if (id == null)
-            {
-                return BadRequest();
-            }
             Tournament? tournament = _dbContext.Tournaments.Find(id);
             if (tournament == null)
             {
@@ -56,12 +52,8 @@ namespace BirdClubManagementSystem.Controllers
         }
 
         // GET: TournamentsController/Edit/5
-        public IActionResult Edit(int? id)
+        public IActionResult Edit(int id)
         {
-            if (id == null)
-            {
-                return BadRequest();
-            }
             Tournament? tournament = _dbContext.Tournaments.Find(id);
             if (tournament == null)
             {
@@ -85,12 +77,8 @@ namespace BirdClubManagementSystem.Controllers
         }
 
         // GET: TournamentsController/Delete/5
-        public IActionResult Delete(int? id)
+        public IActionResult Delete(int id)
         {
-            if (id == null)
-            {
-                return BadRequest();
-            }
             Tournament? tournament = _dbContext.Tournaments.Find(id);
             if (tournament == null)
             {
@@ -102,12 +90,8 @@ namespace BirdClubManagementSystem.Controllers
         // POST: TournamentsController/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public IActionResult DeleteConfirmed(int? id)
+        public IActionResult DeleteConfirmed(int id)
         {
-            if (id == null)
-            {
-                return BadRequest();
-            }
             Tournament? tournament = _dbContext.Tournaments.Find(id);
             if (tournament == null)
             {

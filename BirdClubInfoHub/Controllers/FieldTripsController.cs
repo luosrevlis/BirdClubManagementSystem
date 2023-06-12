@@ -1,6 +1,7 @@
 ﻿using BirdClubInfoHub.Models;
 using BirdClubInfoHub.Data;
 using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics;
 
 namespace BirdClubInfoHub.Controllers
 {
@@ -20,12 +21,8 @@ namespace BirdClubInfoHub.Controllers
         }
 
         // GET: FieldTripsController/Details/5
-        public IActionResult Details(int? id)
+        public IActionResult Details(int id)
         {
-            if (id == null)
-            {
-                return BadRequest();
-            }
             FieldTrip? fieldTrip = _dbContext.FieldTrips.Find(id);
             if (fieldTrip == null)
             {
@@ -34,12 +31,8 @@ namespace BirdClubInfoHub.Controllers
             return View(fieldTrip);
         }
 
-        public IActionResult Register(int? id)
+        public IActionResult Register(int id)
         {
-            if (id == null)
-            {
-                return BadRequest();
-            }
             FieldTrip? fieldTrip = _dbContext.FieldTrips.Find(id);
             if (fieldTrip == null)
             {
@@ -50,12 +43,8 @@ namespace BirdClubInfoHub.Controllers
 
         [HttpPost, ActionName("Register")]
         [ValidateAntiForgeryToken]
-        public IActionResult RegisterConfirmed(int? id)
+        public IActionResult RegisterConfirmed(int id)
         {
-            if (id == null)
-            {
-                return BadRequest();
-            }
             FieldTrip? fieldTrip = _dbContext.FieldTrips.Find(id);
             if (fieldTrip == null)
             {

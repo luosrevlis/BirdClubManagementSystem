@@ -21,12 +21,8 @@ namespace BirdClubManagementSystem.Controllers
         //POST
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Login(LoginCredential? loginCredential)
+        public IActionResult Login(LoginCredential loginCredential)
         {
-            if (loginCredential == null)
-            {
-                return BadRequest();
-            }
             User? user = _dbContext.Users.FirstOrDefault(u => u.Email == loginCredential.Email);
             if (user == null)
             {

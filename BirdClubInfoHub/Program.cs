@@ -20,6 +20,8 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+app.UseStatusCodePagesWithRedirects("/StatusCodeError/{0}");
+
 app.UseHttpsRedirection();
 app.UseSession();
 app.UseStaticFiles();

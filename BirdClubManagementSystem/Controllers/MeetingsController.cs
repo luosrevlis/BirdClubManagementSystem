@@ -20,12 +20,8 @@ namespace BirdClubManagementSystem.Controllers
         }
 
         // GET: MeetingsController/Details/5
-        public IActionResult Details(int? id)
+        public IActionResult Details(int id)
         {
-            if (id == null)
-            {
-                return BadRequest();
-            }
             Meeting? meeting = _dbContext.Meetings.Find(id);
             if (meeting == null)
             {
@@ -55,12 +51,8 @@ namespace BirdClubManagementSystem.Controllers
         }
 
         // GET: MeetingsController/Edit/5
-        public IActionResult Edit(int? id)
+        public IActionResult Edit(int id)
         {
-            if (id == null)
-            {
-                return BadRequest();
-            }
             Meeting? meeting = _dbContext.Meetings.Find(id);
             if (meeting == null)
             {
@@ -84,12 +76,8 @@ namespace BirdClubManagementSystem.Controllers
         }
 
         // GET: MeetingController/Delete/5
-        public IActionResult Delete(int? id)
+        public IActionResult Delete(int id)
         {
-            if (id == null)
-            {
-                return BadRequest();
-            }
             Meeting? meeting = _dbContext.Meetings.Find(id);
             if (meeting == null)
             {
@@ -101,12 +89,8 @@ namespace BirdClubManagementSystem.Controllers
         // POST: MeetingController/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public IActionResult DeleteConfirmed(int? id)
+        public IActionResult DeleteConfirmed(int id)
         {
-            if (id == null)
-            {
-                return BadRequest();
-            }
             Meeting? meeting = _dbContext.Meetings.Find(id);
             if (meeting == null)
             {

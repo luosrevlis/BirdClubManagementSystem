@@ -31,5 +31,15 @@ namespace BirdClubInfoHub.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+        [Route("/StatusCodeError/{statusCode}")]
+        public IActionResult StatusCodeError(int statusCode)
+        {
+            if (statusCode == 404)
+            {
+                ViewBag.Message = "404 Not Found";
+            }
+            return View();
+        }
     }
 }

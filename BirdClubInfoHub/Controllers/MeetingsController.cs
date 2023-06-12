@@ -19,12 +19,8 @@ namespace BirdClubInfoHub.Controllers
             return View();
         }
 
-        public IActionResult Details(int? id)
+        public IActionResult Details(int id)
         {
-            if (id == null)
-            {
-                return BadRequest();
-            }
             Meeting? meeting = _dbContext.Meetings.Find(id);
             if (meeting == null)
             {
@@ -33,12 +29,8 @@ namespace BirdClubInfoHub.Controllers
             return View(meeting);
         }
 
-        public IActionResult Register(int? id)
+        public IActionResult Register(int id)
         {
-            if (id == null)
-            {
-                return BadRequest();
-            }
             Meeting? meeting = _dbContext.Meetings.Find(id);
             if (meeting == null)
             {
@@ -49,12 +41,8 @@ namespace BirdClubInfoHub.Controllers
 
         [HttpPost, ActionName("Register")]
         [ValidateAntiForgeryToken]
-        public IActionResult RegisterConfirmed(int? id)
+        public IActionResult RegisterConfirmed(int id)
         {
-            if (id == null)
-            {
-                return BadRequest();
-            }
             Meeting? meeting = _dbContext.Meetings.Find(id);
             if (meeting == null)
             {
