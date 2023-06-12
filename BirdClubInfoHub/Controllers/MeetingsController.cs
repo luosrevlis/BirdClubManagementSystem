@@ -1,6 +1,7 @@
 ﻿using BirdClubInfoHub.Models;
 using BirdClubInfoHub.Data;
 using Microsoft.AspNetCore.Mvc;
+using BirdClubInfoHub.Filters;
 
 namespace BirdClubInfoHub.Controllers
 {
@@ -29,6 +30,7 @@ namespace BirdClubInfoHub.Controllers
             return View(meeting);
         }
 
+        [Authenticated]
         public IActionResult Register(int id)
         {
             Meeting? meeting = _dbContext.Meetings.Find(id);

@@ -1,9 +1,12 @@
 ﻿using BirdClubManagementSystem.Data;
+using BirdClubManagementSystem.Filters;
 using BirdClubManagementSystem.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BirdClubManagementSystem.Controllers
 {
+    [StaffAuthenticated]
     public class ClubEventsController : Controller
     {
         private readonly BcmsDbContext _dbContext;

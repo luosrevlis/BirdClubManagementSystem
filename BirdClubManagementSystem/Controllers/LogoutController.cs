@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace BirdClubInfoHub.Controllers
+namespace BirdClubManagementSystem.Controllers
 {
     public class LogoutController : Controller
     {

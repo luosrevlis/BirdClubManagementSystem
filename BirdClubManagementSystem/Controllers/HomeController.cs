@@ -15,6 +15,7 @@ namespace BirdClubManagementSystem.Controllers
 
         public IActionResult Index()
         {
+            ViewBag.Message = HttpContext.Session.GetString("USER_NAME");
             return View();
         }
 

@@ -2,6 +2,7 @@
 using BirdClubInfoHub.Data;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using BirdClubInfoHub.Filters;
 
 namespace BirdClubInfoHub.Controllers
 {
@@ -31,6 +32,7 @@ namespace BirdClubInfoHub.Controllers
             return View(fieldTrip);
         }
 
+        [Authenticated]
         public IActionResult Register(int id)
         {
             FieldTrip? fieldTrip = _dbContext.FieldTrips.Find(id);

@@ -1,11 +1,12 @@
 ﻿using BirdClubManagementSystem.Data;
+using BirdClubManagementSystem.Filters;
 using BirdClubManagementSystem.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
 
 namespace BirdClubManagementSystem.Controllers
 {
+    [AdminAuthenticated]
     public class UserManagementController : Controller
     {
         private readonly BcmsDbContext _dbContext;
