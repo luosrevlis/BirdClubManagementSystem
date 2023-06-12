@@ -39,7 +39,7 @@ namespace BirdClubInfoHub.Controllers
                 return View("Index");
             }
             //convert user to json maybe?
-            HttpContext.Session.SetString("USER_ID", user.Id.ToString());
+            HttpContext.Session.SetInt32("USER_ID", user.Id);
             HttpContext.Session.SetString("USER_NAME", user.Name);
             return RedirectToAction("Index", "Home");
         }

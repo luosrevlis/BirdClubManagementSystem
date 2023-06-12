@@ -1,8 +1,8 @@
-﻿using BirdClubManagementSystem.Data;
-using BirdClubManagementSystem.Models;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using BirdClubInfoHub.Models;
+using BirdClubInfoHub.Data;
 
-namespace BirdClubManagementSystem.Controllers
+namespace BirdClubInfoHub.Controllers
 {
     public class ClubEventsController : Controller
     {
