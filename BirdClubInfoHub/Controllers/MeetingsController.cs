@@ -14,12 +14,13 @@ namespace BirdClubInfoHub.Controllers
             _dbContext = dbContext;
         }
 
-        // GET: FieldTripsController
+        // GET: MeetingsController
         public IActionResult Index()
         {
             return View();
         }
 
+        // GET: MeetingsController/Details/5
         public IActionResult Details(int id)
         {
             Meeting? meeting = _dbContext.Meetings.Find(id);
