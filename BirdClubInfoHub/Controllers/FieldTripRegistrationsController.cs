@@ -18,9 +18,22 @@ namespace BirdClubInfoHub.Controllers
             _vnPayService = vnPayService;
         }
 
+        [Authenticated]
         public IActionResult Index()
         {
-            return RedirectToAction("Index", "ClubEvents");
+            int? userId = HttpContext.Session.GetInt32("USER_ID");
+            User? user = _dbContext.Users.Find(userId);
+            if (user == null)
+            {
+                return RedirectToAction("Index", "Login");
+            }
+            List<FieldTripRegistration> registrations = _dbContext.FieldTripRegistrations.Where(ftr => ftr.UserId == userId).ToList();
+            foreach (FieldTripRegistration ftr in registrations)
+            {
+                ftr.FieldTrip = _dbContext.FieldTrips.Find(ftr.FieldTripId)!;
+                ftr.User = user;
+            }
+            return View(registrations);
         }
 
         [Authenticated]
@@ -125,6 +138,33 @@ namespace BirdClubInfoHub.Controllers
             _dbContext.FieldTripRegistrations.Update(registration);
             _dbContext.SaveChanges();
             return View(model);
+        }
+
+        [Authenticated]
+        public IActionResult Delete(int id)
+        {
+            FieldTripRegistration? registration = _dbContext.FieldTripRegistrations.Find(id);
+            if (registration == null)
+            {
+                return NotFound();
+            }
+            registration.FieldTrip = _dbContext.FieldTrips.Find(registration.FieldTripId)!;
+            registration.User = _dbContext.Users.Find(registration.UserId)!;
+            return View(registration);
+        }
+
+        [HttpPost, Route("Delete")]
+        [ValidateAntiForgeryToken]
+        public IActionResult DeleteConfirmed(int id)
+        {
+            FieldTripRegistration? registration = _dbContext.FieldTripRegistrations.Find(id);
+            if (registration == null)
+            {
+                return NotFound();
+            }
+            _dbContext.FieldTripRegistrations.Remove(registration);
+            _dbContext.SaveChanges();
+            return View("Index");
         }
     }
 }

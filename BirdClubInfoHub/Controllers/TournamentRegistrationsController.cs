@@ -20,7 +20,25 @@ namespace BirdClubInfoHub.Controllers
 
         public IActionResult Index()
         {
-            return RedirectToAction("Index", "ClubEvents");
+            int? userId = HttpContext.Session.GetInt32("USER_ID");
+            User? user = _dbContext.Users.Find(userId);
+            if (user == null)
+            {
+                return RedirectToAction("Index", "Login");
+            }
+            List<TournamentRegistration> registrations = _dbContext.TournamentRegistrations.ToList();
+            for (int i = 0; i < registrations.Count; i++)
+            {
+                registrations[i].Bird = _dbContext.Birds.Find(registrations[i].BirdId)!;
+                if (registrations[i].Bird.UserId != userId)
+                {
+                    registrations.Remove(registrations[i]);
+                    i--;
+                    continue;
+                }
+                registrations[i].Tournament = _dbContext.Tournaments.Find(registrations[i].TournamentId)!;
+            }
+            return View(registrations);
         }
 
         [Authenticated]
@@ -143,6 +161,33 @@ namespace BirdClubInfoHub.Controllers
             _dbContext.TournamentRegistrations.Update(registration);
             _dbContext.SaveChanges();
             return View(model);
+        }
+
+        [Authenticated]
+        public IActionResult Delete(int id)
+        {
+            TournamentRegistration? registration = _dbContext.TournamentRegistrations.Find(id);
+            if (registration == null)
+            {
+                return NotFound();
+            }
+            registration.Tournament = _dbContext.Tournaments.Find(registration.TournamentId)!;
+            registration.Bird = _dbContext.Birds.Find(registration.BirdId)!;
+            return View(registration);
+        }
+
+        [HttpPost, Route("Delete")]
+        [ValidateAntiForgeryToken]
+        public IActionResult DeleteConfirmed(int id)
+        {
+            TournamentRegistration? registration = _dbContext.TournamentRegistrations.Find(id);
+            if (registration == null)
+            {
+                return NotFound();
+            }
+            _dbContext.TournamentRegistrations.Remove(registration);
+            _dbContext.SaveChanges();
+            return View("Index");
         }
     }
 }

@@ -33,5 +33,7 @@ namespace BirdClubInfoHub.Models
         public ICollection<Comment> Comments { get; set; } = new List<Comment>();
 
         public ICollection<FieldTripRegistration> FieldTripRegistrations { get; set; } = new List<FieldTripRegistration>();
+        
+        public ICollection<MeetingRegistration> MeetingRegistrations { get; set; } = new List<MeetingRegistration>();
     }
 }
