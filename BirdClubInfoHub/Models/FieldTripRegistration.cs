@@ -10,7 +10,7 @@ namespace BirdClubInfoHub.Models
 
         public int FieldTripId { get; set; }
 
-        public bool PaymentReceived { get; set; }
+        public bool PaymentReceived { get; set; } = false;
 
         public User User { get; set; } = new User();
 
