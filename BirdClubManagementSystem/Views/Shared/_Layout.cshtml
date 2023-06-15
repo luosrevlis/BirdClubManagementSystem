@@ -5,10 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - BirdClubManagementSystem</title>
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/BirdClubManagementSystem.styles.css" asp-append-version="true" />
     @RenderSection("Styles", required: false)
 </head>
-<body onload="init()">
+<body>
     <header>
         <nav>
             <div class="nav-logo-container">
@@ -55,28 +54,34 @@
 
             <div class="footer-link-container">
                 <h2>Club</h2>
-                <button class="footer-link">ABOUT</button>
-                <button class="footer-link">EVENTS</button>
-                <button class="footer-link">BLOGS</button>
-                <button class="footer-link">PRICING</button>
+                <div class="footer-link-box">
+                    <button class="footer-link">ABOUT</button>
+                    <button class="footer-link">EVENTS</button>
+                    <button class="footer-link">BLOGS</button>
+                    <button class="footer-link">PRICING</button>
+                </div>
             </div>
 
             <div class="footer-link-container">
                 <h2>Services</h2>
-                <button class="footer-link">COMMUNITY</button>
-                <button class="footer-link">WEBSITES</button>
-                <button class="footer-link">TOURNAMENTS</button>
-                <button class="footer-link">STRATEGY</button>
-                <button class="footer-link">PLATFORMS</button>
+                <div class="footer-link-box">
+                    <button class="footer-link">COMMUNITY</button>
+                    <button class="footer-link">WEBSITES</button>
+                    <button class="footer-link">TOURNAMENTS</button>
+                    <button class="footer-link">STRATEGY</button>
+                    <button class="footer-link">PLATFORMS</button>
+                </div>
             </div>
 
             <div class="footer-link-container">
                 <h2>Contact</h2>
-                <button class="footer-link">HELP DESK</button>
-                <button class="footer-link">DOCS</button>
-                <button class="footer-link">OPEN A TICKET</button>
-                <button class="footer-link">CHAT</button>
-                <button class="footer-link">FORUM</button>
+                <div class="footer-link-box">
+                    <button class="footer-link">HELP DESK</button>
+                    <button class="footer-link">DOCS</button>
+                    <button class="footer-link">OPEN A TICKET</button>
+                    <button class="footer-link">CHAT</button>
+                    <button class="footer-link">FORUM</button>
+                </div>
             </div>
 
             <div class="footer-feedback-container">

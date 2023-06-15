@@ -1,4 +1,5 @@
 html {
+  width: 100%;
   font-size: 16px;
   font-family: Arial, Helvetica, sans-serif;
 }
@@ -6,22 +7,20 @@ html {
 * {
   margin: 0;
   padding: 0;
-}
-
-html {
-  position: relative;
-  min-height: 100%;
+  box-sizing: border-box;
 }
 
 body {
   width: 100%;
 }
 
+main {
+  min-height: 100vh;
+}
+
 header {
-  /* position: fixed; */
   width: 100%;
   background-color: #B8D9D0;
-  /* z-index: 9999; */
 }
 
 nav {
@@ -35,24 +34,67 @@ nav {
   padding: 1rem 0;
 }
 
-nav > * {
+.nav-logo-container,
+.nav-user-utils-container {
+  width: 25%;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+  align-items: center;
+}
+
+.nav-logo-container > *,
+.nav-user-utils-container > * {
+  margin: 0 0.5rem;
+}
+
+.nav-logo-container {
+  color: #2D3958;
+}
+
+.nav-logo-container .logo-img-container {
+  height: 100%;
+}
+
+.nav-user-utils-container .ava-container {
+  height: 2rem;
+  width: 2rem;
+}
+
+.nav-logo-container .logo-img-container img,
+.nav-user-utils-container .ava-container img {
+  width: auto;
+  height: 100%;
+}
+
+.nav-bar-container {
+  width: 50%;
   display: flex;
   flex-flow: row nowrap;
   justify-content: space-evenly;
   align-items: center;
 }
 
-.nav-logo-container > *,
-.nav-user-utils-container > * {
-  margin: 0 1rem;
+button {
+  cursor: pointer;
+  transition: all 0.2s ease-in;
 }
 
-.nav-bar-container > * {
-  margin: 0 0.5rem;
+.nav-link,
+.nav-user-utils-container .sign-in-link {
+  background: none;
+  border: none;
+  font-size: 1rem;
 }
 
-.nav-logo-container {
-  color: #2D3958;
+.nav-link {
+  color: #7B88A8;
+  padding: 0.5rem 0.5rem;
+}
+
+.nav-link:hover,
+.nav-link:focus {
+  color: #34C635;
 }
 
 .nav-link.active {
@@ -74,46 +116,6 @@ nav > * {
   transform: translateX(-50%);
 }
 
-.nav-logo-container .logo-img-container {
-  height: 100%;
-}
-
-.nav-logo-container .logo-img-container img,
-.nav-user-utils-container .ava-container img {
-  width: auto;
-  height: 100%;
-}
-
-.nav-user-utils-container .ava-container {
-  height: 2rem;
-  width: 2rem;
-}
-
-.nav-bar-container {
-  margin: 0 5rem;
-}
-
-button {
-  cursor: pointer;
-}
-
-.nav-link,
-.nav-user-utils-container .sign-in-link {
-  background: none;
-  border: none;
-  font-weight: bold;
-  font-size: 1rem;
-}
-
-.nav-link {
-  color: #7B88A8;
-  padding: 1rem 2rem;
-}
-
-.nav-link:hover {
-  color: #34C635;
-}
-
 .nav-user-utils-container .search-img-container,
 .nav-user-utils-container .ava-container {
   background: none;
@@ -123,8 +125,13 @@ button {
 .nav-user-utils-container .sign-in-link {
   background-color: #AD82D9;
   color: #fff;
-  padding: 1rem 2rem;
+  padding: 1rem 1.5rem;
   border-radius: 0.5rem;
+}
+
+.nav-user-utils-container .sign-in-link:hover,
+.nav-user-utils-container .sign-in-link:focus {
+  background-color: #8000ff;
 }
 
 .nav-logo-container .club-title {
@@ -132,8 +139,6 @@ button {
 }
 
 footer {
-  position: absolute;
-  bottom: 0;
   width: 100%;
   padding-top: 2rem;
   background-color: #3C7363;
@@ -193,6 +198,13 @@ footer {
 
 .footer-link-container > h2 {
   margin-bottom: 2rem;
+}
+
+.footer-link-box {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: flex-start;
 }
 
 .footer-link {
@@ -289,4 +301,59 @@ footer {
 .footer-social-link button img {
   height: 100%;
   width: auto;
+}
+
+@media screen and (max-width: 1366px) {
+  .footer-body {
+    flex-flow: column nowrap;
+    align-items: flex-start;
+  }
+
+  .footer-logo-container {
+    justify-content: flex-start;
+  }
+
+  .footer-body > * {
+    width: 100%;
+    margin: 0 0 1rem 0;
+  }
+
+  .footer-link-container {
+    margin-top: 0;
+    flex-flow: column nowrap;
+    justify-content: flex-start;
+    align-items: flex-start;
+  }
+
+  .footer-link-container > h2,
+  .footer-feedback-container > h2 {
+    margin-bottom: 1rem;
+  }
+
+  .footer-feedback-container {
+    width: 50%;
+  }
+
+  .footer-link-box {
+    flex-flow: row nowrap;
+  }
+
+  .footer-link {
+    margin-bottom: 0;
+    margin-right: 1rem;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .footer-feedback-container {
+    width: 100%;
+  }
+
+  .footer-link-box {
+    flex-flow: column nowrap;
+  }
+
+  .footer-link {
+    margin: 0 0 1rem 0;
+  }
 }
