@@ -75,7 +75,7 @@ namespace BirdClubInfoHub.Controllers
             {
                 return View("NoBird");
             }
-            SelectList options = new(birds, nameof(Bird.Id), nameof(Bird.Id));
+            SelectList options = new(birds, nameof(Bird.Id), nameof(Bird.Description));
             ViewBag.Options = options;
             TournamentRegistration registration = new() { Tournament = tournament };
             return View(registration);
@@ -131,7 +131,7 @@ namespace BirdClubInfoHub.Controllers
             PaymentInformationModel model = new()
             {
                 Amount = registration.Tournament.Fee,
-                OrderDescription = "Thanh toan cho " + registration.Bird.Id + " tham gia giai dau " + registration.Tournament.Name,
+                OrderDescription = "Thanh toan cho " + registration.Bird.Description + " tham gia giai dau " + registration.Tournament.Name,
                 Name = registration.Bird.User.Name
             };
             string returnUrl = Url.Action(action: "PaymentConfirmed", controller: "TournamentRegistrations",

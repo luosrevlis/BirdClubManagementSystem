@@ -1,4 +1,4 @@
-﻿@model BirdClubInfoHub.Models.TournamentRegistration
+﻿@model BirdClubManagementSystem.Models.TournamentRegistration
 
 @{
     ViewData["Title"] = "Delete";
@@ -12,15 +12,21 @@
     <hr />
     <dl class="row">
         <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Bird.User)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Bird.User.Name)
+        </dd>
+        <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Bird)
         </dt>
-        <dd class="col-sm-10">
+        <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Bird.Description)
         </dd>
-        <dt class="col-sm-2">
+        <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Tournament)
         </dt>
-        <dd class="col-sm-10">
+        <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Tournament.Name)
         </dd>
         <dt class="col-sm-2">
@@ -30,10 +36,10 @@
             @Html.DisplayFor(model => model.PaymentReceived)
         </dd>
     </dl>
-
+    
     <form asp-action="Delete">
         <input type="hidden" asp-for="Id" />
         <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Back to List</a>
+        <a asp-action="Index" asp-route-tournamentid="@Model.TournamentId">Back to List</a>
     </form>
 </div>

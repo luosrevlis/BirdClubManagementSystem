@@ -1,4 +1,4 @@
-﻿@model IEnumerable<BirdClubInfoHub.Models.TournamentRegistration>
+﻿@model IEnumerable<BirdClubManagementSystem.Models.TournamentRegistration>
 
 @{
     ViewData["Title"] = "Index";
@@ -10,6 +10,9 @@
     <thead>
         <tr>
             <th>
+                @Html.DisplayNameFor(model => model.Bird.User)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.Bird)
             </th>
             <th>
@@ -19,13 +22,15 @@
                 @Html.DisplayNameFor(model => model.PaymentReceived)
             </th>
             <th></th>
-            <th></th>
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model)
         {
             <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Bird.User.Name)
+                </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Bird.Description)
                 </td>
@@ -36,13 +41,8 @@
                     @Html.DisplayFor(modelItem => item.PaymentReceived)
                 </td>
                 <td>
-                    @if (!item.PaymentReceived)
-                    {
-                        <a asp-action="PayEntranceFee" asp-route-id="@item.Id">Pay entrance fee</a>
-                    }
-                </td>
-                <td>
-                    <a asp-action="Delete" asp-route-id="@item.Id">Cancel Registration</a>
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
                 </td>
             </tr>
         }

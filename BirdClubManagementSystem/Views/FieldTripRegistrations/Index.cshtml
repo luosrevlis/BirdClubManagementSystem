@@ -1,4 +1,4 @@
-﻿@model IEnumerable<BirdClubInfoHub.Models.TournamentRegistration>
+﻿@model IEnumerable<BirdClubManagementSystem.Models.FieldTripRegistration>
 
 @{
     ViewData["Title"] = "Index";
@@ -10,15 +10,14 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Bird)
+                @Html.DisplayNameFor(model => model.User)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Tournament)
+                @Html.DisplayNameFor(model => model.FieldTrip)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.PaymentReceived)
             </th>
-            <th></th>
             <th></th>
         </tr>
     </thead>
@@ -27,22 +26,17 @@
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Bird.Description)
+                    @Html.DisplayFor(modelItem => item.User.Name)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Tournament.Name)
+                    @Html.DisplayFor(modelItem => item.FieldTrip.Name)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.PaymentReceived)
                 </td>
                 <td>
-                    @if (!item.PaymentReceived)
-                    {
-                        <a asp-action="PayEntranceFee" asp-route-id="@item.Id">Pay entrance fee</a>
-                    }
-                </td>
-                <td>
-                    <a asp-action="Delete" asp-route-id="@item.Id">Cancel Registration</a>
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
                 </td>
             </tr>
         }
