@@ -16,5 +16,7 @@ namespace BirdClubInfoHub.Models
         public User User { get; set; } = new User();
 
         public ICollection<TournamentRegistration> TournamentRegistrations { get; set; } = new List<TournamentRegistration>();
+
+        public ICollection<TournamentStanding> TournamentStandings { get; set; } = new List<TournamentStanding>();
     }
 }
