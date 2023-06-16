@@ -176,7 +176,7 @@ namespace BirdClubInfoHub.Controllers
             return View(registration);
         }
 
-        [HttpPost, Route("Delete")]
+        [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public IActionResult DeleteConfirmed(int id)
         {
@@ -187,7 +187,7 @@ namespace BirdClubInfoHub.Controllers
             }
             _dbContext.TournamentRegistrations.Remove(registration);
             _dbContext.SaveChanges();
-            return View("Index");
+            return RedirectToAction("Index");
         }
     }
 }

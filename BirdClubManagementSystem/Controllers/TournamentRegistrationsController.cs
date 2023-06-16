@@ -59,7 +59,7 @@ namespace BirdClubManagementSystem.Controllers
         }
 
         // POST: TournamentRegistrationsController/Delete/5
-        [HttpPost, Route("Delete")]
+        [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
@@ -70,7 +70,7 @@ namespace BirdClubManagementSystem.Controllers
             }
             _dbContext.TournamentRegistrations.Remove(registration);
             _dbContext.SaveChanges();
-            return View("Index");
+            return RedirectToAction("Index", new RouteValueDictionary(new { tournamentId = registration.TournamentId }));
         }
     }
 }

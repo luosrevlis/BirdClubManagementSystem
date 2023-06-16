@@ -56,7 +56,7 @@ namespace BirdClubManagementSystem.Controllers
         }
 
         // POST: MeetingRegistrationsController/Delete/5
-        [HttpPost, Route("Delete")]
+        [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public IActionResult DeleteConfirmed(int id)
         {
@@ -67,7 +67,7 @@ namespace BirdClubManagementSystem.Controllers
             }
             _dbContext.MeetingRegistrations.Remove(registration);
             _dbContext.SaveChanges();
-            return View("Index");
+            return RedirectToAction("Index", new RouteValueDictionary(new { meetingId = registration.MeetingId }));
         }
     }
 }
