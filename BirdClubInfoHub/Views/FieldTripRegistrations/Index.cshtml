@@ -1,0 +1,50 @@
+﻿@model IEnumerable<BirdClubInfoHub.Models.FieldTripRegistration>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.User)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FieldTrip)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PaymentReceived)
+            </th>
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.User.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FieldTrip.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PaymentReceived)
+                </td>
+                <td>
+                    @if (!item.PaymentReceived)
+                    {
+                        <a asp-action="PayEntranceFee" asp-route-id="@item.Id">Pay entrance fee</a>
+                    }
+                </td>
+                <td>
+                    <a asp-action="Delete" asp-route-id="@item.Id">Cancel Registration</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

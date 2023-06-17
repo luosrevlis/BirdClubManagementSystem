@@ -8,7 +8,8 @@ namespace BirdClubInfoHub.Models
 
         public int UserId { get; set; }
 
-        [Required]
+        public string Name { get; set; } = string.Empty;
+
         public string Description { get; set; } = string.Empty;
 
         public string Species { get; set; } = string.Empty;
@@ -16,5 +17,7 @@ namespace BirdClubInfoHub.Models
         public User User { get; set; } = new User();
 
         public ICollection<TournamentRegistration> TournamentRegistrations { get; set; } = new List<TournamentRegistration>();
+
+        public ICollection<TournamentStanding> TournamentStandings { get; set; } = new List<TournamentStanding>();
     }
 }
