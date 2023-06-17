@@ -66,14 +66,8 @@ namespace BirdClubInfoHub.Controllers
         // POST: ProfileController/Edit/5
         [HttpPost, ActionName("Edit")]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int? userId,User? user)
+        public ActionResult Edit(User? user)
         { 
-             userId = HttpContext.Session.GetInt32("USER_ID");
-            if (userId == null)
-            {
-                return RedirectToAction("Index", "Login");
-            }
-             user = _db.Users.Find(userId);
             if (user == null)
             {
                 return NotFound();
