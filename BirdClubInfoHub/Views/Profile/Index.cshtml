@@ -1,0 +1,50 @@
+﻿@model BirdClubInfoHub.Models.User
+@{
+    ViewData["Title"] = "Index";
+}
+<table class="table table-bordered table-striped" style="width:100%">
+    <thead>
+        <tr>
+            <th>
+                Name
+            </th>
+            <th>
+                Email
+            </th>
+            <th>
+                Password
+            </th>
+            <th>
+                Address
+            </th>
+            <th>
+                Phone Number
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+            <tr>
+                <td>
+                    @Model.Name
+                </td>
+                <td>
+                    @Model.Email
+                </td>
+                <td>
+                    @Model.Password
+                </td>
+                <td>
+                    @Model.Address
+                </td>
+                <td>
+                    @Model.Phone
+                </td>
+                <td>
+                    <div class="w-65 btn-group" role="group">
+                        <a asp-controller="Profile" asp-action="Edit" asp-route-userId="@Model.Id" class="btn btn-primary mx-2">Edit</a>
+                    </div>
+                </td>
+            </tr>
+    </tbody>
+</table>
+

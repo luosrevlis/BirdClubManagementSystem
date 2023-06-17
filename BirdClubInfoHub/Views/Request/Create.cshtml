@@ -1,0 +1,33 @@
+﻿@model BirdClubInfoHub.Models.MembershipRequest
+<form method="post">
+    <div class="border pt-3 mt-4">
+        <div class="row pb-2">
+            <h1 class="text-primary">REQUEST MEMBERSHIP'S FORM</h1>
+            <hr />
+        </div>
+        @*<div asp-validation-summary="All"></div>*@
+        <div class="mb-3">
+            <label asp-for="Name"></label>
+            <input asp-for="Name" class="form-control" />
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="Address"></label>
+            <input asp-for="Address" class="form-control" />
+            <span asp-validation-for="Address" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="PhoneNumber"></label>
+            <input asp-for="PhoneNumber" class="form-control" />
+            <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="Email"></label>
+            <input asp-for="Email" class="form-control" />
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width:150px">Send Request</button>
+        <a asp-controller="Request" asp-action="Index" class="btn btn-primary" style="width:180px">Back To Homepage</a>
+    </div>
+</form>
+
