@@ -41,6 +41,7 @@
         <select asp-for="BirdId" asp-items="ViewBag.Options">
             <option value="">Choose a bird</option>
         </select>
+        <input type="hidden" asp-for="TournamentId" value="@Model.Tournament.Id" />
         <span asp-validation-for="BirdId" class="text-danger"></span>
         <input type="submit" value="Register" class="btn" /> |
         <a asp-action="Index" asp-controller="ClubEvents">Back to List</a>

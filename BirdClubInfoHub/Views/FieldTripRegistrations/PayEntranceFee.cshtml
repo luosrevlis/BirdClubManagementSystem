@@ -1,0 +1,38 @@
+﻿@model BirdClubInfoHub.Models.FieldTripRegistration
+
+@{
+    ViewData["Title"] = "PayEntranceFee";
+}
+
+<h1>Payment Details</h1>
+
+<div>
+    <h4>Field Trip</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.FieldTrip.Name)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.FieldTrip.Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.User.Name)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.User.Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.FieldTrip.Fee)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.FieldTrip.Fee)
+        </dd>
+    </dl>
+</div>
+<div>
+    <form asp-action="GeneratePaymentUrl">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="Pay Entrance Fee" class="btn" />
+    </form>
+</div>

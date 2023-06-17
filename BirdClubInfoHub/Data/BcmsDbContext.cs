@@ -9,11 +9,11 @@ namespace BirdClubInfoHub.Data
 
         public DbSet<User> Users { get; set; }
 
-        public DbSet<PostCategory> PostCategories { get; set; }
+        public DbSet<BlogCategory> PostCategories { get; set; }
 
         public DbSet<MembershipRequest> MembershipRequests { get; set; }
 
-        public DbSet<Post> Posts { get; set; }
+        public DbSet<Blog> Posts { get; set; }
 
         public DbSet<Bird> Birds { get; set; }
 
