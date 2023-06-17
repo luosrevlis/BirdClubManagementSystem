@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace BirdClubInfoHub.Models
 {
@@ -13,6 +14,7 @@ namespace BirdClubInfoHub.Models
         public string Address { get; set; } = string.Empty;
 
         [Required]
+        [DisplayName ("Phone Number")]
         public string PhoneNumber { get; set; } = string.Empty;
 
         [Required]
