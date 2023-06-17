@@ -31,45 +31,5 @@ namespace BirdClubInfoHub.Controllers
             }
             return View(fieldTrip);
         }
-
-        [Authenticated]
-        public IActionResult Register(int id)
-        {
-            FieldTrip? fieldTrip = _dbContext.FieldTrips.Find(id);
-            if (fieldTrip == null)
-            {
-                return NotFound();
-            }
-            return View(fieldTrip);
-        }
-
-        [HttpPost, ActionName("Register")]
-        [ValidateAntiForgeryToken]
-        public IActionResult RegisterConfirmed(int id)
-        {
-            FieldTrip? fieldTrip = _dbContext.FieldTrips.Find(id);
-            if (fieldTrip == null)
-            {
-                return NotFound();
-            }
-            int? userId = HttpContext.Session.GetInt32("USER_ID");
-            if (userId == null)
-            {
-                return RedirectToAction("Index", "Login");
-            }
-            User? user = _dbContext.Users.Find(userId);
-            if (user == null)
-            {
-                return NotFound();
-            }
-            FieldTripRegistration fieldTripRegistration = new() {
-                FieldTrip = fieldTrip,
-                User = user,
-                PaymentReceived = true
-            };
-            _dbContext.FieldTripRegistrations.Add(fieldTripRegistration);
-            _dbContext.SaveChanges();
-            return RedirectToAction("Index", "ClubEvents");
-        }
     }
 }

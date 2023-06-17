@@ -122,7 +122,7 @@ namespace BirdClubManagementSystem.Migrations
                     b.Property<int>("Fee")
                         .HasColumnType("int");
 
-                    b.Property<bool>("IsAvailable")
+                    b.Property<bool>("Status")
                         .HasColumnType("bit");
 
                     b.Property<string>("Name")
@@ -178,7 +178,7 @@ namespace BirdClubManagementSystem.Migrations
                     b.Property<int>("Fee")
                         .HasColumnType("int");
 
-                    b.Property<bool>("IsAvailable")
+                    b.Property<bool>("Status")
                         .HasColumnType("bit");
 
                     b.Property<string>("Name")
@@ -310,7 +310,7 @@ namespace BirdClubManagementSystem.Migrations
                     b.Property<int>("Fee")
                         .HasColumnType("int");
 
-                    b.Property<bool>("IsAvailable")
+                    b.Property<bool>("Status")
                         .HasColumnType("bit");
 
                     b.Property<string>("Name")

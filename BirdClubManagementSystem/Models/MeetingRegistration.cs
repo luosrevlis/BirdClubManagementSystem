@@ -8,6 +8,8 @@
 
         public int MeetingId { get; set; }
 
+        public DateTime DateCreated { get; set; } = DateTime.Now;
+
         public bool PaymentReceived { get; set; } = true;
 
         public User User { get; set; } = new User();

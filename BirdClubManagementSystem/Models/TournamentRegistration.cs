@@ -1,6 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-
-namespace BirdClubManagementSystem.Models
+﻿namespace BirdClubManagementSystem.Models
 {
     public class TournamentRegistration
     {
@@ -10,7 +8,9 @@ namespace BirdClubManagementSystem.Models
 
         public int TournamentId { get; set; }
 
-        public bool PaymentReceived { get; set; }
+        public DateTime DateCreated { get; set; } = DateTime.Now;
+
+        public bool PaymentReceived { get; set; } = false;
 
         public Bird Bird { get; set; } = new Bird();
 

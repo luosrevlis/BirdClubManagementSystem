@@ -12,6 +12,6 @@
 
         public int Fee { get; set; }
 
-        public bool IsAvailable { get; set; }
+        public string Status { get; set; }
     }
 }
