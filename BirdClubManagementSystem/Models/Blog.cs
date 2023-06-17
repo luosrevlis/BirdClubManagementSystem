@@ -1,8 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace BirdClubManagementSystem.Models
+﻿namespace BirdClubManagementSystem.Models
 {
-    public class Post
+    public class Blog
     {
         public int Id { get; set; }
 
@@ -10,12 +8,11 @@ namespace BirdClubManagementSystem.Models
 
         public int CategoryID { get; set; }
 
-        [Required]
         public string Contents { get; set; } = string.Empty;
 
         public User User { get; set; } = new User();
 
-        public PostCategory PostCategory { get; set; } = new PostCategory();
+        public BlogCategory BlogCategory { get; set; } = new BlogCategory();
 
         public ICollection<Comment> Comments { get; set; } = new List<Comment>();
     }
