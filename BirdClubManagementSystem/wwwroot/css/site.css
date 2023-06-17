@@ -18,6 +18,10 @@ main {
   min-height: 100vh;
 }
 
+main > * {
+  margin-top: 2rem;
+}
+
 header {
   width: 100%;
   background-color: #B8D9D0;
@@ -75,7 +79,9 @@ nav {
   align-items: center;
 }
 
-button {
+button,
+a {
+  text-decoration: none;
   cursor: pointer;
   transition: all 0.2s ease-in;
 }
