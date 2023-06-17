@@ -8,7 +8,8 @@ namespace BirdClubInfoHub.Models
 
         public int UserId { get; set; }
 
-        [Required]
+        public string Name { get; set; } = string.Empty;
+
         public string Description { get; set; } = string.Empty;
 
         public string Species { get; set; } = string.Empty;

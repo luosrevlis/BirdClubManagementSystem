@@ -1,22 +1,18 @@
-﻿using Microsoft.Build.Framework;
-
-namespace BirdClubManagementSystem.Models
+﻿namespace BirdClubManagementSystem.Models
 {
     public class FieldTrip : IClubEvent
     {
         public int Id { get; set; }
 
-        [Required]
         public string Name { get; set; } = string.Empty;
 
         public DateTime Date { get; set; }
 
-        [Required]
         public string Description { get; set; } = string.Empty;
 
         public int Fee { get; set; }
 
-        public bool IsAvailable { get; set; }
+        public string Status { get; set; } = string.Empty;
 
         public ICollection<FieldTripRegistration> FieldTripRegistrations { get; set; } = new List<FieldTripRegistration>();
     }
