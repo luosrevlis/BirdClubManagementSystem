@@ -20,11 +20,10 @@
             <div class="nav-bar-container">
                 <button asp-controller="Home" asp-action="Index" class="nav-link active">HOME</button>
                 <button class="nav-link">SERVICES</button>
-                <button class="nav-link">ABOUT</button>
-                <button class="nav-link">TOURNAMENTS</button>
-                <button class="nav-link">BLOGS</button>
-                <button class="nav-link">EVENTS</button>
-                <button class="nav-link">CONTACT</button>
+                <button asp-controller="Home" asp-action="About" class="nav-link">ABOUT</button>
+                <button asp-controller="Blogs" asp-action="Index" class="nav-link">BLOGS</button>
+                <button asp-controller="ClubEvents" asp-action="Index" class="nav-link">EVENTS</button>
+                <button asp-controller="Home" asp-action="Contact" class="nav-link">CONTACT</button>
             </div>
 
             <div class="nav-user-utils-container">
