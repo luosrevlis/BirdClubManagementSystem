@@ -4,9 +4,11 @@
     {
         public int Id { get; set; }
 
-        public int UserID { get; set; }
+        public int UserId { get; set; }
 
-        public int CategoryID { get; set; }
+        public int BlogCategoryId { get; set; }
+
+        public DateTime DateCreated { get; set; } = DateTime.Now;
 
         public string Contents { get; set; } = string.Empty;
 
