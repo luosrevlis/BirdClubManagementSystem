@@ -19,8 +19,8 @@ namespace BirdClubInfoHub.Controllers
         // GET: ProfileController
         public ActionResult Index()
         {
-            int? _userID = HttpContext.Session.GetInt32("USER_ID");
-            User? user = _dbContext.Users.Find(_userID);
+            int? userID = HttpContext.Session.GetInt32("USER_ID");
+            User? user = _dbContext.Users.Find(userID);
             if (user == null)
             {
                 return NotFound();
@@ -29,8 +29,13 @@ namespace BirdClubInfoHub.Controllers
         }
 
         // GET: ProfileController/Edit/5
-        public ActionResult Edit(int? id)
+        public ActionResult Edit(int id)
         {
+            int? userID = HttpContext.Session.GetInt32("USER_ID");
+            if (id != userID)
+            {
+                return RedirectToAction("Index", "Login");
+            }
             User? user = _dbContext.Users.Find(id);
             if (user == null)
             {
@@ -53,8 +58,13 @@ namespace BirdClubInfoHub.Controllers
             return View(user);
         }
 
-        public ActionResult ChangePassword()
+        public ActionResult ChangePassword(int id)
         {
+            int? userID = HttpContext.Session.GetInt32("USER_ID");
+            if (id != userID)
+            {
+                return RedirectToAction("Index", "Login");
+            }
             return View();
         }
 
