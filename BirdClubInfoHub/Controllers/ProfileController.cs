@@ -72,13 +72,9 @@ namespace BirdClubInfoHub.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult ChangePassword(IFormCollection formCollection)
         {
-            string? oldPassword = formCollection["OldPassword"];
-            string? newPassword = formCollection["NewPassword"];
-            string? confirmPassword = formCollection["ConfirmPassword"];
-            if (oldPassword.IsNullOrEmpty() || newPassword.IsNullOrEmpty() || confirmPassword.IsNullOrEmpty())
-            {
-                ModelState.AddModelError("emptyField", "");
-            }
+            string oldPassword = formCollection["OldPassword"]!;
+            string newPassword = formCollection["NewPassword"]!;
+            string confirmPassword = formCollection["ConfirmPassword"]!;
             User? user = _dbContext.Users.Find(HttpContext.Session.GetInt32("USER_ID"));
             if (user == null)
             {
