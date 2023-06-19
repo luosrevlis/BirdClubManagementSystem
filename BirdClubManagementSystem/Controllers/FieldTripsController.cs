@@ -103,5 +103,86 @@ namespace BirdClubManagementSystem.Controllers
             _dbContext.SaveChanges();
             return RedirectToAction("Index", "ClubEvents");
         }
+
+        // GET: FieldTripsController/Close/5
+        public IActionResult Close(int id)
+        {
+            FieldTrip? fieldTrip = _dbContext.FieldTrips.Find(id);
+            if (fieldTrip == null)
+            {
+                return NotFound();
+            }
+            return View(fieldTrip);
+        }
+
+        // POST: FieldTripsController/Close/5
+        [HttpPost, ActionName("Close")]
+        [ValidateAntiForgeryToken]
+        public IActionResult CloseConfirmed(int id)
+        {
+            FieldTrip? fieldTrip = _dbContext.FieldTrips.Find(id);
+            if (fieldTrip == null)
+            {
+                return NotFound();
+            }
+            fieldTrip.Status = "Registration Closed";
+            _dbContext.FieldTrips.Update(fieldTrip);
+            _dbContext.SaveChanges();
+            return RedirectToAction("Index", "ClubEvents");
+        }
+
+        // GET: FieldTripsController/MarkAsEnded/5
+        public IActionResult MarkAsEnded(int id)
+        {
+            FieldTrip? fieldTrip = _dbContext.FieldTrips.Find(id);
+            if (fieldTrip == null)
+            {
+                return NotFound();
+            }
+            return View(fieldTrip);
+        }
+
+        // POST: FieldTripsController/MarkAsEnded/5
+        [HttpPost, ActionName("MarkAsEnded")]
+        [ValidateAntiForgeryToken]
+        public IActionResult MarkAsEndedConfirmed(int id)
+        {
+            FieldTrip? fieldTrip = _dbContext.FieldTrips.Find(id);
+            if (fieldTrip == null)
+            {
+                return NotFound();
+            }
+            fieldTrip.Status = "Ended";
+            _dbContext.FieldTrips.Update(fieldTrip);
+            _dbContext.SaveChanges();
+            return RedirectToAction("Index", "ClubEvents");
+        }
+
+        // GET: FieldTripsController/Cancel/5
+        public IActionResult Cancel(int id)
+        {
+            FieldTrip? fieldTrip = _dbContext.FieldTrips.Find(id);
+            if (fieldTrip == null)
+            {
+                return NotFound();
+            }
+            return View(fieldTrip);
+        }
+
+        // POST: FieldTripsController/Cancel/5
+        [HttpPost, ActionName("Cancel")]
+        [ValidateAntiForgeryToken]
+        public IActionResult CancelConfirmed(int id)
+        {
+            FieldTrip? fieldTrip = _dbContext.FieldTrips.Find(id);
+            if (fieldTrip == null)
+            {
+                return NotFound();
+            }
+            fieldTrip.Status = "Cancelled";
+            _dbContext.FieldTrips.Update(fieldTrip);
+            _dbContext.SaveChanges();
+            return RedirectToAction("Index", "ClubEvents");
+        }
     }
 }

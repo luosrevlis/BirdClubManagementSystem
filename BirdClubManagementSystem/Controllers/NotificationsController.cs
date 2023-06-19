@@ -1,4 +1,5 @@
 ﻿using BirdClubManagementSystem.Data;
+using BirdClubManagementSystem.Filters;
 using BirdClubManagementSystem.Models;
 using FluentEmail.Core;
 using Microsoft.AspNetCore.Mvc;
@@ -6,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace BirdClubManagementSystem.Controllers
 {
+    [StaffAuthenticated]
     public class NotificationsController : Controller
     {
         private readonly BcmsDbContext _dbContext;

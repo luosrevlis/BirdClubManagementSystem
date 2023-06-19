@@ -102,5 +102,86 @@ namespace BirdClubManagementSystem.Controllers
             _dbContext.SaveChanges();
             return RedirectToAction("Index", "ClubEvents");
         }
+
+        // GET: MeetingController/Close/5
+        public IActionResult Close(int id)
+        {
+            Meeting? meeting = _dbContext.Meetings.Find(id);
+            if (meeting == null)
+            {
+                return NotFound();
+            }
+            return View(meeting);
+        }
+
+        // POST: MeetingController/Close/5
+        [HttpPost, ActionName("Close")]
+        [ValidateAntiForgeryToken]
+        public IActionResult CloseConfirmed(int id)
+        {
+            Meeting? meeting = _dbContext.Meetings.Find(id);
+            if (meeting == null)
+            {
+                return NotFound();
+            }
+            meeting.Status = "Registration Closed";
+            _dbContext.Meetings.Update(meeting);
+            _dbContext.SaveChanges();
+            return RedirectToAction("Index", "ClubEvents");
+        }
+
+        // GET: MeetingController/MarkAsEnded/5
+        public IActionResult MarkAsEnded(int id)
+        {
+            Meeting? meeting = _dbContext.Meetings.Find(id);
+            if (meeting == null)
+            {
+                return NotFound();
+            }
+            return View(meeting);
+        }
+
+        // POST: MeetingController/MarkAsEnded/5
+        [HttpPost, ActionName("MarkAsEnded")]
+        [ValidateAntiForgeryToken]
+        public IActionResult MarkAsEndedConfirmed(int id)
+        {
+            Meeting? meeting = _dbContext.Meetings.Find(id);
+            if (meeting == null)
+            {
+                return NotFound();
+            }
+            meeting.Status = "Ended";
+            _dbContext.Meetings.Update(meeting);
+            _dbContext.SaveChanges();
+            return RedirectToAction("Index", "ClubEvents");
+        }
+
+        // GET: MeetingController/Cancel/5
+        public IActionResult Cancel(int id)
+        {
+            Meeting? meeting = _dbContext.Meetings.Find(id);
+            if (meeting == null)
+            {
+                return NotFound();
+            }
+            return View(meeting);
+        }
+
+        // POST: MeetingController/Cancel/5
+        [HttpPost, ActionName("Cancel")]
+        [ValidateAntiForgeryToken]
+        public IActionResult CancelConfirmed(int id)
+        {
+            Meeting? meeting = _dbContext.Meetings.Find(id);
+            if (meeting == null)
+            {
+                return NotFound();
+            }
+            meeting.Status = "Cancelled";
+            _dbContext.Meetings.Update(meeting);
+            _dbContext.SaveChanges();
+            return RedirectToAction("Index", "ClubEvents");
+        }
     }
 }

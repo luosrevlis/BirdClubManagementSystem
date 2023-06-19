@@ -118,7 +118,7 @@ namespace BirdClubInfoHub.Controllers
             {
                 Amount = registration.Tournament.Fee,
                 OrderDescription = "Thanh toan cho " + registration.Bird.Description + " tham gia giai dau " + registration.Tournament.Name,
-                Name = registration.Bird.User.Name
+                Name = registration.Bird.User.Name,
             };
             string returnUrl = Url.Action(action: "PaymentConfirmed", controller: "TournamentRegistrations",
                 values: new RouteValueDictionary(new { id }), protocol: "https")!;

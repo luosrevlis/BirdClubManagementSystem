@@ -15,11 +15,10 @@ namespace BirdClubInfoHub.Services
         {
             var timeZoneById = TimeZoneInfo.FindSystemTimeZoneById(_configuration["TimeZoneId"]!);
             var timeNow = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, timeZoneById);
-            var tick = DateTime.Now.Ticks.ToString();
             var pay = new VnPayLibrary();
 
             pay.AddRequestData("vnp_Version", _configuration["VnPay:Version"]!);
-            pay.AddRequestData("vnp_Command", _configuration["VnPay:Command"]!);
+            pay.AddRequestData("vnp_Command", "pay");
             pay.AddRequestData("vnp_TmnCode", _configuration["VnPay:TmnCode"]!);
             pay.AddRequestData("vnp_Amount", ((int)model.Amount * 100).ToString());
             pay.AddRequestData("vnp_CreateDate", timeNow.ToString("yyyyMMddHHmmss"));
@@ -29,7 +28,7 @@ namespace BirdClubInfoHub.Services
             pay.AddRequestData("vnp_OrderInfo", $"{model.Name} {model.OrderDescription} {model.Amount}"); //model stuff
             pay.AddRequestData("vnp_OrderType", model.OrderType);
             pay.AddRequestData("vnp_ReturnUrl", returnUrl);
-            pay.AddRequestData("vnp_TxnRef", tick);
+            pay.AddRequestData("vnp_TxnRef", timeNow.Ticks.ToString());
 
             var paymentUrl =
                 pay.CreateRequestUrl(_configuration["VnPay:BaseUrl"]!, _configuration["VnPay:HashSecret"]!);
