@@ -1,13 +1,26 @@
+using BirdClubManagementSystem.BatchJobs;
 using BirdClubManagementSystem.Data;
+using Coravel;
 using Microsoft.EntityFrameworkCore;
+using System.Net.Mail;
 
 var builder = WebApplication.CreateBuilder(args);
+var config = builder.Configuration;
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<BcmsDbContext>(options => options.UseSqlServer(
-    builder.Configuration.GetConnectionString("DefaultConnection")
+    config.GetConnectionString("DefaultConnection")
     ));
+builder.Services.AddScheduler();
+builder.Services.AddTransient<EventReminder>();
+builder.Services.AddFluentEmail(config.GetSection("Mail")["Sender"], config.GetSection("Mail")["From"])
+    .AddRazorRenderer()
+    .AddSmtpSender(new SmtpClient("localhost")
+    {
+        DeliveryMethod = SmtpDeliveryMethod.Network,
+        Port = 25
+    });
 builder.Services.AddSession();
 
 var app = builder.Build();
@@ -33,5 +46,11 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Login}/{action=Index}/{id?}");
+
+app.Services.UseScheduler(scheduler =>
+{
+    scheduler.Schedule<EventReminder>().DailyAtHour(20);
+    scheduler.Schedule<EventReminder>().EverySeconds(30);
+});
 
 app.Run();

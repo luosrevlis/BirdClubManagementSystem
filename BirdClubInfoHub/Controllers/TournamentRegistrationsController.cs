@@ -54,23 +54,9 @@ namespace BirdClubInfoHub.Controllers
             {
                 return RedirectToAction("Index", "Login");
             }
-            tournament.TournamentRegistrations = _dbContext.TournamentRegistrations
-                .Where(tr => tr.TournamentId == tournamentId).ToList();
-            List<Bird> birds = _dbContext.Birds.Where(b => b.UserId == user.Id).ToList();
-            // Remove birds that have been registered
-            for (int i = 0; i < birds.Count; i++)
-            {
-                foreach (TournamentRegistration tr in tournament.TournamentRegistrations)
-                {
-                    if (birds[i].Id == tr.BirdId)
-                    {
-                        birds.Remove(birds[i]);
-                        i--;
-                        break;
-                    }
-                }
-            }
-            
+            HashSet<int> registeredBirds = _dbContext.TournamentRegistrations.Where(tr => tr.TournamentId == tournamentId)
+                .Select(tr => tr.BirdId).ToHashSet();
+            List<Bird> birds = _dbContext.Birds.Where(bird => bird.UserId == user.Id && !registeredBirds.Contains(bird.Id)).ToList();
             if (!birds.Any())
             {
                 return View("NoBird");
