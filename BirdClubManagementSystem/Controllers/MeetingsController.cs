@@ -45,6 +45,7 @@ namespace BirdClubManagementSystem.Controllers
         {
             if (ModelState.IsValid)
             {
+                meeting.Status = "Open";
                 _dbContext.Meetings.Add(meeting);
                 _dbContext.SaveChanges();
                 return RedirectToAction("Index", "ClubEvents");

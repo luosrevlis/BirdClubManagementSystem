@@ -44,6 +44,10 @@
 </div>
 <div>
     <a asp-action="Index" asp-controller="TournamentRegistrations" asp-route-tournamentid="@Model.Id">View participants list</a>
+    @if (Model.Status == "Ended")
+    {
+        <a asp-action="Index" asp-controller="TournamentStandings" asp-route-tournamentid="@Model.Id">View rankings</a>
+    }
 </div>
 <div>
     @if (Model.Status == "Open")

@@ -26,17 +26,16 @@ namespace BirdClubInfoHub.Controllers
             {
                 return RedirectToAction("Index", "Login");
             }
-            List<TournamentRegistration> registrations = _dbContext.TournamentRegistrations.ToList();
-            for (int i = 0; i < registrations.Count; i++)
+            List<TournamentRegistration> registrations =
+                (from tr in _dbContext.TournamentRegistrations
+                 join t in _dbContext.Tournaments on tr.TournamentId equals t.Id
+                 join bird in _dbContext.Birds on tr.BirdId equals bird.Id
+                 where bird.UserId == userId && (t.Status == "Open" || t.Status == "Registration Closed")
+                 select tr).ToList();
+            foreach (TournamentRegistration tr in registrations)
             {
-                registrations[i].Bird = _dbContext.Birds.Find(registrations[i].BirdId)!;
-                if (registrations[i].Bird.UserId != userId)
-                {
-                    registrations.Remove(registrations[i]);
-                    i--;
-                    continue;
-                }
-                registrations[i].Tournament = _dbContext.Tournaments.Find(registrations[i].TournamentId)!;
+                tr.Tournament = _dbContext.Tournaments.Find(tr.TournamentId)!;
+                tr.Bird = _dbContext.Birds.Find(tr.BirdId)!;
             }
             return View(registrations);
         }

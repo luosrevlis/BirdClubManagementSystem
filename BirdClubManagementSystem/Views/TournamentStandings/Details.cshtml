@@ -1,0 +1,36 @@
+﻿@model BirdClubManagementSystem.Models.TournamentStanding
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>TournamentStanding</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Tournament)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Tournament.Name)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Bird)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Bird.Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Placement)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Placement)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+    <a asp-action="Index" asp-route-tournamentid="@Model.TournamentId">Back to List</a>
+</div>

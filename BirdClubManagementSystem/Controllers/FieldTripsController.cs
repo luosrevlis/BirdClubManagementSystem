@@ -46,6 +46,7 @@ namespace BirdClubManagementSystem.Controllers
         {
             if (ModelState.IsValid)
             {
+                fieldTrip.Status = "Open";
                 _dbContext.FieldTrips.Add(fieldTrip);
                 _dbContext.SaveChanges();
                 return RedirectToAction("Index", "ClubEvents");
