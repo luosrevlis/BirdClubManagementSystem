@@ -1,12 +1,12 @@
-﻿using BirdClubInfoHub.Data;
-using BirdClubInfoHub.Filters;
-using BirdClubInfoHub.Models;
+﻿using BirdClubManagementSystem.Data;
+using BirdClubManagementSystem.Filters;
+using BirdClubManagementSystem.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
-namespace BirdClubInfoHub.Controllers
+namespace BirdClubManagementSystem.Controllers
 {
-    [Authenticated]
+    [StaffAuthenticated]
     public class ProfileController : Controller
     {
         private readonly BcmsDbContext _dbContext;
@@ -48,7 +48,7 @@ namespace BirdClubInfoHub.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(User user)
-        { 
+        {
             if (ModelState.IsValid)
             {
                 _dbContext.Users.Update(user);

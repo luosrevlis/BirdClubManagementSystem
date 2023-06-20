@@ -1,8 +1,10 @@
 using BirdClubInfoHub.Data;
 using BirdClubInfoHub.Services;
 using Microsoft.EntityFrameworkCore;
+using System.Net.Mail;
 
 var builder = WebApplication.CreateBuilder(args);
+var config = builder.Configuration;
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -10,6 +12,13 @@ builder.Services.AddDbContext<BcmsDbContext>(options => options.UseSqlServer(
     builder.Configuration.GetConnectionString("DefaultConnection")
     ));
 builder.Services.AddScoped<IVnPayService, VnPayService>();
+builder.Services.AddFluentEmail(config.GetSection("Mail")["Sender"], config.GetSection("Mail")["From"])
+    .AddRazorRenderer()
+    .AddSmtpSender(new SmtpClient(config.GetSection("Mail")["Host"])
+    {
+        DeliveryMethod = SmtpDeliveryMethod.Network,
+        Port = 25
+    });
 builder.Services.AddSession();
 
 var app = builder.Build();

@@ -16,7 +16,7 @@ builder.Services.AddScheduler();
 builder.Services.AddTransient<EventReminder>();
 builder.Services.AddFluentEmail(config.GetSection("Mail")["Sender"], config.GetSection("Mail")["From"])
     .AddRazorRenderer()
-    .AddSmtpSender(new SmtpClient("localhost")
+    .AddSmtpSender(new SmtpClient(config.GetSection("Mail")["Host"])
     {
         DeliveryMethod = SmtpDeliveryMethod.Network,
         Port = 25
