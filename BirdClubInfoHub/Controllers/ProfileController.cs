@@ -48,14 +48,10 @@ namespace BirdClubInfoHub.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(User user)
-        { 
-            if (ModelState.IsValid)
-            {
-                _dbContext.Users.Update(user);
-                _dbContext.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            return View(user);
+        {
+            _dbContext.Users.Update(user);
+            _dbContext.SaveChanges();
+            return RedirectToAction("Index");
         }
 
         public ActionResult ChangePassword(int id)
@@ -76,11 +72,12 @@ namespace BirdClubInfoHub.Controllers
             string newPassword = formCollection["NewPassword"]!;
             string confirmPassword = formCollection["ConfirmPassword"]!;
             User? user = _dbContext.Users.Find(HttpContext.Session.GetInt32("USER_ID"));
+            PasswordHasher<User> passwordHasher = new();
             if (user == null)
             {
                 return RedirectToAction("Index", "Login");
             }
-            if (oldPassword != user.Password)
+            if (passwordHasher.VerifyHashedPassword(user, user.Password, oldPassword) == PasswordVerificationResult.Failed)
             {
                 ModelState.AddModelError("OldIncorrect", "Old Password is incorrect!");
             }
@@ -96,7 +93,6 @@ namespace BirdClubInfoHub.Controllers
             {
                 return View(formCollection);
             }
-            PasswordHasher<User> passwordHasher = new();
             user.Password = passwordHasher.HashPassword(user, newPassword);
             _dbContext.Users.Update(user);
             _dbContext.SaveChanges();

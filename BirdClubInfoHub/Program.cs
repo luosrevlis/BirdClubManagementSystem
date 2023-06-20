@@ -12,6 +12,7 @@ builder.Services.AddDbContext<BcmsDbContext>(options => options.UseSqlServer(
     builder.Configuration.GetConnectionString("DefaultConnection")
     ));
 builder.Services.AddScoped<IVnPayService, VnPayService>();
+builder.Services.AddScoped<IAccountGenerationService, AccountGenerationService>();
 builder.Services.AddFluentEmail(config.GetSection("Mail")["Sender"], config.GetSection("Mail")["From"])
     .AddRazorRenderer()
     .AddSmtpSender(new SmtpClient(config.GetSection("Mail")["Host"])

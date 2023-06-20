@@ -26,7 +26,7 @@ namespace BirdClubInfoHub.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Login(LoginCredential loginCredential)
         {
-            User? user = _dbContext.Users.First(u => u.Email == loginCredential.Email);
+            User? user = _dbContext.Users.FirstOrDefault(u => u.Email == loginCredential.Email);
             if (user == null)
             {
                 //can't find email
