@@ -1,7 +1,6 @@
 ﻿using BirdClubManagementSystem.Data;
 using BirdClubManagementSystem.Filters;
 using BirdClubManagementSystem.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
