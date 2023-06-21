@@ -10,7 +10,11 @@
 
         public DateTime DateCreated { get; set; } = DateTime.Now;
 
+        public string Title { get; set; } = string.Empty;
+
         public string Contents { get; set; } = string.Empty;
+
+        public string Status { get; set; } = string.Empty;
 
         public User User { get; set; } = new User();
 
