@@ -1,29 +1,49 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using BirdClubInfoHub.Data;
+using System.Collections;
+using BirdClubInfoHub.Models;
 
 namespace BirdClubInfoHub.Controllers
 {
-    public class BlogListController : Controller
+    public class BlogController : Controller
     {
-        // GET: BlogListController
+        private readonly BcmsDbContext _db;
+        public BlogController(BcmsDbContext db)
+        {
+            _db = db;
+        }
+
+        // GET: BlogController
         public ActionResult Index()
         {
-            return View();
+            IEnumerable<BlogCategory> objBCateList = _db.BlogCategories;
+            return View(objBCateList);
         }
 
-        // GET: BlogListController/Details/5
-        public ActionResult Details(int id)
+        // GET: BlogController/Details/5
+        public ActionResult Details(int? id)
         {
-            return View();
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var blogcate = _db.Blogs.FirstOrDefault(c => c.BlogCategoryId == id);
+            if (blogcate == null)
+            {
+                return NotFound();
+            }
+            return View(blogcate);
         }
 
-        // GET: BlogListController/Create
+        // GET: BlogController/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: BlogListController/Create
+        // POST: BlogController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(IFormCollection collection)
@@ -38,13 +58,13 @@ namespace BirdClubInfoHub.Controllers
             }
         }
 
-        // GET: BlogListController/Edit/5
+        // GET: BlogController/Edit/5
         public ActionResult Edit(int id)
         {
             return View();
         }
 
-        // POST: BlogListController/Edit/5
+        // POST: BlogController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(int id, IFormCollection collection)
@@ -59,13 +79,13 @@ namespace BirdClubInfoHub.Controllers
             }
         }
 
-        // GET: BlogListController/Delete/5
+        // GET: BlogController/Delete/5
         public ActionResult Delete(int id)
         {
             return View();
         }
 
-        // POST: BlogListController/Delete/5
+        // POST: BlogController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Delete(int id, IFormCollection collection)
