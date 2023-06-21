@@ -18,7 +18,7 @@ namespace BirdClubInfoHub.Services
             credential = new LoginCredential
             {
                 Email = request.Email,
-                Password = $"{user.Name}@{user.Id}"
+                Password = $"{user.Name}@{new Random().Next(10000)}"
             };
             PasswordHasher<User> passwordHasher = new();
             user.Password = passwordHasher.HashPassword(user, credential.Password);
