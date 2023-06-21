@@ -26,17 +26,16 @@ namespace BirdClubInfoHub.Controllers
             {
                 return RedirectToAction("Index", "Login");
             }
-            List<TournamentRegistration> registrations = _dbContext.TournamentRegistrations.ToList();
-            for (int i = 0; i < registrations.Count; i++)
+            List<TournamentRegistration> registrations =
+                (from tr in _dbContext.TournamentRegistrations
+                 join t in _dbContext.Tournaments on tr.TournamentId equals t.Id
+                 join bird in _dbContext.Birds on tr.BirdId equals bird.Id
+                 where bird.UserId == userId && (t.Status == "Open" || t.Status == "Registration Closed")
+                 select tr).ToList();
+            foreach (TournamentRegistration tr in registrations)
             {
-                registrations[i].Bird = _dbContext.Birds.Find(registrations[i].BirdId)!;
-                if (registrations[i].Bird.UserId != userId)
-                {
-                    registrations.Remove(registrations[i]);
-                    i--;
-                    continue;
-                }
-                registrations[i].Tournament = _dbContext.Tournaments.Find(registrations[i].TournamentId)!;
+                tr.Tournament = _dbContext.Tournaments.Find(tr.TournamentId)!;
+                tr.Bird = _dbContext.Birds.Find(tr.BirdId)!;
             }
             return View(registrations);
         }
@@ -54,23 +53,9 @@ namespace BirdClubInfoHub.Controllers
             {
                 return RedirectToAction("Index", "Login");
             }
-            tournament.TournamentRegistrations = _dbContext.TournamentRegistrations
-                .Where(tr => tr.TournamentId == tournamentId).ToList();
-            List<Bird> birds = _dbContext.Birds.Where(b => b.UserId == user.Id).ToList();
-            // Remove birds that have been registered
-            for (int i = 0; i < birds.Count; i++)
-            {
-                foreach (TournamentRegistration tr in tournament.TournamentRegistrations)
-                {
-                    if (birds[i].Id == tr.BirdId)
-                    {
-                        birds.Remove(birds[i]);
-                        i--;
-                        break;
-                    }
-                }
-            }
-            
+            HashSet<int> registeredBirds = _dbContext.TournamentRegistrations.Where(tr => tr.TournamentId == tournamentId)
+                .Select(tr => tr.BirdId).ToHashSet();
+            List<Bird> birds = _dbContext.Birds.Where(bird => bird.UserId == user.Id && !registeredBirds.Contains(bird.Id)).ToList();
             if (!birds.Any())
             {
                 return View("NoBird");
@@ -132,7 +117,7 @@ namespace BirdClubInfoHub.Controllers
             {
                 Amount = registration.Tournament.Fee,
                 OrderDescription = "Thanh toan cho " + registration.Bird.Description + " tham gia giai dau " + registration.Tournament.Name,
-                Name = registration.Bird.User.Name
+                Name = registration.Bird.User.Name,
             };
             string returnUrl = Url.Action(action: "PaymentConfirmed", controller: "TournamentRegistrations",
                 values: new RouteValueDictionary(new { id }), protocol: "https")!;

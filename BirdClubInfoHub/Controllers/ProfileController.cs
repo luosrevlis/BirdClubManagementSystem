@@ -1,105 +1,102 @@
 ﻿using BirdClubInfoHub.Data;
+using BirdClubInfoHub.Filters;
 using BirdClubInfoHub.Models;
-using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace BirdClubInfoHub.Controllers
 {
+    [Authenticated]
     public class ProfileController : Controller
     {
-        private readonly BcmsDbContext _db;
-        private int _userID;
-        public ProfileController(BcmsDbContext db)
+        private readonly BcmsDbContext _dbContext;
+
+        public ProfileController(BcmsDbContext dbContext)
         {
-            _db = db;
+            _dbContext = dbContext;
         }
+
         // GET: ProfileController
         public ActionResult Index()
         {
-            _userID = (int)HttpContext.Session.GetInt32("USER_ID")!;
-            User? user = _db.Users.Find(_userID);
+            int? userID = HttpContext.Session.GetInt32("USER_ID");
+            User? user = _dbContext.Users.Find(userID);
+            if (user == null)
+            {
+                return NotFound();
+            }
             return View(user);
-        }
-
-        // GET: ProfileController/Details/5
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
-
-        // GET: ProfileController/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: ProfileController/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
         }
 
         // GET: ProfileController/Edit/5
-        public ActionResult Edit(int? id)
+        public ActionResult Edit(int id)
         {
-            id = (int)HttpContext.Session.GetInt32("USER_ID")!;
-            User? user = _db.Users.Find(id);
+            int? userID = HttpContext.Session.GetInt32("USER_ID");
+            if (id != userID)
+            {
+                return RedirectToAction("Index", "Login");
+            }
+            User? user = _dbContext.Users.Find(id);
             if (user == null)
             {
                 return NotFound();
             }
             return View(user);
         }
-    
 
         // POST: ProfileController/Edit/5
-        [HttpPost, ActionName("Edit")]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(User? user)
-        { 
-            if (user == null)
-            {
-                return NotFound();
-            }
-            if (ModelState.IsValid)
-            {
-                _db.Users.Update(user);
-                _db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            return View();
-        }
-
-        // GET: ProfileController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: ProfileController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public ActionResult Edit(User user)
         {
-            try
+            _dbContext.Users.Update(user);
+            _dbContext.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
+        public ActionResult ChangePassword(int id)
+        {
+            int? userID = HttpContext.Session.GetInt32("USER_ID");
+            if (id != userID)
             {
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", "Login");
             }
-            catch
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult ChangePassword(IFormCollection formCollection)
+        {
+            string oldPassword = formCollection["OldPassword"]!;
+            string newPassword = formCollection["NewPassword"]!;
+            string confirmPassword = formCollection["ConfirmPassword"]!;
+            User? user = _dbContext.Users.Find(HttpContext.Session.GetInt32("USER_ID"));
+            PasswordHasher<User> passwordHasher = new();
+            if (user == null)
             {
-                return View();
+                return RedirectToAction("Index", "Login");
             }
+            if (passwordHasher.VerifyHashedPassword(user, user.Password, oldPassword) == PasswordVerificationResult.Failed)
+            {
+                ModelState.AddModelError("OldIncorrect", "Old Password is incorrect!");
+            }
+            if (oldPassword == newPassword)
+            {
+                ModelState.AddModelError("SamePassword", "New Password cannot be the same as Old Password!");
+            }
+            if (newPassword != confirmPassword)
+            {
+                ModelState.AddModelError("ConfirmMismatch", "Confirm Password does not match New Password!");
+            }
+            if (!ModelState.IsValid)
+            {
+                return View(formCollection);
+            }
+            user.Password = passwordHasher.HashPassword(user, newPassword);
+            _dbContext.Users.Update(user);
+            _dbContext.SaveChanges();
+            return RedirectToAction("Index");
         }
     }
 }
