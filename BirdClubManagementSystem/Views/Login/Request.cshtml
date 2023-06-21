@@ -1,0 +1,56 @@
+@model BirdClubManagementSystem.Models.LoginCredential
+
+@section Styles
+{
+    <link rel="stylesheet" href="~/css/login/request.css" />
+}
+
+@{
+    ViewData["Title"] = "Login";
+}
+
+<div class="container">
+        <div class="title">Request for membership</div>
+        <form action="">
+            <!-- nhap thong tin ngươi dung -->
+            <div class="user-details">
+                <div class="input-box">
+                    <span class="details">Email</span>
+                    <input type="text" placeholder="Enter your email..." required>
+                </div>
+                <div class="input-box">
+                    <span class="details">Fullname</span>
+                    <input type="text" placeholder="Enter your fullname..." required>
+                </div>
+                <div class="input-box">
+                    <span class="details">Address</span>
+                    <input type="text" placeholder="Enter your address..." required>
+                </div>
+                <div class="input-box">
+                    <span class="details">Phone number</span>
+                    <input type="text" placeholder="Enter your phone number..." required>
+                </div>
+            </div>
+            <!-- button -->
+            <div class="button">
+                <input type="submit" value="SEND">
+            </div>
+        </form>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
