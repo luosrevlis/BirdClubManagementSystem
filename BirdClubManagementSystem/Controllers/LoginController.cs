@@ -1,5 +1,6 @@
 ﻿using BirdClubManagementSystem.Data;
 using BirdClubManagementSystem.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BirdClubManagementSystem.Controllers
@@ -29,10 +30,16 @@ namespace BirdClubManagementSystem.Controllers
                 //can't find email
                 return View("Index");
             }
-            if (user.Password != loginCredential.Password)
+            PasswordHasher<User> passwordHasher = new();
+            PasswordVerificationResult result = passwordHasher.VerifyHashedPassword(user, user.Password, loginCredential.Password);
+            if (result == PasswordVerificationResult.Failed)
             {
                 //wrong password
                 return View("Index");
+            }
+            else if (result == PasswordVerificationResult.SuccessRehashNeeded)
+            {
+                user.Password = passwordHasher.HashPassword(user, user.Password);
             }
             HttpContext.Session.SetInt32("USER_ID", user.Id);
             HttpContext.Session.SetString("USER_NAME", user.Name);

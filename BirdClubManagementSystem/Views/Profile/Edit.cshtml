@@ -1,0 +1,47 @@
+﻿@model BirdClubManagementSystem.Models.User
+
+@{
+    ViewData["Title"] = "Edit profile";
+}
+
+<div class="row pb-2">
+    <h1 class="text-primary">EDIT PROFILE</h1>
+    <hr />
+</div>
+
+<form method="post" asp-action="Edit">
+    <div class="border pt-3 mt-4">
+        @*<div asp-validation-summary="All"></div>*@
+        <input type="hidden" asp-for="@Model.Id" />
+        <div class="mb-3">
+            <label asp-for=@Model.Name></label>
+            <input asp-for=@Model.Name class="form-control" />
+            <span asp-validation-for=@Model.Name class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for=@Model.Email></label>
+            <input asp-for=@Model.Email class="form-control" />
+            <span asp-validation-for=@Model.Email class="text-danger"></span>
+        </div>
+        <input type="hidden" asp-for="@Model.Password" />
+        <div class="mb-3">
+            <label asp-for=@Model.Address></label>
+            <input asp-for=@Model.Address class="form-control" />
+            <span asp-validation-for=@Model.Address class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for=@Model.Phone></label>
+            <input asp-for=@Model.Phone class="form-control" />
+            <span asp-validation-for=@Model.Phone class="text-danger"></span>
+        </div>
+        <input type="hidden" asp-for="@Model.Role" />
+        <button type="submit" class="btn btn-primary" style="width:150px">Update</button>
+        <a asp-controller="Profile" asp-action="Index" class="btn btn-primary" style="width:180px">Back To Profile Page</a>
+    </div>
+</form>
+
+@section Scripts{
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+}

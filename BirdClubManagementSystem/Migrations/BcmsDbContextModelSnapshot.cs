@@ -63,21 +63,21 @@ namespace BirdClubManagementSystem.Migrations
                     b.Property<int>("BlogCategoryId")
                         .HasColumnType("int");
 
-                    b.Property<int>("CategoryID")
-                        .HasColumnType("int");
-
                     b.Property<string>("Contents")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("UserID")
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("BlogCategoryId");
 
-                    b.HasIndex("UserID");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Blogs");
                 });
@@ -453,7 +453,7 @@ namespace BirdClubManagementSystem.Migrations
 
                     b.HasOne("BirdClubManagementSystem.Models.User", "User")
                         .WithMany("Blogs")
-                        .HasForeignKey("UserID")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

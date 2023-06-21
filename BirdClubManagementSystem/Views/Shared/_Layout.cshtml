@@ -4,49 +4,115 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - BirdClubManagementSystem</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/BirdClubManagementSystem.styles.css" asp-append-version="true" />
+    @RenderSection("Styles", required: false)
+
+    <script src="~/js/site.js" defer asp-append-version="true"></script>
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">BirdClubManagementSystem</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="UserManagement" asp-action="Index">User</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="ClubEvents" asp-action="Index">Events</a>
-                        </li>
-                    </ul>
+        <nav>
+            <div class="nav-logo-container">
+                <div class="logo-img-container">
+                    <img src="~/img/nav/club_logo.svg" alt="logo" />
                 </div>
+                <h1 class="club-title">VNCMBC</h1>
+            </div>
+
+            <div class="nav-bar-container">
+                <a asp-controller="Home" asp-action="Index" class="nav-link active" >HOME</a>
+                <a href="" class="nav-link">SERVICES</a>
+                <a asp-controller="Home" asp-action="About" class="nav-link">ABOUT</a>
+                <a asp-controller="Blogs" asp-action="Index" class="nav-link">BLOGS</a>
+                <a asp-controller="ClubEvents" asp-action="Index" class="nav-link">EVENTS</a>
+                <a asp-controller="Home" asp-action="Contact" class="nav-link">CONTACT</a>
+            </div>
+
+            <div class="nav-user-utils-container">
+                <a class="search-img-container">
+                    <img src="~/img/nav/search.svg" alt="search icon" />
+                </a>
+                <a class="sign-in-link">SIGN UP</a>
+                <a class="ava-container">
+                    <img src="~/img/nav/ava.png" alt="avatar" />
+                </a>
+            </div>
+
+            <div class="nav-toggle">
+                <p>V</p>
             </div>
         </nav>
     </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2023 - BirdClubManagementSystem - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+    <main>
+        @RenderBody()
+    </main>
+
+    <footer>
+        <div class="footer-body">
+            <div class="footer-logo-container">
+                <div class="footer-logo-img-container">
+                    <img src="~/img/footer/logo.svg" alt="logo" />
+                </div>
+                <h1>VNCMBC</h1>
+            </div>
+
+            <div class="footer-link-container">
+                <h2>Club</h2>
+                <div class="footer-link-box">
+                    <button class="footer-link">ABOUT</button>
+                    <button class="footer-link">EVENTS</button>
+                    <button class="footer-link">BLOGS</button>
+                    <button class="footer-link">PRICING</button>
+                </div>
+            </div>
+
+            <div class="footer-link-container">
+                <h2>Services</h2>
+                <div class="footer-link-box">
+                    <button class="footer-link">COMMUNITY</button>
+                    <button class="footer-link">WEBSITES</button>
+                    <button class="footer-link">TOURNAMENTS</button>
+                    <button class="footer-link">STRATEGY</button>
+                    <button class="footer-link">PLATFORMS</button>
+                </div>
+            </div>
+
+            <div class="footer-link-container">
+                <h2>Contact</h2>
+                <div class="footer-link-box">
+                    <button class="footer-link">HELP DESK</button>
+                    <button class="footer-link">DOCS</button>
+                    <button class="footer-link">OPEN A TICKET</button>
+                    <button class="footer-link">CHAT</button>
+                    <button class="footer-link">FORUM</button>
+                </div>
+            </div>
+
+            <div class="footer-feedback-container">
+                <h2>Feedbacks</h2>
+                <p>Give us your feedback about our club. Thanks for your visiting today.</p>
+                <form class="feedback-container">
+                    <input type="text" placeholder="Enter your feedback" required />
+                    <input type="submit" value="SUBMIT" />
+                </form>
+                <p>Your feedbacks will help us develop our club and extend community for everyone.</p>
+            </div>
+        </div>
+
+        <div class="footer-line"></div>
+
+        <div class="footer-tail">
+            <p>&copy; 2023 Vietnam Bird Club. All Rights Reserved. Terms &amp; Conditions. Privacy Policy.</p>
+            <div class="footer-social-link">
+                <button>
+                    <img src="~/img/footer/fb.png" alt="facebook link" />
+                </button>
+            </div>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

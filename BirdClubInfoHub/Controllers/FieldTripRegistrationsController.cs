@@ -3,7 +3,6 @@ using BirdClubInfoHub.Filters;
 using BirdClubInfoHub.Models;
 using BirdClubInfoHub.Services;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace BirdClubInfoHub.Controllers
 {
@@ -27,12 +26,14 @@ namespace BirdClubInfoHub.Controllers
             {
                 return RedirectToAction("Index", "Login");
             }
-            List<FieldTripRegistration> registrations = _dbContext.FieldTripRegistrations.Where(ftr => ftr.UserId == userId).ToList();
+            List<FieldTripRegistration> registrations = _dbContext.FieldTripRegistrations
+                .Where(ftr => ftr.UserId == userId).ToList();
             foreach (FieldTripRegistration ftr in registrations)
             {
                 ftr.FieldTrip = _dbContext.FieldTrips.Find(ftr.FieldTripId)!;
                 ftr.User = user;
             }
+            registrations.RemoveAll(ftr => ftr.FieldTrip.Status != "Open" && ftr.FieldTrip.Status != "Registration Closed");
             return View(registrations);
         }
 
