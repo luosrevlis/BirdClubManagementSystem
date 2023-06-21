@@ -22,12 +22,14 @@ namespace BirdClubInfoHub.Controllers
             {
                 return RedirectToAction("Index", "Login");
             }
-            List<MeetingRegistration> registrations = _dbContext.MeetingRegistrations.Where(mr => mr.UserId == userId).ToList();
+            List<MeetingRegistration> registrations = _dbContext.MeetingRegistrations
+                .Where(mr => mr.UserId == userId).ToList();
             foreach (MeetingRegistration mr in registrations)
             {
                 mr.Meeting = _dbContext.Meetings.Find(mr.MeetingId)!;
                 mr.User = user;
             }
+            registrations.RemoveAll(mr => mr.Meeting.Status != "Open" && mr.Meeting.Status != "Registration Closed");
             return View(registrations);
         }
 

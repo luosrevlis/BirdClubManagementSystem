@@ -1,7 +1,7 @@
 ﻿using BirdClubManagementSystem.Data;
 using BirdClubManagementSystem.Filters;
 using BirdClubManagementSystem.Models;
-using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BirdClubManagementSystem.Controllers
@@ -45,17 +45,11 @@ namespace BirdClubManagementSystem.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create(User user)
         {
-            if (user.Role != "Admin" && user.Role != "Staff" && user.Role != "Member")
-            {
-                ModelState.AddModelError("Role", "Not a role");
-            }
-            if (ModelState.IsValid)
-            {
-                _dbContext.Users.Add(user);
-                _dbContext.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            return View(user);
+            PasswordHasher<User> passwordHasher = new();
+            user.Password = passwordHasher.HashPassword(user, user.Password);
+            _dbContext.Users.Add(user);
+            _dbContext.SaveChanges();
+            return RedirectToAction("Index");
         }
 
         // GET: UserManagementController/Edit/5
@@ -74,17 +68,9 @@ namespace BirdClubManagementSystem.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Edit(User user)
         {
-            if (user.Role != "Admin" && user.Role != "Staff" && user.Role != "Member")
-            {
-                ModelState.AddModelError("Role", "Not a role");
-            }
-            if (ModelState.IsValid)
-            {
-                _dbContext.Users.Update(user);
-                _dbContext.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            return View(user);
+            _dbContext.Users.Update(user);
+            _dbContext.SaveChanges();
+            return RedirectToAction("Index");
         }
 
         // GET: UserManagementController/Delete/5

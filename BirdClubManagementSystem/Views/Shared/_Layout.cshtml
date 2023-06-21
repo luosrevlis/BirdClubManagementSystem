@@ -4,8 +4,11 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - BirdClubManagementSystem</title>
+
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     @RenderSection("Styles", required: false)
+
+    <script src="~/js/site.js" defer asp-append-version="true"></script>
 </head>
 <body>
     <header>
@@ -14,27 +17,30 @@
                 <div class="logo-img-container">
                     <img src="~/img/nav/club_logo.svg" alt="logo" />
                 </div>
-                <h1 class="club-title">Group 8</h1>
+                <h1 class="club-title">VNCMBC</h1>
             </div>
 
             <div class="nav-bar-container">
-                <button class="nav-link active">HOME</button>
-                <button class="nav-link">SERVICES</button>
-                <button class="nav-link">ABOUT</button>
-                <button class="nav-link">TOURNAMENTS</button>
-                <button class="nav-link">BLOGS</button>
-                <button class="nav-link">EVENTS</button>
-                <button class="nav-link">CONTACT</button>
+                <a asp-controller="Home" asp-action="Index" class="nav-link active" >HOME</a>
+                <a href="" class="nav-link">SERVICES</a>
+                <a asp-controller="Home" asp-action="About" class="nav-link">ABOUT</a>
+                <a asp-controller="Blogs" asp-action="Index" class="nav-link">BLOGS</a>
+                <a asp-controller="ClubEvents" asp-action="Index" class="nav-link">EVENTS</a>
+                <a asp-controller="Home" asp-action="Contact" class="nav-link">CONTACT</a>
             </div>
 
             <div class="nav-user-utils-container">
-                <button class="search-img-container">
+                <a class="search-img-container">
                     <img src="~/img/nav/search.svg" alt="search icon" />
-                </button>
-                <button class="sign-in-link">SIGN IN</button>
-                <button class="ava-container">
+                </a>
+                <a class="sign-in-link">SIGN UP</a>
+                <a class="ava-container">
                     <img src="~/img/nav/ava.png" alt="avatar" />
-                </button>
+                </a>
+            </div>
+
+            <div class="nav-toggle">
+                <p>V</p>
             </div>
         </nav>
     </header>
@@ -107,7 +113,6 @@
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
