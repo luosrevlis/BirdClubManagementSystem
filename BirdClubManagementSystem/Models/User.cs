@@ -19,6 +19,12 @@ namespace BirdClubManagementSystem.Models
 
         public string Role { get; set; } = string.Empty;
 
+        public DateTime LastLogin { get; set; } = DateTime.Now;
+
+        public DateTime ResetPasswordRequestTime { get; set; } = DateTime.Now;
+
+        public string ResetPasswordCode { get; set; } = string.Empty;
+
         public ICollection<Blog> Blogs { get; set; } = new List<Blog>();
 
         public ICollection<Bird> Birds { get; set; } = new List<Bird>();
