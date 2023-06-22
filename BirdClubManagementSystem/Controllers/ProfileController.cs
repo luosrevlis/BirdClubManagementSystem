@@ -49,9 +49,58 @@ namespace BirdClubManagementSystem.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(User user)
         {
+            User userInDb = _dbContext.Users.Find(user.Id)!;
+            user.Role = userInDb.Role;
+            user.ProfilePicture = userInDb.ProfilePicture;
             _dbContext.Users.Update(user);
             _dbContext.SaveChanges();
             return RedirectToAction("Index");
+        }
+
+        // GET: ProfileController/ChangeProfilePicture/5
+        public ActionResult ChangeProfilePicture(int id)
+        {
+            int? userID = HttpContext.Session.GetInt32("USER_ID");
+            if (id != userID)
+            {
+                return RedirectToAction("Index", "Login");
+            }
+            User? user = _dbContext.Users.Find(id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            return View(user);
+        }
+
+        // POST: ProfileController/ChangeProfilePicture/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult ChangeProfilePicture(int id, IFormFile profilePicture)
+        {
+            User? user = _dbContext.Users.Find(id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            using (MemoryStream memoryStream = new())
+            {
+                profilePicture.CopyTo(memoryStream);
+                user.ProfilePicture = memoryStream.ToArray();
+            }
+            _dbContext.Users.Update(user);
+            _dbContext.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
+        public ActionResult GetImageFromBytes(int id)
+        {
+            User? user = _dbContext.Users.Find(id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            return File(user.ProfilePicture, "image/png");
         }
 
         public ActionResult ChangePassword(int id)

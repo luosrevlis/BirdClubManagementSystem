@@ -34,7 +34,6 @@
             <input asp-for=@Model.Phone class="form-control" />
             <span asp-validation-for=@Model.Phone class="text-danger"></span>
         </div>
-        <input type="hidden" asp-for="@Model.Role" />
         <button type="submit" class="btn btn-primary" style="width:150px">Update</button>
         <a asp-controller="Profile" asp-action="Index" class="btn btn-primary" style="width:180px">Back To Profile Page</a>
     </div>

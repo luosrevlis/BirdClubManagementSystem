@@ -4,6 +4,7 @@ using BirdClubManagementSystem.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BirdClubManagementSystem.Migrations
 {
     [DbContext(typeof(BcmsDbContext))]
-    partial class BcmsDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230622040816_UserEditProfilePicType")]
+    partial class UserEditProfilePicType
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -49,7 +52,7 @@ namespace BirdClubManagementSystem.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Birds", (string)null);
+                    b.ToTable("Birds");
                 });
 
             modelBuilder.Entity("BirdClubManagementSystem.Models.Blog", b =>
@@ -87,7 +90,7 @@ namespace BirdClubManagementSystem.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Blogs", (string)null);
+                    b.ToTable("Blogs");
                 });
 
             modelBuilder.Entity("BirdClubManagementSystem.Models.BlogCategory", b =>
@@ -104,7 +107,7 @@ namespace BirdClubManagementSystem.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("BlogCategories", (string)null);
+                    b.ToTable("BlogCategories");
                 });
 
             modelBuilder.Entity("BirdClubManagementSystem.Models.Comment", b =>
@@ -131,7 +134,7 @@ namespace BirdClubManagementSystem.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Comments", (string)null);
+                    b.ToTable("Comments");
                 });
 
             modelBuilder.Entity("BirdClubManagementSystem.Models.Feedback", b =>
@@ -157,7 +160,7 @@ namespace BirdClubManagementSystem.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Feedbacks", (string)null);
+                    b.ToTable("Feedbacks");
                 });
 
             modelBuilder.Entity("BirdClubManagementSystem.Models.FieldTrip", b =>
@@ -188,7 +191,7 @@ namespace BirdClubManagementSystem.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("FieldTrips", (string)null);
+                    b.ToTable("FieldTrips");
                 });
 
             modelBuilder.Entity("BirdClubManagementSystem.Models.FieldTripRegistration", b =>
@@ -217,7 +220,7 @@ namespace BirdClubManagementSystem.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("FieldTripRegistrations", (string)null);
+                    b.ToTable("FieldTripRegistrations");
                 });
 
             modelBuilder.Entity("BirdClubManagementSystem.Models.Meeting", b =>
@@ -248,7 +251,7 @@ namespace BirdClubManagementSystem.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Meetings", (string)null);
+                    b.ToTable("Meetings");
                 });
 
             modelBuilder.Entity("BirdClubManagementSystem.Models.MeetingRegistration", b =>
@@ -277,7 +280,7 @@ namespace BirdClubManagementSystem.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("MeetingRegistrations", (string)null);
+                    b.ToTable("MeetingRegistrations");
                 });
 
             modelBuilder.Entity("BirdClubManagementSystem.Models.MembershipRequest", b =>
@@ -310,7 +313,7 @@ namespace BirdClubManagementSystem.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("MembershipRequests", (string)null);
+                    b.ToTable("MembershipRequests");
                 });
 
             modelBuilder.Entity("BirdClubManagementSystem.Models.Tournament", b =>
@@ -341,7 +344,7 @@ namespace BirdClubManagementSystem.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Tournaments", (string)null);
+                    b.ToTable("Tournaments");
                 });
 
             modelBuilder.Entity("BirdClubManagementSystem.Models.TournamentRegistration", b =>
@@ -370,7 +373,7 @@ namespace BirdClubManagementSystem.Migrations
 
                     b.HasIndex("TournamentId");
 
-                    b.ToTable("TournamentRegistrations", (string)null);
+                    b.ToTable("TournamentRegistrations");
                 });
 
             modelBuilder.Entity("BirdClubManagementSystem.Models.TournamentStanding", b =>
@@ -397,7 +400,7 @@ namespace BirdClubManagementSystem.Migrations
 
                     b.HasIndex("TournamentId");
 
-                    b.ToTable("TournamentStandings", (string)null);
+                    b.ToTable("TournamentStandings");
                 });
 
             modelBuilder.Entity("BirdClubManagementSystem.Models.User", b =>
@@ -451,7 +454,7 @@ namespace BirdClubManagementSystem.Migrations
                     b.HasIndex("Email")
                         .IsUnique();
 
-                    b.ToTable("Users", (string)null);
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("BirdClubManagementSystem.Models.Bird", b =>
