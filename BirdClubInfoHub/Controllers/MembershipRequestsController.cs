@@ -43,7 +43,8 @@ namespace BirdClubInfoHub.Controllers
             User? user = _dbContext.Users.FirstOrDefault(x => x.Email == request.Email);
             if (user != null)
             {
-                return View("EmailExisted");
+                ModelState.AddModelError("Existed", "This email has been registered!");
+                return View(request);
             }
             request.Status = "Pending";
             _dbContext.MembershipRequests.Add(request);
