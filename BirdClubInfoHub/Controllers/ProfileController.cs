@@ -50,9 +50,10 @@ namespace BirdClubInfoHub.Controllers
         public ActionResult Edit(User user)
         {
             User userInDb = _dbContext.Users.Find(user.Id)!;
-            user.Role = userInDb.Role;
-            user.ProfilePicture = userInDb.ProfilePicture;
-            _dbContext.Users.Update(user);
+            userInDb.Name = user.Name;
+            userInDb.Address = user.Address;
+            userInDb.Phone = user.Phone;
+            _dbContext.Users.Update(userInDb);
             _dbContext.SaveChanges();
             return RedirectToAction("Index");
         }
