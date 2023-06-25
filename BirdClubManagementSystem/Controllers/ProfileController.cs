@@ -16,6 +16,17 @@ namespace BirdClubManagementSystem.Controllers
             _dbContext = dbContext;
         }
 
+        public ActionResult GetImageFromBytes(int id)
+        {
+            User? user = _dbContext.Users.Find(id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            //if image is empty return default, 4 places
+            return File(user.ProfilePicture, "image/png");
+        }
+
         // GET: ProfileController
         public ActionResult Index()
         {
@@ -92,16 +103,6 @@ namespace BirdClubManagementSystem.Controllers
             _dbContext.Users.Update(user);
             _dbContext.SaveChanges();
             return RedirectToAction("Index");
-        }
-
-        public ActionResult GetImageFromBytes(int id)
-        {
-            User? user = _dbContext.Users.Find(id);
-            if (user == null)
-            {
-                return NotFound();
-            }
-            return File(user.ProfilePicture, "image/png");
         }
 
         public ActionResult ChangePassword(int id)

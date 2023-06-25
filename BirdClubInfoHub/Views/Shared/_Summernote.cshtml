@@ -1,0 +1,20 @@
+﻿@model dynamic
+
+@{
+    int height = Model.Height ?? 200;
+    string selector = Model.Selector;
+    string contents = Model.Contents ?? "";
+}
+
+<link rel="stylesheet" href="~/lib/summernote/summernote-lite.min.css" />
+<script src="~/lib/summernote/summernote-lite.min.js"></script>
+
+<textarea id="@selector" name="@selector">
+    @Html.Raw(contents)
+</textarea>
+<script>
+    $('#@selector').summernote({
+        tabsize: 2,
+        height: @height
+    });
+</script>
