@@ -40,9 +40,16 @@
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Role)
         </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ProfilePicture)
+        </dt>
+        <dd class="col-sm-10">
+            <img src="@Url.Action("GetImageFromBytes", "Profile", new { id = Model.Id })" />
+        </dd>
     </dl>
 </div>
 <div>
     <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+    <a asp-action="ChangeProfilePicture" asp-route-id="@Model.Id">Change profile picture</a> |
     <a asp-action="ChangePassword" asp-route-id="@Model.Id">Change password</a>
 </div>

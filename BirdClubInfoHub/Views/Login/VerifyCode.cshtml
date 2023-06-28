@@ -1,0 +1,17 @@
+﻿@model string
+
+@{
+    ViewData["Title"] = "Verify code";
+}
+
+<h1>Enter verification code</h1>
+
+<form method="post" asp-action="VerifyCode">
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <input type="hidden" name="userEmail" value="@Model" />
+    <div class="form-group">
+        <label class="control-label">Verification code</label>
+        <input type="text" name="code" value="" class="form-control" />
+    </div>
+    <input type="submit" value="Verify code" class="btn btn-primary" />
+</form>

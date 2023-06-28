@@ -78,7 +78,7 @@ namespace BirdClubManagementSystem.Controllers
             {
                 return NotFound();
             }
-            return View();
+            return View(request);
         }
 
         [HttpPost, ActionName("Reject")]

@@ -1,0 +1,15 @@
+﻿@model BirdClubManagementSystem.Models.User
+
+@{
+    ViewData["Title"] = "Change profile picture";
+}
+
+<h1>Change profile picture</h1>
+
+<form method="post" asp-action="ChangeProfilePicture" enctype="multipart/form-data">
+    <div class="border pt-3 mt-4">
+        <input type="hidden" name="id" value="@Model.Id" />
+        <input type="file" name="profilePicture" accept="image/*" required />
+        <input type="submit" class="btn btn-primary" value="Change profile picture" />
+    </div>
+</form>

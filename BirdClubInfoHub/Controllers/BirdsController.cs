@@ -27,6 +27,16 @@ namespace BirdClubInfoHub.Controllers
             return View(objBirdsList);
         }
 
+        public ActionResult Details(int id)
+        {
+            Bird? bird = _dbContext.Birds.Find(id);
+            if (bird == null)
+            {
+                return NotFound();
+            }
+            return View(bird);
+        }
+
         // GET: BirdsController/Create
         public ActionResult Create(int id)
         {
