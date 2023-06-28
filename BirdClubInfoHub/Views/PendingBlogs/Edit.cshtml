@@ -27,7 +27,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="Contents" class="control-label"></label>
-                @await Html.PartialAsync("_Summernote", new { Height = 500, Selector = "Contents", Contents = Model.Contents })
+                <input asp-for="Contents" class="form-control" />
             </div>
             <div class="form-group">
                 <label asp-for="Thumbnail" class="control-label"></label>
@@ -44,6 +44,8 @@
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
+
+@await Html.PartialAsync("_Summernote", new { Height = 500, Selector = "#Contents", Contents = Model.Contents})
 
 @section Scripts {
     @{

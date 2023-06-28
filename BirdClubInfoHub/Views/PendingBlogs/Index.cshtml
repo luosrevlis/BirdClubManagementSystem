@@ -25,9 +25,6 @@
                 @Html.DisplayNameFor(model => model.Title)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Contents)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.Thumbnail)
             </th>
             <th></th>
@@ -48,9 +45,6 @@
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Title)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Contents)
                 </td>
                 <td>
                     <img src="@Url.Action("GetImageFromBytes", "Blogs", new { id = item.Id })" />

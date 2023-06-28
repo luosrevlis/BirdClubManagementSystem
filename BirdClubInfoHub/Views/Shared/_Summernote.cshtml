@@ -12,12 +12,14 @@
 <link rel="stylesheet" href="~/lib/summernote/summernote-lite.min.css" />
 <script src="~/lib/summernote/summernote-lite.min.js"></script>
 
-<textarea id="@selector" name="@selector">
-    @Html.Raw(contents)
-</textarea>
 <script>
-    $('#@selector').summernote({
-        tabsize: 2,
-        height: @height
+    jQuery.noConflict()(function($){
+        $(document).ready(function(){
+            $("@selector").summernote({
+                tabsize: 2,
+                height: @height
+            });
+            $("@selector").summernote("editor.pasteHTML", "@contents");
+        });
     });
 </script>
