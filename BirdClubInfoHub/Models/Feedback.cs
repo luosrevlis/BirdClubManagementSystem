@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace BirdClubInfoHub.Models
+﻿namespace BirdClubInfoHub.Models
 {
     public class Feedback
     {
@@ -10,7 +8,7 @@ namespace BirdClubInfoHub.Models
 
         public string Title { get; set; } = string.Empty;
 
-        public string Content { get; set; } = string.Empty;
+        public string Contents { get; set; } = string.Empty;
 
         public User User { get; set; } = new User();
     }

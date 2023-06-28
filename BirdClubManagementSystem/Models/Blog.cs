@@ -16,6 +16,8 @@
 
         public string Status { get; set; } = string.Empty;
 
+        public byte[] Thumbnail { get; set; } = Array.Empty<byte>();
+
         public User User { get; set; } = new User();
 
         public BlogCategory BlogCategory { get; set; } = new BlogCategory();

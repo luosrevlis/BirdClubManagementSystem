@@ -16,6 +16,17 @@ namespace BirdClubInfoHub.Controllers
             _dbContext = dbContext;
         }
 
+        public ActionResult GetImageFromBytes(int id)
+        {
+            User? user = _dbContext.Users.Find(id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            //if image is empty return default, 4 places
+            return File(user.ProfilePicture, "image/png");
+        }
+
         // GET: ProfileController
         public ActionResult Index()
         {
@@ -49,6 +60,50 @@ namespace BirdClubInfoHub.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(User user)
         {
+            User? userInDb = _dbContext.Users.Find(user.Id);
+            if (userInDb == null)
+            {
+                return RedirectToAction("Index", "Login");
+            }
+            userInDb.Name = user.Name;
+            userInDb.Address = user.Address;
+            userInDb.Phone = user.Phone;
+            _dbContext.Users.Update(userInDb);
+            _dbContext.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
+        // GET: ProfileController/ChangeProfilePicture/5
+        public ActionResult ChangeProfilePicture(int id)
+        {
+            int? userID = HttpContext.Session.GetInt32("USER_ID");
+            if (id != userID)
+            {
+                return RedirectToAction("Index", "Login");
+            }
+            User? user = _dbContext.Users.Find(id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            return View(user);
+        }
+
+        // POST: ProfileController/ChangeProfilePicture/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult ChangeProfilePicture(int id, IFormFile profilePicture)
+        {
+            User? user = _dbContext.Users.Find(id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            using (MemoryStream memoryStream = new())
+            {
+                profilePicture.CopyTo(memoryStream);
+                user.ProfilePicture = memoryStream.ToArray();
+            }
             _dbContext.Users.Update(user);
             _dbContext.SaveChanges();
             return RedirectToAction("Index");

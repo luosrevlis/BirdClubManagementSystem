@@ -51,6 +51,8 @@ app.Services.UseScheduler(scheduler =>
 {
     scheduler.Schedule<EventReminder>().DailyAtHour(20);
     //scheduler.Schedule<EventReminder>().EverySeconds(30);
+    scheduler.Schedule<EventStatusUpdate>().Hourly();
+    //scheduler.Schedule<EventStatusUpdate>().EverySeconds(30);
 });
 
 app.Run();

@@ -1,0 +1,25 @@
+﻿@model dynamic
+
+@{
+    int height = Model.Height ?? 200;
+    string selector = Model.Selector;
+    string contents = Model.Contents ?? "";
+}
+
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+<link rel="stylesheet" href="~/lib/summernote/summernote-lite.min.css" />
+<script src="~/lib/summernote/summernote-lite.min.js"></script>
+
+<script>
+    jQuery.noConflict()(function($){
+        $(document).ready(function(){
+            $("@selector").summernote({
+                tabsize: 2,
+                height: @height
+            });
+            $("@selector").summernote("editor.pasteHTML", "@contents");
+        });
+    });
+</script>
