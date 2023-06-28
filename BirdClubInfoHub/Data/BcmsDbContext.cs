@@ -34,5 +34,7 @@ namespace BirdClubInfoHub.Data
         public DbSet<TournamentRegistration> TournamentRegistrations { get; set; }
 
         public DbSet<TournamentStanding> TournamentStandings { get; set; }
+
+        public DbSet<BirdClubInfoHub.Models.Achievement> Achievement { get; set; } = default!;
     }
 }
