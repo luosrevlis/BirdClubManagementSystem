@@ -16,8 +16,6 @@ namespace BirdClubInfoHub.Models
 
         public User User { get; set; } = new User();
 
-        public Achievement Achievement { get; set; } = new Achievement();
-
         public ICollection<TournamentRegistration> TournamentRegistrations { get; set; } = new List<TournamentRegistration>();
 
         public ICollection<TournamentStanding> TournamentStandings { get; set; } = new List<TournamentStanding>();
