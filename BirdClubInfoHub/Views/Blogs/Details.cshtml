@@ -1,12 +1,14 @@
-﻿@model BirdClubManagementSystem.Models.Blog
+﻿@model BirdClubInfoHub.Models.Blog
 
 @{
-    ViewData["Title"] = "Delete";
+    ViewData["Title"] = "Details";
 }
 
-<h1>Delete</h1>
+<h1>Details</h1>
 
-<h3>Are you sure you want to delete this?</h3>
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
 <div>
     <h4>Blog</h4>
     <hr />
@@ -24,6 +26,12 @@
             @Html.DisplayFor(model => model.DateCreated)
         </dd>
         <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.BlogCategory)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.BlogCategory.Name)
+        </dd>
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Title)
         </dt>
         <dd class="col-sm-10">
@@ -36,16 +44,12 @@
             @Html.Raw(Model.Contents)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.BlogCategory)
+            @Html.DisplayNameFor(model => model.Thumbnail)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.BlogCategory.Name)
+            <img src="@Url.Action("GetImageFromBytes", "Blogs", new { id = Model.Id })" />
         </dd>
     </dl>
-
-    <form asp-action="Delete">
-        <input type="hidden" asp-for="Id" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Back to List</a>
-    </form>
 </div>
+
+@await Html.PartialAsync("_CommentSection", Model.Comments)

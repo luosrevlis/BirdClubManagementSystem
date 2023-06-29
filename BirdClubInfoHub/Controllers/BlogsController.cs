@@ -3,6 +3,7 @@ using BirdClubInfoHub.Filters;
 using BirdClubInfoHub.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 
 namespace BirdClubInfoHub.Controllers
 {
@@ -29,11 +30,10 @@ namespace BirdClubInfoHub.Controllers
         // GET: BlogsController
         public ActionResult Index()
         {
-            List<Blog> blogs = _dbContext.Blogs.Where(blog => blog.Status == "Accepted").ToList();
-            foreach (Blog blog in blogs)
-            {
-                blog.User = _dbContext.Users.Find(blog.UserId)!;
-            }
+            List<Blog> blogs = _dbContext.Blogs.Where(blog => blog.Status == "Accepted")
+                .Include(blog => blog.User)
+                .Include(blog => blog.BlogCategory)
+                .ToList();
             return View(blogs);
         }
 
@@ -47,6 +47,9 @@ namespace BirdClubInfoHub.Controllers
             }
             blog.User = _dbContext.Users.Find(blog.UserId)!;
             blog.BlogCategory = _dbContext.BlogCategories.Find(blog.BlogCategoryId)!;
+            blog.Comments = _dbContext.Comments.Where(comment => comment.BlogId == blog.Id)
+                .Include(comment => comment.User).ToList();
+
             return View(blog);
         }
 
