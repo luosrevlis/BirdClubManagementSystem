@@ -44,10 +44,11 @@
     <a asp-action="Index">Back to List</a>
 </div>
 
-@await Html.PartialAsync("_Summernote", new { Height = 500, Selector = "#Contents" })
+
 
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
+        await Html.RenderPartialAsync("_Summernote", new { Height = 500, Selector = "#Contents" });
     }
 }
