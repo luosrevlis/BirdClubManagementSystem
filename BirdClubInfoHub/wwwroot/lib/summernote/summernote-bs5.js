@@ -10024,591 +10024,59 @@ var Renderer = /*#__PURE__*/function () {
     };
   }
 });
-;// CONCATENATED MODULE: ./src/styles/lite/js/TooltipUI.js
-function TooltipUI_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function TooltipUI_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function TooltipUI_createClass(Constructor, protoProps, staticProps) { if (protoProps) TooltipUI_defineProperties(Constructor.prototype, protoProps); if (staticProps) TooltipUI_defineProperties(Constructor, staticProps); return Constructor; }
-
-
-
-var TooltipUI = /*#__PURE__*/function () {
-  function TooltipUI($node, options) {
-    TooltipUI_classCallCheck(this, TooltipUI);
-
-    this.$node = $node;
-    this.options = external_jQuery_default().extend({}, {
-      title: '',
-      target: options.container,
-      trigger: 'hover focus',
-      placement: 'bottom'
-    }, options); // create tooltip node
-
-    this.$tooltip = external_jQuery_default()(['<div class="note-tooltip">', '<div class="note-tooltip-arrow"></div>', '<div class="note-tooltip-content"></div>', '</div>'].join('')); // define event
-
-    if (this.options.trigger !== 'manual') {
-      var showCallback = this.show.bind(this);
-      var hideCallback = this.hide.bind(this);
-      var toggleCallback = this.toggle.bind(this);
-      this.options.trigger.split(' ').forEach(function (eventName) {
-        if (eventName === 'hover') {
-          $node.off('mouseenter mouseleave');
-          $node.on('mouseenter', showCallback).on('mouseleave', hideCallback);
-        } else if (eventName === 'click') {
-          $node.on('click', toggleCallback);
-        } else if (eventName === 'focus') {
-          $node.on('focus', showCallback).on('blur', hideCallback);
-        }
-      });
-    }
-  }
-
-  TooltipUI_createClass(TooltipUI, [{
-    key: "show",
-    value: function show() {
-      var $node = this.$node;
-      var offset = $node.offset();
-      var targetOffset = external_jQuery_default()(this.options.target).offset();
-      offset.top -= targetOffset.top;
-      offset.left -= targetOffset.left;
-      var $tooltip = this.$tooltip;
-      var title = this.options.title || $node.attr('title') || $node.data('title');
-      var placement = this.options.placement || $node.data('placement');
-      $tooltip.addClass(placement);
-      $tooltip.find('.note-tooltip-content').text(title);
-      $tooltip.appendTo(this.options.target);
-      var nodeWidth = $node.outerWidth();
-      var nodeHeight = $node.outerHeight();
-      var tooltipWidth = $tooltip.outerWidth();
-      var tooltipHeight = $tooltip.outerHeight();
-
-      if (placement === 'bottom') {
-        $tooltip.css({
-          top: offset.top + nodeHeight,
-          left: offset.left + (nodeWidth / 2 - tooltipWidth / 2)
-        });
-      } else if (placement === 'top') {
-        $tooltip.css({
-          top: offset.top - tooltipHeight,
-          left: offset.left + (nodeWidth / 2 - tooltipWidth / 2)
-        });
-      } else if (placement === 'left') {
-        $tooltip.css({
-          top: offset.top + (nodeHeight / 2 - tooltipHeight / 2),
-          left: offset.left - tooltipWidth
-        });
-      } else if (placement === 'right') {
-        $tooltip.css({
-          top: offset.top + (nodeHeight / 2 - tooltipHeight / 2),
-          left: offset.left + nodeWidth
-        });
-      }
-
-      $tooltip.addClass('in');
-    }
-  }, {
-    key: "hide",
-    value: function hide() {
-      var _this = this;
-
-      this.$tooltip.removeClass('in');
-      setTimeout(function () {
-        _this.$tooltip.remove();
-      }, 200);
-    }
-  }, {
-    key: "toggle",
-    value: function toggle() {
-      if (this.$tooltip.hasClass('in')) {
-        this.hide();
-      } else {
-        this.show();
-      }
-    }
-  }]);
-
-  return TooltipUI;
-}();
-
-/* harmony default export */ const js_TooltipUI = (TooltipUI);
-;// CONCATENATED MODULE: ./src/styles/lite/js/DropdownUI.js
-function DropdownUI_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function DropdownUI_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function DropdownUI_createClass(Constructor, protoProps, staticProps) { if (protoProps) DropdownUI_defineProperties(Constructor.prototype, protoProps); if (staticProps) DropdownUI_defineProperties(Constructor, staticProps); return Constructor; }
-
-
-
-var DropdownUI = /*#__PURE__*/function () {
-  function DropdownUI($node, options) {
-    DropdownUI_classCallCheck(this, DropdownUI);
-
-    this.$button = $node;
-    this.options = external_jQuery_default().extend({}, {
-      target: options.container
-    }, options);
-    this.setEvent();
-  }
-
-  DropdownUI_createClass(DropdownUI, [{
-    key: "setEvent",
-    value: function setEvent() {
-      var _this = this;
-
-      this.$button.on('click', function (e) {
-        _this.toggle();
-
-        e.stopImmediatePropagation();
-      });
-    }
-  }, {
-    key: "clear",
-    value: function clear() {
-      var $parent = external_jQuery_default()('.note-btn-group.open');
-      $parent.find('.note-btn.active').removeClass('active');
-      $parent.removeClass('open');
-    }
-  }, {
-    key: "show",
-    value: function show() {
-      this.$button.addClass('active');
-      this.$button.parent().addClass('open');
-      var $dropdown = this.$button.next();
-      var offset = $dropdown.offset();
-      var width = $dropdown.outerWidth();
-      var windowWidth = external_jQuery_default()(window).width();
-      var targetMarginRight = parseFloat(external_jQuery_default()(this.options.target).css('margin-right'));
-
-      if (offset.left + width > windowWidth - targetMarginRight) {
-        $dropdown.css('margin-left', windowWidth - targetMarginRight - (offset.left + width));
-      } else {
-        $dropdown.css('margin-left', '');
-      }
-    }
-  }, {
-    key: "hide",
-    value: function hide() {
-      this.$button.removeClass('active');
-      this.$button.parent().removeClass('open');
-    }
-  }, {
-    key: "toggle",
-    value: function toggle() {
-      var isOpened = this.$button.parent().hasClass('open');
-      this.clear();
-
-      if (isOpened) {
-        this.hide();
-      } else {
-        this.show();
-      }
-    }
-  }]);
-
-  return DropdownUI;
-}();
-
-external_jQuery_default()(document).on('click', function (e) {
-  if (!external_jQuery_default()(e.target).closest('.note-btn-group').length) {
-    external_jQuery_default()('.note-btn-group.open').removeClass('open');
-    external_jQuery_default()('.note-btn-group .note-btn.active').removeClass('active');
-  }
-});
-external_jQuery_default()(document).on('click.note-dropdown-menu', function (e) {
-  external_jQuery_default()(e.target).closest('.note-dropdown-menu').parent().removeClass('open');
-  external_jQuery_default()(e.target).closest('.note-dropdown-menu').parent().find('.note-btn.active').removeClass('active');
-});
-/* harmony default export */ const js_DropdownUI = (DropdownUI);
-;// CONCATENATED MODULE: ./src/styles/lite/js/ModalUI.js
-function ModalUI_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function ModalUI_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function ModalUI_createClass(Constructor, protoProps, staticProps) { if (protoProps) ModalUI_defineProperties(Constructor.prototype, protoProps); if (staticProps) ModalUI_defineProperties(Constructor, staticProps); return Constructor; }
-
-
-
-var ModalUI = /*#__PURE__*/function () {
-  function ModalUI($node
-  /*, options */
-  ) {
-    ModalUI_classCallCheck(this, ModalUI);
-
-    this.$modal = $node;
-    this.$backdrop = external_jQuery_default()('<div class="note-modal-backdrop"></div>');
-  }
-
-  ModalUI_createClass(ModalUI, [{
-    key: "show",
-    value: function show() {
-      var _this = this;
-
-      this.$backdrop.appendTo(document.body).show();
-      this.$modal.addClass('open').show();
-      this.$modal.trigger('note.modal.show');
-      this.$modal.off('click', '.close').on('click', '.close', this.hide.bind(this));
-      this.$modal.on('keydown', function (event) {
-        if (event.which === 27) {
-          event.preventDefault();
-
-          _this.hide();
-        }
-      });
-    }
-  }, {
-    key: "hide",
-    value: function hide() {
-      this.$modal.removeClass('open').hide();
-      this.$backdrop.hide();
-      this.$modal.trigger('note.modal.hide');
-      this.$modal.off('keydown');
-    }
-  }]);
-
-  return ModalUI;
-}();
-
-/* harmony default export */ const js_ModalUI = (ModalUI);
-;// CONCATENATED MODULE: ./src/styles/lite/summernote-lite.js
+;// CONCATENATED MODULE: ./src/styles/bs5/summernote-bs5.js
+function summernote_bs5_typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { summernote_bs5_typeof = function _typeof(obj) { return typeof obj; }; } else { summernote_bs5_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return summernote_bs5_typeof(obj); }
 
 
 
 
 
-
-
-var editor = renderer.create('<div class="note-editor note-frame"></div>');
-var toolbar = renderer.create('<div class="note-toolbar" role="toolbar"></div>');
-var editingArea = renderer.create('<div class="note-editing-area"></div>');
-var codable = renderer.create('<textarea class="note-codable" aria-multiline="true"></textarea>');
-var editable = renderer.create('<div class="note-editable" contentEditable="true" role="textbox" aria-multiline="true"></div>');
-var statusbar = renderer.create(['<output class="note-status-output" role="status" aria-live="polite"></output>', '<div class="note-statusbar" role="status">', '<div class="note-resizebar" aria-label="resize">', '<div class="note-icon-bar"></div>', '<div class="note-icon-bar"></div>', '<div class="note-icon-bar"></div>', '</div>', '</div>'].join(''));
-var airEditor = renderer.create('<div class="note-editor note-airframe"></div>');
+var editor = renderer.create('<div class="note-editor note-frame card"/>');
+var toolbar = renderer.create('<div class="note-toolbar card-header" role="toolbar"/>');
+var editingArea = renderer.create('<div class="note-editing-area"/>');
+var codable = renderer.create('<textarea class="note-codable" aria-multiline="true"/>');
+var editable = renderer.create('<div class="note-editable card-block" contentEditable="true" role="textbox" aria-multiline="true"/>');
+var statusbar = renderer.create(['<output class="note-status-output" role="status" aria-live="polite"></output>', '<div class="note-statusbar" role="status">', '<div class="note-resizebar" aria-label="Resize">', '<div class="note-icon-bar"></div>', '<div class="note-icon-bar"></div>', '<div class="note-icon-bar"></div>', '</div>', '</div>'].join(''));
+var airEditor = renderer.create('<div class="note-editor note-airframe"/>');
 var airEditable = renderer.create(['<div class="note-editable" contentEditable="true" role="textbox" aria-multiline="true"></div>', '<output class="note-status-output" role="status" aria-live="polite"></output>'].join(''));
-var buttonGroup = renderer.create('<div class="note-btn-group"></div>');
-var summernote_lite_button = renderer.create('<button type="button" class="note-btn" tabindex="-1"></button>', function ($node, options) {
-  // set button type
-  if (options && options.tooltip) {
-    $node.attr({
-      'aria-label': options.tooltip
-    });
-    $node.data('_lite_tooltip', new js_TooltipUI($node, {
-      title: options.tooltip,
-      container: options.container
-    })).on('click', function (e) {
-      external_jQuery_default()(e.currentTarget).data('_lite_tooltip').hide();
-    });
-  }
-
-  if (options.contents) {
-    $node.html(options.contents);
-  }
-
-  if (options && options.data && options.data.toggle === 'dropdown') {
-    $node.data('_lite_dropdown', new js_DropdownUI($node, {
-      container: options.container
-    }));
-  }
-
-  if (options && options.codeviewKeepButton) {
-    $node.addClass('note-codeview-keep');
-  }
-});
-var dropdown = renderer.create('<div class="note-dropdown-menu" role="list"></div>', function ($node, options) {
+var buttonGroup = renderer.create('<div class="note-btn-group btn-group">');
+var dropdown = renderer.create('<div class="note-dropdown-menu dropdown-menu" role="list">', function ($node, options) {
   var markup = Array.isArray(options.items) ? options.items.map(function (item) {
     var value = typeof item === 'string' ? item : item.value || '';
     var content = options.template ? options.template(item) : item;
-    var $temp = external_jQuery_default()('<a class="note-dropdown-item" href="#" data-value="' + value + '" role="listitem" aria-label="' + value + '"></a>');
-    $temp.html(content).data('item', item);
-    return $temp;
-  }) : options.items;
+    var option = summernote_bs5_typeof(item) === 'object' ? item.option : undefined;
+    var dataValue = 'data-value="' + value + '"';
+    var dataOption = option !== undefined ? ' data-option="' + option + '"' : '';
+    return '<a class="dropdown-item" href="#" ' + (dataValue + dataOption) + ' role="listitem" aria-label="' + value + '">' + content + '</a>';
+  }).join('') : options.items;
   $node.html(markup).attr({
     'aria-label': options.title
-  });
-  $node.on('click', '> .note-dropdown-item', function (e) {
-    var $a = external_jQuery_default()(this);
-    var item = $a.data('item');
-    var value = $a.data('value');
-
-    if (item.click) {
-      item.click($a);
-    } else if (options.itemClick) {
-      options.itemClick(e, item, value);
-    }
   });
 
   if (options && options.codeviewKeepButton) {
     $node.addClass('note-codeview-keep');
   }
 });
-var dropdownCheck = renderer.create('<div class="note-dropdown-menu note-check" role="list"></div>', function ($node, options) {
+
+var dropdownButtonContents = function dropdownButtonContents(contents) {
+  return contents;
+};
+
+var dropdownCheck = renderer.create('<div class="note-dropdown-menu dropdown-menu note-check" role="list">', function ($node, options) {
   var markup = Array.isArray(options.items) ? options.items.map(function (item) {
     var value = typeof item === 'string' ? item : item.value || '';
     var content = options.template ? options.template(item) : item;
-    var $temp = external_jQuery_default()('<a class="note-dropdown-item" href="#" data-value="' + value + '" role="listitem" aria-label="' + item + '"></a>');
-    $temp.html([icon(options.checkClassName), ' ', content]).data('item', item);
-    return $temp;
-  }) : options.items;
+    return '<a class="dropdown-item" href="#" data-value="' + value + '" role="listitem" aria-label="' + item + '">' + icon(options.checkClassName) + ' ' + content + '</a>';
+  }).join('') : options.items;
   $node.html(markup).attr({
     'aria-label': options.title
-  });
-  $node.on('click', '> .note-dropdown-item', function (e) {
-    var $a = external_jQuery_default()(this);
-    var item = $a.data('item');
-    var value = $a.data('value');
-
-    if (item.click) {
-      item.click($a);
-    } else if (options.itemClick) {
-      options.itemClick(e, item, value);
-    }
   });
 
   if (options && options.codeviewKeepButton) {
     $node.addClass('note-codeview-keep');
   }
 });
-
-var dropdownButtonContents = function dropdownButtonContents(contents, options) {
-  return contents + ' ' + icon(options.icons.caret, 'span');
-};
-
-var dropdownButton = function dropdownButton(opt, callback) {
-  return buttonGroup([summernote_lite_button({
-    className: 'dropdown-toggle',
-    contents: opt.title + ' ' + icon('note-icon-caret'),
-    tooltip: opt.tooltip,
-    data: {
-      toggle: 'dropdown'
-    }
-  }), dropdown({
-    className: opt.className,
-    items: opt.items,
-    template: opt.template,
-    itemClick: opt.itemClick
-  })], {
-    callback: callback
-  }).render();
-};
-
-var dropdownCheckButton = function dropdownCheckButton(opt, callback) {
-  return buttonGroup([summernote_lite_button({
-    className: 'dropdown-toggle',
-    contents: opt.title + ' ' + icon('note-icon-caret'),
-    tooltip: opt.tooltip,
-    data: {
-      toggle: 'dropdown'
-    }
-  }), dropdownCheck({
-    className: opt.className,
-    checkClassName: opt.checkClassName,
-    items: opt.items,
-    template: opt.template,
-    itemClick: opt.itemClick
-  })], {
-    callback: callback
-  }).render();
-};
-
-var paragraphDropdownButton = function paragraphDropdownButton(opt) {
-  return buttonGroup([summernote_lite_button({
-    className: 'dropdown-toggle',
-    contents: opt.title + ' ' + icon('note-icon-caret'),
-    tooltip: opt.tooltip,
-    data: {
-      toggle: 'dropdown'
-    }
-  }), dropdown([buttonGroup({
-    className: 'note-align',
-    children: opt.items[0]
-  }), buttonGroup({
-    className: 'note-list',
-    children: opt.items[1]
-  })])]).render();
-};
-
-var tableMoveHandler = function tableMoveHandler(event, col, row) {
-  var PX_PER_EM = 18;
-  var $picker = external_jQuery_default()(event.target.parentNode); // target is mousecatcher
-
-  var $dimensionDisplay = $picker.next();
-  var $catcher = $picker.find('.note-dimension-picker-mousecatcher');
-  var $highlighted = $picker.find('.note-dimension-picker-highlighted');
-  var $unhighlighted = $picker.find('.note-dimension-picker-unhighlighted');
-  var posOffset; // HTML5 with jQuery - e.offsetX is undefined in Firefox
-
-  if (event.offsetX === undefined) {
-    var posCatcher = external_jQuery_default()(event.target).offset();
-    posOffset = {
-      x: event.pageX - posCatcher.left,
-      y: event.pageY - posCatcher.top
-    };
-  } else {
-    posOffset = {
-      x: event.offsetX,
-      y: event.offsetY
-    };
-  }
-
-  var dim = {
-    c: Math.ceil(posOffset.x / PX_PER_EM) || 1,
-    r: Math.ceil(posOffset.y / PX_PER_EM) || 1
-  };
-  $highlighted.css({
-    width: dim.c + 'em',
-    height: dim.r + 'em'
-  });
-  $catcher.data('value', dim.c + 'x' + dim.r);
-
-  if (dim.c > 3 && dim.c < col) {
-    $unhighlighted.css({
-      width: dim.c + 1 + 'em'
-    });
-  }
-
-  if (dim.r > 3 && dim.r < row) {
-    $unhighlighted.css({
-      height: dim.r + 1 + 'em'
-    });
-  }
-
-  $dimensionDisplay.html(dim.c + ' x ' + dim.r);
-};
-
-var tableDropdownButton = function tableDropdownButton(opt) {
-  return buttonGroup([summernote_lite_button({
-    className: 'dropdown-toggle',
-    contents: opt.title + ' ' + icon('note-icon-caret'),
-    tooltip: opt.tooltip,
-    data: {
-      toggle: 'dropdown'
-    }
-  }), dropdown({
-    className: 'note-table',
-    items: ['<div class="note-dimension-picker">', '<div class="note-dimension-picker-mousecatcher" data-event="insertTable" data-value="1x1"></div>', '<div class="note-dimension-picker-highlighted"></div>', '<div class="note-dimension-picker-unhighlighted"></div>', '</div>', '<div class="note-dimension-display">1 x 1</div>'].join('')
-  })], {
-    callback: function callback($node) {
-      var $catcher = $node.find('.note-dimension-picker-mousecatcher');
-      $catcher.css({
-        width: opt.col + 'em',
-        height: opt.row + 'em'
-      }).mouseup(opt.itemClick).mousemove(function (e) {
-        tableMoveHandler(e, opt.col, opt.row);
-      });
-    }
-  }).render();
-};
-
-var palette = renderer.create('<div class="note-color-palette"></div>', function ($node, options) {
-  var contents = [];
-
-  for (var row = 0, rowSize = options.colors.length; row < rowSize; row++) {
-    var eventName = options.eventName;
-    var colors = options.colors[row];
-    var colorsName = options.colorsName[row];
-    var buttons = [];
-
-    for (var col = 0, colSize = colors.length; col < colSize; col++) {
-      var color = colors[col];
-      var colorName = colorsName[col];
-      buttons.push(['<button type="button" class="note-btn note-color-btn"', 'style="background-color:', color, '" ', 'data-event="', eventName, '" ', 'data-value="', color, '" ', 'data-title="', colorName, '" ', 'aria-label="', colorName, '" ', 'data-toggle="button" tabindex="-1"></button>'].join(''));
-    }
-
-    contents.push('<div class="note-color-row">' + buttons.join('') + '</div>');
-  }
-
-  $node.html(contents.join(''));
-  $node.find('.note-color-btn').each(function () {
-    external_jQuery_default()(this).data('_lite_tooltip', new js_TooltipUI(external_jQuery_default()(this), {
-      container: options.container
-    }));
-  });
-});
-
-var colorDropdownButton = function colorDropdownButton(opt, type) {
-  return buttonGroup({
-    className: 'note-color',
-    children: [summernote_lite_button({
-      className: 'note-current-color-button',
-      contents: opt.title,
-      tooltip: opt.lang.color.recent,
-      click: opt.currentClick,
-      callback: function callback($button) {
-        var $recentColor = $button.find('.note-recent-color');
-
-        if (type !== 'foreColor') {
-          $recentColor.css('background-color', '#FFFF00');
-          $button.attr('data-backColor', '#FFFF00');
-        }
-      }
-    }), summernote_lite_button({
-      className: 'dropdown-toggle',
-      contents: icon('note-icon-caret'),
-      tooltip: opt.lang.color.more,
-      data: {
-        toggle: 'dropdown'
-      }
-    }), dropdown({
-      items: ['<div>', '<div class="note-btn-group btn-background-color">', '<div class="note-palette-title">' + opt.lang.color.background + '</div>', '<div>', '<button type="button" class="note-color-reset note-btn note-btn-block" data-event="backColor" data-value="transparent">', opt.lang.color.transparent, '</button>', '</div>', '<div class="note-holder" data-event="backColor"></div>', '<div class="btn-sm">', '<input type="color" id="html5bcp" class="note-btn btn-default" value="#21104A" style="width:100%;" data-value="cp">', '<button type="button" class="note-color-reset btn" data-event="backColor" data-value="cpbackColor">', opt.lang.color.cpSelect, '</button>', '</div>', '</div>', '<div class="note-btn-group btn-foreground-color">', '<div class="note-palette-title">' + opt.lang.color.foreground + '</div>', '<div>', '<button type="button" class="note-color-reset note-btn note-btn-block" data-event="removeFormat" data-value="foreColor">', opt.lang.color.resetToDefault, '</button>', '</div>', '<div class="note-holder" data-event="foreColor"></div>', '<div class="btn-sm">', '<input type="color" id="html5fcp" class="note-btn btn-default" value="#21104A" style="width:100%;" data-value="cp">', '<button type="button" class="note-color-reset btn" data-event="foreColor" data-value="cpforeColor">', opt.lang.color.cpSelect, '</button>', '</div>', '</div>', '</div>'].join(''),
-      callback: function callback($dropdown) {
-        $dropdown.find('.note-holder').each(function () {
-          var $holder = external_jQuery_default()(this);
-          $holder.append(palette({
-            colors: opt.colors,
-            eventName: $holder.data('event')
-          }).render());
-        });
-
-        if (type === 'fore') {
-          $dropdown.find('.btn-background-color').hide();
-          $dropdown.css({
-            'min-width': '210px'
-          });
-        } else if (type === 'back') {
-          $dropdown.find('.btn-foreground-color').hide();
-          $dropdown.css({
-            'min-width': '210px'
-          });
-        }
-      },
-      click: function click(event) {
-        var $button = external_jQuery_default()(event.target);
-        var eventName = $button.data('event');
-        var value = $button.data('value');
-        var foreinput = document.getElementById('html5fcp').value;
-        var backinput = document.getElementById('html5bcp').value;
-
-        if (value === 'cp') {
-          event.stopPropagation();
-        } else if (value === 'cpbackColor') {
-          value = backinput;
-        } else if (value === 'cpforeColor') {
-          value = foreinput;
-        }
-
-        if (eventName && value) {
-          var key = eventName === 'backColor' ? 'background-color' : 'color';
-          var $color = $button.closest('.note-color').find('.note-recent-color');
-          var $currentButton = $button.closest('.note-color').find('.note-current-color-button');
-          $color.css(key, value);
-          $currentButton.attr('data-' + eventName, value);
-
-          if (type === 'fore') {
-            opt.itemClick('foreColor', value);
-          } else if (type === 'back') {
-            opt.itemClick('backColor', value);
-          } else {
-            opt.itemClick(eventName, value);
-          }
-        }
-      }
-    })]
-  }).render();
-};
-
-var dialog = renderer.create('<div class="note-modal" aria-hidden="false" tabindex="-1" role="dialog"></div>', function ($node, options) {
+var dialog = renderer.create('<div class="modal note-modal" aria-hidden="false" tabindex="-1" role="dialog"/>', function ($node, options) {
   if (options.fade) {
     $node.addClass('fade');
   }
@@ -10616,54 +10084,18 @@ var dialog = renderer.create('<div class="note-modal" aria-hidden="false" tabind
   $node.attr({
     'aria-label': options.title
   });
-  $node.html(['<div class="note-modal-content">', options.title ? '<div class="note-modal-header"><button type="button" class="close" aria-label="Close" aria-hidden="true"><i class="note-icon-close"></i></button><h4 class="note-modal-title">' + options.title + '</h4></div>' : '', '<div class="note-modal-body">' + options.body + '</div>', options.footer ? '<div class="note-modal-footer">' + options.footer + '</div>' : '', '</div>'].join(''));
-  $node.data('modal', new js_ModalUI($node, options));
+  $node.html(['<div class="modal-dialog">', '<div class="modal-content">', options.title ? '<div class="modal-header">' + '<h4 class="modal-title">' + options.title + '</h4>' + '<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" aria-hidden="true"></button>' + '</div>' : '', '<div class="modal-body">' + options.body + '</div>', options.footer ? '<div class="modal-footer">' + options.footer + '</div>' : '', '</div>', '</div>'].join(''));
 });
-
-var videoDialog = function videoDialog(opt) {
-  var body = '<div class="note-form-group">' + '<label for="note-dialog-video-url-' + opt.id + '" class="note-form-label">' + opt.lang.video.url + ' <small class="text-muted">' + opt.lang.video.providers + '</small></label>' + '<input id="note-dialog-video-url-' + opt.id + '" class="note-video-url note-input" type="text"/>' + '</div>';
-  var footer = ['<button type="button" href="#" class="note-btn note-btn-primary note-video-btn disabled" disabled>', opt.lang.video.insert, '</button>'].join('');
-  return dialog({
-    title: opt.lang.video.insert,
-    fade: opt.fade,
-    body: body,
-    footer: footer
-  }).render();
-};
-
-var imageDialog = function imageDialog(opt) {
-  var body = '<div class="note-form-group note-group-select-from-files">' + '<label for="note-dialog-image-file-' + opt.id + '" class="note-form-label">' + opt.lang.image.selectFromFiles + '</label>' + '<input id="note-dialog-image-file-' + opt.id + '" class="note-note-image-input note-input" type="file" name="files" accept="image/*" multiple="multiple"/>' + opt.imageLimitation + '</div>' + '<div class="note-form-group">' + '<label for="note-dialog-image-url-' + opt.id + '" class="note-form-label">' + opt.lang.image.url + '</label>' + '<input id="note-dialog-image-url-' + opt.id + '" class="note-image-url note-input" type="text"/>' + '</div>';
-  var footer = ['<button href="#" type="button" class="note-btn note-btn-primary note-btn-large note-image-btn disabled" disabled>', opt.lang.image.insert, '</button>'].join('');
-  return dialog({
-    title: opt.lang.image.insert,
-    fade: opt.fade,
-    body: body,
-    footer: footer
-  }).render();
-};
-
-var linkDialog = function linkDialog(opt) {
-  var body = '<div class="note-form-group">' + '<label for="note-dialog-link-txt-' + opt.id + '" class="note-form-label">' + opt.lang.link.textToDisplay + '</label>' + '<input id="note-dialog-link-txt-' + opt.id + '" class="note-link-text note-input" type="text"/>' + '</div>' + '<div class="note-form-group">' + '<label for="note-dialog-link-url-' + opt.id + '" class="note-form-label">' + opt.lang.link.url + '</label>' + '<input id="note-dialog-link-url-' + opt.id + '" class="note-link-url note-input" type="text" value="http://"/>' + '</div>' + (!opt.disableLinkTarget ? '<div class="checkbox"><label for="note-dialog-link-nw-' + opt.id + '"><input id="note-dialog-link-nw-' + opt.id + '" type="checkbox" checked> ' + opt.lang.link.openInNewWindow + '</label></div>' : '') + '<div class="checkbox"><label for="note-dialog-link-up-' + opt.id + '"><input id="note-dialog-link-up-' + opt.id + '" type="checkbox" checked> ' + opt.lang.link.useProtocol + '</label></div>';
-  var footer = ['<button href="#" type="button" class="note-btn note-btn-primary note-link-btn disabled" disabled>', opt.lang.link.insert, '</button>'].join('');
-  return dialog({
-    className: 'link-dialog',
-    title: opt.lang.link.insert,
-    fade: opt.fade,
-    body: body,
-    footer: footer
-  }).render();
-};
-
-var popover = renderer.create(['<div class="note-popover bottom">', '<div class="note-popover-arrow"></div>', '<div class="popover-content note-children-container"></div>', '</div>'].join(''), function ($node, options) {
+var popover = renderer.create(['<div class="note-popover popover show">', '<div class="popover-arrow"></div>', '<div class="popover-body note-children-container"></div>', '</div>'].join(''), function ($node, options) {
   var direction = typeof options.direction !== 'undefined' ? options.direction : 'bottom';
-  $node.addClass(direction).hide();
+  $node.attr('data-bs-placement', direction);
 
   if (options.hideArrow) {
-    $node.find('.note-popover-arrow').hide();
+    $node.find('.popover-arrow').hide();
   }
 });
-var summernote_lite_checkbox = renderer.create('<div class="checkbox"></div>', function ($node, options) {
-  $node.html(['<label' + (options.id ? ' for="note-' + options.id + '"' : '') + '>', '<input role="checkbox" type="checkbox"' + (options.id ? ' id="note-' + options.id + '"' : ''), options.checked ? ' checked' : '', ' aria-checked="' + (options.checked ? 'true' : 'false') + '"/>', options.text ? options.text : '', '</label>'].join(''));
+var summernote_bs5_checkbox = renderer.create('<div class="form-check"></div>', function ($node, options) {
+  $node.html(['<label class="form-check-label"' + (options.id ? ' for="note-' + options.id + '"' : '') + '>', '<input type="checkbox" class="form-check-input"' + (options.id ? ' id="note-' + options.id + '"' : ''), options.checked ? ' checked' : '', ' aria-label="' + (options.text ? options.text : '') + '"', ' aria-checked="' + (options.checked ? 'true' : 'false') + '"/>', ' ' + (options.text ? options.text : '') + '</label>'].join(''));
 });
 
 var icon = function icon(iconClassName, tagName) {
@@ -10686,24 +10118,64 @@ var ui = function ui(editorOptions) {
     airEditor: airEditor,
     airEditable: airEditable,
     buttonGroup: buttonGroup,
-    button: summernote_lite_button,
     dropdown: dropdown,
-    dropdownCheck: dropdownCheck,
-    dropdownButton: dropdownButton,
     dropdownButtonContents: dropdownButtonContents,
-    dropdownCheckButton: dropdownCheckButton,
-    paragraphDropdownButton: paragraphDropdownButton,
-    tableDropdownButton: tableDropdownButton,
-    colorDropdownButton: colorDropdownButton,
-    palette: palette,
+    dropdownCheck: dropdownCheck,
     dialog: dialog,
-    videoDialog: videoDialog,
-    imageDialog: imageDialog,
-    linkDialog: linkDialog,
     popover: popover,
-    checkbox: summernote_lite_checkbox,
     icon: icon,
+    checkbox: summernote_bs5_checkbox,
     options: editorOptions,
+    palette: function palette($node, options) {
+      return renderer.create('<div class="note-color-palette"/>', function ($node, options) {
+        var contents = [];
+
+        for (var row = 0, rowSize = options.colors.length; row < rowSize; row++) {
+          var eventName = options.eventName;
+          var colors = options.colors[row];
+          var colorsName = options.colorsName[row];
+          var buttons = [];
+
+          for (var col = 0, colSize = colors.length; col < colSize; col++) {
+            var color = colors[col];
+            var colorName = colorsName[col];
+            buttons.push(['<button type="button" class="note-color-btn"', 'style="background-color:', color, '" ', 'data-event="', eventName, '" ', 'data-value="', color, '" ', 'title="', colorName, '" ', 'aria-label="', colorName, '" ', 'data-toggle="button" tabindex="-1"></button>'].join(''));
+          }
+
+          contents.push('<div class="note-color-row">' + buttons.join('') + '</div>');
+        }
+
+        $node.html(contents.join(''));
+
+        if (options.tooltip) {
+          $node.find('.note-color-btn').tooltip({
+            container: options.container || editorOptions.container,
+            trigger: 'hover',
+            placement: 'bottom'
+          });
+        }
+      })($node, options);
+    },
+    button: function button($node, options) {
+      return renderer.create('<button type="button" class="note-btn btn btn-light btn-sm" tabindex="-1">', function ($node, options) {
+        if (options && options.tooltip) {
+          $node.attr({
+            title: options.tooltip,
+            'aria-label': options.tooltip
+          }).tooltip({
+            container: options.container || editorOptions.container,
+            trigger: 'hover',
+            placement: 'bottom'
+          }).on('click', function (e) {
+            external_jQuery_default()(e.currentTarget).tooltip('hide');
+          });
+        }
+
+        if (options && options.codeviewButton) {
+          $node.addClass('note-codeview-keep');
+        }
+      })($node, options);
+    },
     toggleBtn: function toggleBtn($btn, isEnable) {
       $btn.toggleClass('disabled', !isEnable);
       $btn.attr('disabled', !isEnable);
@@ -10711,41 +10183,17 @@ var ui = function ui(editorOptions) {
     toggleBtnActive: function toggleBtnActive($btn, isActive) {
       $btn.toggleClass('active', isActive);
     },
-    check: function check($dom, value) {
-      $dom.find('.checked').removeClass('checked');
-      $dom.find('[data-value="' + value + '"]').addClass('checked');
-    },
     onDialogShown: function onDialogShown($dialog, handler) {
-      $dialog.one('note.modal.show', handler);
+      $dialog.one('shown.bs.modal', handler);
     },
     onDialogHidden: function onDialogHidden($dialog, handler) {
-      $dialog.one('note.modal.hide', handler);
+      $dialog.one('hidden.bs.modal', handler);
     },
     showDialog: function showDialog($dialog) {
-      $dialog.data('modal').show();
+      $dialog.modal('show');
     },
     hideDialog: function hideDialog($dialog) {
-      $dialog.data('modal').hide();
-    },
-
-    /**
-     * get popover content area
-     *
-     * @param $popover
-     * @returns {*}
-     */
-    getPopoverContent: function getPopoverContent($popover) {
-      return $popover.find('.note-popover-content');
-    },
-
-    /**
-     * get dialog's body area
-     *
-     * @param $dialog
-     * @returns {*}
-     */
-    getDialogBody: function getDialogBody($dialog) {
-      return $dialog.find('.note-modal-body');
+      $dialog.modal('hide');
     },
     createLayout: function createLayout($note) {
       var $editor = (editorOptions.airMode ? airEditor([editingArea([codable(), airEditable()])]) : editorOptions.toolbarPosition === 'bottom' ? editor([editingArea([codable(), editable()]), toolbar(), statusbar()]) : editor([toolbar(), editingArea([codable(), editable()]), statusbar()])).render();
@@ -10763,8 +10211,6 @@ var ui = function ui(editorOptions) {
     removeLayout: function removeLayout($note, layoutInfo) {
       $note.html(layoutInfo.editable.html());
       layoutInfo.editor.remove();
-      $note.off('summernote'); // remove summernote custom event
-
       $note.show();
     }
   };
@@ -10772,12 +10218,18 @@ var ui = function ui(editorOptions) {
 
 (external_jQuery_default()).summernote = external_jQuery_default().extend((external_jQuery_default()).summernote, {
   ui_template: ui,
-  "interface": 'lite'
+  "interface": 'bs5'
 });
+(external_jQuery_default()).summernote.options.styleTags = ['p', {
+  title: 'Blockquote',
+  tag: 'blockquote',
+  className: 'blockquote',
+  value: 'blockquote'
+}, 'pre', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'];
 })();
 
 /******/ 	return __webpack_exports__;
 /******/ })()
 ;
 });
-//# sourceMappingURL=summernote-lite.js.map
+//# sourceMappingURL=summernote-bs5.js.map
