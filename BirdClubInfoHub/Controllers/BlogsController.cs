@@ -80,5 +80,20 @@ namespace BirdClubInfoHub.Controllers
             _dbContext.SaveChanges();
             return RedirectToAction("Index");
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult AddComment(Comment comment)
+        {
+            comment.User = _dbContext.Users.Find(comment.UserId)!;
+            comment.Blog = _dbContext.Blogs.Find(comment.BlogId)!;
+            _dbContext.Comments.Add(comment);
+            _dbContext.SaveChanges();
+
+            Blog blog = comment.Blog;
+            blog.Comments = _dbContext.Comments.Where(comment => comment.BlogId == blog.Id)
+                .Include(comment => comment.User).ToList();
+            return PartialView("_CommentSection", blog);
+        }
     }
 }

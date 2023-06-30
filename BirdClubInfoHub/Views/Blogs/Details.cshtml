@@ -52,4 +52,10 @@
     </dl>
 </div>
 
-@await Html.PartialAsync("_CommentSection", Model.Comments)
+<div id="CommentSection">
+    <partial name="_CommentSection" model="Model" />
+</div>
+
+@section Scripts {
+    <script src="~/lib/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.min.js"></script>
+}

@@ -1,0 +1,22 @@
+﻿@model BirdClubInfoHub.Models.Comment
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="AddComment" data-ajax="true" data-ajax-mode="replace" data-ajax-update="#CommentSection">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="UserId" />
+            <input type="hidden" asp-for="BlogId" />
+
+            <input asp-for="Contents" placeholder="Add a comment" class="form-control" />
+            <span asp-validation-for="Contents" class="text-danger"></span>
+
+            <input type="submit" value="Comment" class="btn btn-primary" />
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
