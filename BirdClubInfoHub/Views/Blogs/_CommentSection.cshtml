@@ -1,10 +1,15 @@
 ﻿@model Blog
 
-@await Html.PartialAsync("_AddComment", new Comment() { BlogId = Model.Id, UserId = (int)Context.Session.GetInt32("USER_ID")! })
+@{
+    var userSessionId = Context.Session.GetInt32("USER_ID");
+    if (userSessionId != null) {
+        @await Html.PartialAsync("_AddComment", new Comment() { BlogId = Model.Id, UserId = (int)Context.Session.GetInt32("USER_ID")! });
+    }
+}
 
 @foreach (var comment in Model.Comments)
 {
-    <div class="card mt-2 border-primary">
+    @* <div class="card mt-2 border-primary">
         <div class="card-body">
             <h5 class="card-title">@comment.User.Name</h5>
             @{
@@ -19,7 +24,7 @@
             }
             <p class="card-text">@comment.Contents</p>
             @{
-                if (comment.UserId == Context.Session.GetInt32("USER_ID"))
+                if (userSessionId != null && comment.UserId == userSessionId)
                 {
                     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editModal" data-comment-id="@comment.Id">Edit</button>
                     <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" data-comment-id="@comment.Id">Delete</button>
@@ -27,7 +32,60 @@
             }
         </div>
     </div>
-    <br />
+    <br /> *@
+
+    <div class="comments-container">
+        <h2 class="comments-container-title">Comments</h2>
+
+        <div class="comment-container">
+            <hr />
+            <div class="comment-body">
+                <div class="comment-author-ava-container">
+                    <img class="comment-author-ava" src="@Url.Action("GetImageFromBytes", "Profile", new { id = Model.UserId })" alt="avatar" />
+                </div>
+
+                <div class="comment-content-container">
+                    <div class="comment-info-container">
+                        <p class="comment-author">@comment.User.Name</p>
+
+                        @{
+                            var presentedDate = comment.CreatedDate;
+                            if (comment.ModifiedDate != new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified))
+                            {
+                                presentedDate = comment.ModifiedDate;
+                            }
+                        }
+                        <p class="comment-date">@presentedDate.ToString("dd MMMM, yyyy")</p>
+                    </div>
+
+                    <div class="comment-content">@comment.Contents</div>
+                </div>
+
+                @{
+                    if (userSessionId != null && comment.UserId == userSessionId)
+                    {
+                        <div class="update-comment-container">
+                            <button
+                                type="button"
+                                class="btn btn-primary"
+                                data-bs-toggle="modal"
+                                data-bs-target="#editModal"
+                                data-comment-id="@comment.Id">Edit</button>
+
+                            <button
+                                type="button"
+                                class="btn btn-danger"
+                                data-bs-toggle="modal"
+                                data-bs-target="#deleteModal"
+                                data-comment-id="@comment.Id">Delete</button>
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+
+        @await Html.PartialAsync("_AddComment", new Comment());
+    </div>
 }
 
 @await Html.PartialAsync("_EditComment", new Comment())

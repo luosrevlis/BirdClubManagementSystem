@@ -1,60 +1,65 @@
 ﻿@model Blog
 
+@section Styles
+{
+    <link rel="stylesheet" href="~/css/blog/detail.css" />
+    @* <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" /> *@
+}
+
 @{
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
+<section class="blog-section">
+    <div class="blog-comment-container">
+        <div class="blog-container">
+            <div class="blog-thumbnail-container">
+                <img class="blog-thumbnail" src="@Url.Action("GetImageFromBytes", "Blogs", new { id = Model.Id })" alt="thumbnail" />
+            </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-<div>
-    <h4>Blog</h4>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.User)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.User.Name)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.DateCreated)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.DateCreated)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.BlogCategory)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.BlogCategory.Name)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Title)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Title)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Contents)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.Raw(Model.Contents)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Thumbnail)
-        </dt>
-        <dd class="col-sm-10">
-            <img src="@Url.Action("GetImageFromBytes", "Blogs", new { id = Model.Id })" />
-        </dd>
-    </dl>
-</div>
+            <div class="blog-body">
+                <div class="blog-info-container">
+                    <div class="blog-author-info-container">
+                        <div class="blog-author-ava-container">
+                            <img class="blog-author-ava" src="@Url.Action("GetImageFromBytes", "Profile", new { id = Model.UserId })" alt="author" />
+                        </div>
 
-<div id="CommentSection">
-    @await Html.PartialAsync("_CommentSection", Model)
-</div>
+                        <p class="blog-author-name">By @Model.User.Name</p>
+                    </div>
+
+                    <p class="blog-create-date">@Model.DateCreated.ToString("dd MMMM, yyyy")</p>
+                </div>
+
+                <h2 class="blog-title">@Model.Title</h2>
+
+                <div class="blog-content">@Html.Raw(Model.Contents)</div>
+            </div>
+        </div>
+        <hr />
+
+        @await Html.PartialAsync("_CommentSection", Model)
+    </div>
+
+    <div class="blog-utils-container">
+        <a class="create-blog-button" asp-controller="Blogs" asp-action="Create">Create Blog</a>
+        <div class="search-blogs-container">
+            <h2>Search</h2>
+            <form class="search-box-container">
+                <input class="search-box" type="text" placeholder="Search something..." />
+            </form>
+        </div>
+        <div class="latest-blogs-container">
+            <h2>Latest News</h2>
+            <div class="latest-blog">
+                <div class="latest-blog-thumbnail-container">
+                    <img class="latest-blog-thumbnail" src="@Url.Action("GetImageFromBytes", "Blogs", new { id = Model.Id })" alt="thumbnail" />
+                </div>
+
+                <div class="latest-blog-title">@Model.Title</div>
+            </div>
+        </div>
+    </div>
+</section>
 
 @section Scripts {
     <script src="~/lib/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.min.js"></script>

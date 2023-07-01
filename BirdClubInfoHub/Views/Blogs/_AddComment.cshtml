@@ -1,17 +1,18 @@
 ﻿@model Comment
 
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="AddComment" data-ajax="true" data-ajax-mode="replace" data-ajax-update="#CommentSection">
-            <input type="hidden" asp-for="UserId" />
-            <input type="hidden" asp-for="BlogId" />
+<div class="create-comment-container">
+    <hr />
+    <h2 class="create-comment-title">Write a Comment</h2>
 
-            <input id="Contents" name="Contents" placeholder="Add a comment" class="form-control" />
-            <span asp-validation-for="Contents" class="text-danger"></span>
+    <form class="create-comment-form" asp-action="AddComment" data-ajax="true" data-ajax-mode="replace" data-ajax-update="#CommentSection">
+        <input type="hidden" asp-for="UserId" />
+        <input type="hidden" asp-for="BlogId" />
 
-            <input type="submit" value="Comment" class="btn btn-primary" />
-        </form>
-    </div>
+        <textarea id="Contents" class="create-comment-box" rows="5" name="Contents" placeholder="Add your comment..." class="form-control"></textarea>
+        <span asp-validation-for="Contents" class="text-danger"></span>
+
+        <input class="create-comment-button" type="submit" value="Comment" class="btn btn-primary" />
+    </form>
 </div>
 
 @section Scripts {
