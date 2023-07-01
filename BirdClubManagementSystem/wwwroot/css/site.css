@@ -22,6 +22,10 @@ body {
 main {
   min-height: 100vh;
   padding-top: 2rem;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: flex-start;
+  align-items: center;
 }
 
 main > * {
@@ -80,8 +84,8 @@ nav > * {
 }
 
 .nav-user-utils-container .ava-container {
-  height: 2rem;
-  width: 2rem;
+  height: 3rem;
+  width: 3rem;
 }
 
 .nav-logo-container .logo-img-container img,
@@ -183,6 +187,7 @@ a {
 footer {
   width: 100%;
   padding-top: 2rem;
+  margin-top: 2rem;
   background-color: #3C7363;
   color: #fff;
 
