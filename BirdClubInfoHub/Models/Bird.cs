@@ -14,6 +14,8 @@ namespace BirdClubInfoHub.Models
 
         public string Species { get; set; } = string.Empty;
 
+        public byte[] ProfilePicture { get; set; } = Array.Empty<byte>();
+
         public User User { get; set; } = new User();
 
         public ICollection<TournamentRegistration> TournamentRegistrations { get; set; } = new List<TournamentRegistration>();

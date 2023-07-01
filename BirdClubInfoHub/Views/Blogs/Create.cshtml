@@ -1,4 +1,4 @@
-﻿@model BirdClubInfoHub.Models.Blog
+﻿@model Blog
 
 @{
     ViewData["Title"] = "Create";
@@ -26,7 +26,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="Contents" class="control-label"></label>
-                <input asp-for="Contents" class="form-control" />
+                <textarea id="Contents" name="Contents"></textarea>
             </div>
             <div class="form-group">
                 <label asp-for="Thumbnail" class="control-label"></label>
@@ -44,10 +44,11 @@
     <a asp-action="Index">Back to List</a>
 </div>
 
-@await Html.PartialAsync("_Summernote", new { Height = 500, Selector = "#Contents", Contents = "" })
+
 
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
+        await Html.RenderPartialAsync("_Summernote", new { Height = 500, Selector = "#Contents" });
     }
 }
