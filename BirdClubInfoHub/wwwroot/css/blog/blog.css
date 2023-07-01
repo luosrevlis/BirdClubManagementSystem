@@ -23,11 +23,6 @@
     border-radius: 0.5rem;
     width: 100%;
     box-shadow: 0.1rem 0.1rem 0.5rem #0007003a;
-    transition: all 0.2s ease-in;
-}
-
-.blog-container:hover {
-    box-shadow: 0.1rem 0.1rem 1rem #000;
 }
 
 .blog-body {
@@ -162,8 +157,8 @@
     margin-top: 2rem;
     display: flex;
     flex-flow: row nowrap;
-    justify-content: space-between;
-    align-items: flex-start;
+    justify-content: center;
+    align-items: center;
     border-radius: 0.5rem;
 }
 

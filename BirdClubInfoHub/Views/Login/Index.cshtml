@@ -8,88 +8,87 @@
 @{
     ViewData["Title"] = "Login";
 }
-<main>
-        <div class="container">
-            <div class="container-inner">
-                <div class="form-wrap">
-                    <form asp-action="Login" autocomplete="off" class="sign-in-form">
-                        <!-- logo -->
-                        <div class="logo">
-                            
-                            <img src="~/img/login/logo1.png" alt="VNCMBC">
-                        
-                            <h4>VNCMBC</h4>
-                        </div>
-                        
-                        <!-- chao -->
-                        <div class="heading">
-                            <h2>Welcome Back</h2>
-                            <h6>Not registered yet?</h6>
-                            @* Link sang trang request *@
-                            <a asp-controller="MembershipRequests" asp-action="Index" class="toggle">Request for membership</a>
-                        </div>
-                        <!-- form -->
-                        <div class="actual-form">
-                            <!-- username -->
-                            <div class="input-wrap">
-                                <input 
-                                type="text" 
-                                asp-for="Email"
-                                minlength="4" 
-                                class="input-field" 
-                                autocomplete="off" 
-                                required 
-                                />
-                                <label>Email</label>
-                            </div>
-                            <!-- password -->
-                            <div class="input-wrap">
-                                <input 
-                                type="password" 
-                                asp-for="Password" 
-                                minlength="0" 
-                                class="input-field" 
-                                autocomplete="off" 
-                                required 
-                                />
-                                <label>Password</label>
-                            </div>
-                            <!-- button sign-in -->
-                            <input type="submit" value="Sign In" class="sign-btn">
-                            <p class="text">
-                                Fogotten your password?
-                                <a href="#">Get help?</a>
-                            </p>
-                        </div>
-                    </form>
-                </div>
-                    
-                <div class="carousel">
-                    <div class="images-wrapper">
-                        <img src="~/img/login/r5.png" class="image img-1 show"  alt="">
-                        <img src="~/img/login/r4.png" class="image img-2"  alt="">
-                        <img src="~/img/login/cm3.png" class="image img-3"  alt="">
-                    </div>
-                    
-                    <div class="text-slider">
-                        <div class="text-wrap">
-                            <div class="text-group">
-                                <h2>Create your own blogs</h2>
-                                <h2>Join tournaments with your bird</h2>
-                                <h2>Show your bird to community</h2>
-                            </div>
-                        </div>
 
-                        <div class="bullets"> 
-                            <span class="active" data-value="1"></span>
-                            <span data-value="2"></span>
-                            <span data-value="3"></span>
-                        </div>
+<div class="container">
+    <div class="container-inner">
+        <div class="form-wrap">
+            <form asp-action="Login" autocomplete="off" class="sign-in-form">
+                <!-- logo -->
+                <div class="logo">
+                    
+                    <img src="~/img/login/logo1.png" alt="VNCMBC">
+                
+                    <h4>VNCMBC</h4>
+                </div>
+                
+                <!-- chao -->
+                <div class="heading">
+                    <h2>Welcome Back</h2>
+                    <h6>Not registered yet?</h6>
+                    @* Link sang trang request *@
+                    <a asp-controller="MembershipRequests" asp-action="Index" class="toggle">Request for membership</a>
+                </div>
+                <!-- form -->
+                <div class="actual-form">
+                    <!-- username -->
+                    <div class="input-wrap">
+                        <input 
+                        type="text" 
+                        asp-for="Email"
+                        minlength="4" 
+                        class="input-field" 
+                        autocomplete="off" 
+                        required 
+                        />
+                        <label>Email</label>
                     </div>
-                </div>   
-            </div>
+                    <!-- password -->
+                    <div class="input-wrap">
+                        <input 
+                        type="password" 
+                        asp-for="Password" 
+                        minlength="0" 
+                        class="input-field" 
+                        autocomplete="off" 
+                        required 
+                        />
+                        <label>Password</label>
+                    </div>
+                    <!-- button sign-in -->
+                    <input type="submit" value="Sign In" class="sign-btn">
+                    <p class="text">
+                        Fogotten your password?
+                        <a href="#">Get help?</a>
+                    </p>
+                </div>
+            </form>
         </div>
-    </main>  
+            
+        <div class="carousel">
+            <div class="images-wrapper">
+                <img src="~/img/login/r5.png" class="image img-1 show"  alt="">
+                <img src="~/img/login/r4.png" class="image img-2"  alt="">
+                <img src="~/img/login/cm3.png" class="image img-3"  alt="">
+            </div>
+            
+            <div class="text-slider">
+                <div class="text-wrap">
+                    <div class="text-group">
+                        <h2>Create your own blogs</h2>
+                        <h2>Join tournaments with your bird</h2>
+                        <h2>Show your bird to community</h2>
+                    </div>
+                </div>
+
+                <div class="bullets"> 
+                    <span class="active" data-value="1"></span>
+                    <span data-value="2"></span>
+                    <span data-value="3"></span>
+                </div>
+            </div>
+        </div>   
+    </div>
+</div>
 
 @section Scripts {
     @{
