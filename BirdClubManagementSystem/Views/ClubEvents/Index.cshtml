@@ -1,42 +1,54 @@
 ﻿@model IEnumerable<BirdClubManagementSystem.Models.IClubEvent>
 
-@{
-    ViewData["Title"] = "Index";
+@section Styles
+{
+    <link rel="stylesheet" href="~/css/event/event.css" />
 }
 
-<h1>Events</h1>
+@{
+    ViewData["Title"] = "Index";
 
-<p>
-    <a asp-action="Create" asp-controller="FieldTrips">New Field Trip</a> |
-    <a asp-action="Create" asp-controller="Meetings">New Meeting</a> |
-    <a asp-action="Create" asp-controller="Tournaments">New Tournament</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Date)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
+    var modelAfterSorted = Model.OrderBy(m => m.Date);
+    var dateBlocks = new SortedDictionary<DateTime, IEnumerable<IClubEvent>>();
+    if (modelAfterSorted.Any())
+    {
+        DateTime currentDateTime = modelAfterSorted.First().Date.Date;
+        var clubEvents = Enumerable.Empty<IClubEvent>();
+        foreach (var item in modelAfterSorted)
         {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Date)
-                </td>
-                <td>
-                    @{
+            if (item.Date.Date != currentDateTime) {
+                dateBlocks.Add(currentDateTime, clubEvents);
+                currentDateTime = item.Date.Date;
+                clubEvents = Enumerable.Empty<IClubEvent>();
+            }
+            clubEvents = clubEvents.Append(item);
+        }
+        if (modelAfterSorted.Any()) {
+            dateBlocks.Add(currentDateTime, clubEvents);
+        }
+    }
+}
+
+<section class="event-section">
+    <h1>Events</h1>
+
+    @if (dateBlocks.Any())
+    {
+        <section class="events-container">
+            @foreach (var dateBlock in dateBlocks)
+            {
+                <div class="events-as-date-container">
+                    <div class="date-breakline-container">
+                        <div class="date">
+                            <h2>@dateBlock.Key.ToShortDateString()</h2>
+                        </div>
+                        <div class="breakline"></div>
+                    </div>
+
+                    @foreach (var e in dateBlock.Value)
+                    {
                         string controller = string.Empty;
-                        switch (item)
+                        switch (e)
                         {
                             case FieldTrip:
                                 controller = "FieldTrips";
@@ -50,11 +62,32 @@
                             default:
                                 break;
                         }
-                    }
-                    <a asp-controller="@controller" asp-action="Details" asp-route-id="@item.Id">Details</a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
 
+                        <a class="event-container" asp-controller="@controller" asp-action="Details" asp-route-id="@e.Id">
+                            <div class="bg-container">
+                                <img class="bg" src="~/img/events/bg.jpg" alt="bg" />
+                            </div>
+
+                            <div class="event-name">
+                                <h2>@e.Name</h2>
+                            </div>
+                            <div class="event-time">
+                                <p>@e.Date.TimeOfDay</p>
+                            </div>
+                        </a>
+                    }
+                </div>
+            }        
+        </section>
+    }
+    else
+    {
+        <h2>No events was found</h2>
+    }
+</section>
+
+@* <p>
+    <a asp-action="Create" asp-controller="FieldTrips">New Field Trip</a> |
+    <a asp-action="Create" asp-controller="Meetings">New Meeting</a> |
+    <a asp-action="Create" asp-controller="Tournaments">New Tournament</a>
+</p> *@

@@ -20,7 +20,7 @@ function moveSlider(){
     currentImage.classList.add("show");
 
     bullets.forEach(bull => bull.classList.remove("active"));
-    this.classList.add("active");  
+    this.classList.add("active");
 }
 
 bullets.forEach((bullet) => {
