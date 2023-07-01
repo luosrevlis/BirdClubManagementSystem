@@ -1,21 +1,25 @@
 ﻿@model Blog
 
-<div id="AddComment">
-    @await Html.PartialAsync("_AddComment", new Comment() { BlogId = Model.Id, UserId = (int)Context.Session.GetInt32("USER_ID")! })
-</div>
+@await Html.PartialAsync("_AddComment", new Comment() { BlogId = Model.Id, UserId = (int)Context.Session.GetInt32("USER_ID")! })
 
-<ul>
-    @foreach (var comment in Model.Comments)
-    {
-        <li>
-            <div class="card mt-2 border-primary">
-                <div class="card-body">
-                    <h5 class="card-title">@comment.User.Name</h5>
-                    <p class="card-text">@comment.Contents</p>
-                    <button type="button" class="btn btn-primary">Reply</button>
+@foreach (var comment in Model.Comments)
+{
+    <div class="card mt-2 border-primary">
+        <div class="card-body">
+            <h5 class="card-title">@comment.User.Name</h5>
+            <p class="card-text">@comment.Contents</p>
+            @{
+                if (comment.UserId == Context.Session.GetInt32("USER_ID"))
+                {
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#replyModal">
+                        Reply
+                    </button>
                     <button type="button" class="btn btn-danger">Delete</button>
-                </div>
-            </div>
-        </li>
-    }
-</ul>
+                }
+            }
+        </div>
+    </div>
+    <br />
+}
+
+@await Html.PartialAsync("_EditComment", new Comment() { BlogId = Model.Id, UserId = (int)Context.Session.GetInt32("USER_ID")! })

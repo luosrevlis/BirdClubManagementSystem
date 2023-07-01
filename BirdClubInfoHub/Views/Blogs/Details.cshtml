@@ -53,7 +53,7 @@
 </div>
 
 <div id="CommentSection">
-    <partial name="_CommentSection" model="Model" />
+    @await Html.PartialAsync("_CommentSection", Model)
 </div>
 
 @section Scripts {

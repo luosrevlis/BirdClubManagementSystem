@@ -1,8 +1,24 @@
 ﻿@model Comment
 
-<div class="modal fade" id="replyModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="replyModalLabel" aria-hidden="true">
+<div class="modal fade" id="replyModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-primary" id="editModelLabel">Edit this comment</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form asp-action="EditComment" id="EditCommentForm">
+                    <input type="hidden" asp-for="UserId" />
+                    <input type="hidden" asp-for="BlogId" />
+
+                    <input asp-for="Contents" placeholder="Add a comment" class="form-control" />
+                    <span asp-validation-for="Contents" class="text-danger"></span>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <input type="submit" value="Edit" class="btn btn-primary" form="EditCommentForm" />
+            </div>
         </div>
     </div>
 </div>

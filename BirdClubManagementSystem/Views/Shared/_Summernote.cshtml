@@ -1,0 +1,20 @@
+﻿@model dynamic
+
+@{
+    int height = Model.Height ?? 200;
+    string selector = Model.Selector;
+}
+
+<link rel="stylesheet" href="~/lib/summernote/summernote-lite.min.css" />
+<script src="~/lib/summernote/summernote-lite.min.js"></script>
+
+<script>
+    jQuery.noConflict()(function($){
+        $(document).ready(function(){
+            $('@selector').summernote({
+                tabsize: 2,
+                height: @height
+            });
+        });
+    });
+</script>
