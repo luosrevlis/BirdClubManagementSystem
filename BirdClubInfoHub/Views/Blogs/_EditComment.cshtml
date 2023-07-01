@@ -1,6 +1,6 @@
 ﻿@model Comment
 
-<div class="modal fade" id="replyModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
@@ -8,16 +8,15 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form asp-action="EditComment" id="EditCommentForm">
-                    <input type="hidden" asp-for="UserId" />
-                    <input type="hidden" asp-for="BlogId" />
+                <form asp-action="EditComment" id="EditCommentForm" data-ajax="true" data-ajax-mode="replace" data-ajax-update="#CommentSection">
+                    <input hidden id="Id" name="Id" />
 
-                    <input asp-for="Contents" placeholder="Add a comment" class="form-control" />
+                    <input asp-for="Contents" class="form-control" />
                     <span asp-validation-for="Contents" class="text-danger"></span>
                 </form>
             </div>
             <div class="modal-footer">
-                <input type="submit" value="Edit" class="btn btn-primary" form="EditCommentForm" />
+                <input type="submit" value="Edit" class="btn btn-primary" form="EditCommentForm" data-bs-dismiss="modal" />
             </div>
         </div>
     </div>

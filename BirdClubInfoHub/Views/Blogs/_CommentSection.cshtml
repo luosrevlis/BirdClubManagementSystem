@@ -7,14 +7,22 @@
     <div class="card mt-2 border-primary">
         <div class="card-body">
             <h5 class="card-title">@comment.User.Name</h5>
+            @{
+                if (comment.ModifiedDate != new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified))
+                {
+                    <h6 class="card-subtitle">Modified at @comment.ModifiedDate</h6>
+                }
+                else
+                {
+                    <h6 class="card-subtitle">@comment.CreatedDate</h6>
+                }
+            }
             <p class="card-text">@comment.Contents</p>
             @{
                 if (comment.UserId == Context.Session.GetInt32("USER_ID"))
                 {
-                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#replyModal">
-                        Reply
-                    </button>
-                    <button type="button" class="btn btn-danger">Delete</button>
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editModal" data-comment-id="@comment.Id">Edit</button>
+                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" data-comment-id="@comment.Id">Delete</button>
                 }
             }
         </div>
@@ -22,4 +30,23 @@
     <br />
 }
 
-@await Html.PartialAsync("_EditComment", new Comment() { BlogId = Model.Id, UserId = (int)Context.Session.GetInt32("USER_ID")! })
+@await Html.PartialAsync("_EditComment", new Comment())
+@await Html.PartialAsync("_DeleteComment", new Comment())
+
+<script>
+    var editModal = document.getElementById('editModal');
+    // Send selected comment data to the edit modal.
+    editModal.addEventListener('show.bs.modal', function (event) {
+        var button = event.relatedTarget;
+        var commentId = button.getAttribute('data-comment-id');
+        editModal.querySelector('.modal-body #Id').value = commentId;
+    });
+
+    var deleteModal = document.getElementById('deleteModal');
+    // Send selected comment data to the delete modal.
+    deleteModal.addEventListener('show.bs.modal', function (event) {
+        var button = event.relatedTarget;
+        var commentId = button.getAttribute('data-comment-id');
+        deleteModal.querySelector('.modal-body #Id').value = commentId;
+    });
+</script>

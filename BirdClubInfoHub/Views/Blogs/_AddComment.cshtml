@@ -6,7 +6,7 @@
             <input type="hidden" asp-for="UserId" />
             <input type="hidden" asp-for="BlogId" />
 
-            <input asp-for="Contents" placeholder="Add a comment" class="form-control" />
+            <input id="Contents" name="Contents" placeholder="Add a comment" class="form-control" />
             <span asp-validation-for="Contents" class="text-danger"></span>
 
             <input type="submit" value="Comment" class="btn btn-primary" />

@@ -87,12 +87,51 @@ namespace BirdClubInfoHub.Controllers
         {
             comment.User = _dbContext.Users.Find(comment.UserId)!;
             comment.Blog = _dbContext.Blogs.Find(comment.BlogId)!;
+            comment.CreatedDate = DateTime.Now;
             _dbContext.Comments.Add(comment);
             _dbContext.SaveChanges();
 
             Blog blog = comment.Blog;
-            blog.Comments = _dbContext.Comments.Where(comment => comment.BlogId == blog.Id)
-                .Include(comment => comment.User).ToList();
+            blog.Comments = _dbContext.Comments.Where(cmt => cmt.BlogId == blog.Id)
+                .Include(cmt => cmt.User).ToList();
+            return PartialView("_CommentSection", blog);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult EditComment(Comment comment)
+        {
+            Comment? commentInDb = _dbContext.Comments.Find(comment.Id);
+            if (commentInDb == null)
+            {
+                return NotFound();
+            }
+            commentInDb.Contents = comment.Contents;
+            commentInDb.ModifiedDate = DateTime.Now;
+            _dbContext.Comments.Update(commentInDb);
+            _dbContext.SaveChanges();
+
+            Blog blog = _dbContext.Blogs.Find(commentInDb.BlogId)!;
+            blog.Comments = _dbContext.Comments.Where(cm => cm.BlogId == blog.Id)
+                .Include(cm => cm.User).ToList();
+            return PartialView("_CommentSection", blog);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteComment(int id)
+        {
+            Comment? comment = _dbContext.Comments.Find(id);
+            if (comment == null)
+            {
+                return NotFound();
+            }
+            _dbContext.Comments.Remove(comment);
+            _dbContext.SaveChanges();
+
+            Blog blog = _dbContext.Blogs.Find(comment.BlogId)!;
+            blog.Comments = _dbContext.Comments.Where(cm => cm.BlogId == blog.Id)
+                .Include(cm => cm.User).ToList();
             return PartialView("_CommentSection", blog);
         }
     }
