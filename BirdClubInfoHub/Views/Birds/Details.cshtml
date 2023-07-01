@@ -1,4 +1,4 @@
-﻿@model BirdClubInfoHub.Models.Bird
+﻿@model Bird
 
 @{
     ViewData["Title"] = "Details";
@@ -35,9 +35,6 @@
             @Html.DisplayFor(model => model.User.Id)
         </dd>
     </dl>
-</div>
-<div>
-    <a asp-action="Details" asp-controller="Achievements" asp-route-tournamentid="@Model.Id">View achievements</a>
 </div>
 <div>
     <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
