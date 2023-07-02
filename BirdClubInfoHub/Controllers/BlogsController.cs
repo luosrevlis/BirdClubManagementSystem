@@ -85,6 +85,9 @@ namespace BirdClubInfoHub.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult AddComment(Comment comment)
         {
+            if (comment.UserId == 0) {
+                return RedirectToAction("Index", "Login");
+            }
             comment.User = _dbContext.Users.Find(comment.UserId)!;
             comment.Blog = _dbContext.Blogs.Find(comment.BlogId)!;
             comment.CreatedDate = DateTime.Now;
@@ -94,7 +97,8 @@ namespace BirdClubInfoHub.Controllers
             Blog blog = comment.Blog;
             blog.Comments = _dbContext.Comments.Where(cmt => cmt.BlogId == blog.Id)
                 .Include(cmt => cmt.User).ToList();
-            return PartialView("_CommentSection", blog);
+            // return PartialView("_CommentSection", blog);
+            return RedirectToAction("Details", "Blogs", new { id = blog.Id });
         }
 
         [HttpPost]
@@ -114,7 +118,8 @@ namespace BirdClubInfoHub.Controllers
             Blog blog = _dbContext.Blogs.Find(commentInDb.BlogId)!;
             blog.Comments = _dbContext.Comments.Where(cm => cm.BlogId == blog.Id)
                 .Include(cm => cm.User).ToList();
-            return PartialView("_CommentSection", blog);
+            // return PartialView("_CommentSection", blog);
+            return RedirectToAction("Details", "Blogs", new { id = blog.Id });
         }
 
         [HttpPost]
@@ -132,7 +137,8 @@ namespace BirdClubInfoHub.Controllers
             Blog blog = _dbContext.Blogs.Find(comment.BlogId)!;
             blog.Comments = _dbContext.Comments.Where(cm => cm.BlogId == blog.Id)
                 .Include(cm => cm.User).ToList();
-            return PartialView("_CommentSection", blog);
+            // return PartialView("_CommentSection", blog);
+            return RedirectToAction("Details", "Blogs", new { id = blog.Id });
         }
     }
 }

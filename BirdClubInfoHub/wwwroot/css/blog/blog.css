@@ -15,7 +15,6 @@
 }
 
 .blog-container {
-    margin-top: 2rem;
     display: flex;
     flex-flow: column nowrap;
     justify-content: center;
@@ -23,6 +22,10 @@
     border-radius: 0.5rem;
     width: 100%;
     box-shadow: 0.1rem 0.1rem 0.5rem #0007003a;
+}
+
+.blog-container:nth-of-type(n + 2) {
+    margin-top: 2rem;
 }
 
 .blog-body {

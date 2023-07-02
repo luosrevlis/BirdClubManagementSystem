@@ -4,14 +4,20 @@
     <hr />
     <h2 class="create-comment-title">Write a Comment</h2>
 
-    <form class="create-comment-form" asp-action="AddComment" data-ajax="true" data-ajax-mode="replace" data-ajax-update="#CommentSection">
+    @* data-ajax="true" data-ajax-mode="replace" data-ajax-update="#CommentSection" *@
+    <form class="create-comment-form" asp-controller="Blogs" asp-action="AddComment" method="post">
         <input type="hidden" asp-for="UserId" />
         <input type="hidden" asp-for="BlogId" />
 
-        <textarea id="Contents" class="create-comment-box" rows="5" name="Contents" placeholder="Add your comment..." class="form-control"></textarea>
-        <span asp-validation-for="Contents" class="text-danger"></span>
+        @* id="Contents" *@
+        <textarea
+            class="create-comment-box"
+            rows="5" asp-for="Contents"
+            placeholder="Add your comment..."
+            required></textarea>
+        @* <span asp-validation-for="Contents" class="text-danger"></span> *@
 
-        <input class="create-comment-button" type="submit" value="Comment" class="btn btn-primary" />
+        <input class="create-comment-button" type="submit" value="Comment" />
     </form>
 </div>
 

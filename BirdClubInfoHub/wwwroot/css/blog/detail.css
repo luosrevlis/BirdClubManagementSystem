@@ -262,7 +262,8 @@ hr {
     margin-top: 1rem;
 }
 
-.create-comment-box {
+.create-comment-box,
+.edit-comment-box {
     width: 100%;
     padding: 1rem;
     box-sizing: border-box;
@@ -270,10 +271,13 @@ hr {
     border-radius: 0.5rem;
     font-size: 1rem;
     transition: all 0.2s ease-in;
+    resize: none;
 }
 
 .create-comment-box:hover,
-.create-comment-box:focus {
+.edit-comment-box:hover,
+.create-comment-box:focus,
+.edit-comment-box:focus {
     border: 0.1rem solid #000;
 }
 
@@ -286,4 +290,83 @@ hr {
     border: none;
     border-radius: 0.5rem;
     cursor: pointer;
+}
+
+.update-comment-container {
+    margin-top: 1rem;
+    width: 100%;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.edit-button,
+.delete-button,
+.accept-button,
+.cancel-button {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 0.5rem;
+    color: #fff;
+    cursor: pointer;
+}
+
+.edit-button,
+.accept-button {
+    background-color: #4F77FF;
+}
+
+.delete-button,
+.cancel-button {
+    margin-left: 1rem;
+    background-color: #ff0000;
+}
+
+.edit-comment-container {
+    display: none;
+    flex: 1;
+    margin-left: 1rem;
+    flex-flow: column nowrap;
+    justify-content: center;
+    align-items: center;
+}
+
+.edit-control-container {
+    width: 100%;
+}
+
+.edit-control-container {
+    margin-top: 1rem;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.delete-comment-container {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #00000077;
+    width: 100%;
+    height: 100vh;
+    display: none;
+    justify-content: center;
+    align-items: center;
+}
+
+.delete-comment-form {
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+    background-color: #fff;
+    border-radius: 0.5rem;
+}
+
+.delete-comment-control {
+    margin-top: 2rem;
 }

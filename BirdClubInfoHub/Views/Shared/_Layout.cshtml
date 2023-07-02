@@ -120,8 +120,9 @@
             <p>&copy; 2023 Vietnam Bird Club. All Rights Reserved. Terms &amp; Conditions. Privacy Policy.</p>
         </div>
     </footer>
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    @await RenderSectionAsync("Scripts", required: false)
+    @RenderSection("Scripts", required: false)
 </body>
 </html>
