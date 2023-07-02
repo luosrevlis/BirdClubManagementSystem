@@ -1,0 +1,67 @@
+.event-section {
+    width: 80%;
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    align-items: center;
+}
+
+.event-body {
+    margin-top: 5rem;
+    width: 50%;
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0.1rem 0.1rem 0.2rem #0007003a;
+    padding: 1rem;
+}
+
+.event-body > *:nth-child(n + 2) {
+    margin-top: 2rem;
+}
+
+.register-button,
+.back-button {
+    background-color: #4F77FF;
+    color: #fff;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+}
+
+.back-button {
+    align-self: flex-start;
+}
+
+.event-title,
+.event-date,
+.event-entrance-container,
+.event-description-container {
+    width: 100%;
+}
+
+.event-title {
+    text-align: center;
+}
+
+.event-date {
+    text-align: right;
+}
+
+.event-description-container {
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.event-description {
+    margin-top: 1rem;
+}
+
+.event-entrance-container {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    align-items: center;
+}

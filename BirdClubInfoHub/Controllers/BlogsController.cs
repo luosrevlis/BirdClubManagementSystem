@@ -98,7 +98,7 @@ namespace BirdClubInfoHub.Controllers
             blog.Comments = _dbContext.Comments.Where(cmt => cmt.BlogId == blog.Id)
                 .Include(cmt => cmt.User).ToList();
             // return PartialView("_CommentSection", blog);
-            return RedirectToAction("Details", "Blogs", new { id = blog.Id });
+            return RedirectToAction("Details", new { id = blog.Id });
         }
 
         [HttpPost]
@@ -119,7 +119,7 @@ namespace BirdClubInfoHub.Controllers
             blog.Comments = _dbContext.Comments.Where(cm => cm.BlogId == blog.Id)
                 .Include(cm => cm.User).ToList();
             // return PartialView("_CommentSection", blog);
-            return RedirectToAction("Details", "Blogs", new { id = blog.Id });
+            return RedirectToAction("Details", new { id = blog.Id });
         }
 
         [HttpPost]
@@ -138,7 +138,7 @@ namespace BirdClubInfoHub.Controllers
             blog.Comments = _dbContext.Comments.Where(cm => cm.BlogId == blog.Id)
                 .Include(cm => cm.User).ToList();
             // return PartialView("_CommentSection", blog);
-            return RedirectToAction("Details", "Blogs", new { id = blog.Id });
+            return RedirectToAction("Details", new { id = blog.Id });
         }
     }
 }
