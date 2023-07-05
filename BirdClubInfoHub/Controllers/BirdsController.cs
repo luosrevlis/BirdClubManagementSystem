@@ -1,10 +1,7 @@
 ﻿using BirdClubInfoHub.Data;
 using BirdClubInfoHub.Filters;
 using BirdClubInfoHub.Models;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace BirdClubInfoHub.Controllers
 {
@@ -16,6 +13,17 @@ namespace BirdClubInfoHub.Controllers
         public BirdsController(BcmsDbContext dbContext)
         {
             _dbContext = dbContext;
+        }
+
+        public ActionResult GetImageFromBytes(int id)
+        {
+            Bird? bird = _dbContext.Birds.Find(id);
+            if (bird == null)
+            {
+                return NotFound();
+            }
+            //if image is empty return default, 5 places (thumbnail x2 profile x2 bird profile)
+            return File(bird.ProfilePicture, "image/png");
         }
 
         // GET: BirdsController
@@ -116,7 +124,6 @@ namespace BirdClubInfoHub.Controllers
             {
                 return NotFound();
             }
-            bird.User = _dbContext.Users.Find(bird.UserId);
             _dbContext.Birds.Remove(bird);
             _dbContext.SaveChanges();
             return RedirectToAction("Index");
