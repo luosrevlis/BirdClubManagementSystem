@@ -59,7 +59,6 @@ namespace BirdClubInfoHub.Controllers
         // POST: ProfileController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authenticated]
         public ActionResult Edit(User user)
         {
             User? userInDb = _dbContext.Users.Find(user.Id);
@@ -95,7 +94,6 @@ namespace BirdClubInfoHub.Controllers
         // POST: ProfileController/ChangeProfilePicture/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authenticated]
         public ActionResult ChangeProfilePicture(int id, IFormFile profilePicture)
         {
             User? user = _dbContext.Users.Find(id);
@@ -126,7 +124,6 @@ namespace BirdClubInfoHub.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authenticated]
         public ActionResult ChangePassword(IFormCollection formCollection)
         {
             string oldPassword = formCollection["OldPassword"]!;

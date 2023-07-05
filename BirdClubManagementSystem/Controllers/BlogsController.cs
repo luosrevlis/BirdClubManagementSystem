@@ -23,7 +23,7 @@ namespace BirdClubManagementSystem.Controllers
             {
                 return NotFound();
             }
-            // if thumbnail is empty return default thumbnail, 4 places
+            // if thumbnail is empty return default thumbnail, 5 places
             return File(blog.Thumbnail, "image/png");
         }
 
@@ -64,8 +64,9 @@ namespace BirdClubManagementSystem.Controllers
         {
             blog.User = _dbContext.Users.Find(blog.UserId)!;
             blog.BlogCategory = _dbContext.BlogCategories.Find(blog.BlogCategoryId)!;
-            using (MemoryStream memoryStream = new())
+            if (thumbnailFile != null)
             {
+                using MemoryStream memoryStream = new();
                 thumbnailFile.CopyTo(memoryStream);
                 blog.Thumbnail = memoryStream.ToArray();
             }

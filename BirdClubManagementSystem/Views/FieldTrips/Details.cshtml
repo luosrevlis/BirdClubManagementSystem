@@ -27,7 +27,7 @@
     {
         <a asp-action="MarkAsEnded" asp-route-id="@Model.Id">Mark as ended</a>
     }
-    @if (Model.Status != "Ended")
+    @if (Model.Status != "Ended" && Model.Status != "Cancelled")
     {
         <a asp-action="Cancel" asp-route-id="@Model.Id">Cancel</a>
     }

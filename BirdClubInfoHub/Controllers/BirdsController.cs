@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BirdClubInfoHub.Controllers
 {
-    [Authenticated]
     public class BirdsController : Controller
     {
         private readonly BcmsDbContext _dbContext;
@@ -22,23 +21,25 @@ namespace BirdClubInfoHub.Controllers
             {
                 return NotFound();
             }
-            //if image is empty return default, 5 places (thumbnail x2 profile x2 bird profile)
+            //if bytearray is empty return default, 5 places (thumbnail x2 profile x2 bird profile)
             return File(bird.ProfilePicture, "image/png");
         }
 
         // GET: BirdsController
+        [Authenticated]
         public ActionResult Index()
         {
-            int userId = (int)HttpContext.Session.GetInt32("USER_ID")!;
-            //Bird? bird = _dbContext.Birds.Find();
-            IEnumerable<Bird> objBirdsList = _dbContext.Birds.Where(bird => bird.UserId == userId);
-            return View(objBirdsList);
+            int? userId = HttpContext.Session.GetInt32("USER_ID");
+            List<Bird> birds = _dbContext.Birds.Where(bird => bird.UserId == userId).ToList();
+            return View(birds);
         }
 
+        [Authenticated]
         public ActionResult Details(int id)
         {
+            int? userId = HttpContext.Session.GetInt32("USER_ID");
             Bird? bird = _dbContext.Birds.Find(id);
-            if (bird == null)
+            if (bird == null || bird.UserId != userId)
             {
                 return NotFound();
             }
@@ -46,37 +47,42 @@ namespace BirdClubInfoHub.Controllers
         }
 
         // GET: BirdsController/Create
-        public ActionResult Create(int id)
+        [Authenticated]
+        public ActionResult Create()
         {
-            id = (int)HttpContext.Session.GetInt32("USER_ID")!;
-            return View(new Bird() { UserId = id });
+            return View();
         }
 
         // POST: BirdsController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Bird bird)
+        public ActionResult Create(Bird bird, IFormFile profilePicture)
         {
-            if (ModelState.IsValid)
+            int? userId = HttpContext.Session.GetInt32("USER_ID");
+            User? user = _dbContext.Users.Find(userId);
+            if (user == null)
             {
-                bird.User = _dbContext.Users.Find(bird.UserId)!;
-                _dbContext.Birds.Add(bird);
-                _dbContext.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "Login");
             }
-            return View();
+            bird.User = user;
+            if (profilePicture != null)
+            {
+                using MemoryStream memoryStream = new();
+                profilePicture.CopyTo(memoryStream);
+                bird.ProfilePicture = memoryStream.ToArray();
+            }
+            _dbContext.Birds.Add(bird);
+            _dbContext.SaveChanges();
+            return RedirectToAction("Index");
         }
 
         // GET: BirdsController/Edit/5
-        public ActionResult Edit(int? id)
+        [Authenticated]
+        public ActionResult Edit(int id)
         {
-            int userId = (int)HttpContext.Session.GetInt32("USER_ID")!;
-            var bird = _dbContext.Birds.Find(id)!;
-            if (bird.UserId != userId)
-            {
-                return RedirectToAction("Index");
-            }
-            if (bird == null)
+            int? userId = HttpContext.Session.GetInt32("USER_ID");
+            Bird? bird = _dbContext.Birds.Find(id);
+            if (bird == null || bird.UserId != userId)
             {
                 return NotFound();
             }
@@ -86,28 +92,34 @@ namespace BirdClubInfoHub.Controllers
         // POST: BirdsController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(Bird bird)
+        public ActionResult Edit(Bird bird, IFormFile profilePicture)
         {
-            if (bird == null)
+            Bird? birdInDb = _dbContext.Birds.Find(bird.Id);
+            if (birdInDb == null || birdInDb.UserId != HttpContext.Session.GetInt32("USER_ID"))
             {
                 return NotFound();
             }
-            if (ModelState.IsValid)
+            birdInDb.Name = bird.Name;
+            birdInDb.Description = bird.Description;
+            birdInDb.Species = bird.Species;
+            if (profilePicture != null)
             {
-                bird.User = _dbContext.Users.Find(bird.UserId)!;
-                _dbContext.Birds.Update(bird);
-                _dbContext.SaveChanges();
-                return RedirectToAction("Index");
+                using MemoryStream memoryStream = new();
+                profilePicture.CopyTo(memoryStream);
+                birdInDb.ProfilePicture = memoryStream.ToArray();
             }
-            return View() ;
+            _dbContext.Birds.Update(birdInDb);
+            _dbContext.SaveChanges();
+            return RedirectToAction("Index");
         }
 
+        [Authenticated]
         // GET: BirdsController/Delete/5
-        public ActionResult Delete(int? id)
+        public ActionResult Delete(int id)
         {
-            int userId = (int)HttpContext.Session.GetInt32("USER_ID")!;
-            var bird = _dbContext.Birds.Find(id);
-            if (bird == null)
+            int? userId = HttpContext.Session.GetInt32("USER_ID");
+            Bird? bird = _dbContext.Birds.Find(id);
+            if (bird == null || bird.UserId != userId)
             {
                 return NotFound();
             }
@@ -117,9 +129,9 @@ namespace BirdClubInfoHub.Controllers
         // POST: BirdsController/Delete/5
         [HttpPost,ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeletePOST(int? id)
+        public ActionResult DeletePOST(int id)
         {
-            var bird = _dbContext.Birds.Find(id);
+            Bird? bird = _dbContext.Birds.Find(id);
             if (bird == null)
             {
                 return NotFound();
