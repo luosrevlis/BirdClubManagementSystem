@@ -192,5 +192,30 @@ namespace BirdClubManagementSystem.Controllers
             _dbContext.SaveChanges();
             return RedirectToAction("Index", "ClubEvents");
         }
+
+        public IActionResult EditHighlights(int id)
+        {
+            Tournament? tournament = _dbContext.Tournaments.Find(id);
+            if (tournament == null || tournament.Status != "Ended")
+            {
+                return NotFound();
+            }
+            return View(tournament);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult EditHighlights(Tournament tournament)
+        {
+            Tournament? tournamentInDb = _dbContext.Tournaments.Find(tournament.Id);
+            if (tournamentInDb == null || tournamentInDb.Status != "Ended")
+            {
+                return NotFound();
+            }
+            tournamentInDb.Highlights = tournament.Highlights;
+            _dbContext.Tournaments.Update(tournamentInDb);
+            _dbContext.SaveChanges();
+            return RedirectToAction("Details", new { id = tournament.Id });
+        }
     }
 }

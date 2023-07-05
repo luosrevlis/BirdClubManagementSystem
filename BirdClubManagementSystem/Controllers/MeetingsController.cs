@@ -192,5 +192,30 @@ namespace BirdClubManagementSystem.Controllers
             _dbContext.SaveChanges();
             return RedirectToAction("Index", "ClubEvents");
         }
+
+        public IActionResult EditHighlights(int id)
+        {
+            Meeting? meeting = _dbContext.Meetings.Find(id);
+            if (meeting == null || meeting.Status != "Ended")
+            {
+                return NotFound();
+            }
+            return View(meeting);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult EditHighlights(Meeting meeting)
+        {
+            Meeting? meetingInDb = _dbContext.Meetings.Find(meeting.Id);
+            if (meetingInDb == null || meetingInDb.Status != "Ended")
+            {
+                return NotFound();
+            }
+            meetingInDb.Highlights = meeting.Highlights;
+            _dbContext.Meetings.Update(meetingInDb);
+            _dbContext.SaveChanges();
+            return RedirectToAction("Details", new { id = meeting.Id });
+        }
     }
 }

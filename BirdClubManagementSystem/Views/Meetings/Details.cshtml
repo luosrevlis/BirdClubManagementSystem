@@ -13,6 +13,10 @@
 
 <div>
     <a asp-action="Index" asp-controller="MeetingRegistrations" asp-route-meetingid="@Model.Id">View participants list</a>
+    @if (Model.Status == "Ended")
+    {
+        <a asp-action="EditHighlights" asp-route-id="@Model.Id">Edit highlights</a>
+    }
 </div>
 <div>
     @if (Model.Status == "Open")
