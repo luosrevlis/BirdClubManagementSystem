@@ -8,8 +8,8 @@
 
 <form method="post" asp-action="ChangeProfilePicture" enctype="multipart/form-data">
     <div class="border pt-3 mt-4">
-        <input type="hidden" name="id" value="@Model.Id" />
-        <input type="file" name="profilePicture" accept="image/*" required />
+        <input type="hidden" id="id" name="id" value="@Model.Id" />
+        <input type="file" id="profile-picture" name="profilePicture" accept="image/*" required />
         <input type="submit" class="btn btn-primary" value="Change profile picture" />
     </div>
 </form>

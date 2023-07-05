@@ -86,6 +86,11 @@ nav > * {
 .nav-user-utils-container .ava-container {
   height: 3rem;
   width: 3rem;
+  overflow: hidden;
+  border-radius: 3rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .nav-logo-container .logo-img-container img,
@@ -112,7 +117,7 @@ a {
 }
 
 .nav-link,
-.nav-user-utils-container .sign-in-link {
+.nav-user-utils-container .action-link {
   background: none;
   border: none;
   font-size: 1rem;
@@ -153,15 +158,15 @@ a {
   border: none;
 }
 
-.nav-user-utils-container .sign-in-link {
+.nav-user-utils-container .action-link {
   background-color: #AD82D9;
   color: #fff;
   padding: 1rem 1.5rem;
   border-radius: 0.5rem;
 }
 
-.nav-user-utils-container .sign-in-link:hover,
-.nav-user-utils-container .sign-in-link:focus {
+.nav-user-utils-container .action-link:hover,
+.nav-user-utils-container .action-link:focus {
   background-color: #8000ff;
 }
 

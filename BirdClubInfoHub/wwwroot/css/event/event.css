@@ -85,7 +85,7 @@
     align-self: flex-start;
     margin-top: 1rem;
     padding: 0.5rem 1rem;
-    background-color: rgba(0, 0, 0, 0.699);
+    background-color: #4f78ff;
     border-top-right-radius: 0.5rem;
     border-bottom-right-radius: 0.5rem;
 }
@@ -94,7 +94,7 @@
     align-self: flex-end;
     margin-bottom: 1rem;
     padding: 0.5rem 1rem;
-    background-color: rgba(0, 0, 0, 0.699);
+    background-color: #4f78ff;
     border-top-left-radius: 0.5rem;
     border-bottom-left-radius: 0.5rem;
 }
