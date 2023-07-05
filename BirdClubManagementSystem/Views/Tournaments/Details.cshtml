@@ -1,47 +1,16 @@
-﻿@model BirdClubManagementSystem.Models.Tournament
+﻿@model IClubEvent
+
+@section Styles
+{
+    <link rel="stylesheet" href="~/css/event/detail.css" />
+}
 
 @{
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
+@await Html.PartialAsync("~/Views/ClubEvents/_EventDetail.cshtml", Model)
 
-<div>
-    <h4>Tournament</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Date)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Date)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Fee)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Fee)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Status)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Status)
-        </dd>
-    </dl>
-</div>
 <div>
     <a asp-action="Index" asp-controller="TournamentRegistrations" asp-route-tournamentid="@Model.Id">View participants list</a>
     @if (Model.Status == "Ended")
@@ -64,5 +33,4 @@
     }
     <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a>
     <a asp-action="Delete" asp-route-id="@Model.Id">Delete</a>
-    <a asp-action="Index" asp-controller="ClubEvents">Back to List</a>
 </div>

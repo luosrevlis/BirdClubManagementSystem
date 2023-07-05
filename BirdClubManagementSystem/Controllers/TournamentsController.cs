@@ -1,7 +1,6 @@
 ﻿using BirdClubManagementSystem.Data;
 using BirdClubManagementSystem.Filters;
 using BirdClubManagementSystem.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BirdClubManagementSystem.Controllers
@@ -44,14 +43,18 @@ namespace BirdClubManagementSystem.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create(Tournament tournament)
         {
-            if (ModelState.IsValid)
+            if (tournament.Date < tournament.RegistrationCloseDate)
             {
-                tournament.Status = "Open";
-                _dbContext.Tournaments.Add(tournament);
-                _dbContext.SaveChanges();
-                return RedirectToAction("Index", "ClubEvents");
+                ModelState.AddModelError("RegDateError", "Event cannot take place before registration is closed!");
             }
-            return View(tournament);
+            if (!ModelState.IsValid)
+            {
+                return View(tournament);
+            }
+            tournament.Status = "Open";
+            _dbContext.Tournaments.Add(tournament);
+            _dbContext.SaveChanges();
+            return RedirectToAction("Index", "ClubEvents");
         }
 
         // GET: TournamentsController/Edit/5
@@ -70,13 +73,17 @@ namespace BirdClubManagementSystem.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Edit(Tournament tournament)
         {
-            if (ModelState.IsValid)
+            if (tournament.Date < tournament.RegistrationCloseDate)
             {
-                _dbContext.Tournaments.Update(tournament);
-                _dbContext.SaveChanges();
-                return RedirectToAction("Index", "ClubEvents");
+                ModelState.AddModelError("RegDateError", "Event cannot take place before registration is closed!");
             }
-            return View(tournament);
+            if (!ModelState.IsValid)
+            {
+                return View(tournament);
+            }
+            _dbContext.Tournaments.Update(tournament);
+            _dbContext.SaveChanges();
+            return RedirectToAction("Index", "ClubEvents");
         }
 
         // GET: TournamentsController/Delete/5

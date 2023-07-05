@@ -1,7 +1,6 @@
 ﻿using BirdClubManagementSystem.Data;
 using BirdClubManagementSystem.Filters;
 using BirdClubManagementSystem.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BirdClubManagementSystem.Controllers
@@ -44,14 +43,18 @@ namespace BirdClubManagementSystem.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create(FieldTrip fieldTrip)
         {
-            if (ModelState.IsValid)
+            if (fieldTrip.Date < fieldTrip.RegistrationCloseDate)
             {
-                fieldTrip.Status = "Open";
-                _dbContext.FieldTrips.Add(fieldTrip);
-                _dbContext.SaveChanges();
-                return RedirectToAction("Index", "ClubEvents");
+                ModelState.AddModelError("RegDateError", "Event cannot take place before registration is closed!");
             }
-            return View(fieldTrip);
+            if (!ModelState.IsValid)
+            {
+                return View(fieldTrip);
+            }
+            fieldTrip.Status = "Open";
+            _dbContext.FieldTrips.Add(fieldTrip);
+            _dbContext.SaveChanges();
+            return RedirectToAction("Index", "ClubEvents");
         }
 
         // GET: FieldTripsController/Edit/5
@@ -70,13 +73,17 @@ namespace BirdClubManagementSystem.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Edit(FieldTrip fieldTrip)
         {
-            if (ModelState.IsValid)
+            if (fieldTrip.Date < fieldTrip.RegistrationCloseDate)
             {
-                _dbContext.FieldTrips.Update(fieldTrip);
-                _dbContext.SaveChanges();
-                return RedirectToAction("Index", "ClubEvents");
+                ModelState.AddModelError("RegDateError", "Event cannot take place before registration is closed!");
             }
-            return View(fieldTrip);
+            if (!ModelState.IsValid)
+            {
+                return View(fieldTrip);
+            }
+            _dbContext.FieldTrips.Update(fieldTrip);
+            _dbContext.SaveChanges();
+            return RedirectToAction("Index", "ClubEvents");
         }
 
         // GET: FieldTripsController/Delete/5

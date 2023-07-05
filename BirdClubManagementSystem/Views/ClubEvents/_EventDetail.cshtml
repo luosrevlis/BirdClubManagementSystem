@@ -19,23 +19,5 @@
             <p class="event-fee"><b>Fee:</b> @Model.Fee</p>
             <p class="status"><b>Status:</b> @Model.Status</p>
         </div>
-
-        @if (Model.Status == "Open")
-        {
-            switch (Model)
-            {
-                case FieldTrip:
-                    <a class="register-button" asp-action="Register" asp-controller="FieldTripRegistrations" asp-route-fieldTripId="@Model.Id">Register</a>
-                    break;
-
-                case Meeting:
-                    <a class="register-button" asp-action="Register" asp-controller="MeetingRegistrations" asp-route-meetingId="@Model.Id">Register</a>
-                    break;
-
-                case Tournament:
-                    <a class="register-button" asp-action="Register" asp-controller="TournamentRegistrations" asp-route-tournamentId="@Model.Id">Register</a>
-                    break;
-            }
-        }
     </div>
 </section>
