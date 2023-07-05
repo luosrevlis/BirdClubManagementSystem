@@ -2,6 +2,7 @@
 using BirdClubManagementSystem.Filters;
 using BirdClubManagementSystem.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace BirdClubManagementSystem.Controllers
 {
@@ -47,6 +48,31 @@ namespace BirdClubManagementSystem.Controllers
             blog.User = _dbContext.Users.Find(blog.UserId)!;
             blog.BlogCategory = _dbContext.BlogCategories.Find(blog.BlogCategoryId)!;
             return View(blog);
+        }
+
+        public IActionResult Create()
+        {
+            int? userId = HttpContext.Session.GetInt32("USER_ID");
+            SelectList categoryOptions = new(_dbContext.BlogCategories, nameof(BlogCategory.Id), nameof(BlogCategory.Name));
+            ViewBag.CategoryOptions = categoryOptions;
+            return View(new Blog() { UserId = (int)userId! });
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Create(Blog blog, IFormFile thumbnailFile)
+        {
+            blog.User = _dbContext.Users.Find(blog.UserId)!;
+            blog.BlogCategory = _dbContext.BlogCategories.Find(blog.BlogCategoryId)!;
+            using (MemoryStream memoryStream = new())
+            {
+                thumbnailFile.CopyTo(memoryStream);
+                blog.Thumbnail = memoryStream.ToArray();
+            }
+            blog.Status = "Accepted";
+            _dbContext.Blogs.Add(blog);
+            _dbContext.SaveChanges();
+            return RedirectToAction("Index");
         }
 
         public IActionResult Delete(int id)

@@ -1,0 +1,56 @@
+﻿@model Blog
+
+@section Styles
+{
+    @* <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" /> *@
+    <link rel="stylesheet" href="~/css/blog/create.css" />
+}
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<section class="create-blog-container">
+    <a class="create-blog-back-button" asp-action="Index">Back to List</a>
+
+    <form class="create-blog-form" asp-controller="Blogs" asp-action="Create" enctype="multipart/form-data" method="post">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="UserId" />
+
+        <h2>Create Blog</h2>
+
+        <div class="input-container">
+            <label class="input-label" for="blog-category">Blog Category</label>
+            <select id="blog-category" class="input" asp-for="BlogCategoryId" asp-items="ViewBag.CategoryOptions">
+                <option value="">Choose a category</option>
+            </select>
+        </div>
+
+        <div class="input-container">
+            <label class="input-label" for="blog-title">Blog Title</label>
+            <input id="blog-title" class="input" asp-for="Title" class="form-control" />
+            <span asp-validation-for="Title" class="text-danger"></span>
+        </div>
+
+        <div class="input-container">
+            <label for="blog-contents" class="input-label blog-content-label">Blog Contents</label>
+            <textarea id="blog-contents" name="Contents"></textarea>
+        </div>
+
+        <div class="blog-thumbnail-container">
+            <label for="blog-thumbnail" class="input-label thumbnail-submit-button">Select file</label>
+            <input id="blog-thumbnail" class="input" asp-for="Thumbnail" type="file" name="thumbnailFile" accept="image/*" />
+            <p id="thumbnail-name"></p>
+        </div>
+
+        <input class="create-blog-create-button" type="submit" value="Create" class="btn btn-primary" />
+    </form>
+</section>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+        await Html.RenderPartialAsync("_Summernote", new { Height = 500, Selector = "#blog-contents" });
+    }
+    <script src="~/js/blog/create.js"></script>
+}
