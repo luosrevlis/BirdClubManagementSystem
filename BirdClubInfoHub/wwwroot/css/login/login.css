@@ -1,6 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800&display=swap');
 
-
+header,
+footer {
+    display: none;
+}
 
 *, *::before, *::after {
     padding: 0;
@@ -24,14 +27,20 @@ input{
 
 main{
     width: 100%;
-    min-height: 100vh;
+    /* min-height: 100vh; */
     overflow: hidden;
     background-color: #8FD9C4 ;
-    padding: 2rem;
+    /* padding: 2rem; */
+    padding: 0 !important;
     display: flex;
     align-items: center;
     justify-content: center;
 }
+
+main > * {
+    margin: 0 !important;
+}
+
 .container{
     position: relative;
     width: 100%;

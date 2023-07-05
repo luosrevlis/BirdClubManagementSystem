@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BirdClubInfoHub.Controllers
 {
-    [Authenticated]
     public class ProfileController : Controller
     {
         private readonly BcmsDbContext _dbContext;
@@ -28,6 +27,7 @@ namespace BirdClubInfoHub.Controllers
         }
 
         // GET: ProfileController
+        [Authenticated]
         public ActionResult Index()
         {
             int? userID = HttpContext.Session.GetInt32("USER_ID");
@@ -40,6 +40,7 @@ namespace BirdClubInfoHub.Controllers
         }
 
         // GET: ProfileController/Edit/5
+        [Authenticated]
         public ActionResult Edit(int id)
         {
             int? userID = HttpContext.Session.GetInt32("USER_ID");
@@ -58,6 +59,7 @@ namespace BirdClubInfoHub.Controllers
         // POST: ProfileController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authenticated]
         public ActionResult Edit(User user)
         {
             User? userInDb = _dbContext.Users.Find(user.Id);
@@ -74,6 +76,7 @@ namespace BirdClubInfoHub.Controllers
         }
 
         // GET: ProfileController/ChangeProfilePicture/5
+        [Authenticated]
         public ActionResult ChangeProfilePicture(int id)
         {
             int? userID = HttpContext.Session.GetInt32("USER_ID");
@@ -92,6 +95,7 @@ namespace BirdClubInfoHub.Controllers
         // POST: ProfileController/ChangeProfilePicture/5
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authenticated]
         public ActionResult ChangeProfilePicture(int id, IFormFile profilePicture)
         {
             User? user = _dbContext.Users.Find(id);
@@ -109,6 +113,7 @@ namespace BirdClubInfoHub.Controllers
             return RedirectToAction("Index");
         }
 
+        [Authenticated]
         public ActionResult ChangePassword(int id)
         {
             int? userID = HttpContext.Session.GetInt32("USER_ID");
@@ -121,6 +126,7 @@ namespace BirdClubInfoHub.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authenticated]
         public ActionResult ChangePassword(IFormCollection formCollection)
         {
             string oldPassword = formCollection["OldPassword"]!;
