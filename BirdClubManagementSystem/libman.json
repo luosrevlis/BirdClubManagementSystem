@@ -1,5 +1,54 @@
 {
   "version": "1.0",
   "defaultProvider": "cdnjs",
-  "libraries": []
+  "libraries": [
+    {
+      "library": "summernote@0.8.20",
+      "destination": "wwwroot/lib/summernote/",
+      "files": [
+        "summernote.min.js",
+        "summernote-bs4.css",
+        "summernote-bs4.css.map",
+        "summernote-bs4.js",
+        "summernote-bs4.js.map",
+        "summernote-bs4.min.css",
+        "summernote-bs4.min.js",
+        "summernote-bs5.css",
+        "summernote-bs5.css.map",
+        "summernote-bs5.js",
+        "summernote-bs5.js.map",
+        "summernote-bs5.min.css",
+        "summernote-bs5.min.js",
+        "summernote-lite.css",
+        "summernote-lite.css.map",
+        "summernote-lite.js",
+        "summernote-lite.js.map",
+        "summernote-lite.min.css",
+        "summernote-lite.min.js",
+        "summernote.css",
+        "summernote.css.map",
+        "summernote.js",
+        "summernote.js.map",
+        "summernote.min.css",
+        "font/summernote.eot",
+        "font/summernote.ttf",
+        "font/summernote.woff",
+        "font/summernote.woff2",
+        "lang/summernote-vi-VN.min.js",
+        "lang/summernote-vi-VN.js.map",
+        "lang/summernote-vi-VN.js",
+        "lang/summernote-en-US.min.js",
+        "lang/summernote-en-US.js.map",
+        "lang/summernote-en-US.js",
+        "plugin/databasic/summernote-ext-databasic.css",
+        "plugin/databasic/summernote-ext-databasic.js",
+        "plugin/databasic/summernote-ext-databasic.min.css",
+        "plugin/databasic/summernote-ext-databasic.min.js",
+        "plugin/hello/summernote-ext-hello.js",
+        "plugin/hello/summernote-ext-hello.min.js",
+        "plugin/specialchars/summernote-ext-specialchars.js",
+        "plugin/specialchars/summernote-ext-specialchars.min.js"
+      ]
+    }
+  ]
 }
