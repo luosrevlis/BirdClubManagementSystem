@@ -22,8 +22,15 @@ namespace BirdClubManagementSystem.BatchJobs
 
         private async Task UpdateFieldTrips()
         {
-            List<FieldTrip> fieldTrips = _dbContext.FieldTrips.Where(fieldTrip => fieldTrip.Date <= DateTime.Now).ToList();
-            foreach (var fieldTrip in fieldTrips)
+            List<FieldTrip> fieldTrips = _dbContext.FieldTrips
+                .Where(fieldTrip => fieldTrip.RegistrationCloseDate <= DateTime.Now && fieldTrip.Status == "Open").ToList();
+            foreach (FieldTrip fieldTrip in fieldTrips)
+            {
+                fieldTrip.Status = "Registration Closed";
+                _dbContext.FieldTrips.Update(fieldTrip);
+            }
+            fieldTrips = _dbContext.FieldTrips.Where(fieldTrip => fieldTrip.Date <= DateTime.Now).ToList();
+            foreach (FieldTrip fieldTrip in fieldTrips)
             {
                 fieldTrip.Status = "Happening";
                 _dbContext.FieldTrips.Update(fieldTrip);
@@ -33,7 +40,14 @@ namespace BirdClubManagementSystem.BatchJobs
 
         private async Task UpdateMeetings()
         {
-            List<Meeting> meetings = _dbContext.Meetings.Where(meeting => meeting.Date <= DateTime.Now).ToList();
+            List<Meeting> meetings = _dbContext.Meetings
+                .Where(meeting => meeting.RegistrationCloseDate <= DateTime.Now && meeting.Status == "Open").ToList();
+            foreach (Meeting meeting in meetings)
+            {
+                meeting.Status = "Registration Closed";
+                _dbContext.Meetings.Update(meeting);
+            }
+            meetings = _dbContext.Meetings.Where(meeting => meeting.Date <= DateTime.Now).ToList();
             foreach (Meeting meeting in meetings)
             {
                 meeting.Status = "Happening";
@@ -44,7 +58,14 @@ namespace BirdClubManagementSystem.BatchJobs
 
         private async Task UpdateTournaments()
         {
-            List<Tournament> tournaments = _dbContext.Tournaments.Where(tournament => tournament.Date <= DateTime.Now).ToList();
+            List<Tournament> tournaments = _dbContext.Tournaments
+                .Where(tournament => tournament.RegistrationCloseDate <= DateTime.Now && tournament.Status == "Open").ToList();
+            foreach (Tournament tournament in tournaments)
+            {
+                tournament.Status = "Registration Closed";
+                _dbContext.Tournaments.Update(tournament);
+            }
+            tournaments = _dbContext.Tournaments.Where(tournament => tournament.Date <= DateTime.Now).ToList();
             foreach (Tournament tournament in tournaments)
             {
                 tournament.Status = "Happening";

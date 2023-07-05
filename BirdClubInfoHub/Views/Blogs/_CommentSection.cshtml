@@ -1,39 +1,112 @@
 ﻿@model Blog
 
-@await Html.PartialAsync("_AddComment", new Comment() { BlogId = Model.Id, UserId = (int)Context.Session.GetInt32("USER_ID")! })
-
-@foreach (var comment in Model.Comments)
-{
-    <div class="card mt-2 border-primary">
-        <div class="card-body">
-            <h5 class="card-title">@comment.User.Name</h5>
-            @{
-                if (comment.ModifiedDate != new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified))
-                {
-                    <h6 class="card-subtitle">Modified at @comment.ModifiedDate</h6>
-                }
-                else
-                {
-                    <h6 class="card-subtitle">@comment.CreatedDate</h6>
-                }
-            }
-            <p class="card-text">@comment.Contents</p>
-            @{
-                if (comment.UserId == Context.Session.GetInt32("USER_ID"))
-                {
-                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editModal" data-comment-id="@comment.Id">Edit</button>
-                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" data-comment-id="@comment.Id">Delete</button>
-                }
-            }
-        </div>
-    </div>
-    <br />
+@{
+    var userSessionId = Context.Session.GetInt32("USER_ID") ?? 0;
 }
 
-@await Html.PartialAsync("_EditComment", new Comment())
-@await Html.PartialAsync("_DeleteComment", new Comment())
+@* <div class="card mt-2 border-primary">
+    <div class="card-body">
+        <h5 class="card-title">@comment.User.Name</h5>
+        @{
+            if (comment.ModifiedDate != new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified))
+            {
+                <h6 class="card-subtitle">Modified at @comment.ModifiedDate</h6>
+            }
+            else
+            {
+                <h6 class="card-subtitle">@comment.CreatedDate</h6>
+            }
+        }
+        <p class="card-text">@comment.Contents</p>
+        @{
+            if (userSessionId != null && comment.UserId == userSessionId)
+            {
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editModal" data-comment-id="@comment.Id">Edit</button>
+                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" data-comment-id="@comment.Id">Delete</button>
+            }
+        }
+    </div>
+</div>
+<br /> *@
 
-<script>
+<div class="comments-container">
+    <h2 class="comments-container-title">Comments</h2>
+
+    @foreach (var comment in Model.Comments)
+    {
+        <div class="comment-container">
+            <hr />
+            <div class="comment-body">
+                <div class="comment-author-ava-container">
+                    <img class="comment-author-ava" src="@Url.Action("GetImageFromBytes", "Profile", new { id = comment.UserId })" alt="avatar" />
+                </div>
+
+                <div class="comment-content-container" data-comment-id="@comment.Id">
+                    <div class="comment-info-container">
+                        <p class="comment-author">@comment.User.Name</p>
+
+                        @{
+                            if (comment.ModifiedDate != new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified))
+                            {
+                                <p class="comment-date">Edited @comment.ModifiedDate</p>
+                            }
+                            else
+                            {
+                                <p class="comment-date">@comment.CreatedDate</p>
+                            }
+                        }
+                    </div>
+
+                    <div class="comment-content" data-id="@comment.Id">@comment.Contents</div>
+
+                    @{
+                        var updateComment = new Comment();
+                        updateComment.Id = comment.Id;
+                        updateComment.BlogId = Model.Id;
+                        updateComment.UserId = comment.UserId;
+                        updateComment.Contents = comment.Contents;
+                    }
+
+                    @if (comment.UserId == userSessionId)
+                    {
+                        <div class="update-comment-container">
+                            <button
+                                type="button"
+                                class="edit-button"
+                                data-bs-toggle="modal"
+                                data-bs-target="#editModal"
+                                data-comment-id="@comment.Id"
+                                onclick="initEdit(@comment.Id)">Edit</button>
+
+                            <button
+                                type="button"
+                                class="delete-button"
+                                data-bs-toggle="modal"
+                                data-bs-target="#deleteModal"
+                                data-comment-id="@comment.Id"
+                                onclick="initDelete(@comment.Id)">Delete</button>
+                        </div>
+                    }
+                </div>
+
+                @await Html.PartialAsync("_EditComment", updateComment)
+                @await Html.PartialAsync("_DeleteComment", updateComment)
+            </div>
+        </div>
+    }
+
+    @{
+        var addComment = new Comment();
+        addComment.BlogId = Model.Id;
+        addComment.UserId = Context.Session.GetInt32("USER_ID") ?? 0;
+    }
+    @await Html.PartialAsync("_AddComment", addComment);
+</div>
+
+@* @await Html.PartialAsync("_EditComment", new Comment())
+@await Html.PartialAsync("_DeleteComment", new Comment()) *@
+
+@* <script>
     var editModal = document.getElementById('editModal');
     // Send selected comment data to the edit modal.
     editModal.addEventListener('show.bs.modal', function (event) {
@@ -49,4 +122,4 @@
         var commentId = button.getAttribute('data-comment-id');
         deleteModal.querySelector('.modal-body #Id').value = commentId;
     });
-</script>
+</script> *@
