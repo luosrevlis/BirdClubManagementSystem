@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -32,6 +32,10 @@
             </div>
 
             <div class="nav-user-utils-container">
+                <a class="sign-in-link">SIGN UP</a>
+                <a class="ava-container">
+                    <img src="~/img/nav/ava.png" alt="avatar" onclick="toggleMenu()" /> @*add onclick*@
+                </a>
                 @if (userId != null)
                 {
                     <a asp-controller="Logout" asp-action="Index" class="action-link">Log Out</a>
@@ -47,6 +51,45 @@
                     </div>
                 }
             </div>
+            @* add here dropdown *@
+            <div class="sub-menu-wrap" id="subMenu">
+                <div class="sub-menu">
+                    <div class="user-info">
+                        <img src="~/img/dropdown/ava.png" alt="">
+                        <h2>Be can nguoi yeu</h2>
+                    </div>
+                    <hr>
+
+                    <a href="#" class="sub-menu-link">
+                        <img src="~/img/icon_svg/profile.svg" alt="icon">
+                        <p>Edit profile</p>
+                        <span>></span>
+                    </a>
+                    <a href="./bird_profile.html" class="sub-menu-link">
+                        <img src="~/img/icon_svg/bird_profile.svg" alt="icon">
+                        <p>Your Birds</p>
+                        <span>></span>
+                    </a>
+                    <a href="#" class="sub-menu-link">
+                        <img src="~/img/icon_svg/blogs.svg" alt="icon">
+                        <p>Blogs History</p>
+                        <span>></span>
+                    </a>
+                    <a href="#" class="sub-menu-link">
+                        <img src="~/img/icon_svg/headphones.svg" alt="icon">
+                        <p>Help & Contact</p>
+                        <span>></span>
+                    </a>
+                    <a href="#" class="sub-menu-link">
+                        <img src="~/img/icon_svg/log-out.svg" alt="icon">
+                        <p>Log out</p>
+                        <span>></span>
+                    </a>
+                </div>
+            </div>
+            @* end dropdown html *@
+
+
 
             <div class="nav-toggle">
                 <p>V</p>

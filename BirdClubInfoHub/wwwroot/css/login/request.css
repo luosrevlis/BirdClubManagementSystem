@@ -18,30 +18,32 @@ body {
     height: 100vh;
     justify-content: center;
     align-items: center;
-    background: linear-gradient(135deg,#7E9680
-    ,#AE6378) ;
+    /* background: linear-gradient(135deg,#7E9680,#AE6378) ; */
+    background-color: #B8D9D0
 }
 input{
     font-family: "Poppins", sans-serif;
 }
 .container{
+    position: relative;
     max-width: 700px;
     width: 100%;
-    background:#619196;
+    background:#619196;/*edit here*/
     padding: 25px 30px;
     border-radius: 5px;
 }
 .container .title{
     font-size:25px;
     font-weight:500 ;
-    position: relative;
+    position: relative; /*edit here*/
+    top: 20px; /*old: ko co top*/
 }
 
 .container .title::before{
     content: '';
     position: absolute;
     left: 0;
-    bottom: 0;
+    bottom: 40px;/*edit here* old: bottom:0*/
     height: 3px;
     width: 80px;
     background: linear-gradient(135deg, #CD7672,#534666) ;
@@ -51,6 +53,14 @@ input{
     flex-wrap: wrap;
     justify-content: space-between;
     margin: 20px 0 12px 0;
+}
+.request_heading{
+    display: flex;
+    justify-content: flex-start;
+}
+.request_heading img{
+    width: 70px;
+    margin-right:0.8rem;
 }
 form .user-details .input-box{
     margin-bottom: 15px;
@@ -76,6 +86,8 @@ form .user-details .input-box{
 .user-details .input-box input:valid{
     border-color: #9e6b55;
 }
+
+
 form .button{
     height: 45px;
     margin: 45px 0 ;
@@ -100,11 +112,93 @@ form .button input:hover{
     background:linear-gradient(-135deg,#7E9680,#AE6378) ;
 }
 
+/* edit here */
+.input-box .error{
+    display: flex;
+    align-items: center;
+    margin-top: 6px;
+    color: #d93025;
+    font-size:13px ;
+    display: none;
+}
+.invalid input{
+    border-color:#d93025 ;
+}
+.invalid .error{
+    display: flex;
+}
+.error img{
+    margin-right: 6px;
+    width: 18px;
+}
+.popup{
+    width: 450px;
+    background-color: #fff;
+    border-radius:6px ;
+    position: absolute;
+    top: 15%;
+    left: 18%;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    transition: transform .4s, top .4s;
+    visibility: hidden;
+    text-align: center;
+    padding: 0 30px 30px;
+    height: 330px;
+    color:#000 ;
+}
+
+.popup-logo img{
+    margin-top: 30px;
+    margin-bottom: 20px;
+    width: 100px;
+}
+.popup button{
+    width: 100%;
+    background:#3ED960 ;
+    padding: 10px 0;
+    margin-top: 50px;
+    border: none;
+    outline: none;
+    font-size:18px ;
+    color: #fff;
+    border-radius: 4px;
+    cursor: pointer;
+    box-shadow:0 0 0 2px rgba(0,0,0,.1);
+
+}
+.popup a{
+    color: #fff;
+    text-decoration: none;
+    font-weight: 600;
+    letter-spacing: 2px;
+}
+.open-slide{
+    top: 50%;
+    transform: translate(-50%, -50%) scale(1);
+    visibility:visible ;
+}
+/* edit here */
+
+/* validation */
+
+
+/* validation */
+
 
 @media(max-width: 584px) {
     .container{
         max-width: 100%;
     }
+    /* add new here */
+    .container .title::before{
+        display: none;
+    }
+    .container .title{
+        top:0;
+    }
+    /* end add */
     form .user-details .input-box{
         margin-bottom: 15px;
         width: 100%;

@@ -1,5 +1,18 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800&display=swap');
 
+@import url('https://fonts.googleapis.com/css2?family=Cedarville+Cursive&family=Nunito:wght@400;700&display=swap');
+
+@font-face {
+    font-family: 'Buffalo';
+    src: url('../fonts/Buffalo-Regular.eot');
+    src: url('../fonts/Buffalo-Regular.eot?#iefix') format('embedded-opentype'),
+        url('../fonts/Buffalo-Regular.woff2') format('woff2'),
+        url('../fonts/Buffalo-Regular.woff') format('woff'),
+        url('../fonts/Buffalo-Regular.ttf') format('truetype'),
+        url('../fonts/Buffalo-Regular.svg#Buffalo-Regular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
 header,
 footer {
     display: none;
@@ -70,6 +83,8 @@ main > * {
     
 }
 
+
+
 form{
     max-width: 260px;
     width: 100%;
@@ -92,7 +107,8 @@ form{
 }
 
 .logo h4{
-    font-size: 1.8rem ;
+    font-family: 'Buffalo';
+    font-size: 36px ;
     margin-top: -9px;
     letter-spacing: 1px;
     color: #151111;
@@ -207,6 +223,7 @@ label{
     display: grid;
     grid-template-rows:auto 1fr;
     padding-bottom: 2rem;
+    overflow: hidden;
     transition: 0.8 ease-in-out;
 }
 
@@ -225,11 +242,20 @@ label{
     grid-column: 1/2;
     grid-row: 1/2;
     opacity: 0;
-    transition: opacity 0.3s;
+    transition: opacity 0.3s, transform 0.5s;
 }
-
+.img-1{
+    transform: translate(0, -50px);
+}
+.img-2{
+    transform: scale(0.4, 0.5)
+}
+.img-1{
+    transform: scale(0.3) rotate(-20deg);
+}
 .image.show{
     opacity: 1;
+    transform: none;
 }
 
 .text-slider{
@@ -242,7 +268,7 @@ label{
 .text-wrap{
     max-height: 2.2rem;
     overflow: hidden;
-    background-color: green;
+    /* background-color: green; */
     margin-bottom: 2.5rem; 
     
 }
@@ -252,11 +278,12 @@ label{
     flex-direction: column;
     text-align: center;
     transform: translateY(0);
+    transition: 0.5s;
 }
 .text-group h2{
-    line-height: 2.2rem;
+    line-height: 2.6rem;
     font-weight:600 ;
-    font-size: 1.6rem;
+    font-size: 2rem;
 }
 .bullets{
     display: flex;
@@ -279,4 +306,94 @@ label{
     background-color: #151111;
     border-radius:1rem ;
 
+}
+
+#result{
+    color: #d93025;
+    font-size: 14px;
+}
+/* responsive */
+@media ( max-width: 850px) {
+    .box{
+        height: auto;
+        max-width: 550px;
+        overflow: hidden;
+    }
+    .inner-box{
+        position: static;
+        transform: none;
+        width: revert;
+        height: revert;
+        padding: 2rem;
+    }
+    .form-wrap{
+        position: revert;
+        width:100% ;
+        height: auto;
+    }
+    form{
+        max-width: revert;
+        padding: 1.5rem 2.5rem 2rem;
+    }
+
+    .heading{
+        margin: 2rem 0;
+    }
+    
+    .carousel{
+        position: revert;
+        height: auto;
+        width: 100%;
+        padding: 3rem 2rem;
+        display: flex;
+    }
+
+    .images-wrapper{
+        display: none;
+    }
+    .text-slider{
+        width: 100%;
+    }
+    .error-account{
+        margin-bottom: 14px;
+    }
+}
+
+@media(max-width: 530px) {
+    main{
+        padding: 1rem;
+    }
+    .box{
+        border-radius: 2rem;
+    }
+    .inner-box{
+        padding: 1rem;
+    }
+    .carousel{
+        padding: 1.5rem 1rem;
+        border-radius: 1.6rem;
+    }
+    .text-wrap{
+        margin-bottom: 1rem;
+    }
+    .text-group h2{
+        font-size:1.4rem ;
+    }
+    form{
+        padding: 1rem 2rem 1.5rem;
+    }
+    .error-account{
+        margin-bottom: 14px;
+    }
+}
+@media(max-width: 340px) {
+    .text-group h2{
+        font-size:1rem ;
+    }
+    .logo h4{
+        font-size: 24px;
+    }
+    .heading h2{
+        font-size:22px ;
+    }
 }

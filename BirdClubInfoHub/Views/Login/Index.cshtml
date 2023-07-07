@@ -1,4 +1,4 @@
-﻿@model LoginCredential
+@model LoginCredential
 
 @section Styles
 {
@@ -8,6 +8,96 @@
 @{
     ViewData["Title"] = "Login";
 }
+<main>
+        <div class="container"> 
+            <div class="container-inner">
+                <div class="form-wrap">
+                    <form action="" autocomplete="off" class="sign-in-form" name="Formfill" onsubmit="return checkAccount()">
+                        <!-- logo -->
+                        <div class="logo">
+                            
+                            <img src="~/img/login/logo1.png" alt="VNCMBC">
+                            <!-- ?edit here -->
+                            <h4>BulBul Club</h4>
+                        </div>
+                        
+                        <!-- chao -->
+                        <div class="heading">
+                            <h2>Welcome Back</h2>
+                            <h6>Not registered yet?</h6>
+                            <a href="./request.html" class="toggle">Request for membership</a>
+                        </div>
+                        <!-- add error message -->
+                        <span class="error-account">
+                            <p id="result"></p>
+                        </span>
+                        <!-- add error message -->
+                        <span class="error-account">
+                            <p id="result"></p>
+                        </span>
+                        <!-- form -->
+                        <div class="actual-form">
+                            <!-- username -->
+                            <!-- add class here -->
+                            <div class="input-wrap"> 
+                                <input 
+                                type="text" 
+                                class="input-field" 
+                                autocomplete="off" 
+                                required
+                                name="Email"
+                                />
+                                <label>Email</label>
+                            </div>
+                            <!-- password -->
+                            <div class="input-wrap">
+                                <input 
+                                type="password"  
+                                class="input-field" 
+                                autocomplete="off" 
+                                required
+                                name="Password" 
+                                />
+                                <label>Password</label>
+                            </div>
+                            <!-- button sign-in -->
+                            <input type="submit" value="Login" class="sign-btn">
+                            <p class="text">
+                                Fogotten your password?
+                                <a href="./changepass_vf.html">Get help?</a>
+                            </p>
+                        </div>
+                    </form>
+                </div>
+                    
+                <div class="carousel">
+                    <div class="images-wrapper">
+                        <img src="~/img/login/r5-nobg.png" class="image img-1 show"  alt="">
+                        <img src="~/img/login/r4-nobg.png" class="image img-2"  alt="">
+                        <img src="~/img/login/cm3.png" class="image img-3"  alt="">
+                    </div>
+                    
+                    <div class="text-slider">
+                        <div class="text-wrap">
+                            <div class="text-group">
+                                <h2>Join events with your birds</h2>
+                                <h2>Create your own blogs for community</h2>
+                                <h2>Have a field trips</h2>
+                            </div>
+                        </div>
+
+                        <div class="bullets"> 
+                            <span class="active" data-value="1"></span>
+                            <span data-value="2"></span>
+                            <span data-value="3"></span>
+                        </div>
+                    </div>
+                </div>   
+            </div>
+        </div>
+    </main>  
+@* <h1>Login</h1>
+<hr />
 
 <div class="container">
     <div class="container-inner">
@@ -88,7 +178,7 @@
             </div>
         </div>   
     </div>
-</div>
+</div> *@
 
 @section Scripts {
     @{
