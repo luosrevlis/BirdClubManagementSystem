@@ -3,47 +3,47 @@ using BirdClubInfoHub.Filters;
 using BirdClubInfoHub.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 
 namespace BirdClubInfoHub.Controllers
 {
     [Authenticated]
-    public class PendingBlogsController : Controller
+    public class BlogHistoryController : Controller
     {
         private readonly BcmsDbContext _dbContext;
 
-        public PendingBlogsController(BcmsDbContext dbContext)
+        public BlogHistoryController(BcmsDbContext dbContext)
         {
             _dbContext = dbContext;
         }
 
-        // GET: PendingBlogsController
-        public ActionResult Index()
+        public IActionResult Index()
         {
             int userId = (int)HttpContext.Session.GetInt32("USER_ID")!;
-            List<Blog> pendingBlogs = _dbContext.Blogs.Where(blog => blog.UserId == userId && blog.Status == "Pending").ToList();
-            foreach (Blog blog in pendingBlogs)
-            {
-                blog.User = _dbContext.Users.Find(blog.UserId)!;
-                blog.BlogCategory = _dbContext.BlogCategories.Find(blog.BlogCategoryId)!;
-            }
-            return View(pendingBlogs);
+            List<Blog> createdBlogs = _dbContext.Blogs.Where(blog => blog.UserId == userId)
+                .Include(blog => blog.User)
+                .Include(blog => blog.BlogCategory)
+                .ToList();
+            return View(createdBlogs);
         }
 
-        // GET: PendingBlogsController/Details/5
-        public ActionResult Details(int id)
+        public IActionResult Details(int id)
         {
             Blog? blog = _dbContext.Blogs.Find(id);
-            if (blog == null || blog.Status != "Pending")
+            if (blog == null)
             {
                 return NotFound();
             }
             blog.User = _dbContext.Users.Find(blog.UserId)!;
             blog.BlogCategory = _dbContext.BlogCategories.Find(blog.BlogCategoryId)!;
+            if (blog.Status == "Accepted")
+            {
+                return RedirectToAction("Details", "Blogs", new { id });
+            }
             return View(blog);
         }
 
-        // GET: PendingBlogsController/Edit/5
-        public ActionResult Edit(int id)
+        public IActionResult Edit(int id)
         {
             Blog? blog = _dbContext.Blogs.Find(id);
             if (blog == null || blog.Status != "Pending")
@@ -55,10 +55,9 @@ namespace BirdClubInfoHub.Controllers
             return View(blog);
         }
 
-        // POST: PendingBlogsController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(Blog blog, IFormFile thumbnailFile)
+        public IActionResult Edit(Blog blog, IFormFile thumbnailFile)
         {
             Blog? blogInDb = _dbContext.Blogs.Find(blog.Id);
             if (blogInDb == null || blogInDb.Status != "Pending")
@@ -79,8 +78,7 @@ namespace BirdClubInfoHub.Controllers
             return RedirectToAction("Index");
         }
 
-        // GET: PendingBlogsController/Delete/5
-        public ActionResult Delete(int id)
+        public IActionResult Delete(int id)
         {
             Blog? blog = _dbContext.Blogs.Find(id);
             if (blog == null || blog.Status != "Pending")
@@ -91,10 +89,9 @@ namespace BirdClubInfoHub.Controllers
             return View(blog);
         }
 
-        // POST: PendingBlogsController/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
+        public IActionResult DeleteConfirmed(int id)
         {
             Blog? blog = _dbContext.Blogs.Find(id);
             if (blog == null || blog.Status != "Pending")

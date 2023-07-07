@@ -1,0 +1,90 @@
+.create-blog-container {
+    width: 80%;
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.create-blog-back-button {
+    align-self: flex-start  ;
+    background-color: #4F77FF;
+    color: #fff;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+}
+
+.create-blog-form {
+    margin-top: 2rem;
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    align-items: center;
+}
+
+.input-container {
+    width: 100%;
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: flex-start;
+    align-items: flex-start;
+    margin-top: 2rem;
+}
+
+input,
+select {
+    box-sizing: border-box;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    border: 0.1rem solid #000;
+    font-size: 1rem;
+}
+
+.input-label {
+    margin-bottom: 1rem;
+}
+
+.blog-thumbnail-container {
+    width: 100%;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: flex-start;
+    align-items: center;
+    margin-top: 2rem;
+}
+
+.thumbnail-submit-button {
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0.5rem 1rem;
+    background-color: #4F77FF;
+    color: #fff;
+    border-radius: 0.5rem;
+    cursor: pointer;
+}
+
+#blog-thumbnail {
+    display: none;
+}
+
+#thumbnail-name {
+    margin-left: 1rem;
+}
+
+.create-blog-create-button {
+    margin-top: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0.5rem 1rem;
+    background-color: #4F77FF;
+    color: #fff;
+    border-radius: 0.5rem;
+    border: none;
+}
+
+#blog-title {
+    width: 100%;
+}

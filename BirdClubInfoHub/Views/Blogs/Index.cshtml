@@ -1,318 +1,63 @@
-@* @model IEnumerable<Blog>
-@{
-    ViewData["Title"] = "Index";
-}
-
-<h1>Index</h1>
-
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.BlogCategory)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.User)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DateCreated)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Title)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Thumbnail)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.BlogCategory.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.User.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.DateCreated)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Title)
-                </td>
-                <td>
-                    <img src="@Url.Action("GetImageFromBytes", "Blogs", new { id = item.Id })" />
-                </td>
-                <td>
-                    <a asp-action="Details" asp-route-id="@item.Id">Details</a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table> *@
-
-@model IEnumerable<BirdClubInfoHub.Models.Blog>
+﻿@model IEnumerable<Blog>
 
 @section Styles
 {
     <link rel="stylesheet" href="~/css/blog/blog.css" />
 }
 
-<section class="blogs-container">
-    @foreach (var item in Model)
-    {
-        <article class="blog-container">
-            <div class="blog-img-container">
-                <img class="blog-img" src="@Url.Action("GetImageFromBytes", "Blogs", new { id = item.Id })" alt="bird" />
-            </div>
-            <h2 class="blog-heading">@item.Title</h2>
-            <p class="blog-description">@item.Contents</p>
-            <div class="blog-author-container">
-                <div class="blog-author-detail-container">
-                    <div class="blog-author-img-container">
-                        <img class="blog-author-img" src="~@Url.Action("GetImageFromBytes", "Profile", new { id = item.UserId })" alt="author" />
-                    </div>
-                    <div class="blog-author-name-status-container">
-                        <p class="blog-author-name">@item.User.Name</p>
-                        <div class="blog-author-status-container">
-                            <div class="blog-author-status-img-container">
-                                <img class="blog-author-status-img" src="~/img/blogs/status.svg" alt="status" />
+<section class="blogs-section">
+    <div class="blogs-container">
+        @foreach (var item in Model)
+        {
+            <div class="blog-container">
+                <div class="blog-thumbnail-container">
+                    <img class="blog-thumbnail" src="@Url.Action("GetImageFromBytes", "Blogs", new { id = item.Id })" alt="thumbnail" />
+                </div>
+
+                <div class="blog-body">
+                    <div class="blog-info-container">
+                        <div class="blog-author-info-container">
+                            <div class="blog-author-ava-container">
+                                <img class="blog-author-ava" src="@Url.Action("GetImageFromBytes", "Profile", new { id = item.UserId })" alt="author" />
                             </div>
-                            <p class="blog-author-role">@item.User.Role</p>
-                        </div>
-                    </div>
-                </div>
-                <p class="blog-publish-date">@item.DateCreated</p>
-            </div>
-        </article>
-    }
-    @* <article class="blog-container">
-        <div class="blog-img-container">
-            <img class="blog-img" src="~/img/blogs/bird1.jpg" alt="bird" />
-        </div>
-        <h2 class="blog-heading">Lorem, ipsum dolor sit amet consectetur adipisicing elit.</h2>
-        <p class="blog-description">Lorem ipsum, dolor sit amet consectetur adipisicing elit.</p>
-        <div class="blog-author-container">
-            <div class="blog-author-detail-container">
-                <div class="blog-author-img-container">
-                    <img class="blog-author-img" src="~/img/blogs/ava.svg" alt="author" />
-                </div>
-                <div class="blog-author-name-status-container">
-                    <p class="blog-author-name">John Doe</p>
-                    <div class="blog-author-status-container">
-                        <div class="blog-author-status-img-container">
-                            <img class="blog-author-status-img" src="~/img/blogs/status.svg" alt="status" />
-                        </div>
-                        <p class="blog-author-role">Member</p>
-                    </div>
-                </div>
-            </div>
-            <p class="blog-publish-date">17/06/2023</p>
-        </div>
-    </article>
 
-    <article class="blog-container">
-        <div class="blog-img-container">
-            <img class="blog-img" src="~/img/blogs/bird2.jpg" alt="bird" />
-        </div>
-        <h2 class="blog-heading">Lorem, ipsum dolor sit amet consectetur adipisicing elit.</h2>
-        <p class="blog-description">Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
-        <div class="blog-author-container">
-            <div class="blog-author-detail-container">
-                <div class="blog-author-img-container">
-                    <img class="blog-author-img" src="~/img/blogs/ava.svg" alt="author" />
-                </div>
-                <div class="blog-author-name-status-container">
-                    <p class="blog-author-name">John Doe</p>
-                    <div class="blog-author-status-container">
-                        <div class="blog-author-status-img-container">
-                            <img class="blog-author-status-img" src="~/img/blogs/status.svg" alt="status" />
+                            <p class="blog-author-name">By @item.User.Name</p>
                         </div>
-                        <p class="blog-author-role">Member</p>
-                    </div>
-                </div>
-            </div>
-            <p class="blog-publish-date">17/06/2023</p>
-        </div>
-    </article>
 
-    <article class="blog-container">
-        <div class="blog-img-container">
-            <img class="blog-img" src="~/img/blogs/bird3.jpg" alt="bird" />
-        </div>
-        <h2 class="blog-heading">Lorem, ipsum dolor sit amet consectetur adipisicing elit.</h2>
-        <p class="blog-description">Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
-        <div class="blog-author-container">
-            <div class="blog-author-detail-container">
-                <div class="blog-author-img-container">
-                    <img class="blog-author-img" src="~/img/blogs/ava.svg" alt="author" />
-                </div>
-                <div class="blog-author-name-status-container">
-                    <p class="blog-author-name">John Doe</p>
-                    <div class="blog-author-status-container">
-                        <div class="blog-author-status-img-container">
-                            <img class="blog-author-status-img" src="~/img/blogs/status.svg" alt="status" />
-                        </div>
-                        <p class="blog-author-role">Member</p>
+                        <p class="blog-create-date">@item.DateCreated.ToString("dd MMMM, yyyy")</p>
                     </div>
-                </div>
-            </div>
-            <p class="blog-publish-date">17/06/2023</p>
-        </div>
-    </article>
 
-    <article class="blog-container">
-        <div class="blog-img-container">
-            <img class="blog-img" src="~/img/blogs/bird4.jpg" alt="bird" />
-        </div>
-        <h2 class="blog-heading">Lorem, ipsum dolor sit amet consectetur adipisicing elit.</h2>
-        <p class="blog-description">Lorem ipsum, dolor sit amet consectetur adipisicing elit.</p>
-        <div class="blog-author-container">
-            <div class="blog-author-detail-container">
-                <div class="blog-author-img-container">
-                    <img class="blog-author-img" src="~/img/blogs/ava.svg" alt="author" />
-                </div>
-                <div class="blog-author-name-status-container">
-                    <p class="blog-author-name">John Doe</p>
-                    <div class="blog-author-status-container">
-                        <div class="blog-author-status-img-container">
-                            <img class="blog-author-status-img" src="~/img/blogs/status.svg" alt="status" />
-                        </div>
-                        <p class="blog-author-role">Member</p>
-                    </div>
-                </div>
-            </div>
-            <p class="blog-publish-date">17/06/2023</p>
-        </div>
-    </article>
+                    <h2 class="blog-title">@item.Title</h2>
 
-    <article class="blog-container">
-        <div class="blog-img-container">
-            <img class="blog-img" src="~/img/blogs/bird5.jpg" alt="bird" />
-        </div>
-        <h2 class="blog-heading">Lorem, ipsum dolor sit amet consectetur adipisicing elit.</h2>
-        <p class="blog-description">Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
-        <div class="blog-author-container">
-            <div class="blog-author-detail-container">
-                <div class="blog-author-img-container">
-                    <img class="blog-author-img" src="~/img/blogs/ava.svg" alt="author" />
-                </div>
-                <div class="blog-author-name-status-container">
-                    <p class="blog-author-name">John Doe</p>
-                    <div class="blog-author-status-container">
-                        <div class="blog-author-status-img-container">
-                            <img class="blog-author-status-img" src="~/img/blogs/status.svg" alt="status" />
-                        </div>
-                        <p class="blog-author-role">Member</p>
-                    </div>
-                </div>
-            </div>
-            <p class="blog-publish-date">17/06/2023</p>
-        </div>
-    </article>
+                    <div class="blog-content">@Html.Raw(item.Contents)</div>
 
-    <article class="blog-container">
-        <div class="blog-img-container">
-            <img class="blog-img" src="~/img/blogs/bird6.jpg" alt="bird" />
-        </div>
-        <h2 class="blog-heading">Lorem, ipsum dolor sit amet consectetur adipisicing elit.</h2>
-        <p class="blog-description">Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
-        <div class="blog-author-container">
-            <div class="blog-author-detail-container">
-                <div class="blog-author-img-container">
-                    <img class="blog-author-img" src="~/img/blogs/ava.svg" alt="author" />
-                </div>
-                <div class="blog-author-name-status-container">
-                    <p class="blog-author-name">John Doe</p>
-                    <div class="blog-author-status-container">
-                        <div class="blog-author-status-img-container">
-                            <img class="blog-author-status-img" src="~/img/blogs/status.svg" alt="status" />
-                        </div>
-                        <p class="blog-author-role">Member</p>
-                    </div>
+                    <a class="blog-detail-button" asp-controller="Blogs" asp-action="Details" asp-route-id="@item.Id">Read more</a>
                 </div>
             </div>
-            <p class="blog-publish-date">17/06/2023</p>
-        </div>
-    </article>
+        }
+    </div>
 
-    <article class="blog-container">
-        <div class="blog-img-container">
-            <img class="blog-img" src="~/img/blogs/bird7.jpg" alt="bird" />
+    <div class="blog-utils-container">
+        <a class="create-blog-button" asp-controller="Blogs" asp-action="Create">Create Blog</a>
+        <div class="search-blogs-container">
+            <h2>Search</h2>
+            <form class="search-box-container">
+                <input class="search-box" type="text" placeholder="Search something..." />
+            </form>
         </div>
-        <h2 class="blog-heading">Lorem, ipsum dolor sit amet consectetur adipisicing elit.</h2>
-        <p class="blog-description">Lorem ipsum, dolor sit amet consectetur adipisicing elit.</p>
-        <div class="blog-author-container">
-            <div class="blog-author-detail-container">
-                <div class="blog-author-img-container">
-                    <img class="blog-author-img" src="~/img/blogs/ava.svg" alt="author" />
-                </div>
-                <div class="blog-author-name-status-container">
-                    <p class="blog-author-name">John Doe</p>
-                    <div class="blog-author-status-container">
-                        <div class="blog-author-status-img-container">
-                            <img class="blog-author-status-img" src="~/img/blogs/status.svg" alt="status" />
-                        </div>
-                        <p class="blog-author-role">Member</p>
-                    </div>
-                </div>
-            </div>
-            <p class="blog-publish-date">17/06/2023</p>
-        </div>
-    </article>
+        <div class="latest-blogs-container">
+            <h2>Latest News</h2>
 
-    <article class="blog-container">
-        <div class="blog-img-container">
-            <img class="blog-img" src="~/img/blogs/bird1.jpg" alt="bird" />
-        </div>
-        <h2 class="blog-heading">Lorem, ipsum dolor sit amet consectetur adipisicing elit.</h2>
-        <p class="blog-description">Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
-        <div class="blog-author-container">
-            <div class="blog-author-detail-container">
-                <div class="blog-author-img-container">
-                    <img class="blog-author-img" src="~/img/blogs/ava.svg" alt="author" />
-                </div>
-                <div class="blog-author-name-status-container">
-                    <p class="blog-author-name">John Doe</p>
-                    <div class="blog-author-status-container">
-                        <div class="blog-author-status-img-container">
-                            <img class="blog-author-status-img" src="~/img/blogs/status.svg" alt="status" />
-                        </div>
-                        <p class="blog-author-role">Member</p>
+            @foreach (var item in Model)
+            {
+                <div class="latest-blog">
+                    <div class="latest-blog-thumbnail-container">
+                        <img class="latest-blog-thumbnail" src="@Url.Action("GetImageFromBytes", "Blogs", new { id = item.Id })" alt="thumbnail" />
                     </div>
-                </div>
-            </div>
-            <p class="blog-publish-date">17/06/2023</p>
-        </div>
-    </article>
 
-    <article class="blog-container">
-        <div class="blog-img-container">
-            <img class="blog-img" src="~/img/blogs/bird2.jpg" alt="bird" />
-        </div>
-        <h2 class="blog-heading">Lorem, ipsum dolor sit amet consectetur adipisicing elit.</h2>
-        <p class="blog-description">Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
-        <div class="blog-author-container">
-            <div class="blog-author-detail-container">
-                <div class="blog-author-img-container">
-                    <img class="blog-author-img" src="~/img/blogs/ava.svg" alt="author" />
+                    <div class="latest-blog-title">@item.Title</div>
                 </div>
-                <div class="blog-author-name-status-container">
-                    <p class="blog-author-name">John Doe</p>
-                    <div class="blog-author-status-container">
-                        <div class="blog-author-status-img-container">
-                            <img class="blog-author-status-img" src="~/img/blogs/status.svg" alt="status" />
-                        </div>
-                        <p class="blog-author-role">Member</p>
-                    </div>
-                </div>
-            </div>
-            <p class="blog-publish-date">17/06/2023</p>
+            }
         </div>
-    </article> *@
+    </div>
 </section>

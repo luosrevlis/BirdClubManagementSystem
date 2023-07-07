@@ -43,14 +43,18 @@ namespace BirdClubManagementSystem.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create(Meeting meeting)
         {
-            if (ModelState.IsValid)
+            if (meeting.Date < meeting.RegistrationCloseDate)
             {
-                meeting.Status = "Open";
-                _dbContext.Meetings.Add(meeting);
-                _dbContext.SaveChanges();
-                return RedirectToAction("Index", "ClubEvents");
+                ModelState.AddModelError("RegDateError", "Event cannot take place before registration is closed!");
             }
-            return View(meeting);
+            if (!ModelState.IsValid)
+            {
+                return View(meeting);
+            }
+            meeting.Status = "Open";
+            _dbContext.Meetings.Add(meeting);
+            _dbContext.SaveChanges();
+            return RedirectToAction("Index", "ClubEvents");
         }
 
         // GET: MeetingsController/Edit/5
@@ -69,13 +73,17 @@ namespace BirdClubManagementSystem.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Edit(Meeting meeting)
         {
-            if (ModelState.IsValid)
+            if (meeting.Date < meeting.RegistrationCloseDate)
             {
-                _dbContext.Meetings.Update(meeting);
-                _dbContext.SaveChanges();
-                return RedirectToAction("Index", "ClubEvents");
+                ModelState.AddModelError("RegDateError", "Event cannot take place before registration is closed!");
             }
-            return View(meeting);
+            if (!ModelState.IsValid)
+            {
+                return View(meeting);
+            }
+            _dbContext.Meetings.Update(meeting);
+            _dbContext.SaveChanges();
+            return RedirectToAction("Index", "ClubEvents");
         }
 
         // GET: MeetingController/Delete/5
@@ -183,6 +191,31 @@ namespace BirdClubManagementSystem.Controllers
             _dbContext.Meetings.Update(meeting);
             _dbContext.SaveChanges();
             return RedirectToAction("Index", "ClubEvents");
+        }
+
+        public IActionResult EditHighlights(int id)
+        {
+            Meeting? meeting = _dbContext.Meetings.Find(id);
+            if (meeting == null || meeting.Status != "Ended")
+            {
+                return NotFound();
+            }
+            return View(meeting);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult EditHighlights(Meeting meeting)
+        {
+            Meeting? meetingInDb = _dbContext.Meetings.Find(meeting.Id);
+            if (meetingInDb == null || meetingInDb.Status != "Ended")
+            {
+                return NotFound();
+            }
+            meetingInDb.Highlights = meeting.Highlights;
+            _dbContext.Meetings.Update(meetingInDb);
+            _dbContext.SaveChanges();
+            return RedirectToAction("Details", new { id = meeting.Id });
         }
     }
 }

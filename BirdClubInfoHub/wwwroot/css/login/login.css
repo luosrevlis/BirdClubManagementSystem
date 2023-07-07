@@ -13,6 +13,9 @@
     font-weight: normal;
     font-style: normal;
     font-display: swap;
+header,
+footer {
+    display: none;
 }
 
 *, *::before, *::after {
@@ -37,14 +40,20 @@ input{
 
 main{
     width: 100%;
-    min-height: 100vh;
+    /* min-height: 100vh; */
     overflow: hidden;
     background-color: #8FD9C4 ;
-    padding: 2rem;
+    /* padding: 2rem; */
+    padding: 0 !important;
     display: flex;
     align-items: center;
     justify-content: center;
 }
+
+main > * {
+    margin: 0 !important;
+}
+
 .container{
     position: relative;
     width: 100%;

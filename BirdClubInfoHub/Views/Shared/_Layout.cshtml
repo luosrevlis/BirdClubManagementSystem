@@ -1,15 +1,18 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - BirdClubManagementSystem</title>
-
+    <title>@ViewData["Title"] - BirdClubInfoHub</title>
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     @RenderSection("Styles", required: false)
-
     <script src="~/js/site.js" defer asp-append-version="true"></script>
 </head>
+
+@{
+    var userId = Context.Session.GetInt32("USER_ID");
+}
+
 <body>
     <header>
         <nav>
@@ -21,12 +24,11 @@
             </div>
 
             <div class="nav-bar-container">
-                <a asp-controller="Home" asp-action="Index" class="nav-link active" >HOME</a>
-                <a href="" class="nav-link">SERVICES</a>
-                <a asp-controller="Home" asp-action="About" class="nav-link">ABOUT</a>
-                <a asp-controller="Blogs" asp-action="Index" class="nav-link">BLOGS</a>
-                <a asp-controller="ClubEvents" asp-action="Index" class="nav-link">EVENTS</a>
-                <a asp-controller="Home" asp-action="Contact" class="nav-link">CONTACT</a>
+                <a asp-controller="Home" asp-action="Index" class="nav-link active" >Home</a>
+                <a asp-controller="Home" asp-action="About" class="nav-link">About</a>
+                <a asp-controller="Blogs" asp-action="Index" class="nav-link">Blogs</a>
+                <a asp-controller="ClubEvents" asp-action="Index" class="nav-link">Events</a>
+                <a asp-controller="Home" asp-action="Contact" class="nav-link">Contact</a>
             </div>
 
             <div class="nav-user-utils-container">
@@ -34,6 +36,20 @@
                 <a class="ava-container">
                     <img src="~/img/nav/ava.png" alt="avatar" onclick="toggleMenu()" /> @*add onclick*@
                 </a>
+                @if (userId != null)
+                {
+                    <a asp-controller="Logout" asp-action="Index" class="action-link">Log Out</a>
+                    <a asp-controller="Profile" asp-action="Index" class="ava-container">
+                        <img src="@Url.Action("GetImageFromBytes", "Profile", new { id = userId })" alt="avatar" />
+                    </a>
+                }
+                else
+                {
+                    <a asp-controller="Login" asp-action="Index" class="action-link">Log In</a>
+                    <div class="ava-container">
+                        <img src="~/img/nav/ava_placeholder.jpg" alt="avatar" />
+                    </div>
+                }
             </div>
             @* add here dropdown *@
             <div class="sub-menu-wrap" id="subMenu">
@@ -97,32 +113,27 @@
             <div class="footer-link-container">
                 <h2>Club</h2>
                 <div class="footer-link-box">
-                    <a class="footer-link">ABOUT</a>
-                    <a class="footer-link">EVENTS</a>
-                    <a class="footer-link">BLOGS</a>
-                    <a class="footer-link">PRICING</a>
+                    <a class="footer-link">About</a>
+                    <a class="footer-link">Events</a>
+                    <a class="footer-link">Blogs</a>
                 </div>
             </div>
 
             <div class="footer-link-container">
                 <h2>Services</h2>
                 <div class="footer-link-box">
-                    <a class="footer-link">COMMUNITY</a>
-                    <a class="footer-link">WEBSITES</a>
-                    <a class="footer-link">TOURNAMENTS</a>
-                    <a class="footer-link">STRATEGY</a>
-                    <a class="footer-link">PLATFORMS</a>
+                    <a class="footer-link">Community</a>
+                    <a class="footer-link">Tournaments</a>
+                    <a class="footer-link">Pricing</a>
                 </div>
             </div>
 
             <div class="footer-link-container">
                 <h2>Contact</h2>
                 <div class="footer-link-box">
-                    <a class="footer-link">HELP DESK</a>
-                    <a class="footer-link">DOCS</a>
-                    <a class="footer-link">OPEN A TICKET</a>
-                    <a class="footer-link">CHAT</a>
-                    <a class="footer-link">FORUM</a>
+                    <a class="footer-link">Help desk</a>
+                    <a class="footer-link">Chat</a>
+                    <a class="footer-link">Forum</a>
                 </div>
             </div>
 
@@ -152,7 +163,9 @@
             <p>&copy; 2023 Vietnam Bird Club. All Rights Reserved. Terms &amp; Conditions. Privacy Policy.</p>
         </div>
     </footer>
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    @await RenderSectionAsync("Scripts", required: false)
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    @RenderSection("Scripts", required: false)
 </body>
 </html>
