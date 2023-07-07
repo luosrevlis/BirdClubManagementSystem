@@ -28,7 +28,7 @@ main {
   align-items: center;
 }
 
-main > * {
+main>* {
   margin-top: 2rem;
 }
 
@@ -51,7 +51,7 @@ nav {
   position: relative;
 }
 
-nav > * {
+nav>* {
   background-color: #B8D9D0;
 }
 
@@ -70,8 +70,8 @@ nav > * {
   min-height: 4.65625rem;
 }
 
-.nav-logo-container > *,
-.nav-user-utils-container > * {
+.nav-logo-container>*,
+.nav-user-utils-container>* {
   margin: 0 0.5rem;
 }
 
@@ -86,6 +86,11 @@ nav > * {
 .nav-user-utils-container .ava-container {
   height: 3rem;
   width: 3rem;
+  overflow: hidden;
+  border-radius: 3rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .nav-logo-container .logo-img-container img,
@@ -112,7 +117,7 @@ a {
 }
 
 .nav-link,
-.nav-user-utils-container .sign-in-link {
+.nav-user-utils-container .action-link {
   background: none;
   border: none;
   font-size: 1rem;
@@ -153,15 +158,15 @@ a {
   border: none;
 }
 
-.nav-user-utils-container .sign-in-link {
+.nav-user-utils-container .action-link {
   background-color: #AD82D9;
   color: #fff;
   padding: 1rem 1.5rem;
   border-radius: 0.5rem;
 }
 
-.nav-user-utils-container .sign-in-link:hover,
-.nav-user-utils-container .sign-in-link:focus {
+.nav-user-utils-container .action-link:hover,
+.nav-user-utils-container .action-link:focus {
   background-color: #8000ff;
 }
 
@@ -183,6 +188,94 @@ a {
   color: #7B88A8;
   transition: all 0.2s ease-in;
 }
+
+/* ?Edit dropdown menu */
+.sub-menu-wrap {
+  position: absolute;
+  top: 100%;
+  right: 0px;
+  width: 320px;
+  max-height: 0px;
+  overflow: hidden;
+  transition: max-height 0.5s;
+}
+
+.sub-menu-wrap.open-menu {
+  max-height: 400px;
+}
+
+.sub-menu {
+  background-color: #B8D9D0;
+  padding: 20px;
+  margin: 0 10px;
+  border-radius: 0 0 10px 10px;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+}
+
+.user-info h3 {
+  font-weight: 500;
+}
+
+.user-info img {
+  width: 60px;
+  border-radius: 50%;
+  margin-right: 15px;
+}
+
+.sub-menu hr {
+  border: 0;
+  height: 1px;
+  width: 100%;
+  background: #000000;
+  margin: 15px 0 10px;
+}
+
+.sub-menu-link {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: #535252;
+  margin: 8px 0;
+}
+
+.sub-menu-link p {
+  width: 100%;
+  transition: 0.3s;
+}
+
+.sub-menu-link img {
+  width: 40px;
+  background: #e5e5e5;
+  border-radius: 50%;
+  padding: 8px;
+  margin-right: 15px;
+
+}
+
+/* .sub-menu-link:hover {
+  background-color: #3c7363;
+} */
+.sub-menu-link span {
+  font-size: 22px;
+  transition: transform 0.5s;
+
+}
+
+.sub-menu-link:hover span {
+  transform: translateX(5px);
+  /* color: #B8D9D0; */
+}
+
+.sub-menu-link:hover p {
+  font-weight: 600;
+  /* color: #B8D9D0; */
+}
+
+/* end edit dropdown */
 
 footer {
   width: 100%;
@@ -206,7 +299,7 @@ footer {
   position: relative;
 }
 
-.footer-body > * {
+.footer-body>* {
   margin: 0 2rem;
 }
 
@@ -218,7 +311,7 @@ footer {
   align-items: center;
 }
 
-.footer-logo-container > * {
+.footer-logo-container>* {
   margin: 0 0.5rem;
 }
 
@@ -243,7 +336,7 @@ footer {
   margin-top: 1.5rem;
 }
 
-.footer-link-container > h2 {
+.footer-link-container>h2 {
   margin-bottom: 2rem;
 }
 
@@ -270,11 +363,11 @@ footer {
   width: 30%;
 }
 
-.footer-feedback-container > h2 {
+.footer-feedback-container>h2 {
   margin-bottom: 2rem;
 }
 
-.footer-feedback-container > *:nth-child(n + 2) {
+.footer-feedback-container>*:nth-child(n + 2) {
   margin-bottom: 1rem;
 }
 
@@ -286,11 +379,11 @@ footer {
   align-items: center;
 }
 
-.feedback-container > *:first-child {
+.feedback-container>*:first-child {
   width: calc(100% * 2 / 3);
 }
 
-.feedback-container > *:last-child {
+.feedback-container>*:last-child {
   width: calc(100% / 3);
 }
 
@@ -360,7 +453,7 @@ footer {
     justify-content: flex-start;
   }
 
-  .footer-body > * {
+  .footer-body>* {
     width: 100%;
     margin: 0 0 1rem 0;
   }
@@ -372,8 +465,8 @@ footer {
     align-items: flex-start;
   }
 
-  .footer-link-container > h2,
-  .footer-feedback-container > h2 {
+  .footer-link-container>h2,
+  .footer-feedback-container>h2 {
     margin-bottom: 1rem;
   }
 

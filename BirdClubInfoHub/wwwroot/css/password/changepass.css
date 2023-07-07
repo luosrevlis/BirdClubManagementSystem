@@ -110,3 +110,11 @@ form .input-field{
 .button input:hover{
     background-color: #c1cd97;
 }
+
+.back-region {
+    margin: 25px 0 6px;
+}
+.back-region .back-link {
+    display: flex;
+    justify-content: center;
+}

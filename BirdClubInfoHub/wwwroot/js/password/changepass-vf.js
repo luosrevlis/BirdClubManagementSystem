@@ -9,6 +9,8 @@ function checkEmail() {
         emailField.classList.add("invalid");//adding invalid class if email value do not matched with email pattern
         return false;
     }
+    emailField.classList.remove("invalid");
+    return true;
 }
 
 
