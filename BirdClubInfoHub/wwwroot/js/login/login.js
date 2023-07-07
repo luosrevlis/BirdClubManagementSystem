@@ -8,8 +8,6 @@ inputs.forEach((inp) => {
     });
     inp.addEventListener("blur", () => {
         if (inp.value != "") return
-    inp.addEventListener("blur", ()=>{
-        if(inp.value !== "") return;
         inp.classList.remove("active");
     });
 });

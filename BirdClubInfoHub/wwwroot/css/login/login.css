@@ -5,14 +5,16 @@
 @font-face {
     font-family: 'Buffalo';
     src: url('../fonts/Buffalo-Regular.eot');
-    src: url('../fonts/Buffalo-Regular.eot?#iefix') format('embedded-opentype'),
-        url('../fonts/Buffalo-Regular.woff2') format('woff2'),
-        url('../fonts/Buffalo-Regular.woff') format('woff'),
-        url('../fonts/Buffalo-Regular.ttf') format('truetype'),
+    src: url('../fonts/Buffalo-Regular.eot?#iefix') format('embedded-opentype'), 
+        url('../fonts/Buffalo-Regular.woff2') format('woff2'), 
+        url('../fonts/Buffalo-Regular.woff') format('woff'), 
+        url('../fonts/Buffalo-Regular.ttf') format('truetype'), 
         url('../fonts/Buffalo-Regular.svg#Buffalo-Regular') format('svg');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
+}
+
 header,
 footer {
     display: none;
@@ -157,7 +159,7 @@ form{
     padding: 0 ;
     font-size:1.7rem ;
     color: #151111;
-    transition: 0.4 s;
+    transition: 0.4s;
 }
 
 label{
@@ -224,7 +226,7 @@ label{
     grid-template-rows:auto 1fr;
     padding-bottom: 2rem;
     overflow: hidden;
-    transition: 0.8 ease-in-out;
+    transition: 0.8s ease-in-out;
 }
 
 .images-wrapper{
