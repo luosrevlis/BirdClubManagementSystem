@@ -1,13 +1,69 @@
-﻿@model IEnumerable<Bird>
+@model IEnumerable<Bird>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Your Birds";
+}
+@section Styles
+{
+    <link rel="stylesheet" href="~/css/birds/bird_profile.css" />
 }
 
-<h1>Index</h1>
+@* add giao dien bird collection (chua hoan thien 100%, nhung đã hoàn thiện cấu hình sau khi add bird) *@
+<header>
+    <div class="container-bird">
+        <div class="profile">
+            <div class="profile-image">
+                <img src="./img/dropdown/ava.png" alt="">
+            </div>
+        </div>
+        <div class="profile-info">
+            <h1 class="profile-name">user_name</h1>
+            <button class="btn profile-edit-btn">Add Bird</button>
+        </div>
+    </div>
+</header>
+<hr>
+<h2>Your birds</h2>
+<section class="main">
+    <a style="text-decoration: none;color: black;" href="">
+        <div class="wrap">
+            <div class="item">
+                <p>Ní ơi</p>
+                <img src="~/img/birds/cm5.png" alt="">
+            </div>
+        </div>
+    </a>
+
+    <div class="wrap">
+        <div class="item">
+            <p>A phồ</p>
+            <img src="~/img/birds/cm6.png" alt="">
+        </div>
+    </div>
+
+    <div class="wrap">
+        <div class="item">
+            <p>Bảo bảo</p>
+            <img src="~/img/birds/cm7.png" alt="">
+        </div>
+    </div>
+    <div class="wrap">
+        <div class="item">
+            <p>A lữ</p>
+            <img src="~/img/birds/cm4.png" alt="">
+        </div>
+    </div>
+
+
+
+</section>
+
+
+
+@* <h1>Index</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+<a asp-action="Create">Create New</a>
 </p>
 <table class="table">
     <thead>
@@ -52,3 +108,10 @@
         }
     </tbody>
 </table>
+*@
+@* link js *@
+@section Scripts {
+    @{
+        <script src="~/js/birds/bird_profile.js"></script>
+    }
+}
