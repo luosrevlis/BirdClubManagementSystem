@@ -4,8 +4,8 @@ using FluentEmail.Core;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Cryptography;
-using System.Text.RegularExpressions;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace BirdClubManagementSystem.Controllers
 {
@@ -25,7 +25,6 @@ namespace BirdClubManagementSystem.Controllers
             return View();
         }
 
-        //POST
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Login(LoginCredential loginCredential)
@@ -33,14 +32,16 @@ namespace BirdClubManagementSystem.Controllers
             User? user = _dbContext.Users.FirstOrDefault(u => u.Email == loginCredential.Email);
             if (user == null)
             {
-                //can't find email
+                TempData.Add("notification", "Account not found!");
+                TempData.Add("error", "");
                 return View("Index");
             }
             PasswordHasher<User> passwordHasher = new();
             PasswordVerificationResult result = passwordHasher.VerifyHashedPassword(user, user.Password, loginCredential.Password);
             if (result == PasswordVerificationResult.Failed)
             {
-                //wrong password
+                TempData.Add("notification", "Wrong password!");
+                TempData.Add("error", "");
                 return View("Index");
             }
             else if (result == PasswordVerificationResult.SuccessRehashNeeded)
@@ -48,6 +49,9 @@ namespace BirdClubManagementSystem.Controllers
                 user.Password = passwordHasher.HashPassword(user, user.Password);
             }
             user.LastLogin = DateTime.Now;
+            _dbContext.Users.Update(user);
+            _dbContext.SaveChanges();
+            //convert user to json maybe?
             HttpContext.Session.SetInt32("USER_ID", user.Id);
             HttpContext.Session.SetString("USER_NAME", user.Name);
             HttpContext.Session.SetString("USER_ROLE", user.Role);
@@ -67,7 +71,8 @@ namespace BirdClubManagementSystem.Controllers
             User? user = _dbContext.Users.FirstOrDefault(x => x.Email == userEmail);
             if (user == null)
             {
-                ModelState.AddModelError("NotFound", "Cannot find email");
+                TempData.Add("notification", "Account not found!");
+                TempData.Add("error", "");
                 return View("ResetPassword", userEmail);
             }
             //Generate a secure random string of length 30
@@ -81,7 +86,7 @@ namespace BirdClubManagementSystem.Controllers
                 .AppendLine(verificationCode)
                 .AppendLine("The verification code is valid for 30 minutes.")
                 .AppendLine($"If this request was not made by you, please ignore this email.");
-
+                
             IFluentEmail email = _emailFactory
                 .Create()
                 .To(user.Email)
@@ -106,22 +111,24 @@ namespace BirdClubManagementSystem.Controllers
         public IActionResult VerifyCode(IFormCollection formCollection)
         {
             string userEmail = formCollection["userEmail"]!;
-            string code = formCollection["code"]!;
+            string? code = formCollection["code"];
             User? user = _dbContext.Users.FirstOrDefault(user => user.Email == userEmail);
             if (user == null)
             {
+                TempData.Add("notification", "Account not found!");
+                TempData.Add("error", "");
                 return RedirectToAction("Index");
             }
             if (DateTime.Now > user.ResetPasswordRequestTime.AddMinutes(30))
             {
-                ModelState.AddModelError("CodeExpired", "Verification code has expired.");
+                TempData.Add("notification", "Verification code has expired!");
+                TempData.Add("error", "");
+                return RedirectToAction("Index");
             }
-            if (code.Length != 6 || !code.Equals(user.ResetPasswordCode))
+            if (code == null || !code.Equals(user.ResetPasswordCode))
             {
-                ModelState.AddModelError("CodeIncorrect", "Incorrect verification code!");
-            }
-            if (!ModelState.IsValid)
-            {
+                TempData.Add("notification", "Verification code is incorrect!");
+                TempData.Add("error", "");
                 return View("VerifyCode", userEmail);
             }
             return RedirectToAction("NewPassword", new RouteValueDictionary(new { userEmail }));
@@ -142,14 +149,14 @@ namespace BirdClubManagementSystem.Controllers
             User? user = _dbContext.Users.FirstOrDefault(user => user.Email == userEmail);
             if (user == null)
             {
+                TempData.Add("notification", "Account not found!");
+                TempData.Add("error", "");
                 return RedirectToAction("Index");
             }
             if (confirmPassword != newPassword)
             {
-                ModelState.AddModelError("ConfirmMismatch", "Confirm Password does not match New Password!");
-            }
-            if (!ModelState.IsValid)
-            {
+                TempData.Add("notification", "Password does not match!");
+                TempData.Add("error", "");
                 return View("NewPassword", userEmail);
             }
             PasswordHasher<User> passwordHasher = new();
@@ -157,6 +164,9 @@ namespace BirdClubManagementSystem.Controllers
             user.ResetPasswordCode = string.Empty;
             _dbContext.Users.Update(user);
             _dbContext.SaveChanges();
+
+            TempData.Add("notification", "Password reset successful!");
+            TempData.Add("success", "");
             return RedirectToAction("Index");
         }
     }
