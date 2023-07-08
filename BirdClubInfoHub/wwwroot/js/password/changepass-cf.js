@@ -46,17 +46,18 @@ function validateAll() {
     return (oldPassword() && createPass() && confirmPass());
 }
 
+//calling function on key up
+oPassInput.addEventListener("keyup", oldPassword);
+passInput.addEventListener("keyup", createPass);
+cPassInput.addEventListener("keyup", confirmPass);
+
+
 ////Calling function on Form Submit
 //form.addEventListener("submit", (e) => {
 //    e.preventDefault(); //preventing form submitting
 //    oldPassword();
 //    createPass();
 //    confirmPass();
-
-//    //calling function on key up
-//    oPassInput.addEventListener("keyup", oldPassword);
-//    passInput.addEventListener("keyup", createPass);
-//    cPassInput.addEventListener("keyup", confirmPass);
 
 //    if(!passField.classList.contains("invalid") && !cPassField.classList.contains("invalid")){
 //            location.href = form.getAttribute("action of form") //lay action cua form
