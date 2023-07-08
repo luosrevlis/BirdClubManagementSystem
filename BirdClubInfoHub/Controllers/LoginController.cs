@@ -47,6 +47,8 @@ namespace BirdClubInfoHub.Controllers
                 user.Password = passwordHasher.HashPassword(user, user.Password);
             }
             user.LastLogin = DateTime.Now;
+            _dbContext.Users.Update(user);
+            _dbContext.SaveChanges();
             //convert user to json maybe?
             HttpContext.Session.SetInt32("USER_ID", user.Id);
             HttpContext.Session.SetString("USER_NAME", user.Name);
