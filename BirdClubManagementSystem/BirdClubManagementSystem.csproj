@@ -7,6 +7,14 @@
     <UserSecretsId>136996d7-4c02-4a6b-b2da-f555ca508f68</UserSecretsId>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+
   <ItemGroup>
     <_ContentIncludedByDefault Remove="wwwroot\img\about\ab1.png" />
     <_ContentIncludedByDefault Remove="wwwroot\img\about\ab2.png" />

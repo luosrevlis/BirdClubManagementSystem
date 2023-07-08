@@ -1,63 +1,90 @@
-﻿@model BirdClubManagementSystem.Models.User
+﻿@model User
 
 @{
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
+@section Styles {
+    <link rel="stylesheet" href="~/css/form.css" />
+}
 
-<h4>User</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Email" class="control-label"></label>
-                <input asp-for="Email" class="form-control" />
-                <span asp-validation-for="Email" class="text-danger"></span>
+<div class="main-form">
+    <section class="container-template">
+        <h2>Create new user</h2>
+        <form asp-action="Create" class="form" id="form-create-user" onsubmit="return validateAll()">
+
+            <div class="input-box email-field">
+                <label>Email</label>
+                <input asp-for="Email" placeholder="Enter email address" required class="email" />
+                <!-- add error message here -->
+                <span class="error mail-error">
+                    <img src="~/img/resetpass/alert-circle.svg" alt="">
+                    <p class="error-text">Please enter a valid email address.</p>
+                </span>
             </div>
-            <div class="form-group">
-                <label asp-for="Password" class="control-label"></label>
-                <input type="password" asp-for="Password" class="form-control" />
-                <span asp-validation-for="Password" class="text-danger"></span>
+
+            <div class="input-box password-field">
+                <label>Password</label>
+                <input asp-for="Password" placeholder="Enter password" required class="password" type="password" />
+                <!-- add error message here -->
+                <span class="error password-error">
+                    <img src="~/img/resetpass/alert-circle.svg" alt="">
+                    <p class="error-text">
+                        Password must contain at least 8 characters, including a lowercase letter, an uppercase letter and a digit.
+                    </p>
+                </span>
             </div>
-            <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
+
+            <div class="input-box fullname-field">
+                <label>Fullname</label>
+                <input asp-for="Name" placeholder="Enter fullname" required class="fullname" />
+                <!-- add error message here -->
+                <span class="error fullname-error">
+                    <img src="~/img/resetpass/alert-circle.svg" alt="">
+                    <p class="error-text">Fullname cannot be empty.</p>
+                </span>
             </div>
-            <div class="form-group">
-                <label asp-for="Address" class="control-label"></label>
-                <input asp-for="Address" class="form-control" />
-                <span asp-validation-for="Address" class="text-danger"></span>
+
+            <div class="input-box address-field">
+                <label>Address</label>
+                <input asp-for="Address" placeholder="Enter address" required class="address" />
+                <!-- add error message here -->
+                <span class="error address-error">
+                    <img src="~/img/resetpass/alert-circle.svg" alt="">
+                    <p class="error-text">Address cannot be empty.</p>
+                </span>
             </div>
-            <div class="form-group">
-                <label asp-for="Phone" class="control-label"></label>
-                <input asp-for="Phone" class="form-control" />
-                <span asp-validation-for="Phone" class="text-danger"></span>
+
+            <div class="column">
+
+                <div class="input-box phonenumber-field">
+                    <label>Phone number</label>
+                    <input asp-for="Phone" placeholder="Enter phone number" required class="phonenumber" type="number" />
+                    <!-- add error message here -->
+                    <span class="error phonenumber-error">
+                        <img src="~/img/resetpass/alert-circle.svg" alt="">
+                        <p class="error-text">Please enter a valid phone number.</p>
+                    </span>
+                </div>
+
+                <div class="input-box role-field">
+                    <label>Role</label>
+                    <div class="select-box">
+                        <select asp-for="Role" class="form-control">
+                            <option value="" hidden>Choose a role</option>
+                            <option value="Admin">Admin</option>
+                            <option value="Staff">Staff</option>
+                            <option value="Member">Member</option>
+                        </select>
+                    </div>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="Role" class="control-label"></label>
-                <select asp-for="Role" class="form-control">
-                    <option value="">Choose a role</option>
-                    <option value="Admin">Admin</option>
-                    <option value="Staff">Staff</option>
-                    <option value="Member">Member</option>
-                </select>
-                <span asp-validation-for="Role" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
+
+            <button type="submit" form="form-create-user">Create</button>
         </form>
-    </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
+    </section>
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="~/js/user-management/create.js"></script>
 }
