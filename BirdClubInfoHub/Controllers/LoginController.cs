@@ -125,7 +125,7 @@ namespace BirdClubInfoHub.Controllers
                 TempData.Add("error", "");
                 return RedirectToAction("Index");
             }
-            if (code == null || !code.Equals(user.ResetPasswordCode))
+            if (code == null || code.Length != 6 || !code.Equals(user.ResetPasswordCode))
             {
                 TempData.Add("notification", "Verification code is incorrect!");
                 TempData.Add("error", "");

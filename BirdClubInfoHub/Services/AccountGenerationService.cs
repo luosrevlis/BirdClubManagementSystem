@@ -14,7 +14,8 @@ namespace BirdClubInfoHub.Services
                 Name = request.Name,
                 Address = request.Address,
                 Phone = request.PhoneNumber,
-                Role = "Member"
+                Role = "Member",
+                JoinDate = DateTime.Now
             };
             string randomString = Convert.ToBase64String(RandomNumberGenerator.GetBytes(4)).Remove(6);
             credential = new LoginCredential
