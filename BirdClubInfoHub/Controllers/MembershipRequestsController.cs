@@ -43,13 +43,16 @@ namespace BirdClubInfoHub.Controllers
             User? user = _dbContext.Users.FirstOrDefault(x => x.Email == request.Email);
             if (user != null)
             {
-                ModelState.AddModelError("Existed", "This email has been registered!");
+                TempData.Add("notification", "Email already existed");
+                TempData.Add("error", "This email has been registered!");
                 return View(request);
             }
             request.Status = "Pending";
             _dbContext.MembershipRequests.Add(request);
             _dbContext.SaveChanges();
-            return View("RequestRecorded");
+            TempData.Add("notification", "Your request has been recorded");
+            TempData.Add("success", "Please wait while our staff handle the request. You will receive an email upon request approval.");
+            return RedirectToAction("Index", "Home");
         }
 
         public IActionResult GeneratePaymentUrl(int id)

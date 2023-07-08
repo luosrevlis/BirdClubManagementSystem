@@ -1,16 +1,18 @@
-﻿@if (TempData["success"] != null)
+﻿@if (TempData["notification"] != null)
 {
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-    <script type="text/javascript">
-        toastr.success('@TempData["success"]');
-    </script>
-}
-@if (TempData["error"] != null)
-{
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-        <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-    <script type="text/javascript">
-        toastr.error('@TempData["error"]');
-    </script>
+    <link rel="stylesheet" href="~/lib/toastr/toastr.min.css" />
+    <script src="~/lib/toastr/toastr.min.js"></script>
+    if (TempData["success"] != null)
+    {
+        <script type="text/javascript">
+            toastr["success"]('@TempData["success"]', '@TempData["notification"]')
+        </script>
+    }
+    if (TempData["error"] != null)
+    {
+        <script type="text/javascript">
+            toastr["error"]('@TempData["error"]', '@TempData["notification"]')
+        </script>
+    }
 }
