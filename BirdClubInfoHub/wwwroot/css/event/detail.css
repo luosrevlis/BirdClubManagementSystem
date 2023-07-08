@@ -7,7 +7,7 @@
 }
 
 .event-body {
-    margin-top: 5rem;
+    margin-top: 2rem;
     width: 50%;
     display: flex;
     flex-flow: column nowrap;
@@ -27,10 +27,6 @@
     color: #fff;
     padding: 0.5rem 1rem;
     border-radius: 0.5rem;
-}
-
-.back-button {
-    align-self: flex-start;
 }
 
 .event-title,

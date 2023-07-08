@@ -5,7 +5,30 @@
 }
 
 <section class="event-section">
-    <a class="back-button" asp-controller="ClubEvents" asp-action="Index">Back to List</a>
+    <div class="event-detail-header-links">
+        <a class="back-button" asp-controller="ClubEvents" asp-action="Index">
+            <i class="fa-solid fa-backward"></i>
+            Club events
+        </a>
+        <a class="edit-button" asp-action="Edit" asp-route-id="@Model.Id">
+            <i class="fa-solid fa-pen-to-square"></i>
+            Edit
+        </a>
+        <a class="delete-button" asp-action="Delete" asp-route-id="@Model.Id">
+            <i class="fa-solid fa-trash"></i>
+            Delete
+        </a>
+    </div>
+    @if (Model.Status == "Ended")
+    {
+        <div class="event-detail-edit-highlights">
+            <a class="edit-highlights-button" asp-action="EditHighlights" asp-route-id="@Model.Id">
+                <i class="fa-solid fa-pen-to-square"></i>
+                Edit highlights
+            </a>
+        </div>
+        <!--TODO highlights section-->
+    }
     <div class="event-body">
         <h1 class="event-title">@Model.Name</h1>
         <p class="event-date">@Model.Date</p>
@@ -19,5 +42,28 @@
             <p class="event-fee"><b>Fee:</b> @Model.Fee</p>
             <p class="status"><b>Status:</b> @Model.Status</p>
         </div>
+    </div>
+    <div class="event-detail-status-links">
+        @if (Model.Status == "Open")
+        {
+            <a class="status-button" asp-action="Close" asp-route-id="@Model.Id">
+                <i class="fa-solid fa-door-open"></i>
+                Close registration
+            </a>
+        }
+        @if (Model.Status == "Happening")
+        {
+            <a class="status-button" asp-action="MarkAsEnded" asp-route-id="@Model.Id">
+                <i class="fa-solid fa-clock"></i>
+                Mark as ended
+            </a>
+        }
+        @if (Model.Status != "Ended" && Model.Status != "Cancelled")
+        {
+            <a class="status-button" asp-action="Cancel" asp-route-id="@Model.Id">
+                <i class="fa-solid fa-xmark"></i>
+                Cancel
+            </a>
+        }
     </div>
 </section>

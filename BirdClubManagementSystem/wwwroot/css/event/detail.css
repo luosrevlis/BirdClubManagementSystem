@@ -7,7 +7,7 @@
 }
 
 .event-body {
-    margin-top: 5rem;
+    margin-top: 2rem;
     width: 50%;
     display: flex;
     flex-flow: column nowrap;
@@ -21,16 +21,42 @@
     margin-top: 2rem;
 }
 
-.register-button,
-.back-button {
-    background-color: #4F77FF;
-    color: #fff;
+.event-detail-header-links,
+.event-detail-edit-highlights,
+.event-detail-status-links {
+    display: flex;
+    margin: 0.5rem 0;
+}
+
+.back-button,
+.edit-button,
+.delete-button,
+.edit-highlights-button,
+.status-button,
+.participants-list-button,
+.rankings-button {
+    margin: 0 0.5rem;
     padding: 0.5rem 1rem;
     border-radius: 0.5rem;
 }
 
-.back-button {
-    align-self: flex-start;
+.back-button,
+.edit-button,
+.edit-highlights-button,
+.participants-list-button {
+    background-color: #4F77FF;
+    color: #fff;
+}
+
+.delete-button,
+.status-button {
+    background-color: #f00;
+    color: #fff;
+}
+
+.rankings-button {
+    background-color: #ffd700;
+    color: #fff;
 }
 
 .event-title,

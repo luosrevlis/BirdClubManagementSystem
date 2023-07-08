@@ -5,7 +5,13 @@
 }
 
 <section class="event-section">
-    <a class="back-button" asp-controller="ClubEvents" asp-action="Index">Back to List</a>
+    <div class="event-detail-header-links">
+        <a class="back-button" asp-controller="ClubEvents" asp-action="Index">
+            <i class="fa-solid fa-backward"></i>
+            Club events
+        </a>
+    </div>
+    <!--TODO highlights section-->
     <div class="event-body">
         <h1 class="event-title">@Model.Name</h1>
         <p class="event-date">@Model.Date</p>
