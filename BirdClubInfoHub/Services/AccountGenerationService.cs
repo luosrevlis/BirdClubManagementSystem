@@ -1,5 +1,6 @@
 ﻿using BirdClubInfoHub.Models;
 using Microsoft.AspNetCore.Identity;
+using System.Security.Cryptography;
 
 namespace BirdClubInfoHub.Services
 {
@@ -15,10 +16,11 @@ namespace BirdClubInfoHub.Services
                 Phone = request.PhoneNumber,
                 Role = "Member"
             };
+            string randomString = Convert.ToBase64String(RandomNumberGenerator.GetBytes(4)).Remove(6);
             credential = new LoginCredential
             {
                 Email = request.Email,
-                Password = $"{user.Name}@{new Random().Next(10000)}"
+                Password = $"{randomString}@{new Random().Next(10000)}"
             };
             PasswordHasher<User> passwordHasher = new();
             user.Password = passwordHasher.HashPassword(user, credential.Password);
