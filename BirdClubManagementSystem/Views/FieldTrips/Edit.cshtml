@@ -11,7 +11,8 @@
 <div class="main-form">
     <section class="container-template">
         <h2>Edit field trip</h2>
-        <form asp-action="Create" class="form" onsubmit="return validateAll()">
+        <form asp-action="Edit" class="form" onsubmit="return validateAll()">
+            <input type="hidden" asp-for="Id" />
 
             <div class="input-box name-field">
                 <label>Name</label>

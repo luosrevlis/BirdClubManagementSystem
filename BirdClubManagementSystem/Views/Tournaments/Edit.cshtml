@@ -12,7 +12,8 @@
     <section class="container-template">
         <h2>Edit tournament</h2>
         <form asp-action="Edit" class="form" onsubmit="return validateAll()">
-            
+            <input type="hidden" asp-for="Id" />
+
             <div class="input-box name-field">
                 <label>Name</label>
                 <input asp-for="Name" placeholder="Enter tournament name" required class="name" />
