@@ -185,7 +185,9 @@ namespace BirdClubManagementSystem.Controllers
             FieldTrip? fieldTrip = _dbContext.FieldTrips.Find(id);
             if (fieldTrip == null || fieldTrip.Status != "Ended")
             {
-                return NotFound();
+                TempData.Add("notification", "Field trip not found!");
+                TempData.Add("error", "");
+                return RedirectToAction("Index", "ClubEvents");
             }
             return View(fieldTrip);
         }
@@ -197,11 +199,16 @@ namespace BirdClubManagementSystem.Controllers
             FieldTrip? fieldTripInDb = _dbContext.FieldTrips.Find(fieldTrip.Id);
             if (fieldTripInDb == null || fieldTripInDb.Status != "Ended")
             {
-                return NotFound();
+                TempData.Add("notification", "Field trip not found!");
+                TempData.Add("error", "");
+                return RedirectToAction("Index", "ClubEvents");
             }
             fieldTripInDb.Highlights = fieldTrip.Highlights;
             _dbContext.FieldTrips.Update(fieldTripInDb);
             _dbContext.SaveChanges();
+
+            TempData.Add("notification", "Highlights has been updated!");
+            TempData.Add("success", "");
             return RedirectToAction("Details", new { id = fieldTrip.Id });
         }
     }

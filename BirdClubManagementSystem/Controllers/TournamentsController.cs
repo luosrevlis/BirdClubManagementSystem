@@ -185,7 +185,9 @@ namespace BirdClubManagementSystem.Controllers
             Tournament? tournament = _dbContext.Tournaments.Find(id);
             if (tournament == null || tournament.Status != "Ended")
             {
-                return NotFound();
+                TempData.Add("notification", "Tournament not found!");
+                TempData.Add("error", "");
+                return RedirectToAction("Index", "ClubEvents");
             }
             return View(tournament);
         }
@@ -197,11 +199,16 @@ namespace BirdClubManagementSystem.Controllers
             Tournament? tournamentInDb = _dbContext.Tournaments.Find(tournament.Id);
             if (tournamentInDb == null || tournamentInDb.Status != "Ended")
             {
-                return NotFound();
+                TempData.Add("notification", "Tournament not found!");
+                TempData.Add("error", "");
+                return RedirectToAction("Index", "ClubEvents");
             }
             tournamentInDb.Highlights = tournament.Highlights;
             _dbContext.Tournaments.Update(tournamentInDb);
             _dbContext.SaveChanges();
+
+            TempData.Add("notification", "Highlights has been updated!");
+            TempData.Add("success", "");
             return RedirectToAction("Details", new { id = tournament.Id });
         }
     }

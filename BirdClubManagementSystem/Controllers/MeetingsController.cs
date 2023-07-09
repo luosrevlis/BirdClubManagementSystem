@@ -185,7 +185,9 @@ namespace BirdClubManagementSystem.Controllers
             Meeting? meeting = _dbContext.Meetings.Find(id);
             if (meeting == null || meeting.Status != "Ended")
             {
-                return NotFound();
+                TempData.Add("notification", "Meeting not found!");
+                TempData.Add("error", "");
+                return RedirectToAction("Index", "ClubEvents");
             }
             return View(meeting);
         }
@@ -197,11 +199,16 @@ namespace BirdClubManagementSystem.Controllers
             Meeting? meetingInDb = _dbContext.Meetings.Find(meeting.Id);
             if (meetingInDb == null || meetingInDb.Status != "Ended")
             {
-                return NotFound();
+                TempData.Add("notification", "Meeting not found!");
+                TempData.Add("error", "");
+                return RedirectToAction("Index", "ClubEvents");
             }
             meetingInDb.Highlights = meeting.Highlights;
             _dbContext.Meetings.Update(meetingInDb);
             _dbContext.SaveChanges();
+
+            TempData.Add("notification", "Highlights has been updated!");
+            TempData.Add("success", "");
             return RedirectToAction("Details", new { id = meeting.Id });
         }
     }
