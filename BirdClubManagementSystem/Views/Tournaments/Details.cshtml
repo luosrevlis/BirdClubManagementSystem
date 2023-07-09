@@ -12,15 +12,19 @@
 @await Html.PartialAsync("~/Views/ClubEvents/_EventDetail.cshtml", Model)
 
 <div>
-    <a class="participants-list-button" asp-action="Index" asp-controller="TournamentRegistrations" asp-route-tournamentid="@Model.Id">
+    <a class="button participants-list-button" asp-action="Index" asp-controller="TournamentRegistrations" asp-route-tournamentid="@Model.Id">
         <i class="fa-solid fa-dove"></i>
         View participants list
     </a>
     @if (Model.Status == "Ended")
     {
-        <a class="rankings-button" asp-action="Index" asp-controller="TournamentStandings" asp-route-tournamentid="@Model.Id">
+        <a class="button rankings-button" asp-action="Index" asp-controller="TournamentStandings" asp-route-tournamentid="@Model.Id">
             <i class="fa-solid fa-trophy"></i>
             View rankings
         </a>
     }
 </div>
+
+@section Scripts {
+    <script src="~/js/event/detail.js"></script>
+}

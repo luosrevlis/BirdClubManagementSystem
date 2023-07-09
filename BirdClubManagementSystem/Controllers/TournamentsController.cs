@@ -86,110 +86,86 @@ namespace BirdClubManagementSystem.Controllers
             return RedirectToAction("Index", "ClubEvents");
         }
 
-        // GET: TournamentsController/Delete/5
+        // POST: TournamentsController/Delete/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Delete(int id)
         {
             Tournament? tournament = _dbContext.Tournaments.Find(id);
             if (tournament == null)
             {
-                return NotFound();
-            }
-            return View(tournament);
-        }
-
-        // POST: TournamentsController/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public IActionResult DeleteConfirmed(int id)
-        {
-            Tournament? tournament = _dbContext.Tournaments.Find(id);
-            if (tournament == null)
-            {
-                return NotFound();
+                TempData.Add("notification", "Tournament not found!");
+                TempData.Add("error", "");
+                return RedirectToAction("Index", "ClubEvents");
             }
             _dbContext.Tournaments.Remove(tournament);
             _dbContext.SaveChanges();
+
+            TempData.Add("notification", tournament.Name + " has been deleted!");
+            TempData.Add("success", "");
             return RedirectToAction("Index", "ClubEvents");
         }
 
-        // GET: TournamentsController/Close/5
+        // POST: TournamentsController/Close/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Close(int id)
         {
             Tournament? tournament = _dbContext.Tournaments.Find(id);
             if (tournament == null)
             {
-                return NotFound();
+                TempData.Add("notification", "Tournament not found!");
+                TempData.Add("error", "");
+                return RedirectToAction("Index", "ClubEvents");
             }
-            return View(tournament);
-        }
-
-        // POST: TournamentsController/Close/5
-        [HttpPost, ActionName("Close")]
-        [ValidateAntiForgeryToken]
-        public IActionResult CloseConfirmed(int id)
-        {
-            Tournament? tournament = _dbContext.Tournaments.Find(id);
-            if (tournament == null)
-            {
-                return NotFound();
-            }
-            tournament.Status = "Closed";
+            tournament.Status = "Registrtion Closed";
             _dbContext.Tournaments.Update(tournament);
             _dbContext.SaveChanges();
+
+            TempData.Add("notification", "Registration for " + tournament.Name + " has been closed!");
+            TempData.Add("success", "");
             return RedirectToAction("Index", "ClubEvents");
         }
 
-        // GET: TournamentsController/MarkAsEnded/5
+        // POST: TournamentsController/MarkAsEnded/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult MarkAsEnded(int id)
         {
             Tournament? tournament = _dbContext.Tournaments.Find(id);
             if (tournament == null)
             {
-                return NotFound();
-            }
-            return View(tournament);
-        }
-
-        // POST: TournamentsController/MarkAsEnded/5
-        [HttpPost, ActionName("MarkAsEnded")]
-        [ValidateAntiForgeryToken]
-        public IActionResult MarkAsEndedConfirmed(int id)
-        {
-            Tournament? tournament = _dbContext.Tournaments.Find(id);
-            if (tournament == null)
-            {
-                return NotFound();
+                TempData.Add("notification", "Tournament not found!");
+                TempData.Add("error", "");
+                return RedirectToAction("Index", "ClubEvents");
             }
             tournament.Status = "Ended";
             _dbContext.Tournaments.Update(tournament);
             _dbContext.SaveChanges();
+
+            TempData.Add("notification", tournament.Name + " has been marked as ended!");
+            TempData.Add("success", "");
             return RedirectToAction("Index", "ClubEvents");
         }
 
-        // GET: TournamentsController/Cancel/5
+        // POST: TournamentsController/Cancel/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Cancel(int id)
         {
             Tournament? tournament = _dbContext.Tournaments.Find(id);
             if (tournament == null)
             {
-                return NotFound();
-            }
-            return View(tournament);
-        }
-
-        // POST: TournamentsController/Cancel/5
-        [HttpPost, ActionName("Cancel")]
-        [ValidateAntiForgeryToken]
-        public IActionResult CancelConfirmed(int id)
-        {
-            Tournament? tournament = _dbContext.Tournaments.Find(id);
-            if (tournament == null)
-            {
-                return NotFound();
+                TempData.Add("notification", "Tournament not found!");
+                TempData.Add("error", "");
+                return RedirectToAction("Index", "ClubEvents");
             }
             tournament.Status = "Cancelled";
             _dbContext.Tournaments.Update(tournament);
             _dbContext.SaveChanges();
+
+            TempData.Add("notification", tournament.Name + " has been cancelled!");
+            TempData.Add("success", "");
             return RedirectToAction("Index", "ClubEvents");
         }
 

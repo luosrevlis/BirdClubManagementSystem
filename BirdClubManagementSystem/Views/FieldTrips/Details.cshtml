@@ -12,8 +12,12 @@
 @await Html.PartialAsync("~/Views/ClubEvents/_EventDetail.cshtml", Model)
 
 <div>
-    <a class="participants-list-button" asp-action="Index" asp-controller="FieldTripRegistrations" asp-route-fieldtripid="@Model.Id">
+    <a class="button participants-list-button" asp-action="Index" asp-controller="FieldTripRegistrations" asp-route-fieldtripid="@Model.Id">
         <i class="fa-solid fa-person-walking"></i>
         View participants list
     </a>
 </div>
+
+@section Scripts {
+    <script src="~/js/event/detail.js"></script>
+}

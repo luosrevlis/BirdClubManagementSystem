@@ -28,16 +28,15 @@
     margin: 0.5rem 0;
 }
 
-.back-button,
-.edit-button,
-.delete-button,
-.edit-highlights-button,
-.status-button,
-.participants-list-button,
-.rankings-button {
+.button {
     margin: 0 0.5rem;
     padding: 0.5rem 1rem;
     border-radius: 0.5rem;
+    border: none;
+}
+
+.button:hover {
+    opacity: 0.6;
 }
 
 .back-button,
@@ -55,8 +54,13 @@
 }
 
 .rankings-button {
-    background-color: #ffd700;
+    background-color: #FFD700;
     color: #fff;
+}
+
+.cancel-button {
+    background-color: #0000;
+    color: #4F77FF;
 }
 
 .event-title,
@@ -90,4 +94,40 @@
     flex-flow: row nowrap;
     justify-content: space-between;
     align-items: center;
+}
+
+.delete-event-container,
+.close-registration-container,
+.end-event-container,
+.cancel-event-container {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #00000077;
+    width: 100%;
+    height: 100vh;
+    display: none;
+    justify-content: center;
+    align-items: center;
+}
+
+.delete-event-form,
+.close-registration-form,
+.end-event-form,
+.cancel-event-form {
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+    background-color: #fff;
+    border-radius: 0.5rem;
+}
+
+.delete-event-control,
+.close-registration-control,
+.end-event-control,
+.cancel-event-control {
+    margin-top: 2rem;
 }
