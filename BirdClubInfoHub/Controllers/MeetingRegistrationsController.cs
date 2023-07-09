@@ -2,9 +2,11 @@
 using BirdClubInfoHub.Filters;
 using BirdClubInfoHub.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace BirdClubInfoHub.Controllers
 {
+    [Authenticated]
     public class MeetingRegistrationsController : Controller
     {
         private readonly BcmsDbContext _dbContext;
@@ -23,88 +25,58 @@ namespace BirdClubInfoHub.Controllers
                 return RedirectToAction("Index", "Login");
             }
             List<MeetingRegistration> registrations = _dbContext.MeetingRegistrations
-                .Where(mr => mr.UserId == userId).ToList();
-            foreach (MeetingRegistration mr in registrations)
-            {
-                mr.Meeting = _dbContext.Meetings.Find(mr.MeetingId)!;
-                mr.User = user;
-            }
+                .Where(mr => mr.UserId == userId)
+                .Include(mr => mr.User)
+                .Include(mr => mr.Meeting)
+                .ToList();
             registrations.RemoveAll(mr => mr.Meeting.Status != "Open" && mr.Meeting.Status != "Registration Closed");
             return View(registrations);
         }
 
-        [Authenticated]
-        public IActionResult Register(int meetingId)
+        public IActionResult Register(int id)
         {
-            Meeting? meeting = _dbContext.Meetings.Find(meetingId);
-            if (meeting == null)
-            {
-                return NotFound();
-            }
             int? userId = HttpContext.Session.GetInt32("USER_ID");
             User? user = _dbContext.Users.Find(userId);
             if (user == null)
             {
                 return RedirectToAction("Index", "Login");
             }
-            MeetingRegistration? registration = _dbContext.MeetingRegistrations
-                .FirstOrDefault(ftr => ftr.MeetingId == meetingId && ftr.UserId == userId);
-            // If already registered, notify
-            if (registration != null)
+            Meeting? meeting = _dbContext.Meetings.Find(id);
+            if (meeting == null)
             {
-                return View("AlreadyRegistered");
+                TempData.Add("notification", "Meeting not found!");
+                TempData.Add("error", "");
+                return RedirectToAction("Index", "ClubEvents");
             }
-            registration = new() { Meeting = meeting };
-            return View(registration);
+            MeetingRegistration registration = new()
+            {
+                User = user,
+                Meeting = meeting
+            };
+            _dbContext.MeetingRegistrations.Add(registration);
+            _dbContext.SaveChanges();
+
+            TempData.Add("notification", "Registration success!");
+            TempData.Add("success", "");
+            return RedirectToAction("Details", "Meetings", new { id = meeting.Id });
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Register(MeetingRegistration registration)
-        {
-            int userId = registration.UserId;
-            User? user = _dbContext.Users.Find(userId);
-            if (user == null)
-            {
-                return NotFound();
-            }
-            int meetingId = registration.MeetingId;
-            Meeting? meeting = _dbContext.Meetings.Find(meetingId);
-            if (meeting == null)
-            {
-                return NotFound();
-            }
-            registration.User = user;
-            registration.Meeting = meeting;
-            _dbContext.MeetingRegistrations.Add(registration);
-            _dbContext.SaveChanges();
-            return RedirectToAction("Index", "ClubEvents");
-        }
-
-        [Authenticated]
         public IActionResult Delete(int id)
         {
             MeetingRegistration? registration = _dbContext.MeetingRegistrations.Find(id);
             if (registration == null)
             {
-                return NotFound();
-            }
-            registration.Meeting = _dbContext.Meetings.Find(registration.MeetingId)!;
-            registration.User = _dbContext.Users.Find(registration.UserId)!;
-            return View(registration);
-        }
-
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public IActionResult DeleteConfirmed(int id)
-        {
-            MeetingRegistration? registration = _dbContext.MeetingRegistrations.Find(id);
-            if (registration == null)
-            {
-                return NotFound();
+                TempData.Add("notification", "Registration not found!");
+                TempData.Add("error", "");
+                return RedirectToAction("Index");
             }
             _dbContext.MeetingRegistrations.Remove(registration);
             _dbContext.SaveChanges();
+
+            TempData.Add("notification", "Registration cancelled!");
+            TempData.Add("success", "");
             return RedirectToAction("Index");
         }
     }

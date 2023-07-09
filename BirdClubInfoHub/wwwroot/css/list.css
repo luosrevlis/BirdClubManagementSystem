@@ -100,45 +100,20 @@ table .user img{
     border-radius: 0 50% 50% 0;
 }
 
-.status{
-    color: white;
-    padding: 2px 0;
-    border-radius: 5px;
-    text-align: center;
-}
-.status.accepted{
-    background-color: #86e49d;
-    color: #006b21;
-}
-.status.rejected{
-    background-color: #d893a3;
-    color: #b30021;
-}
-.status.pending{
-    background-color: #f29f05;
-}
-.option a{
-    margin-left: 5px ;
-    color: #fff;
-    padding: 8px;
-    border-radius: 20px;
-}
-.btn-accept{
-    background-color: #006b21;
-}
-.btn-reject{
-    background-color: #b30021;
+.button {
+    margin: 0.2rem;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    border: none;
 }
 
-.app-btn{
-    transition: .3s;
+.button:hover {
+    opacity: 0.6;
 }
-.app-btn:hover{
-    opacity: 0.7;
-}
+
 /* Responsive */
 @media (max-width:1078px){
-    .app-btn{
+    .button{
         display: block;
         margin-bottom: 5px;
     }
