@@ -35,10 +35,10 @@ bullets.forEach((bullet) => {
 const emailPattern = /^[^ ]+@[^ ]+\.[a-z]{2,3}$/;
 function checkAccount(){
     if (!document.Formfill.Email.value.match(emailPattern)) {
-        document.getElementById("result").innerHTML = "Incorrect email or password!!!";
+        document.getElementById("result").innerHTML = "Please enter a valid email.";
         return false;
     }else if(document.Formfill.Password.value == ""){
-        document.getElementById("result").innerHTML = "Incorrect email or password!!!"
+        document.getElementById("result").innerHTML = "Password cannot be empty."
         return false;
     }
 }

@@ -1,4 +1,76 @@
-﻿@model BirdClubManagementSystem.Models.User
+﻿@model User
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/form.css" />
+}
+
+<div class="main-form">
+    <section class="container-template">
+        <h2>Edit user</h2>
+        <form asp-action="Edit" class="form" onsubmit="return validateAll()">
+
+            <div class="input-box fullname-field">
+                <label>Fullname</label>
+                <input asp-for="Name" placeholder="Enter fullname" required class="fullname" />
+                <!-- add error message here -->
+                <span class="error fullname-error">
+                    <img src="~/img/resetpass/alert-circle.svg" alt="">
+                    <p class="error-text">Fullname cannot be empty.</p>
+                </span>
+            </div>
+
+            <div class="input-box address-field">
+                <label>Address</label>
+                <input asp-for="Address" placeholder="Enter address" required class="address" />
+                <!-- add error message here -->
+                <span class="error address-error">
+                    <img src="~/img/resetpass/alert-circle.svg" alt="">
+                    <p class="error-text">Address cannot be empty.</p>
+                </span>
+            </div>
+
+            <div class="column">
+
+                <div class="input-box phonenumber-field">
+                    <label>Phone number</label>
+                    <input asp-for="Phone" placeholder="Enter phone number" required class="phonenumber" type="number" />
+                    <!-- add error message here -->
+                    <span class="error phonenumber-error">
+                        <img src="~/img/resetpass/alert-circle.svg" alt="">
+                        <p class="error-text">Please enter a valid phone number.</p>
+                    </span>
+                </div>
+
+                <div class="input-box role-field">
+                    <label>Role</label>
+                    <div class="select-box">
+                        <select asp-for="Role" class="form-control">
+                            <option value="" hidden>Choose a role</option>
+                            <option value="Admin">Admin</option>
+                            <option value="Staff">Staff</option>
+                            <option value="Member">Member</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <input class="button" type="submit" value="Save" />
+        </form>
+        <div class="back-region">
+            <a asp-action="Index" class="back-link">Back</a>
+        </div>
+    </section>
+</div>
+
+@section Scripts {
+    <script src="~/js/user-management/edit.js"></script>
+}
+
+@*@model BirdClubManagementSystem.Models.User
 
 @{
     ViewData["Title"] = "Edit";
@@ -58,3 +130,4 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
+*@

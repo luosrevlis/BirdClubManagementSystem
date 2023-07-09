@@ -10,3 +10,46 @@
 }
 
 @await Html.PartialAsync("~/Views/ClubEvents/_EventDetail.cshtml", Model)
+
+<div class="event-detail-footer-links">
+    @if (ViewBag.Status == "Unauth")
+    {
+        <a class="button login-button" asp-action="Index" asp-controller="Login">Login to register</a>
+    }
+    @if (ViewBag.Status == "Registered")
+    {
+        <button class="button disabled-button" type="button" disabled>Already registered</button>
+    }
+    @if (ViewBag.Status == "Available")
+    {
+        <button class="button register-button" type="button" onclick="initRegister()">Register</button>
+    }
+</div>
+
+@if (ViewBag.Status == "Available")
+{
+    <div class="register-event-container">
+        <form class="register-event-form">
+            <h2>Register</h2>
+            <p>Do you want to register for this field trip?</p>
+
+            <input type="hidden" asp-for="Id" />
+
+            <div class="register-event-control">
+                <button class="button register-button" type="submit" asp-action="Register" asp-controller="FieldTripRegistrations">
+                    Register and pay entrance fee online with VNPay
+                </button>
+                <button class="button register-no-pay-button" type="submit" asp-action="RegisterNoPay" asp-controller="FieldTripRegistrations">
+                    Register now, pay later
+                </button>
+                <button class="button cancel-button" type="button" onclick="cancelRegister()">
+                    Cancel
+                </button>
+            </div>
+        </form>
+    </div>
+}
+
+@section Scripts {
+    <script src="~/js/event/detail.js"></script>
+}

@@ -4,34 +4,54 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+@section Styles {
+    @*<link rel="stylesheet" href="~/css/reset.css" />*@
+    <link rel="stylesheet" href="~/css/list.css" />
+    <link rel="stylesheet" href="~/css/event-registration/index.css" />
+}
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.User)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Meeting)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
+<section class="table-header">
+    <h2>Registrations for upcoming meetings</h2>
+</section>
+<div class="sticky-table">
+    <table>
+        <thead>
             <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.User.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Meeting.Name)
-                </td>
-                <td>
-                    <a asp-action="Delete" asp-route-id="@item.Id">Cancel Registration</a>
-                </td>
+                <th>Meeting</th>
+                <th>Cancel registration</th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Meeting.Name</td>
+                    <td class="option">
+                        <a class="button delete-button" onclick="initDelete(@item.Id)">
+                            <i class="fa-solid fa-xmark"></i>
+                            Cancel registration
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<div class="delete-reg-container">
+    <form class="delete-reg-form" asp-action="Delete">
+        <h2>Are you sure you want to cancel this registration?</h2>
+        <p>This action cannot be undone!</p>
+
+        <input type="hidden" id="reg-id" name="Id" />
+
+        <div class="delete-reg-control">
+            <input class="button delete-button" type="submit" value="Delete" />
+            <button class="button cancel-button" type="button" onclick="cancelDelete()">Cancel</button>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <script src="~/js/event-registration/index.js"></script>
+}

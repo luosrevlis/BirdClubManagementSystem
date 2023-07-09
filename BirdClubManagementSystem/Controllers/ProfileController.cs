@@ -23,7 +23,11 @@ namespace BirdClubManagementSystem.Controllers
             {
                 return NotFound();
             }
-            //if image is empty return default, 4 places
+            //if image is empty return default
+            if (user.ProfilePicture.Length == 0)
+            {
+                return File("/img/nav/ava_placeholder.jpg", "image/png");
+            }
             return File(user.ProfilePicture, "image/png");
         }
 
@@ -126,27 +130,34 @@ namespace BirdClubManagementSystem.Controllers
             PasswordHasher<User> passwordHasher = new();
             if (user == null)
             {
-                return RedirectToAction("Index", "Login");
+                TempData.Add("notification", "Account not found!");
+                TempData.Add("error", "");
+                return RedirectToAction("Index");
             }
             if (passwordHasher.VerifyHashedPassword(user, user.Password, oldPassword) == PasswordVerificationResult.Failed)
             {
-                ModelState.AddModelError("OldIncorrect", "Old Password is incorrect!");
+                TempData.Add("notification", "Incorrect old password!");
+                TempData.Add("error", "");
+                return View();
             }
             if (oldPassword == newPassword)
             {
-                ModelState.AddModelError("SamePassword", "New Password cannot be the same as Old Password!");
+                TempData.Add("notification", "New password can not be identical to old password!");
+                TempData.Add("error", "");
+                return View();
             }
             if (newPassword != confirmPassword)
             {
-                ModelState.AddModelError("ConfirmMismatch", "Confirm Password does not match New Password!");
-            }
-            if (!ModelState.IsValid)
-            {
-                return View(formCollection);
+                TempData.Add("notification", "Password does not match!");
+                TempData.Add("error", "");
+                return View();
             }
             user.Password = passwordHasher.HashPassword(user, newPassword);
             _dbContext.Users.Update(user);
             _dbContext.SaveChanges();
+
+            TempData.Add("notification", "Change password successful!");
+            TempData.Add("success", "");
             return RedirectToAction("Index");
         }
     }

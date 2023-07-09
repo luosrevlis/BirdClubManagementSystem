@@ -1,55 +1,75 @@
-﻿@model BirdClubManagementSystem.Models.FieldTrip
+﻿@model FieldTrip
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Create";
 }
 
-<h1>Edit</h1>
+@section Styles {
+    <link rel="stylesheet" href="~/css/form.css" />
+}
 
-<h4>FieldTrip</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+<div class="main-form">
+    <section class="container-template">
+        <h2>Edit field trip</h2>
+        <form asp-action="Edit" class="form" onsubmit="return validateAll()">
             <input type="hidden" asp-for="Id" />
-            <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Date" class="control-label"></label>
-                <input asp-for="Date" class="form-control" />
-                <span asp-validation-for="Date" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="RegistrationCloseDate" class="control-label"></label>
-                <input asp-for="RegistrationCloseDate" class="form-control" />
-                <span asp-validation-for="RegistrationCloseDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
-                <span asp-validation-for="Description" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Fee" class="control-label"></label>
-                <input asp-for="Fee" class="form-control" />
-                <span asp-validation-for="Fee" class="text-danger"></span>
-            </div>
-            <input type="hidden" asp-for="Status"/>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
-</div>
 
-<div>
-    <a asp-action="Index" asp-controller="ClubEvents">Back to List</a>
+            <div class="input-box name-field">
+                <label>Name</label>
+                <input asp-for="Name" placeholder="Enter field trip name" required class="name" />
+                <!-- add error message here -->
+                <span class="error name-error">
+                    <img src="~/img/resetpass/alert-circle.svg" alt="">
+                    <p class="error-text">Field trip name cannot be empty.</p>
+                </span>
+            </div>
+
+            <div class="input-box date-field">
+                <label>Date and time of field trip</label>
+                <input asp-for="Date" placeholder="Enter date and time" required class="date" />
+                <span class="error date-error">
+                    <img src="~/img/resetpass/alert-circle.svg" alt="">
+                    <p class="error-text">Event cannot take place before registration is closed!</p>
+                </span>
+            </div>
+
+            <div class="input-box description-field">
+                <label>Description</label>
+                <textarea id="field-trip-description" name="Description">
+                    @Html.Raw(Model.Description)
+                </textarea>
+            </div>
+
+            <div class="column">
+
+                <div class="input-box reg-date-field">
+                    <label>Registration close date</label>
+                    <input asp-for="RegistrationCloseDate" placeholder="Enter close date" required class="reg-date" />
+                </div>
+
+                <div class="input-box fee-field">
+                    <label>Entrance fee</label>
+                    <input asp-for="Fee" placeholder="Enter entrance fee" required class="fee" />
+                    <!-- add error message here -->
+                    <span class="error fee-error">
+                        <img src="~/img/resetpass/alert-circle.svg" alt="">
+                        <p class="error-text">Fee cannot be empty.</p>
+                    </span>
+                </div>
+
+            </div>
+
+            <input class="button" type="submit" value="Save" />
+        </form>
+        <div class="back-region">
+            <a asp-action="Details" asp-route-id="@Model.Id" class="back-link">Back</a>
+        </div>
+    </section>
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_Summernote", new { Height = 500, Selector = "#field-trip-description" });
+    }
+    <script src="~/js/event/create-edit.js"></script>
 }

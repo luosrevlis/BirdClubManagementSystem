@@ -3,9 +3,11 @@ using BirdClubInfoHub.Filters;
 using BirdClubInfoHub.Models;
 using BirdClubInfoHub.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace BirdClubInfoHub.Controllers
 {
+    [Authenticated]
     public class FieldTripRegistrationsController : Controller
     {
         private readonly BcmsDbContext _dbContext;
@@ -17,7 +19,6 @@ namespace BirdClubInfoHub.Controllers
             _vnPayService = vnPayService;
         }
 
-        [Authenticated]
         public IActionResult Index()
         {
             int? userId = HttpContext.Session.GetInt32("USER_ID");
@@ -27,90 +28,76 @@ namespace BirdClubInfoHub.Controllers
                 return RedirectToAction("Index", "Login");
             }
             List<FieldTripRegistration> registrations = _dbContext.FieldTripRegistrations
-                .Where(ftr => ftr.UserId == userId).ToList();
-            foreach (FieldTripRegistration ftr in registrations)
-            {
-                ftr.FieldTrip = _dbContext.FieldTrips.Find(ftr.FieldTripId)!;
-                ftr.User = user;
-            }
+                .Where(ftr => ftr.UserId == userId)
+                .Include(ftr => ftr.User)
+                .Include(ftr => ftr.FieldTrip)
+                .ToList();
             registrations.RemoveAll(ftr => ftr.FieldTrip.Status != "Open" && ftr.FieldTrip.Status != "Registration Closed");
             return View(registrations);
         }
 
-        [Authenticated]
-        public IActionResult Register(int fieldTripId)
+        public IActionResult Register(int id)
         {
-            FieldTrip? fieldTrip = _dbContext.FieldTrips.Find(fieldTripId);
-            if (fieldTrip == null)
-            {
-                return NotFound();
-            }
             int? userId = HttpContext.Session.GetInt32("USER_ID");
             User? user = _dbContext.Users.Find(userId);
             if (user == null)
             {
                 return RedirectToAction("Index", "Login");
             }
-            FieldTripRegistration? registration = _dbContext.FieldTripRegistrations
-                .FirstOrDefault(ftr => ftr.FieldTripId == fieldTripId && ftr.UserId == userId);
-            // If already registered, notify
-            if (registration != null)
+            FieldTrip? fieldTrip = _dbContext.FieldTrips.Find(id);
+            if (fieldTrip == null)
             {
-                return View("AlreadyRegistered");
+                TempData.Add("notification", "Field trip not found!");
+                TempData.Add("error", "");
+                return RedirectToAction("Index", "ClubEvents");
             }
-            registration = new() { FieldTrip = fieldTrip };
-            return View(registration);
+            FieldTripRegistration registration = new()
+            {
+                User = user,
+                FieldTrip = fieldTrip
+            };
+            _dbContext.FieldTripRegistrations.Add(registration);
+            _dbContext.SaveChanges();
+            return RedirectToAction("GeneratePaymentUrl", new RouteValueDictionary(new { id = registration.Id }));
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Register(FieldTripRegistration registration)
+        public IActionResult RegisterNoPay(int id)
         {
-            int userId = registration.UserId;
+            int? userId = HttpContext.Session.GetInt32("USER_ID");
             User? user = _dbContext.Users.Find(userId);
             if (user == null)
             {
-                return NotFound();
+                return RedirectToAction("Index", "Login");
             }
-            int fieldTripId = registration.FieldTripId;
-            FieldTrip? fieldTrip = _dbContext.FieldTrips.Find(fieldTripId);
+            FieldTrip? fieldTrip = _dbContext.FieldTrips.Find(id);
             if (fieldTrip == null)
             {
-                return NotFound();
+                TempData.Add("notification", "Field trip not found!");
+                TempData.Add("error", "");
+                return RedirectToAction("Index", "ClubEvents");
             }
-            registration.User = user;
-            registration.FieldTrip = fieldTrip;
+            FieldTripRegistration registration = new()
+            {
+                User = user,
+                FieldTrip = fieldTrip
+            };
             _dbContext.FieldTripRegistrations.Add(registration);
             _dbContext.SaveChanges();
-            int id = _dbContext.FieldTripRegistrations
-                .FirstOrDefault(ftr => ftr.UserId == userId && ftr.FieldTripId == fieldTripId)!.Id;
-            return RedirectToAction("PayEntranceFee", new RouteValueDictionary(new { id }));
+
+            TempData.Add("notification", "Registration success!");
+            TempData.Add("success", "");
+            return RedirectToAction("Index");
         }
 
-        [Authenticated]
-        public IActionResult PayEntranceFee(int id)
-        {
-            FieldTripRegistration? registration = _dbContext.FieldTripRegistrations.Find(id);
-            if (registration == null)
-            {
-                return NotFound();
-            }
-            registration.FieldTrip = _dbContext.FieldTrips.Find(registration.FieldTripId)!;
-            registration.User = _dbContext.Users.Find(registration.UserId)!;
-            return View(registration);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
         public IActionResult GeneratePaymentUrl(int id)
         {
             FieldTripRegistration registration = _dbContext.FieldTripRegistrations.Find(id)!;
             registration.FieldTrip = _dbContext.FieldTrips.Find(registration.FieldTripId)!;
             registration.User = _dbContext.Users.Find(registration.UserId)!;
-            PaymentInformationModel model = new PaymentInformationModel()
+            PaymentInformationModel model = new()
             {
                 Amount = registration.FieldTrip.Fee,
-                OrderDescription = registration.User.Name + " thanh toan cho " + registration.FieldTrip.Name
+                OrderDescription = registration.User.Name + " pay for " + registration.FieldTrip.Name
             };
             string returnUrl = Url.Action(action: "PaymentConfirmed", controller: "FieldTripRegistrations",
                 values: new RouteValueDictionary(new { id }), protocol: "https")!;
@@ -125,46 +112,41 @@ namespace BirdClubInfoHub.Controllers
             FieldTripRegistration? registration = _dbContext.FieldTripRegistrations.Find(id);
             if (registration == null)
             {
-                return NotFound();
+                TempData.Add("notification", "Error");
+                TempData.Add("error", "It seems like something went wrong. Please re-register.");
+                return RedirectToAction("Index", "ClubEvents");
             }
-            if (!model.Success)
+            if (!model.Success || model.VnPayResponseCode != "00")
             {
-                return BadRequest();
-            }
-            if (model.VnPayResponseCode != "00")
-            {
-                return BadRequest(); // payment failed
+                TempData.Add("notification", "Payment failed!");
+                TempData.Add("error", "Please reattempt the payment process.");
+                return RedirectToAction("Details", "FieldTrips", new { id = registration.FieldTripId });
             }
             registration.PaymentReceived = true;
             _dbContext.FieldTripRegistrations.Update(registration);
             _dbContext.SaveChanges();
-            return View(model);
+
+            TempData.Add("notification", "Payment success!");
+            TempData.Add("success", "");
+            return RedirectToAction("Details", "FieldTrips", new { id = registration.FieldTripId });
         }
 
-        [Authenticated]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Delete(int id)
         {
             FieldTripRegistration? registration = _dbContext.FieldTripRegistrations.Find(id);
             if (registration == null)
             {
-                return NotFound();
-            }
-            registration.FieldTrip = _dbContext.FieldTrips.Find(registration.FieldTripId)!;
-            registration.User = _dbContext.Users.Find(registration.UserId)!;
-            return View(registration);
-        }
-
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public IActionResult DeleteConfirmed(int id)
-        {
-            FieldTripRegistration? registration = _dbContext.FieldTripRegistrations.Find(id);
-            if (registration == null)
-            {
-                return NotFound();
+                TempData.Add("notification", "Registration not found!");
+                TempData.Add("error", "");
+                return RedirectToAction("Index");
             }
             _dbContext.FieldTripRegistrations.Remove(registration);
             _dbContext.SaveChanges();
+
+            TempData.Add("notification", "Registration cancelled!");
+            TempData.Add("success", "");
             return RedirectToAction("Index");
         }
     }

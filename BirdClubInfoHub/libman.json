@@ -53,6 +53,10 @@
         "plugin/specialchars/summernote-ext-specialchars.js",
         "plugin/specialchars/summernote-ext-specialchars.min.js"
       ]
+    },
+    {
+      "library": "toastr.js@2.1.4",
+      "destination": "wwwroot/lib/toastr/"
     }
   ]
 }

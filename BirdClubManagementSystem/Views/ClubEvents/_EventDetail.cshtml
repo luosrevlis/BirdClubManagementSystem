@@ -5,14 +5,39 @@
 }
 
 <section class="event-section">
-    <a class="back-button" asp-controller="ClubEvents" asp-action="Index">Back to List</a>
+    <div class="event-detail-header-links">
+        <a class="button back-button" asp-controller="ClubEvents" asp-action="Index">
+            <i class="fa-solid fa-backward"></i>
+            Club events
+        </a>
+        <a class="button edit-button" asp-action="Edit" asp-route-id="@Model.Id">
+            <i class="fa-solid fa-pen-to-square"></i>
+            Edit
+        </a>
+        <a class="button delete-button" onclick="initDelete()">
+            <i class="fa-solid fa-trash"></i>
+            Delete
+        </a>
+    </div>
+    @if (Model.Status == "Ended")
+    {
+        <div class="event-detail-edit-highlights">
+            <a class="button edit-highlights-button" asp-action="EditHighlights" asp-route-id="@Model.Id">
+                <i class="fa-solid fa-pen-to-square"></i>
+                Edit highlights
+            </a>
+        </div>
+        <!--TODO highlights section-->
+    }
     <div class="event-body">
         <h1 class="event-title">@Model.Name</h1>
         <p class="event-date">@Model.Date</p>
         
         <div class="event-description-container">
             <h2 class="event-description-title">Description</h2>
-            <p class="event-description">@Model.Description</p>
+            <div class="event-description">
+                @Html.Raw(Model.Description)
+            </div>
         </div>
         <div class="event-entrance-container">
             <p><b>Registration close date:</b> @Model.RegistrationCloseDate</p>
@@ -20,4 +45,89 @@
             <p class="status"><b>Status:</b> @Model.Status</p>
         </div>
     </div>
+    <div class="event-detail-status-links">
+        @if (Model.Status == "Open")
+        {
+            <a class="button status-button" onclick="initClose()">
+                <i class="fa-solid fa-door-open"></i>
+                Close registration
+            </a>
+        }
+        @if (Model.Status == "Happening")
+        {
+            <a class="button status-button" onclick="initEnd()">
+                <i class="fa-solid fa-clock"></i>
+                Mark as ended
+            </a>
+        }
+        @if (Model.Status != "Ended" && Model.Status != "Cancelled")
+        {
+            <a class="button status-button" onclick="initCancel()">
+                <i class="fa-solid fa-xmark"></i>
+                Cancel event
+            </a>
+        }
+    </div>
 </section>
+
+<div class="delete-event-container">
+    <form class="delete-event-form" asp-action="Delete" asp-route-id="@Model.Id">
+        <h2>Are you sure you want to delete this event?</h2>
+        <p>This action can not be undone!</p>
+
+        <input type="hidden" asp-for="Id" />
+
+        <div class="delete-event-control">
+            <input class="button delete-button" type="submit" value="Delete" />
+            <button class="button cancel-button" type="button" onclick="cancelDelete()">Cancel</button>
+        </div>
+    </form>
+</div>
+
+@if (Model.Status == "Open")
+{
+    <div class="close-registration-container">
+        <form class="close-registration-form" asp-action="Close" asp-route-id="@Model.Id">
+            <h2>Close registration for this event?</h2>
+
+            <input type="hidden" asp-for="Id" />
+
+            <div class="close-registration-control">
+                <input class="button status-button" type="submit" value="Close registration" />
+                <button class="button cancel-button" type="button" onclick="cancelClose()">Cancel</button>
+            </div>
+        </form>
+    </div>
+}
+
+@if (Model.Status == "Happening")
+{
+    <div class="end-event-container">
+        <form class="end-event-form" asp-action="MarkAsEnded" asp-route-id="@Model.Id">
+            <h2>Mark this event as ended?</h2>
+
+            <input type="hidden" asp-for="Id" />
+
+            <div class="end-event-control">
+                <input class="button status-button" type="submit" value="Mark as ended" />
+                <button class="button cancel-button" type="button" onclick="cancelEnd()">Cancel</button>
+            </div>
+        </form>
+    </div>
+}
+
+@if (Model.Status != "Ended" && Model.Status != "Cancelled")
+{
+    <div class="cancel-event-container">
+        <form class="cancel-event-form" asp-action="Cancel" asp-route-id="@Model.Id">
+            <h2>Are you sure you want to cancel this event?</h2>
+
+            <input type="hidden" asp-for="Id" />
+
+            <div class="cancel-event-control">
+                <input class="button status-button" type="submit" value="Cancel event" />
+                <button class="button cancel-button" type="button" onclick="cancelCancel()">Cancel</button>
+            </div>
+        </form>
+    </div>
+}

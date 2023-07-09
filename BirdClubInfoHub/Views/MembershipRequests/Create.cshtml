@@ -17,22 +17,21 @@
         <div class="title">Request for membership</div>
     </div>
 
-    <form action="">
+    <form asp-action="Create" onsubmit="return validateAll()">
         <!-- nhap thong tin ngươi dung -->
-        <div class="user-details ">
+        <div class="user-details">
             <div class="input-box email-field">
                 <span class="details">Email</span>
-                <input type="text" placeholder="Enter your email..." required class="email">
+                <input asp-for="Email" placeholder="Enter your email..." required class="email">
                 <!-- add error message here -->
                 <span class="error mail-error">
                     <img src="~/img/resetpass/alert-circle.svg" alt="">
                     <p class="error-text">Please enter a valid email</p>
                 </span>
             </div>
-
             <div class="input-box fullname-field">
                 <span class="details">Fullname</span>
-                <input type="text" placeholder="Enter your fullname..." required class="fullname">
+                <input asp-for="Name" placeholder="Enter your fullname..." required class="fullname">
                 <!-- add error message here -->
                 <span class="error mail-error">
                     <img src="~/img/resetpass/alert-circle.svg" alt="">
@@ -41,7 +40,7 @@
             </div>
             <div class="input-box address-field">
                 <span class="details">Address</span>
-                <input type="text" placeholder="Enter your address..." required class="address">
+                <input asp-for="Address" placeholder="Enter your address..." required class="address">
                 <!-- add error message here -->
                 <span class="error mail-error">
                     <img src="~/img/resetpass/alert-circle.svg" alt="">
@@ -50,7 +49,7 @@
             </div>
             <div class="input-box phonenumber-field">
                 <span class="details">Phone number</span>
-                <input type="text" placeholder="Enter your phone number..." required class="phonenumber">
+                <input asp-for="PhoneNumber" placeholder="Enter your phone number..." required class="phonenumber">
                 <!-- add error message here -->
                 <span class="error mail-error">
                     <img src="~/img/resetpass/alert-circle.svg" alt="">
@@ -63,57 +62,10 @@
             <input type="submit" value="SEND">
         </div>
     </form>
-    <!-- *add popup here -->
-    <div class="popup" id="popup">
-        <div class="popup-logo">
-            <img src="~/img/resetpass/success_icon.svg" alt="">
-        </div>
-        <h2>THANK YOU</h2>
-        <p>Your information is sent successfully</p>
-        <button onclick="closeSlide()">OK</button>
+    <div class="back-region">
+        <a asp-action="Index" asp-controller="Login" class="back-link">Back</a>
     </div>
 </div>
-
-
-
-
-
-
-
-@* <h1>Create</h1>
-
-<h4>MembershipRequest</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Address" class="control-label"></label>
-                <input asp-for="Address" class="form-control" />
-                <span asp-validation-for="Address" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="PhoneNumber" class="control-label"></label>
-                <input asp-for="PhoneNumber" class="form-control" />
-                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Email" class="control-label"></label>
-                <input asp-for="Email" class="form-control" />
-                <span asp-validation-for="Email" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Submit" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
-</div> *@
 
 @section Scripts {
     @{
