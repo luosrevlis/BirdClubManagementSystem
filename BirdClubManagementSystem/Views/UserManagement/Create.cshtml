@@ -11,7 +11,7 @@
 <div class="main-form">
     <section class="container-template">
         <h2>Create new user</h2>
-        <form asp-action="Create" class="form" id="form-create-user" onsubmit="return validateAll()">
+        <form asp-action="Create" class="form" onsubmit="return validateAll()">
 
             <div class="input-box email-field">
                 <label>Email</label>
@@ -80,8 +80,11 @@
                 </div>
             </div>
 
-            <button type="submit" form="form-create-user">Create</button>
+            <input class="button" type="submit" value="Create" />
         </form>
+        <div class="back-region">
+            <a asp-action="Index" class="back-link">Back</a>
+        </div>
     </section>
 </div>
 

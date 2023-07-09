@@ -35,7 +35,9 @@
         
         <div class="event-description-container">
             <h2 class="event-description-title">Description</h2>
-            <p class="event-description">@Model.Description</p>
+            <div class="event-description">
+                @Html.Raw(Model.Description)
+            </div>
         </div>
         <div class="event-entrance-container">
             <p><b>Registration close date:</b> @Model.RegistrationCloseDate</p>

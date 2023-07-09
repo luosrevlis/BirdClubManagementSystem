@@ -15,19 +15,15 @@ namespace BirdClubManagementSystem.Controllers
             _dbContext = dbContext;
         }
 
-        // GET: MeetingsController
-        public IActionResult Index()
-        {
-            return View();
-        }
-
         // GET: MeetingsController/Details/5
         public IActionResult Details(int id)
         {
             Meeting? meeting = _dbContext.Meetings.Find(id);
             if (meeting == null)
             {
-                return NotFound();
+                TempData.Add("notification", "Meeting not found!");
+                TempData.Add("error", "");
+                return RedirectToAction("Index", "ClubEvents");
             }
             return View(meeting);
         }
@@ -45,15 +41,16 @@ namespace BirdClubManagementSystem.Controllers
         {
             if (meeting.Date < meeting.RegistrationCloseDate)
             {
-                ModelState.AddModelError("RegDateError", "Event cannot take place before registration is closed!");
-            }
-            if (!ModelState.IsValid)
-            {
+                TempData.Add("notification", "Date error!");
+                TempData.Add("error", "Event cannot take place before registration is closed!");
                 return View(meeting);
             }
             meeting.Status = "Open";
             _dbContext.Meetings.Add(meeting);
             _dbContext.SaveChanges();
+
+            TempData.Add("notification", meeting.Name + " has been created!");
+            TempData.Add("success", "");
             return RedirectToAction("Index", "ClubEvents");
         }
 
@@ -63,7 +60,9 @@ namespace BirdClubManagementSystem.Controllers
             Meeting? meeting = _dbContext.Meetings.Find(id);
             if (meeting == null)
             {
-                return NotFound();
+                TempData.Add("notification", "Meeting not found!");
+                TempData.Add("error", "");
+                return RedirectToAction("Index", "ClubEvents");
             }
             return View(meeting);
         }
@@ -75,14 +74,26 @@ namespace BirdClubManagementSystem.Controllers
         {
             if (meeting.Date < meeting.RegistrationCloseDate)
             {
-                ModelState.AddModelError("RegDateError", "Event cannot take place before registration is closed!");
-            }
-            if (!ModelState.IsValid)
-            {
+                TempData.Add("notification", "Date error!");
+                TempData.Add("error", "Event cannot take place before registration is closed!");
                 return View(meeting);
             }
-            _dbContext.Meetings.Update(meeting);
+            Meeting? meetingInDb = _dbContext.Meetings.Find(meeting.Id);
+            if (meetingInDb == null)
+            {
+                TempData.Add("notification", "Meeting not found!");
+                TempData.Add("error", "");
+                return RedirectToAction("Index", "ClubEvents");
+            }
+            meetingInDb.Name = meeting.Name;
+            meetingInDb.Date = meeting.Date;
+            meetingInDb.RegistrationCloseDate = meeting.RegistrationCloseDate;
+            meetingInDb.Description = meeting.Description;
+            _dbContext.Meetings.Update(meetingInDb);
             _dbContext.SaveChanges();
+
+            TempData.Add("notification", meetingInDb.Name + " has been updated!");
+            TempData.Add("success", "");
             return RedirectToAction("Index", "ClubEvents");
         }
 

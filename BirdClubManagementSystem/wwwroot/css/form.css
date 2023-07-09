@@ -119,7 +119,7 @@ body {
     font-size: 1rem;
 }
 
-.form button {
+.form .button {
     height: 55px;
     width: 100%;
     color: #fff;
@@ -132,9 +132,9 @@ body {
     background: #2e8364;
 }
 
-    .form button:hover {
-        background: #619196;
-    }
+.form .button:hover {
+    background: #619196;
+}
 
 /*Responsive*/
 @media screen and (max-width: 500px) {
@@ -167,4 +167,13 @@ body {
 .error img {
     margin-right: 6px;
     width: 18px;
+}
+
+.back-region {
+    margin: 18px 0 6px;
+}
+
+.back-region .back-link {
+    display: flex;
+    justify-content: center;
 }

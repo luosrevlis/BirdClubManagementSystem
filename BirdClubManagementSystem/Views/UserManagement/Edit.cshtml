@@ -11,7 +11,7 @@
 <div class="main-form">
     <section class="container-template">
         <h2>Edit user</h2>
-        <form asp-action="Edit" class="form" id="form-edit-user" onsubmit="return validateAll()">
+        <form asp-action="Edit" class="form" onsubmit="return validateAll()">
 
             <div class="input-box fullname-field">
                 <label>Fullname</label>
@@ -58,8 +58,11 @@
                 </div>
             </div>
 
-            <button type="submit" form="form-edit-user">Save</button>
+            <input class="button" type="submit" value="Save" />
         </form>
+        <div class="back-region">
+            <a asp-action="Index" class="back-link">Back</a>
+        </div>
     </section>
 </div>
 

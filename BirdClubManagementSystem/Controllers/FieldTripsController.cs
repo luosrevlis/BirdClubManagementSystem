@@ -15,19 +15,15 @@ namespace BirdClubManagementSystem.Controllers
             _dbContext = dbContext;
         }
 
-        // GET: FieldTripsController
-        public IActionResult Index()
-        {
-            return View();
-        }
-
         // GET: FieldTripsController/Details/5
         public IActionResult Details(int id)
         {
             FieldTrip? fieldTrip = _dbContext.FieldTrips.Find(id);
             if (fieldTrip == null)
             {
-                return NotFound();
+                TempData.Add("notification", "Field trip not found!");
+                TempData.Add("error", "");
+                return RedirectToAction("Index", "ClubEvents");
             }
             return View(fieldTrip);
         }
@@ -45,15 +41,16 @@ namespace BirdClubManagementSystem.Controllers
         {
             if (fieldTrip.Date < fieldTrip.RegistrationCloseDate)
             {
-                ModelState.AddModelError("RegDateError", "Event cannot take place before registration is closed!");
-            }
-            if (!ModelState.IsValid)
-            {
+                TempData.Add("notification", "Date error!");
+                TempData.Add("error", "Event cannot take place before registration is closed!");
                 return View(fieldTrip);
             }
             fieldTrip.Status = "Open";
             _dbContext.FieldTrips.Add(fieldTrip);
             _dbContext.SaveChanges();
+
+            TempData.Add("notification", fieldTrip.Name + " has been created!");
+            TempData.Add("success", "");
             return RedirectToAction("Index", "ClubEvents");
         }
 
@@ -63,7 +60,9 @@ namespace BirdClubManagementSystem.Controllers
             FieldTrip? fieldTrip = _dbContext.FieldTrips.Find(id);
             if (fieldTrip == null)
             {
-                return NotFound();
+                TempData.Add("notification", "Field trip not found!");
+                TempData.Add("error", "");
+                return RedirectToAction("Index", "ClubEvents");
             }
             return View(fieldTrip);
         }
@@ -75,14 +74,26 @@ namespace BirdClubManagementSystem.Controllers
         {
             if (fieldTrip.Date < fieldTrip.RegistrationCloseDate)
             {
-                ModelState.AddModelError("RegDateError", "Event cannot take place before registration is closed!");
-            }
-            if (!ModelState.IsValid)
-            {
+                TempData.Add("notification", "Date error!");
+                TempData.Add("error", "Event cannot take place before registration is closed!");
                 return View(fieldTrip);
             }
-            _dbContext.FieldTrips.Update(fieldTrip);
+            FieldTrip? fieldTripInDb = _dbContext.FieldTrips.Find(fieldTrip.Id);
+            if (fieldTripInDb == null)
+            {
+                TempData.Add("notification", "Field trip not found!");
+                TempData.Add("error", "");
+                return RedirectToAction("Index", "ClubEvents");
+            }
+            fieldTripInDb.Name = fieldTrip.Name;
+            fieldTripInDb.Date = fieldTrip.Date;
+            fieldTripInDb.RegistrationCloseDate = fieldTrip.RegistrationCloseDate;
+            fieldTripInDb.Description = fieldTrip.Description;
+            _dbContext.FieldTrips.Update(fieldTripInDb);
             _dbContext.SaveChanges();
+
+            TempData.Add("notification", fieldTripInDb.Name + " has been updated!");
+            TempData.Add("success", "");
             return RedirectToAction("Index", "ClubEvents");
         }
 

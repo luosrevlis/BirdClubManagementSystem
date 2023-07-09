@@ -15,19 +15,15 @@ namespace BirdClubManagementSystem.Controllers
             _dbContext = dbContext;
         }
 
-        // GET: TournamentsController
-        public IActionResult Index()
-        {
-            return View();
-        }
-
         // GET: TournamentsController/Details/5
         public IActionResult Details(int id)
         {
             Tournament? tournament = _dbContext.Tournaments.Find(id);
             if (tournament == null)
             {
-                return NotFound();
+                TempData.Add("notification", "Tournament not found!");
+                TempData.Add("error", "");
+                return RedirectToAction("Index", "ClubEvents");
             }
             return View(tournament);
         }
@@ -45,15 +41,16 @@ namespace BirdClubManagementSystem.Controllers
         {
             if (tournament.Date < tournament.RegistrationCloseDate)
             {
-                ModelState.AddModelError("RegDateError", "Event cannot take place before registration is closed!");
-            }
-            if (!ModelState.IsValid)
-            {
+                TempData.Add("notification", "Date error!");
+                TempData.Add("error", "Event cannot take place before registration is closed!");
                 return View(tournament);
             }
             tournament.Status = "Open";
             _dbContext.Tournaments.Add(tournament);
             _dbContext.SaveChanges();
+
+            TempData.Add("notification", tournament.Name + " has been created!");
+            TempData.Add("success", "");
             return RedirectToAction("Index", "ClubEvents");
         }
 
@@ -63,7 +60,9 @@ namespace BirdClubManagementSystem.Controllers
             Tournament? tournament = _dbContext.Tournaments.Find(id);
             if (tournament == null)
             {
-                return NotFound();
+                TempData.Add("notification", "Tournament not found!");
+                TempData.Add("error", "");
+                return RedirectToAction("Index", "ClubEvents");
             }
             return View(tournament);
         }
@@ -75,14 +74,26 @@ namespace BirdClubManagementSystem.Controllers
         {
             if (tournament.Date < tournament.RegistrationCloseDate)
             {
-                ModelState.AddModelError("RegDateError", "Event cannot take place before registration is closed!");
-            }
-            if (!ModelState.IsValid)
-            {
+                TempData.Add("notification", "Date error!");
+                TempData.Add("error", "Event cannot take place before registration is closed!");
                 return View(tournament);
             }
-            _dbContext.Tournaments.Update(tournament);
+            Tournament? tournamentInDb = _dbContext.Tournaments.Find(tournament.Id);
+            if (tournamentInDb == null)
+            {
+                TempData.Add("notification", "Tournament not found!");
+                TempData.Add("error", "");
+                return RedirectToAction("Index", "ClubEvents");
+            }
+            tournamentInDb.Name = tournament.Name;
+            tournamentInDb.Date = tournament.Date;
+            tournamentInDb.RegistrationCloseDate = tournament.RegistrationCloseDate;
+            tournamentInDb.Description = tournament.Description;
+            _dbContext.Tournaments.Update(tournamentInDb);
             _dbContext.SaveChanges();
+
+            TempData.Add("notification", tournamentInDb.Name + " has been updated!");
+            TempData.Add("success", "");
             return RedirectToAction("Index", "ClubEvents");
         }
 
