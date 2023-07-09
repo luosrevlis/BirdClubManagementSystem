@@ -1,27 +1,5 @@
 ﻿@model Comment
 
-@* <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title text-primary" id="editModelLabel">Edit this comment</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form asp-action="EditComment" id="EditCommentForm" data-ajax="true" data-ajax-mode="replace" data-ajax-update="#CommentSection">
-                    <input hidden id="Id" name="Id" />
-
-                    <input asp-for="Contents" class="form-control" />
-                    <span asp-validation-for="Contents" class="text-danger"></span>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <input type="submit" value="Edit" class="btn btn-primary" form="EditCommentForm" data-bs-dismiss="modal" />
-            </div>
-        </div>
-    </div>
-</div> *@
-
 <form class="edit-comment-container" data-comment-edit-id="@Model.Id" asp-controller="Blogs" asp-action="EditComment" method="post">
     <input type="hidden" asp-for="Id" value="@Model.Id" />
     <input type="hidden" asp-for="UserId" value="@Model.UserId" />

@@ -1,27 +1,5 @@
 ﻿@model Comment
 
-@* <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title text-primary" id="deleteModelLabel">Delete this comment</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div>
-                    Are you sure you want to delete this comment?
-                </div>
-                <form asp-action="DeleteComment" id="DeleteCommentForm" data-ajax="true" data-ajax-mode="replace" data-ajax-update="#CommentSection">
-                    <input hidden id="Id" name="Id" />
-                </form>
-            </div>
-            <div class="modal-footer">
-                <input type="submit" value="Delete" class="btn btn-danger" form="DeleteCommentForm" data-bs-dismiss="modal" />
-            </div>
-        </div>
-    </div>
-</div> *@
-
 <div class="delete-comment-container" data-comment-delete-id="@Model.Id">
     <form class="delete-comment-form" asp-controller="Blogs" asp-action="DeleteComment">
         <h2>Are you sure you want to delete this comment?</h2>

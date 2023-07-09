@@ -1,20 +1,8 @@
-const form = document.querySelector(".password-form"),
+﻿const form = document.querySelector(".password-form"),
     newPassField = form.querySelector(".new-password-field"),
     newPassInput = form.querySelector(".new-password"),
     confirmPassField = form.querySelector(".confirm-password-field"),
-    confirmPassInput = form.querySelector(".confirm-password"),
-    oldPassField = form.querySelector(".old-password-field"),
-    oldPassInput = form.querySelector(".old-password");
-
-//Old password validation
-function checkOldPass() {
-    if (oldPassInput.value === "") {
-        oldPassField.classList.add("invalid");
-        return false;
-    }
-    oldPassField.classList.remove("invalid");
-    return true;
-}
+    confirmPassInput = form.querySelector(".confirm-password");
 
 //New password validation
 function checkNewPass() {
@@ -42,11 +30,6 @@ function validateNew() {
     return (checkNewPass() && checkConfirmPass());
 }
 
-function validateAll() {
-    return (checkOldPass() && checkNewPass() && checkConfirmPass());
-}
-
 //calling function on key up
 newPassInput.addEventListener("keyup", checkNewPass);
 confirmPassInput.addEventListener("keyup", checkConfirmPass);
-oldPassInput.addEventListener("keyup", checkOldPass);

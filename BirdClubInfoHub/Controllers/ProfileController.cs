@@ -134,30 +134,30 @@ namespace BirdClubInfoHub.Controllers
             string newPassword = formCollection["NewPassword"]!;
             string confirmPassword = formCollection["ConfirmPassword"]!;
             User? user = _dbContext.Users.Find(HttpContext.Session.GetInt32("USER_ID"));
-            PasswordHasher<User> passwordHasher = new();
             if (user == null)
             {
                 TempData.Add("notification", "Account not found!");
                 TempData.Add("error", "");
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "Login");
             }
+            PasswordHasher<User> passwordHasher = new();
             if (passwordHasher.VerifyHashedPassword(user, user.Password, oldPassword) == PasswordVerificationResult.Failed)
             {
                 TempData.Add("notification", "Incorrect old password!");
                 TempData.Add("error", "");
-                return View();
+                return RedirectToAction("Index");
             }
             if (oldPassword == newPassword)
             {
                 TempData.Add("notification", "New password can not be identical to old password!");
                 TempData.Add("error", "");
-                return View();
+                return RedirectToAction("Index");
             }
             if (newPassword != confirmPassword)
             {
                 TempData.Add("notification", "Password does not match!");
                 TempData.Add("error", "");
-                return View();
+                return RedirectToAction("Index");
             }
             user.Password = passwordHasher.HashPassword(user, newPassword);
             _dbContext.Users.Update(user);
