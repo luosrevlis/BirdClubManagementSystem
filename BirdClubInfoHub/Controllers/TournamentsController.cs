@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using BirdClubInfoHub.Models;
 using BirdClubInfoHub.Data;
-using BirdClubInfoHub.Filters;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace BirdClubInfoHub.Controllers
@@ -27,8 +26,43 @@ namespace BirdClubInfoHub.Controllers
             Tournament? tournament = _dbContext.Tournaments.Find(id);
             if (tournament == null)
             {
-                return NotFound();
+                TempData.Add("notification", "Tournament not found!");
+                TempData.Add("error", "");
+                return RedirectToAction("Index", "ClubEvents");
             }
+
+            // if not open, return unavailable
+            if (tournament.Status != "Open")
+            {
+                ViewBag.Status = "Unavailable";
+                return View(tournament);
+            }
+
+            // open but not logged in, return unauth
+            int? userId = HttpContext.Session.GetInt32("USER_ID");
+            if (userId == null)
+            {
+                ViewBag.Status = "Unauth";
+                return View(tournament);
+            }
+
+            // open, logged in, no eligible birds
+            HashSet<int> registeredBirds = _dbContext.TournamentRegistrations
+                .Where(tr => tr.TournamentId == id)
+                .Select(tr => tr.BirdId).ToHashSet();
+            List<Bird> birds = _dbContext.Birds
+                .Where(bird => bird.UserId == userId && !registeredBirds.Contains(bird.Id))
+                .ToList();
+            if (!birds.Any())
+            {
+                ViewBag.Status = "Registered";
+                return View(tournament);
+            }
+
+            // open, logged in, eligible birds
+            ViewBag.Status = "Available";
+            SelectList birdOptions = new(birds, nameof(Bird.Id), nameof(Bird.Name));
+            ViewBag.BirdOptions = birdOptions;
             return View(tournament);
         }
     }

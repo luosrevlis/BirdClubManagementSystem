@@ -47,6 +47,7 @@ namespace BirdClubManagementSystem.Controllers
         {
             PasswordHasher<User> passwordHasher = new();
             user.Password = passwordHasher.HashPassword(user, user.Password);
+            user.JoinDate = DateTime.Now;
             _dbContext.Users.Add(user);
             _dbContext.SaveChanges();
             return RedirectToAction("Index");
@@ -58,7 +59,9 @@ namespace BirdClubManagementSystem.Controllers
             User? user = _dbContext.Users.Find(id);
             if (user == null)
             {
-                return NotFound();
+                TempData.Add("notification", "Account not found!");
+                TempData.Add("error", "");
+                return View("Index");
             }
             return View(user);
         }
@@ -68,7 +71,18 @@ namespace BirdClubManagementSystem.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Edit(User user)
         {
-            _dbContext.Users.Update(user);
+            User? userInDb = _dbContext.Users.Find(user.Id);
+            if (userInDb == null)
+            {
+                TempData.Add("notification", "Account not found!");
+                TempData.Add("error", "");
+                return View("Index");
+            }
+            userInDb.Name = user.Name;
+            userInDb.Address = user.Address;
+            userInDb.Phone = user.Phone;
+            userInDb.Role = user.Role;
+            _dbContext.Users.Update(userInDb);
             _dbContext.SaveChanges();
             return RedirectToAction("Index");
         }

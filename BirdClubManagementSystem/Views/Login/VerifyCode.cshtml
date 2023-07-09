@@ -4,14 +4,26 @@
     ViewData["Title"] = "Verify code";
 }
 
-<h1>Enter verification code</h1>
+@section Styles
+    {
+    <link rel="stylesheet" href="~/css/password/changepass.css" />
+}
 
-<form method="post" asp-action="VerifyCode">
-    <div asp-validation-summary="All" class="text-danger"></div>
-    <input type="hidden" name="userEmail" value="@Model" />
-    <div class="form-group">
-        <label class="control-label">Verification code</label>
-        <input type="text" name="code" value="" class="form-control" />
+@* Add form input email when change pass *@
+<div class="container-cp">
+    <div>
+        <h2>Enter verification code</h2>
     </div>
-    <input type="submit" value="Verify code" class="btn btn-primary" />
-</form>
+    <form asp-action="VerifyCode">
+        <input type="hidden" name="userEmail" value="@Model" />
+        <div class="field code-field">
+            <p>Verification code</p>
+            <div class="input-field ">
+                <input type="text" placeholder="Enter verification code..." class="code" name="code">
+            </div>
+        </div>
+        <div class="input-field button">
+            <input type="submit" value="Confirm">
+        </div>
+    </form>
+</div>

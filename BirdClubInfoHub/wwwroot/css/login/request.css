@@ -31,7 +31,7 @@ input{
     position: relative;
     max-width: 700px;
     width: 100%;
-    background:#619196;/*edit here*/
+    background:#fff;/*edit here*/
     padding: 25px 30px;
     border-radius: 5px;
 }
@@ -93,8 +93,7 @@ form .user-details .input-box{
 
 form .button{
     height: 45px;
-    margin: 45px 0 ;
-    
+    margin: 15px 0 ;
 }
 form .button input{
     height: 100%;
@@ -134,61 +133,18 @@ form .button input:hover{
     margin-right: 6px;
     width: 18px;
 }
-.popup{
-    width: 450px;
-    background-color: #fff;
-    border-radius:6px ;
-    position: absolute;
-    top: 15%;
-    left: 18%;
-    top: 0;
-    left: 50%;
-    transform: translate(-50%, -50%) scale(0);
-    transition: transform .4s, top .4s;
-    visibility: hidden;
-    text-align: center;
-    padding: 0 30px 30px;
-    height: 330px;
-    color:#000 ;
+
+.back-region {
+    margin: 0 0 6px;
 }
 
-.popup-logo img{
-    margin-top: 30px;
-    margin-bottom: 20px;
-    width: 100px;
-}
-.popup button{
-    width: 100%;
-    background:#3ED960 ;
-    padding: 10px 0;
-    margin-top: 50px;
-    border: none;
-    outline: none;
-    font-size:18px ;
-    color: #fff;
-    border-radius: 4px;
-    cursor: pointer;
-    box-shadow:0 0 0 2px rgba(0,0,0,.1);
-
-}
-.popup a{
-    color: #fff;
-    text-decoration: none;
-    font-weight: 600;
-    letter-spacing: 2px;
-}
-.open-slide{
-    top: 50%;
-    transform: translate(-50%, -50%) scale(1);
-    visibility:visible ;
+.back-region .back-link {
+    display: flex;
+    justify-content: center;
 }
 /* edit here */
 
 /* validation */
-
-
-/* validation */
-
 
 @media(max-width: 584px) {
     .container{

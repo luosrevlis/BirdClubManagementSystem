@@ -1,0 +1,120 @@
+*, *::before, *::after {
+    padding: 0;
+    margin: 0 ;
+    box-sizing: border-box;
+}
+
+a{
+    text-decoration: none;
+} 
+html {
+    font-family: sans-serif;
+}
+
+body {
+    font-family: "Poppins", sans-serif;
+    /* padding: 20px;
+    display: flex;
+    align-items: center; */
+    background-color: #c8ebb1;
+}
+body,
+input,
+button,
+textarea,
+select{
+    outline: none;
+    font-size: 14px;
+    line-height: 1.5;
+    font-family: "Poppins", sans-serif;
+}
+img{
+    display: block;
+    width: 100%;
+}
+button{
+    cursor: pointer;
+}
+table{
+    width: 100%;
+}
+table th, 
+table td{
+    padding: 15px 30px;
+    text-align: left;
+    vertical-align: middle  ;
+    white-space: normal;/* ko xuong hang */
+}
+table th{
+    color: #364d67;
+    font-weight: 600;
+    background-color: #f1f7fd;
+}
+table td{
+    background-color: white;
+}
+table tbody tr{
+    border-top:1px solid #f0f4f8 ;
+}
+table .user{
+    display: flex;
+    align-items: center;
+    gap: 0 10px;
+}
+table .user img{
+    width: 50px;
+    height: 50px;
+    border-radius: 100rem;
+    object-fit: cover;
+    flex-shrink: 0;
+}
+.sticky-table{
+    overflow: auto;
+    border: 1px solid #f0f4f8;
+    border-radius: 20px;
+    opacity: .9;
+}
+.sticky-table tbody td:first-child,
+.sticky-table thead th:first-child{
+    position: sticky;
+    left: 0;
+}
+.sticky-table tbody td:first-child span{
+    padding-right: 20px;
+}
+
+.table-header{
+    font-size: 30px;
+    margin-left: 10px;
+    margin-bottom: 20px;
+}
+
+.table-header h1{
+    display: inline-block;
+    padding: 0.5rem 3rem 0.5rem 1rem;
+    font-weight: 700;
+    outline: none;
+    border: 1px solid #494234;
+    background-color: #494234;
+    color: #f0f4f8;
+    border-radius: 0 50% 50% 0;
+}
+
+.button {
+    margin: 0.2rem;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    border: none;
+}
+
+.button:hover {
+    opacity: 0.6;
+}
+
+/* Responsive */
+@media (max-width:1078px){
+    .button{
+        display: block;
+        margin-bottom: 5px;
+    }
+}

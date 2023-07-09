@@ -4,22 +4,32 @@
     ViewData["Title"] = "Edit highlights";
 }
 
-<p>
-    <a asp-action="Details" asp-route-id="@Model.Id">Back to details</a>
-</p>
-<h1>Highlights for @Model.Name</h1>
-<form asp-action="EditHighlights" enctype="multipart/form-data">
-    <input type="hidden" asp-for="@Model.Id" />
-    <div class="form-group">
-        <textarea id="highlight-contents" name="Highlights">@Html.Raw(Model.Highlights)</textarea>
-    </div>
-    <div class="form-group">
-        <input type="submit" class="btn btn-primary" value="Update" />
-    </div>
-</form>
+@section Styles {
+    <link rel="stylesheet" href="~/css/form.css" />
+}
+
+<div class="main-form">
+    <section class="container-template">
+        <h2>Highlights for @Model.Name</h2>
+        <form asp-action="EditHighlights" class="form">
+            <input type="hidden" asp-for="Id" />
+
+            <div class="input-box highlights-field">
+                <textarea id="tournament-highlights" name="Highlights">
+                    @Html.Raw(Model.Highlights)
+                </textarea>
+            </div>
+
+            <input class="button" type="submit" value="Save" />
+        </form>
+        <div class="back-region">
+            <a asp-action="Details" asp-route-id="@Model.Id" class="back-link">Back</a>
+        </div>
+    </section>
+</div>
 
 @section Scripts {
     @{
-        await Html.RenderPartialAsync("_Summernote", new { Height = 500, Selector = "#highlight-contents" });
+        await Html.RenderPartialAsync("_Summernote", new { Height = 500, Selector = "#tournament-highlights" });
     }
 }

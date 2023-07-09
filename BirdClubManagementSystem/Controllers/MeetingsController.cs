@@ -15,19 +15,15 @@ namespace BirdClubManagementSystem.Controllers
             _dbContext = dbContext;
         }
 
-        // GET: MeetingsController
-        public IActionResult Index()
-        {
-            return View();
-        }
-
         // GET: MeetingsController/Details/5
         public IActionResult Details(int id)
         {
             Meeting? meeting = _dbContext.Meetings.Find(id);
             if (meeting == null)
             {
-                return NotFound();
+                TempData.Add("notification", "Meeting not found!");
+                TempData.Add("error", "");
+                return RedirectToAction("Index", "ClubEvents");
             }
             return View(meeting);
         }
@@ -45,15 +41,16 @@ namespace BirdClubManagementSystem.Controllers
         {
             if (meeting.Date < meeting.RegistrationCloseDate)
             {
-                ModelState.AddModelError("RegDateError", "Event cannot take place before registration is closed!");
-            }
-            if (!ModelState.IsValid)
-            {
+                TempData.Add("notification", "Date error!");
+                TempData.Add("error", "Event cannot take place before registration is closed!");
                 return View(meeting);
             }
             meeting.Status = "Open";
             _dbContext.Meetings.Add(meeting);
             _dbContext.SaveChanges();
+
+            TempData.Add("notification", meeting.Name + " has been created!");
+            TempData.Add("success", "");
             return RedirectToAction("Index", "ClubEvents");
         }
 
@@ -63,7 +60,9 @@ namespace BirdClubManagementSystem.Controllers
             Meeting? meeting = _dbContext.Meetings.Find(id);
             if (meeting == null)
             {
-                return NotFound();
+                TempData.Add("notification", "Meeting not found!");
+                TempData.Add("error", "");
+                return RedirectToAction("Index", "ClubEvents");
             }
             return View(meeting);
         }
@@ -75,121 +74,109 @@ namespace BirdClubManagementSystem.Controllers
         {
             if (meeting.Date < meeting.RegistrationCloseDate)
             {
-                ModelState.AddModelError("RegDateError", "Event cannot take place before registration is closed!");
-            }
-            if (!ModelState.IsValid)
-            {
+                TempData.Add("notification", "Date error!");
+                TempData.Add("error", "Event cannot take place before registration is closed!");
                 return View(meeting);
             }
-            _dbContext.Meetings.Update(meeting);
+            Meeting? meetingInDb = _dbContext.Meetings.Find(meeting.Id);
+            if (meetingInDb == null)
+            {
+                TempData.Add("notification", "Meeting not found!");
+                TempData.Add("error", "");
+                return RedirectToAction("Index", "ClubEvents");
+            }
+            meetingInDb.Name = meeting.Name;
+            meetingInDb.Date = meeting.Date;
+            meetingInDb.RegistrationCloseDate = meeting.RegistrationCloseDate;
+            meetingInDb.Description = meeting.Description;
+            _dbContext.Meetings.Update(meetingInDb);
             _dbContext.SaveChanges();
+
+            TempData.Add("notification", meetingInDb.Name + " has been updated!");
+            TempData.Add("success", "");
             return RedirectToAction("Index", "ClubEvents");
         }
 
-        // GET: MeetingController/Delete/5
+        // POST: MeetingController/Delete/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Delete(int id)
         {
             Meeting? meeting = _dbContext.Meetings.Find(id);
             if (meeting == null)
             {
-                return NotFound();
-            }
-            return View(meeting);
-        }
-
-        // POST: MeetingController/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public IActionResult DeleteConfirmed(int id)
-        {
-            Meeting? meeting = _dbContext.Meetings.Find(id);
-            if (meeting == null)
-            {
-                return NotFound();
+                TempData.Add("notification", "Meeting not found!");
+                TempData.Add("error", "");
+                return RedirectToAction("Index", "ClubEvents");
             }
             _dbContext.Meetings.Remove(meeting);
             _dbContext.SaveChanges();
+
+            TempData.Add("notification", meeting.Name + " has been deleted!");
+            TempData.Add("success", "");
             return RedirectToAction("Index", "ClubEvents");
         }
 
-        // GET: MeetingController/Close/5
+        // POST: MeetingController/Close/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Close(int id)
         {
             Meeting? meeting = _dbContext.Meetings.Find(id);
             if (meeting == null)
             {
-                return NotFound();
-            }
-            return View(meeting);
-        }
-
-        // POST: MeetingController/Close/5
-        [HttpPost, ActionName("Close")]
-        [ValidateAntiForgeryToken]
-        public IActionResult CloseConfirmed(int id)
-        {
-            Meeting? meeting = _dbContext.Meetings.Find(id);
-            if (meeting == null)
-            {
-                return NotFound();
+                TempData.Add("notification", "Meeting not found!");
+                TempData.Add("error", "");
+                return RedirectToAction("Index", "ClubEvents");
             }
             meeting.Status = "Registration Closed";
             _dbContext.Meetings.Update(meeting);
             _dbContext.SaveChanges();
+
+            TempData.Add("notification", "Registration for " + meeting.Name + " has been closed!");
+            TempData.Add("success", "");
             return RedirectToAction("Index", "ClubEvents");
         }
 
-        // GET: MeetingController/MarkAsEnded/5
+        // POST: MeetingController/MarkAsEnded/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult MarkAsEnded(int id)
         {
             Meeting? meeting = _dbContext.Meetings.Find(id);
             if (meeting == null)
             {
-                return NotFound();
-            }
-            return View(meeting);
-        }
-
-        // POST: MeetingController/MarkAsEnded/5
-        [HttpPost, ActionName("MarkAsEnded")]
-        [ValidateAntiForgeryToken]
-        public IActionResult MarkAsEndedConfirmed(int id)
-        {
-            Meeting? meeting = _dbContext.Meetings.Find(id);
-            if (meeting == null)
-            {
-                return NotFound();
+                TempData.Add("notification", "Meeting not found!");
+                TempData.Add("error", "");
+                return RedirectToAction("Index", "ClubEvents");
             }
             meeting.Status = "Ended";
             _dbContext.Meetings.Update(meeting);
             _dbContext.SaveChanges();
+
+            TempData.Add("notification", meeting.Name + " has been marked as ended!");
+            TempData.Add("success", "");
             return RedirectToAction("Index", "ClubEvents");
         }
 
-        // GET: MeetingController/Cancel/5
+        // POST: MeetingController/Cancel/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Cancel(int id)
         {
             Meeting? meeting = _dbContext.Meetings.Find(id);
             if (meeting == null)
             {
-                return NotFound();
-            }
-            return View(meeting);
-        }
-
-        // POST: MeetingController/Cancel/5
-        [HttpPost, ActionName("Cancel")]
-        [ValidateAntiForgeryToken]
-        public IActionResult CancelConfirmed(int id)
-        {
-            Meeting? meeting = _dbContext.Meetings.Find(id);
-            if (meeting == null)
-            {
-                return NotFound();
+                TempData.Add("notification", "Meeting not found!");
+                TempData.Add("error", "");
+                return RedirectToAction("Index", "ClubEvents");
             }
             meeting.Status = "Cancelled";
             _dbContext.Meetings.Update(meeting);
             _dbContext.SaveChanges();
+
+            TempData.Add("notification", meeting.Name + " has been cancelled!");
+            TempData.Add("success", "");
             return RedirectToAction("Index", "ClubEvents");
         }
 
@@ -198,7 +185,9 @@ namespace BirdClubManagementSystem.Controllers
             Meeting? meeting = _dbContext.Meetings.Find(id);
             if (meeting == null || meeting.Status != "Ended")
             {
-                return NotFound();
+                TempData.Add("notification", "Meeting not found!");
+                TempData.Add("error", "");
+                return RedirectToAction("Index", "ClubEvents");
             }
             return View(meeting);
         }
@@ -210,11 +199,16 @@ namespace BirdClubManagementSystem.Controllers
             Meeting? meetingInDb = _dbContext.Meetings.Find(meeting.Id);
             if (meetingInDb == null || meetingInDb.Status != "Ended")
             {
-                return NotFound();
+                TempData.Add("notification", "Meeting not found!");
+                TempData.Add("error", "");
+                return RedirectToAction("Index", "ClubEvents");
             }
             meetingInDb.Highlights = meeting.Highlights;
             _dbContext.Meetings.Update(meetingInDb);
             _dbContext.SaveChanges();
+
+            TempData.Add("notification", "Highlights has been updated!");
+            TempData.Add("success", "");
             return RedirectToAction("Details", new { id = meeting.Id });
         }
     }

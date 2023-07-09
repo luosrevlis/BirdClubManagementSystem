@@ -3,53 +3,147 @@
 @{
     ViewData["Title"] = "Profile";
 }
+@section Styles {
+    @{
+        <link rel="stylesheet" href="~/css/profile/profile.css"/>
+    }
+}
 
-<h1>Profile</h1>
+<!DOCTYPE html>
+<html lang="en">
 
-<div>
-    <h4>User</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Email)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Email)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Address)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Address)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Phone)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Phone)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Role)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Role)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.ProfilePicture)
-        </dt>
-        <dd class="col-sm-10">
-            <img src="@Url.Action("GetImageFromBytes", "Profile", new { id = Model.Id })" />
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="ChangeProfilePicture" asp-route-id="@Model.Id">Change profile picture</a> |
-    <a asp-action="ChangePassword" asp-route-id="@Model.Id">Change password</a>
-</div>
+<head>
+	<meta charset="UTF-8">
+	<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+	<link rel="stylesheet" type="text/css"
+		href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
+<body>
+	<section class="py-5 my-5">
+		<div class="container">
+			<h1 class="mb-5">Profile Settings</h1>
+			<div class="bg-white shadow rounded-lg d-block d-sm-flex">
+				<div class="profile-tab-nav border-right">
+					<div class="p-4">
+						<div class="img-circle text-center mb-3">
+							<img src="https://source.unsplash.com/random" alt="Image" class="shadow">
+						</div>
+						<h4 class="text-center">Minh Pham</h4>
+						<p class="role text-center">Member</p>
+					</div>
+					<div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+						<a class="nav-link active" id="account-tab" data-toggle="pill" href="#account" role="tab"
+							aria-controls="account" aria-selected="true">
+							<i class="fa fa-user text-center mr-1"></i>
+							Account Information
+						</a>
+						<a class="nav-link" id="password-tab" data-toggle="pill" href="#password" role="tab"
+							aria-controls="password" aria-selected="false">
+							<i class="fa fa-key text-center mr-1"></i>
+							Password
+						</a>
+					</div>
+				</div>
+				<div class="tab-content p-4 p-md-5" id="v-pills-tabContent">
+					<div class="tab-pane fade show active" id="account" role="tabpanel" aria-labelledby="account-tab">
+						<h3 class="mb-4">Your Profile </h3>
+						<div class="row">
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Fullname</label>
+									<input type="text" class="form-control" value="Phạm Phúc Tuấn Minh" readonly>
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Email</label>
+									<input type="text" class="form-control" value="minhdaika@gmail.com" readonly>
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Address</label>
+									<input type="text" class="form-control" value="Hồ Chí Minh" readonly>
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Phone number</label>
+									<input type="text" class="form-control" value="0123456789" readonly>
+								</div>
+							</div>
+							
+						</div>
+						<div>
+							<button href="" class="btn btn-primary">Edit</button>
+						</div>
+					</div>
+					<div class="tab-pane fade" id="password" role="tabpanel" aria-labelledby="password-tab">
+						<h3 class="mb-4">Change Password</h3>
+                        <form action="" class="form-pass">
+                            <!-- Old pass -->
+						    <div class="row">
+							    <div class="field col-md-6 old-password">
+								    <div class="form-group ">
+									    <label>Old password</label>
+									    <input type="password" class="form-control oPassword">
+								    </div>
+                                    <span class="error password-error">
+                                        <img src="~/img/resetpass/alert-circle.svg" alt="">
+                                        <p class="error-text">Password is incorrect</p>
+                                    </span>
+							    </div>
+						    </div>
+                            <!-- Create and confirm -->
+						    <div class="row">
+							    <div class="field col-md-6 create-password">
+								    <div class="form-group ">
+									    <label>New password</label>
+									    <input type="password" class="form-control password">
+								    </div>
+                                    <span class="error password-error">
+                                        <img src="~/img/resetpass/alert-circle.svg" alt="">
+                                        <p class="error-text">Password must be at least 8 characters with number, symbol, small and capital letter</p>
+                                    </span>
+							    </div>
+							    <div class="field col-md-6 confirm-password">
+								    <div class="form-group ">
+									    <label>Confirm new password</label>
+									    <input type="password" class="form-control cPassword">
+								    </div>
+                                    <span class="error cPassword-error">
+                                        <img src="~/img/resetpass/alert-circle.svg" alt="">
+                                        <p class="error-text">Password doesn't match</p>
+                                    </span>
+							    </div>
+						    </div>
+                            <div>
+                                <button type="submit" class="btn btn-primary">Update</button>
+                                <button class="btn btn-light">Cancel</button>
+                            </div>
+                        </form>
+					</div>
+					
+					
+					
+				</div>
+			</div>
+		</div>
+	</section>
+
+    <script src="./js/profile.js"></script>
+	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+</body>
+</html>
+
+
+
+@section Scripts {
+    @{
+        <script src="~/js/profile/profile.js"></script>
+    }
+}

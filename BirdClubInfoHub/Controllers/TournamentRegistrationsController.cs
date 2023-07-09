@@ -3,10 +3,11 @@ using BirdClubInfoHub.Filters;
 using BirdClubInfoHub.Models;
 using BirdClubInfoHub.Services;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 
 namespace BirdClubInfoHub.Controllers
 {
+    [Authenticated]
     public class TournamentRegistrationsController : Controller
     {
         private readonly BcmsDbContext _dbContext;
@@ -26,87 +27,71 @@ namespace BirdClubInfoHub.Controllers
             {
                 return RedirectToAction("Index", "Login");
             }
-            List<TournamentRegistration> registrations =
-                (from tr in _dbContext.TournamentRegistrations
-                 join t in _dbContext.Tournaments on tr.TournamentId equals t.Id
-                 join bird in _dbContext.Birds on tr.BirdId equals bird.Id
-                 where bird.UserId == userId && (t.Status == "Open" || t.Status == "Registration Closed")
-                 select tr).ToList();
-            foreach (TournamentRegistration tr in registrations)
-            {
-                tr.Tournament = _dbContext.Tournaments.Find(tr.TournamentId)!;
-                tr.Bird = _dbContext.Birds.Find(tr.BirdId)!;
-            }
+            List<TournamentRegistration> registrations = _dbContext.TournamentRegistrations
+                .Include(tr => tr.Bird)
+                .ThenInclude(bird => bird.User)
+                .Where(tr => tr.Bird.UserId == userId)
+                .Include(tr => tr.Tournament)
+                .ToList();
+            registrations.RemoveAll(tr => tr.Tournament.Status != "Open" && tr.Tournament.Status != "Registration Closed");
             return View(registrations);
         }
 
-        [Authenticated]
-        public IActionResult Register(int tournamentId)
+        public IActionResult Register(int id, int birdId)
         {
-            Tournament? tournament = _dbContext.Tournaments.Find(tournamentId);
+            Tournament? tournament = _dbContext.Tournaments.Find(id);
             if (tournament == null)
             {
-                return NotFound();
+                TempData.Add("notification", "Tournament not found!");
+                TempData.Add("error", "");
+                return RedirectToAction("Index", "ClubEvents");
             }
-            User? user = _dbContext.Users.Find(HttpContext.Session.GetInt32("USER_ID"));
-            if (user == null)
-            {
-                return RedirectToAction("Index", "Login");
-            }
-            HashSet<int> registeredBirds = _dbContext.TournamentRegistrations.Where(tr => tr.TournamentId == tournamentId)
-                .Select(tr => tr.BirdId).ToHashSet();
-            List<Bird> birds = _dbContext.Birds.Where(bird => bird.UserId == user.Id && !registeredBirds.Contains(bird.Id)).ToList();
-            if (!birds.Any())
-            {
-                return View("NoBird");
-            }
-            SelectList options = new(birds, nameof(Bird.Id), nameof(Bird.Description));
-            ViewBag.Options = options;
-            TournamentRegistration registration = new() { Tournament = tournament };
-            return View(registration);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Register(TournamentRegistration registration)
-        {
-            int birdId = registration.BirdId;
             Bird? bird = _dbContext.Birds.Find(birdId);
             if (bird == null)
             {
-                return NotFound();
+                TempData.Add("notification", "Bird not found!");
+                TempData.Add("error", "");
+                return RedirectToAction("Details", "Tournaments", new { id });
             }
-            int tournamentId = registration.TournamentId;
-            Tournament? tournament = _dbContext.Tournaments.Find(tournamentId);
-            if (tournament == null)
+            TournamentRegistration registration = new()
             {
-                return NotFound();
-            }
-            registration.Tournament = tournament;
-            registration.Bird = bird;
+                Bird = bird,
+                Tournament = tournament
+            };
             _dbContext.TournamentRegistrations.Add(registration);
             _dbContext.SaveChanges();
-            int id = _dbContext.TournamentRegistrations
-                .FirstOrDefault(tr => tr.BirdId == registration.BirdId && tr.TournamentId == registration.TournamentId)!.Id;
-            return RedirectToAction("PayEntranceFee", new RouteValueDictionary(new { id }));
+            return RedirectToAction("GeneratePaymentUrl", new RouteValueDictionary(new { id = registration.Id }));
         }
 
-        [Authenticated]
-        public IActionResult PayEntranceFee(int id)
+        public IActionResult RegisterNoPay(int id, int birdId)
         {
-            TournamentRegistration? registration = _dbContext.TournamentRegistrations.Find(id);
-            if (registration == null)
+            Tournament? tournament = _dbContext.Tournaments.Find(id);
+            if (tournament == null)
             {
-                return NotFound();
+                TempData.Add("notification", "Tournament not found!");
+                TempData.Add("error", "");
+                return RedirectToAction("Index", "ClubEvents");
             }
-            registration.Tournament = _dbContext.Tournaments.Find(registration.TournamentId)!;
-            registration.Bird = _dbContext.Birds.Find(registration.BirdId)!;
-            registration.Bird.User = _dbContext.Users.Find(registration.Bird.UserId)!;
-            return View(registration);
+            Bird? bird = _dbContext.Birds.Find(birdId);
+            if (bird == null)
+            {
+                TempData.Add("notification", "Bird not found!");
+                TempData.Add("error", "");
+                return RedirectToAction("Details", "Tournaments", new { id });
+            }
+            TournamentRegistration registration = new()
+            {
+                Bird = bird,
+                Tournament = tournament
+            };
+            _dbContext.TournamentRegistrations.Add(registration);
+            _dbContext.SaveChanges();
+
+            TempData.Add("notification", "Registration success!");
+            TempData.Add("success", "");
+            return RedirectToAction("Index");
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
         public IActionResult GeneratePaymentUrl(int id)
         {
             TournamentRegistration registration = _dbContext.TournamentRegistrations.Find(id)!;
@@ -116,7 +101,7 @@ namespace BirdClubInfoHub.Controllers
             PaymentInformationModel model = new()
             {
                 Amount = registration.Tournament.Fee,
-                OrderDescription = "Thanh toan cho " + registration.Bird.Description + " tham gia giai dau " + registration.Tournament.Name,
+                OrderDescription = "Payment for " + registration.Bird.Description + " to participate in " + registration.Tournament.Name,
                 Name = registration.Bird.User.Name,
             };
             string returnUrl = Url.Action(action: "PaymentConfirmed", controller: "TournamentRegistrations",
@@ -125,53 +110,47 @@ namespace BirdClubInfoHub.Controllers
             return Redirect(url);
         }
 
-        [Authenticated]
         public IActionResult PaymentConfirmed(int id)
         {
             PaymentResponseModel model = _vnPayService.PaymentExecute(Request.Query);
             TournamentRegistration? registration = _dbContext.TournamentRegistrations.Find(id);
             if (registration == null)
             {
-                return NotFound();
+                TempData.Add("notification", "Error");
+                TempData.Add("error", "It seems like something went wrong. Please re-register.");
+                return RedirectToAction("Index", "ClubEvents");
             }
-            if (!model.Success)
+            if (!model.Success || model.VnPayResponseCode != "00")
             {
-                return BadRequest();
-            }
-            if (model.VnPayResponseCode != "00")
-            {
-                return BadRequest(); // payment failed
+                TempData.Add("notification", "Payment failed!");
+                TempData.Add("error", "Please reattempt the payment process.");
+                return RedirectToAction("Details", "Tournaments", new { id = registration.TournamentId });
             }
             registration.PaymentReceived = true;
             _dbContext.TournamentRegistrations.Update(registration);
             _dbContext.SaveChanges();
-            return View(model);
+
+            TempData.Add("notification", "Payment success!");
+            TempData.Add("success", "");
+            return RedirectToAction("Details", "Tournaments", new { id = registration.TournamentId });
         }
 
-        [Authenticated]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Delete(int id)
         {
             TournamentRegistration? registration = _dbContext.TournamentRegistrations.Find(id);
             if (registration == null)
             {
-                return NotFound();
-            }
-            registration.Tournament = _dbContext.Tournaments.Find(registration.TournamentId)!;
-            registration.Bird = _dbContext.Birds.Find(registration.BirdId)!;
-            return View(registration);
-        }
-
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public IActionResult DeleteConfirmed(int id)
-        {
-            TournamentRegistration? registration = _dbContext.TournamentRegistrations.Find(id);
-            if (registration == null)
-            {
-                return NotFound();
+                TempData.Add("notification", "Registration not found!");
+                TempData.Add("error", "");
+                return RedirectToAction("Index");
             }
             _dbContext.TournamentRegistrations.Remove(registration);
             _dbContext.SaveChanges();
+
+            TempData.Add("notification", "Registration cancelled!");
+            TempData.Add("success", "");
             return RedirectToAction("Index");
         }
     }

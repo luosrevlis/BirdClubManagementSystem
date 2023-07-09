@@ -43,24 +43,25 @@ namespace BirdClubInfoHub.Controllers
             User? user = _dbContext.Users.FirstOrDefault(x => x.Email == request.Email);
             if (user != null)
             {
-                ModelState.AddModelError("Existed", "This email has been registered!");
+                TempData.Add("notification", "Email already existed");
+                TempData.Add("error", "This email has been registered!");
                 return View(request);
             }
             request.Status = "Pending";
             _dbContext.MembershipRequests.Add(request);
             _dbContext.SaveChanges();
-            return View("RequestRecorded");
+            TempData.Add("notification", "Your request has been recorded");
+            TempData.Add("success", "Please wait while our staff handle the request. You will receive an email upon request approval.");
+            return RedirectToAction("Index", "Home");
         }
 
         public IActionResult GeneratePaymentUrl(int id)
         {
             MembershipRequest? request = _dbContext.MembershipRequests.Find(id);
-            if (request == null)
+            if (request == null || request.Status != "Accepted")
             {
-                return NotFound();
-            }
-            if (request.Status != "Accepted")
-            {
+                TempData.Add("notification", "Error");
+                TempData.Add("error", "It seems like something went wrong. Please resubmit your membership request.");
                 return View("Create");
             }
             PaymentInformationModel model = new()
@@ -81,15 +82,15 @@ namespace BirdClubInfoHub.Controllers
             MembershipRequest? request = _dbContext.MembershipRequests.Find(id);
             if (request == null)
             {
-                return NotFound();
+                TempData.Add("notification", "Error");
+                TempData.Add("error", "It seems like something went wrong. Please resubmit your membership request.");
+                return View("Create");
             }
-            if (!model.Success)
+            if (!model.Success || model.VnPayResponseCode != "00")
             {
-                return BadRequest();
-            }
-            if (model.VnPayResponseCode != "00")
-            {
-                return BadRequest(); // payment failed
+                TempData.Add("notification", "Payment failed!");
+                TempData.Add("error", "Please reattempt the payment process.");
+                return RedirectToAction("Index", "Home");
             }
             request.Status = "Payment Received";
             _dbContext.MembershipRequests.Update(request);
@@ -109,7 +110,9 @@ namespace BirdClubInfoHub.Controllers
                 .Body(bodyContent.ToString());
             email.Send();
 
-            return View(model);
+            TempData.Add("notification", "Payment success!");
+            TempData.Add("success", "Please check the registered email for your account.");
+            return RedirectToAction("Index", "Home");
         }
     }
 }

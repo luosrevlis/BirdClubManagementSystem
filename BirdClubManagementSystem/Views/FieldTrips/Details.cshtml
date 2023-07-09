@@ -12,25 +12,12 @@
 @await Html.PartialAsync("~/Views/ClubEvents/_EventDetail.cshtml", Model)
 
 <div>
-    <a asp-action="Index" asp-controller="FieldTripRegistrations" asp-route-fieldtripid="@Model.Id">View participants list</a>
-    @if (Model.Status == "Ended")
-    {
-        <a asp-action="EditHighlights" asp-route-id="@Model.Id">Edit highlights</a>
-    }
+    <a class="button participants-list-button" asp-action="Index" asp-controller="FieldTripRegistrations" asp-route-fieldtripid="@Model.Id">
+        <i class="fa-solid fa-person-walking"></i>
+        View participants list
+    </a>
 </div>
-<div>
-    @if (Model.Status == "Open")
-    {
-        <a asp-action="Close" asp-route-id="@Model.Id">Close</a>
-    }
-    @if (Model.Status == "Happening")
-    {
-        <a asp-action="MarkAsEnded" asp-route-id="@Model.Id">Mark as ended</a>
-    }
-    @if (Model.Status != "Ended" && Model.Status != "Cancelled")
-    {
-        <a asp-action="Cancel" asp-route-id="@Model.Id">Cancel</a>
-    }
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a>
-    <a asp-action="Delete" asp-route-id="@Model.Id">Delete</a>
-</div>
+
+@section Scripts {
+    <script src="~/js/event/detail.js"></script>
+}
