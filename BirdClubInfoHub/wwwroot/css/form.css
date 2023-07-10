@@ -12,7 +12,7 @@ body {
 .main-form {
     min-height: 100vh;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
     width: 70%;
     /*background: #c8b4ba;*/

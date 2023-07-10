@@ -125,18 +125,18 @@ a {
 }
 
 .nav-link {
-  color: #7B88A8;
+  color: #7B88A8 !important;
   padding: 0.5rem 0.5rem;
 }
 
 .nav-link:hover,
 .nav-link:focus {
-  color: #34C635;
+  color: #34C635 !important;
 }
 
 .nav-link.active {
   position: relative;
-  color: #34C635;
+  color: #34C635 !important;
 }
 
 .nav-link.active::before {
