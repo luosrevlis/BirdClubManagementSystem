@@ -37,14 +37,14 @@
     </table>
 </div>
 
-<div class="delete-reg-container">
-    <form class="delete-reg-form" asp-action="Delete">
+<div class="delete-container">
+    <form class="delete-form" asp-action="Delete">
         <h2>Are you sure you want to cancel this registration?</h2>
         <p>This action cannot be undone!</p>
 
         <input type="hidden" id="reg-id" name="Id" />
 
-        <div class="delete-reg-control">
+        <div class="delete-control">
             <input class="button delete-button" type="submit" value="Delete" />
             <button class="button cancel-button" type="button" onclick="cancelDelete()">Cancel</button>
         </div>

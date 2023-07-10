@@ -131,7 +131,7 @@ table .user img{
     color: #4F77FF
 }
 
-.delete-reg-container {
+.delete-container {
     position: fixed;
     top: 50%;
     left: 50%;
@@ -144,7 +144,7 @@ table .user img{
     align-items: center;
 }
 
-.delete-reg-form {
+.delete-form {
     display: flex;
     flex-flow: column nowrap;
     justify-content: center;
@@ -154,12 +154,12 @@ table .user img{
     border-radius: 0.5rem;
 }
 
-.delete-reg-control {
+.delete-control {
     margin-top: 2rem;
     width: 100%;
 }
 
-.delete-reg-control .button {
+.delete-control .button {
     width: 100%;
 }
 
