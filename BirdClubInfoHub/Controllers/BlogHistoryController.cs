@@ -19,9 +19,12 @@ namespace BirdClubInfoHub.Controllers
 
         public IActionResult Index()
         {
-            int userId = (int)HttpContext.Session.GetInt32("USER_ID")!;
+            int? userId = HttpContext.Session.GetInt32("USER_ID");
+            if (userId == null)
+            {
+                return RedirectToAction("Index", "Login");
+            }
             List<Blog> createdBlogs = _dbContext.Blogs.Where(blog => blog.UserId == userId)
-                .Include(blog => blog.User)
                 .Include(blog => blog.BlogCategory)
                 .ToList();
             return View(createdBlogs);
@@ -48,7 +51,9 @@ namespace BirdClubInfoHub.Controllers
             Blog? blog = _dbContext.Blogs.Find(id);
             if (blog == null || blog.Status != "Pending")
             {
-                return NotFound();
+                TempData.Add("notification", "Blog not found!");
+                TempData.Add("error", "");
+                return RedirectToAction("Index");
             }
             SelectList categoryOptions = new(_dbContext.BlogCategories, nameof(BlogCategory.Id), nameof(BlogCategory.Name));
             ViewBag.CategoryOptions = categoryOptions;
@@ -62,7 +67,9 @@ namespace BirdClubInfoHub.Controllers
             Blog? blogInDb = _dbContext.Blogs.Find(blog.Id);
             if (blogInDb == null || blogInDb.Status != "Pending")
             {
-                return NotFound();
+                TempData.Add("notification", "Blog not found!");
+                TempData.Add("error", "");
+                return RedirectToAction("Index");
             }
             blogInDb.BlogCategoryId = blog.BlogCategoryId;
             blogInDb.Title = blog.Title;
@@ -75,31 +82,28 @@ namespace BirdClubInfoHub.Controllers
             }
             _dbContext.Blogs.Update(blogInDb);
             _dbContext.SaveChanges();
+
+            TempData.Add("notification", "Blog updated!");
+            TempData.Add("success", "");
             return RedirectToAction("Index");
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Delete(int id)
         {
             Blog? blog = _dbContext.Blogs.Find(id);
             if (blog == null || blog.Status != "Pending")
             {
-                return NotFound();
-            }
-            blog.BlogCategory = _dbContext.BlogCategories.Find(blog.BlogCategoryId)!;
-            return View(blog);
-        }
-
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public IActionResult DeleteConfirmed(int id)
-        {
-            Blog? blog = _dbContext.Blogs.Find(id);
-            if (blog == null || blog.Status != "Pending")
-            {
-                return NotFound();
+                TempData.Add("notification", "Blog not found!");
+                TempData.Add("error", "");
+                return RedirectToAction("Index");
             }
             _dbContext.Blogs.Remove(blog);
             _dbContext.SaveChanges();
+
+            TempData.Add("notification", "Blog deleted!");
+            TempData.Add("success", "");
             return RedirectToAction("Index");
         }
     }
