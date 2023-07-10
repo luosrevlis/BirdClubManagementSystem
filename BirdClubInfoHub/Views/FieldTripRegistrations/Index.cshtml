@@ -7,7 +7,6 @@
 @section Styles {
     @*<link rel="stylesheet" href="~/css/reset.css" />*@
     <link rel="stylesheet" href="~/css/list.css" />
-    <link rel="stylesheet" href="~/css/event-registration/index.css" />
 }
 
 <section class="table-header">
@@ -37,16 +36,16 @@
                     {
                         <td>Not received</td>
                         <td class="option">
-                            <a class="button pay-button" asp-action="GeneratePaymentUrl" asp-route-id="@item.Id">
+                            <a class="button action-button" asp-action="GeneratePaymentUrl" asp-route-id="@item.Id">
                                 <i class="fa-solid fa-money-check-dollar"></i>
-                                Pay entrance fee
+                                Pay
                             </a>
                         </td>
                     }
                     <td class="option">
                         <a class="button delete-button" onclick="initDelete(@item.Id)">
                             <i class="fa-solid fa-xmark"></i>
-                            Cancel registration
+                            Cancel
                         </a>
                     </td>
                 </tr>

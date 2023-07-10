@@ -164,7 +164,7 @@ table .user img{
 }
 
 /* Responsive */
-@media (max-width:1078px){
+@media (max-width:1078px) {
     .button {
         display: block;
         width: fit-content;
