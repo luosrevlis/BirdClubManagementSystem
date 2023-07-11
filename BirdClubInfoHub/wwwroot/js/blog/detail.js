@@ -1,19 +1,20 @@
 function initEdit(commentId) {
-    const comment = Array.from(document.getElementsByClassName("edit-comment-container"))
+    Array.from(document.getElementsByClassName("edit-comment-container"))
         .filter(e => e.getAttribute("data-comment-edit-id") == commentId)
         .forEach(e => e.style.display = "flex");
     Array.from(document.getElementsByClassName("comment-content-container"))
         .filter(e => e.getAttribute("data-comment-id") == commentId)
         .forEach(e => e.style.display = "none");
-    
+    Array.from(document.getElementsByClassName("update-comment-container")).filter(e => e.parentElement.getAttribute("data-comment-id") != commentId).forEach(e => e.style.display = "none");
 }
 
 function cancelEdit(commentId) {
-    const comment = Array.from(document.getElementsByClassName("edit-comment-container"))
+    Array.from(document.getElementsByClassName("edit-comment-container"))
         .filter(e => e.getAttribute("data-comment-edit-id") == commentId)
         .forEach(e => e.style.display = "none");
     Array.from(document.getElementsByClassName("comment-content-container"))
         .forEach((e) => e.style.display = "flex");
+    Array.from(document.getElementsByClassName("update-comment-container")).filter(e => e.parentElement.getAttribute("data-comment-id") != commentId).forEach(e => e.style.display = "flex");
 }
 
 function initDelete(commentId) {
