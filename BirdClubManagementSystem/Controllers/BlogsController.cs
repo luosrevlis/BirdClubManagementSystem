@@ -23,7 +23,11 @@ namespace BirdClubManagementSystem.Controllers
             {
                 return NotFound();
             }
-            // if thumbnail is empty return default thumbnail, 5 places
+            // if thumbnail is empty return default thumbnail
+            if (blog.Thumbnail.Length == 0)
+            {
+                return File("/img/placeholder/blog.png", "image/png");
+            }
             return File(blog.Thumbnail, "image/png");
         }
 

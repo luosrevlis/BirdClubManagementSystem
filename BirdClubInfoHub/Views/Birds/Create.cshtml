@@ -1,43 +1,57 @@
 ﻿@model Bird
 
-<form asp-action="Create" enctype="multipart/form-data">
-    <div class="border p-3 mt-4">
-        <div class="row pb-2">
-            <h2 class="text-primary">Create Bird Profile</h2>
-            <hr />
-        </div>
-        <div class="mb-3">
-            <label asp-for="Name"></label>
-            <input asp-for="Name" class="form-control" />
-            <span asp-validation-for="Name" class="text-danger"></span>
-        </div>
-        <div class="mb-3">
-            <label asp-for="Description"></label>
-            <input asp-for="Description" class="form-control" />
-            <span asp-validation-for="Description" class="text-danger"></span>
-        </div>
-        <div class="mb-3">
-            <label asp-for="Species"></label>
-            <input asp-for="Species" class="form-control" />
-            <span asp-validation-for="Species" class="text-danger"></span>
-        </div>
-        <div class="mb-3">
-            <label asp-for="ProfilePicture"></label>
-            <input type="file" id="profile-picture" name="profilePicture" accept="image/*" />
-        </div>
-        <div class="mb-3">
-            <input type="submit" class="btn btn-primary" value="Create" /> 
-        </div>
-    </div>
-</form>
+@{
+    ViewData["Title"] = "Create";
+}
 
-<a asp-asp-controller="Bird" asp-action="Index" class="btn btn-secondary" style="width:150px">
-    Back to List
-</a>
+@section Styles {
+    <link rel="stylesheet" href="~/css/form.css" />
+    <link rel="stylesheet" href="~/css/birds/create-edit.css" />
+}
+
+<div class="main-form">
+    <section class="container-template">
+        <h2>Create new bird</h2>
+        <form asp-action="Create" class="form" onsubmit="return checkName()">
+
+            <div class="input-box name-field">
+                <label>Name</label>
+                <input asp-for="Name" placeholder="Enter bird name" required class="name" />
+                <!-- add error message here -->
+                <span class="error name-error">
+                    <img src="~/img/resetpass/alert-circle.svg" alt="">
+                    <p class="error-text">Bird name cannot be empty.</p>
+                </span>
+            </div>
+
+            <div class="input-box species-field">
+                <label>Species</label>
+                <input asp-for="Species" placeholder="Enter species" required class="species" />
+            </div>
+
+            <div class="input-box address-field">
+                <label>Short description</label>
+                <input asp-for="Description" placeholder="Enter a short description" required class="description" />
+            </div>
+
+            <div class="input-box pfp-file-field">
+                <label>Profile picture</label>
+                <div class="upload-button-container">
+                    <label for="profile-picture" class="upload-button">Choose a file</label>
+                </div>
+                <input type="file" id="profile-picture" name="profilePicture" accept="image/*" onchange="loadFile(event)" required />
+                <img id="preview-pfp" />
+            </div>
+
+            <input class="button" type="submit" value="Create" />
+        </form>
+        <div class="back-region">
+            <a asp-action="Index" class="back-link">Back</a>
+        </div>
+    </section>
+</div>
 
 @section Scripts {
-    @{
-        <partial name="_ValidationScriptsPartial" />
-    }
+    <script src="~/js/birds/create-edit.js"></script>
 }
 
