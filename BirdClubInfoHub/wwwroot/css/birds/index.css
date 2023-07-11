@@ -9,7 +9,6 @@
 }
 
 html {
-    font-size: 62.5%;
     font-family: sans-serif;
 }
 
@@ -18,7 +17,35 @@ body {
     font-family: "Poppins", sans-serif;
     background: linear-gradient(245.59deg, #4d9559 0%, #38703d 28.53%, #133917 75.52%);
 }
-.main{
+.container-bird{
+    margin: 10px 0 20px 20px;
+}
+.container-bird-info h2{
+    color: #fff;
+    font-weight: 600;
+    letter-spacing: 2px;
+    font-size: 48px;
+}
+.container-bird-info a{
+    display: inline-block;
+    color: #fff;
+    background: #4d9559;
+    border: 1px solid transparent;
+    padding: 12px 30px;
+    line-height: 1.4;
+    font-size: 16px;
+    font-weight: 400;
+    border-radius: 30px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all .55s ease;
+}
+.container-bird-info a:hover{
+    background: transparent;
+    border: 1px solid #fff;
+    transform: translateX(8px);
+}
+.bird-main{
     min-height: 100vh;
     display: flex;
     justify-content: flex-start;
@@ -52,9 +79,37 @@ body {
     box-shadow: 0 30px 20px #5559;
     z-index: -1;
 }
+/* add edit and delete button */
+.item input {
+    cursor: pointer;
+    padding: 5px 20px;
+    border: 1px solid #b21065;
+    border-radius: 20px;
+    background-image: 
+         /* lớp trên cùng làm hiệu ứng phủ sáng */
+        repeating-linear-gradient(60deg,#bc058255 0 10px, transparent 10px 20px), /* lớp này tạo ra một hiệu ứng đường kẻ vô hạn thành */
+        linear-gradient(to bottom, #EF08A6, #ee6c8f); /* lớp dưới cùng là màu nền */
+    color: #fff;
+    font-family: sans-serif;
+    font-weight: bold;
+    text-shadow: 0 1px 0 #efb7de;
+    box-shadow: 
+        0 10px 0 #0005,
+        0 5px 0 #BD1360;
+    transition: 0.5s;
+}
+.item input:active{
+    box-shadow: 
+        0 0px 0 #0005,
+        0 0px 0 #BD1360,
+        0 0px 0 7px #fff;
+        /* 0 0 30px 30px #e260ae; */
+    transform: translateY(5px);
+}
+
 
 @media screen and (max-width: 767px) {
-    .main{
+    .bird-main{
         display: flex;
         flex-wrap: wrap;
         justify-content: center;
@@ -65,7 +120,7 @@ body {
         background-color: linear-gradient(245.59deg, #4d9559 0%, #38703d 28.53%, #133917 75.52%);
         min-height: 100vh;
     }
-    .main{
+    .bird-main{
         min-height:auto;  
         display: flex;
         flex-wrap: wrap;
@@ -74,7 +129,7 @@ body {
 }
 
 @media screen and (min-width: 1024px) {
-    .main{
+    .bird-main{
         height: auto;
         display: flex;
         flex-wrap: wrap;

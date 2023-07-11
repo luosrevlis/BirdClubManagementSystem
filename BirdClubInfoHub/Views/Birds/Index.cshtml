@@ -4,55 +4,69 @@
     ViewData["Title"] = "Your Birds";
 }
 @section Styles
-{
-    <link rel="stylesheet" href="~/css/birds/bird_profile.css" />
+    {
+    <link rel="stylesheet" href="~/css/birds/index.css" />
 }
 
-@* add giao dien bird collection (chua hoan thien 100%, nhung đã hoàn thiện cấu hình sau khi add bird) *@
-<header>
-    <div class="container-bird">
-        <div class="profile">
-            <div class="profile-image">
-                <img src="./img/dropdown/ava.png" alt="">
-            </div>
-        </div>
-        <div class="profile-info">
-            <h1 class="profile-name">user_name</h1>
-            <button class="btn profile-edit-btn">Add Bird</button>
-        </div>
+<div class="container-bird">
+    <div class="container-bird-info">
+        <h2>Your birds</h2>
+        <a type="submit" class="btn bird-add-btn">Add Bird</a>
     </div>
-</header>
-<hr>
-<h2>Your birds</h2>
-<section class="main">
-    <a style="text-decoration: none;color: black;" href="">
+</div>
+
+<hr style="border: 1px solid #9e6b55;">
+
+<section class="bird-main">
+    <a style="text-decoration: none;color: black;" href="" class="bird-link">
         <div class="wrap">
             <div class="item">
                 <p>Ní ơi</p>
                 <img src="~/img/birds/cm5.png" alt="">
+                <input class="bird-btn edit" type="submit" value="Edit">
+                <input class="bird-btn delete" type="submit" value="Delete">
             </div>
         </div>
     </a>
+    <!-- card 2: khi bấm vào ra deatil chim(crud) -->
+    <a style="text-decoration: none;color: black;" href="" class="bird-link">
+        <div class="wrap">
+            <div class="item">
+                <p>A phồ</p>
+                <img src="~/img/birds/cm6.png" alt="">
+                <div class="bird-btn-edit"></div>
+                <input class="bird-btn edit" type="submit" value="Edit" id="#e">
+                <input class="bird-btn delete" type="submit" value="Delete">
+            </div>
+        </div>
+    </a>
+    <!-- card 3 -->
+    <a style="text-decoration: none;color: black;" href="" class="bird-link">
+        <div class="wrap">
+            <div class="item">
+                <p>Bảo bảo</p>
+                <img src="~/img/birds/cm7.png" alt="">
+                <input class="bird-btn edit" type="submit" value="Edit">
+                <input class="bird-btn delete" type="submit" value="Delete">
+            </div>
 
-    <div class="wrap">
-        <div class="item">
-            <p>A phồ</p>
-            <img src="~/img/birds/cm6.png" alt="">
         </div>
-    </div>
+    </a>
 
-    <div class="wrap">
-        <div class="item">
-            <p>Bảo bảo</p>
-            <img src="~/img/birds/cm7.png" alt="">
+    <!-- card 4 -->
+    <a style="text-decoration: none;color: black;" href="" class="bird-link">
+        <div class="wrap">
+            <div class="item">
+                <p>A lữ</p>
+                <img src="~/img/birds/cm4.png" alt="">
+                <input class="bird-btn edit" type="submit" value="Edit">
+                <input class="bird-btn delete" type="submit" value="Delete">
+            </div>
         </div>
-    </div>
-    <div class="wrap">
-        <div class="item">
-            <p>A lữ</p>
-            <img src="~/img/birds/cm4.png" alt="">
-        </div>
-    </div>
+    </a>
+</section>
+
+
 
 
 
@@ -60,58 +74,10 @@
 
 
 
-@* <h1>Index</h1>
 
-<p>
-<a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Species)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ProfilePicture)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Description)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Species)
-                </td>
-                <td>
-                    <img src="@Url.Action("GetImageFromBytes", "Birds", new { id = item.Id })" />
-                </td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
-*@
 @* link js *@
 @section Scripts {
     @{
-        <script src="~/js/birds/bird_profile.js"></script>
+        <script src="~/js/birds/index.js"></script>
     }
 }
