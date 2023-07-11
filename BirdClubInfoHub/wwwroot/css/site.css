@@ -37,7 +37,7 @@ header {
   width: 100%;
   background-color: #B8D9D0;
   position: relative;
-  z-index: 9999;
+  z-index: 9;
 }
 
 nav {
@@ -210,6 +210,10 @@ a {
   padding: 20px;
   margin: 0 10px;
   border-radius: 0 0 10px 10px;
+}
+
+#subMenu {
+    z-index: 10;
 }
 
 .user-info {
