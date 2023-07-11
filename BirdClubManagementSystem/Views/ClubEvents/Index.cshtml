@@ -8,8 +8,8 @@
 @{
     ViewData["Title"] = "Index";
 
-    var modelAfterSorted = Model.OrderBy(m => m.Date);
-    var dateBlocks = new SortedDictionary<DateTime, IEnumerable<IClubEvent>>();
+    var modelAfterSorted = Model.OrderByDescending(m => m.Date);
+    var dateBlocks = new Dictionary<DateTime, IEnumerable<IClubEvent>>();
     if (modelAfterSorted.Any())
     {
         DateTime currentDateTime = modelAfterSorted.First().Date.Date;
