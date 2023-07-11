@@ -1,47 +1,54 @@
-﻿@model BirdClubManagementSystem.Models.TournamentStanding
+﻿@model TournamentStanding
 
 @{
     ViewData["Title"] = "Edit";
 }
 
-<h1>Edit</h1>
 
-<h4>TournamentStanding</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
+@section Styles {
+    <link rel="stylesheet" href="~/css/form.css" />
+}
+
+<div class="main-form">
+    <section class="container-template">
+        <h2>Edit ranking information</h2>
+        <form asp-action="Edit" class="form">
             <input type="hidden" asp-for="TournamentId" value="@Model.TournamentId" />
-            <div class="form-group">
-                <label asp-for="Bird" class="control-label"></label>
-                <select asp-for="BirdId" class="form-control" asp-items="ViewBag.BirdOptions">
-                    <option value="">Choose a bird</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label asp-for="Placement" class="control-label"></label>
-                <select asp-for="Placement" class="form-control">
-                    <option value="">Choose a ranking</option>
-                    <option value="First">First place</option>
-                    <option value="Second">Second place</option>
-                    <option value="Third">Third place</option>
-                    <option value="Participation">Participation</option>
-                </select>
-                <span asp-validation-for="Placement" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
-</div>
 
-<div>
-    <a asp-action="Index" asp-route-tournamentid="@Model.TournamentId">Back to List</a>
+            <div class="column">
+
+                <div class="input-box bird-field">
+                    <label>Bird</label>
+                    <div class="select-box">
+                        <select asp-for="BirdId" asp-items="ViewBag.BirdOptions">
+                            <option value="" hidden>Choose a bird</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="input-box placement-field">
+                    <label>Placement</label>
+                    <div class="select-box">
+                        <select asp-for="Placement">
+                            <option value="" hidden>Choose a ranking</option>
+                            <option value="1st">First place</option>
+                            <option value="2nd">Second place</option>
+                            <option value="3rd">Third place</option>
+                            <option value="Participation">Participation</option>
+                        </select>
+                    </div>
+                </div>
+
+            </div>
+
+            <input class="button" type="submit" value="Save" />
+        </form>
+        <div class="back-region">
+            <a asp-action="Index" asp-route-tournamentid="@Model.TournamentId" class="back-link">Back</a>
+        </div>
+    </section>
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @await Html.PartialAsync("_ValidationScriptsPartial")
 }
