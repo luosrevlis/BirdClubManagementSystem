@@ -46,6 +46,9 @@
                         }
                         @if (item.Status == "Pending")
                         {
+                            <a class="button action-button" asp-action="Details" asp-route-id="@item.Id">
+                                <i class="fa-solid fa-eye"></i>
+                            </a>
                             <a class="button action-button" asp-action="Edit" asp-route-id="@item.Id">
                                 <i class="fa-solid fa-pen-to-square"></i>
                             </a>
