@@ -157,12 +157,12 @@ a {
   color: #34C635;
 }
 
-.nav-link.active {
+.nav-link.nav-active {
   position: relative;
   color: #34C635;
 }
 
-.nav-link.active::before {
+.nav-link.nav-active::before {
   content: "";
   width: 0.5rem;
   height: 0.5rem;
