@@ -1,42 +1,59 @@
 ﻿@model User
 
 @{
-    ViewData["Title"] = "Edit profile";
+    ViewData["Title"] = "Edit";
 }
 
-<div class="row pb-2">
-    <h1 class="text-primary">EDIT PROFILE</h1>
-    <hr />
+@section Styles {
+    <link rel="stylesheet" href="~/css/form.css" />
+}
+
+<div class="main-form">
+    <section class="container-template">
+        <h2>Edit profile</h2>
+        <form asp-action="Edit" class="form" onsubmit="return validateAll()">
+
+            <div class="input-box fullname-field">
+                <label>Fullname</label>
+                <input asp-for="Name" placeholder="Enter fullname" required class="fullname" />
+                <!-- add error message here -->
+                <span class="error fullname-error">
+                    <img src="~/img/resetpass/alert-circle.svg" alt="">
+                    <p class="error-text">Fullname cannot be empty.</p>
+                </span>
+            </div>
+
+            <div class="input-box address-field">
+                <label>Address</label>
+                <input asp-for="Address" placeholder="Enter address" required class="address" />
+                <!-- add error message here -->
+                <span class="error address-error">
+                    <img src="~/img/resetpass/alert-circle.svg" alt="">
+                    <p class="error-text">Address cannot be empty.</p>
+                </span>
+            </div>
+
+            <div class="column">
+
+                <div class="input-box phonenumber-field">
+                    <label>Phone number</label>
+                    <input asp-for="Phone" placeholder="Enter phone number" required class="phonenumber" type="number" />
+                    <!-- add error message here -->
+                    <span class="error phonenumber-error">
+                        <img src="~/img/resetpass/alert-circle.svg" alt="">
+                        <p class="error-text">Please enter a valid phone number.</p>
+                    </span>
+                </div>
+            </div>
+
+            <input class="button" type="submit" value="Save" />
+        </form>
+        <div class="back-region">
+            <a asp-action="Index" class="back-link">Back</a>
+        </div>
+    </section>
 </div>
 
-<form method="post" asp-action="Edit">
-    <div class="border pt-3 mt-4">
-        @*<div asp-validation-summary="All"></div>*@
-        <input type="hidden" asp-for="@Model.Id" />
-        <div class="mb-3">
-            <label asp-for=@Model.Name></label>
-            <input asp-for=@Model.Name class="form-control" />
-            <span asp-validation-for=@Model.Name class="text-danger"></span>
-        </div>
-        <input type="hidden" asp-for="@Model.Email" />
-        <input type="hidden" asp-for="@Model.Password" />
-        <div class="mb-3">
-            <label asp-for=@Model.Address></label>
-            <input asp-for=@Model.Address class="form-control" />
-            <span asp-validation-for=@Model.Address class="text-danger"></span>
-        </div>
-        <div class="mb-3">
-            <label asp-for=@Model.Phone></label>
-            <input asp-for=@Model.Phone class="form-control" />
-            <span asp-validation-for=@Model.Phone class="text-danger"></span>
-        </div>
-        <button type="submit" class="btn btn-primary" style="width:150px">Update</button>
-        <a asp-controller="Profile" asp-action="Index" class="btn btn-primary" style="width:180px">Back To Profile Page</a>
-    </div>
-</form>
-
-@section Scripts{
-    @{
-        <partial name="_ValidationScriptsPartial" />
-    }
+@section Scripts {
+    <script src="~/js/profile/edit.js"></script>
 }

@@ -1,48 +1,46 @@
-﻿@model BirdClubManagementSystem.Models.User
+﻿@model User
 
 @{
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
 
-<div>
-    <h4>User</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Email)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Email)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Address)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Address)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Phone)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Phone)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Role)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Role)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a>
-    <a asp-action="Index">Back to List</a>
+@section Styles {
+    <link rel="stylesheet" href="~/css/form.css" />
+}
+
+<div class="main-form">
+    <section class="container-template">
+        <h2>User details</h2>
+        <form class="form">
+
+            <div class="input-box fullname-field">
+                <label>Fullname</label>
+                <input asp-for="Name" placeholder="Enter fullname" required class="fullname" readonly />
+            </div>
+
+            <div class="input-box address-field">
+                <label>Address</label>
+                <input asp-for="Address" placeholder="Enter address" required class="address" readonly />
+            </div>
+
+            <div class="column">
+
+                <div class="input-box phonenumber-field">
+                    <label>Phone number</label>
+                    <input asp-for="Phone" placeholder="Enter phone number" required class="phonenumber" type="number" readonly />
+                </div>
+
+                <div class="input-box role-field">
+                    <label>Role</label>
+                    <input asp-for="Role" required class="role" readonly />
+                </div>
+            </div>
+            
+            <button class="button" asp-action="Edit" asp-route-id="@Model.Id">Edit</button>
+        </form>
+        <div class="back-region">
+            <a asp-action="Index" class="back-link">Back</a>
+        </div>
+    </section>
 </div>

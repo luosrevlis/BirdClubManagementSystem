@@ -1,15 +1,32 @@
-﻿@model BirdClubManagementSystem.Models.User
+﻿@model User
 
 @{
     ViewData["Title"] = "Change profile picture";
 }
 
-<h1>Change profile picture</h1>
+@section Styles {
+    <link rel="stylesheet" href="~/css/form.css" />
+    <link rel="stylesheet" href="~/css/profile/change-pfp.css" />
+}
 
-<form method="post" asp-action="ChangeProfilePicture" enctype="multipart/form-data">
-    <div class="border pt-3 mt-4">
-        <input type="hidden" name="id" value="@Model.Id" />
-        <input type="file" name="profilePicture" accept="image/*" required />
-        <input type="submit" class="btn btn-primary" value="Change profile picture" />
-    </div>
-</form>
+<div class="main-form">
+    <section class="container-template">
+        <h2>Change profile picture</h2>
+        <form class="form" asp-action="ChangeProfilePicture" enctype="multipart/form-data">
+            <input type="hidden" id="id" name="id" value="@Model.Id" />
+            <div class="input-box pfp-file-field">
+                <label>Profile picture</label>
+                <div class="upload-button-container">
+                    <label for="profile-picture" class="upload-button">Choose a file</label>
+                </div>
+                <input type="file" id="profile-picture" name="profilePicture" accept="image/*" onchange="loadFile(event)" required />
+                <img id="preview-pfp" />
+            </div>
+            <input class="button" type="submit" value="Confirm" />
+        </form>
+    </section>
+</div>
+
+@section Scripts {
+    <script src="~/js/profile/change-pfp.js"></script>
+}
