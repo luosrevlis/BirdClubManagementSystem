@@ -4,52 +4,61 @@
     ViewData["Title"] = "Edit";
 }
 
-<h1>Edit</h1>
+@section Styles
+{
+    @* <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" /> *@
+    <link rel="stylesheet" href="~/css/blog/create.css" />
+}
 
-<h4>Blog</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit" enctype="multipart/form-data">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
-            <input type="hidden" asp-for="UserId" />
-            <div class="form-group">
-                <label asp-for="BlogCategory.Name" class="control-label"></label>
-                <select asp-for="BlogCategoryId" class="form-control" asp-items="ViewBag.CategoryOptions">
-                    <option value="">Choose a category</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label asp-for="Title" class="control-label"></label>
-                <input asp-for="Title" class="form-control" />
-                <span asp-validation-for="Title" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Contents" class="control-label"></label>
-                <textarea id="Contents" name="Contents">@Html.Raw(Model.Contents)</textarea>
-            </div>
-            <div class="form-group">
-                <label asp-for="Thumbnail" class="control-label"></label>
-                <br />
-                <input type="file" name="thumbnailFile" accept="image/*" />
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
-</div>
+<section class="create-blog-container">
+    <a class="create-blog-back-button" asp-action="Index">
+        <i class="fa-solid fa-backward"></i>
+        Back
+    </a>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+    <form class="create-blog-form" asp-action="Edit" enctype="multipart/form-data">
+        <input type="hidden" asp-for="Id" />
 
+        <h2>Edit blog</h2>
 
+        <div class="input-container">
+            <label class="input-label" for="blog-category">Category</label>
+            <select id="blog-category" class="input" asp-for="BlogCategoryId" asp-items="ViewBag.CategoryOptions">
+                <option value="" hidden>Choose a category</option>
+            </select>
+            <span asp-validation-for="BlogCategoryId" class="text-danger"></span>
+        </div>
+
+        <div class="input-container">
+            <label class="input-label" for="blog-title">Title</label>
+            <input id="blog-title" class="input" asp-for="Title" class="form-control" />
+            <span asp-validation-for="Title" class="text-danger"></span>
+        </div>
+
+        <div class="input-container">
+            <label for="blog-contents" class="input-label blog-content-label">Contents</label>
+            <textarea id="blog-contents" name="Contents">
+                @Html.Raw(Model.Contents)
+            </textarea>
+        </div>
+
+        <div class="input-container">
+            <p class="input-label">Thumbnail</p>
+            <div class="blog-thumbnail-container">
+                <label for="blog-thumbnail" class="input-label thumbnail-submit-button">Choose a thumbnail</label>
+                <input id="blog-thumbnail" class="input" type="file" name="thumbnailFile" accept="image/*" onchange="loadFile(event)" />
+            </div>
+            <img id="preview-thumbnail" src="@Url.Action("GetImageFromBytes", "Blogs", new { id = Model.Id })" style="width: 100%" />
+        </div>
+
+        <input class="create-blog-create-button" type="submit" value="Save" />
+    </form>
+</section>
 
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
-        await Html.RenderPartialAsync("_Summernote", new { Height = 500, Selector = "#Contents" });
+        await Html.RenderPartialAsync("_Summernote", new { Height = 500, Selector = "#blog-contents" });
     }
+    <script src="~/js/blog-history/edit.js"></script>
 }

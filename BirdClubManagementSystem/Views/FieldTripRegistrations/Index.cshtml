@@ -1,46 +1,66 @@
-﻿@model IEnumerable<BirdClubManagementSystem.Models.FieldTripRegistration>
+﻿@model IEnumerable<FieldTripRegistration>
 
 @{
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+@section Styles {
+    <link rel="stylesheet" href="~/css/reset.css" />
+    <link rel="stylesheet" href="~/css/list.css" />
+}
 
-<a asp-action="Index" asp-controller="ClubEvents">Back to list</a>
-
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.User)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FieldTrip)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PaymentReceived)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
+<section class="table-header">
+    <h2>Participants list</h2>
+</section>
+<div class="sticky-table">
+    <table>
+        <thead>
             <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.User.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.FieldTrip.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.PaymentReceived)
-                </td>
-                <td>
-                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                </td>
+                <th>User</th>
+                <th>Field trip</th>
+                <th>Payment status</th>
+                <th>Options</th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.User.Name</td>
+                    <td>@item.FieldTrip.Name</td>
+                    @if (item.PaymentReceived)
+                    {
+                        <td>Received</td>
+                    }
+                    else
+                    {
+                        <td>Not received</td>
+                    }
+                    <td class="option">
+                        <a class="button delete-button" onclick="initDelete(@item.Id)">
+                            <i class="fa-solid fa-trash"></i>
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<div class="delete-container">
+    <form class="delete-form" asp-action="Delete">
+        <h2>Remove this participant from the field trip?</h2>
+        <p>This action cannot be undone!</p>
+
+        <input type="hidden" id="reg-id" name="Id" />
+
+        <div class="delete-control">
+            <input class="button delete-button" type="submit" value="Delete" />
+            <button class="button cancel-button" type="button" onclick="cancelDelete()">Cancel</button>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <script src="~/js/event-registration/index.js"></script>
+}

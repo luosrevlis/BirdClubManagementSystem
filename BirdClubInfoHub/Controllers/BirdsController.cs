@@ -2,6 +2,7 @@
 using BirdClubInfoHub.Filters;
 using BirdClubInfoHub.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 
 namespace BirdClubInfoHub.Controllers
 {
@@ -21,7 +22,11 @@ namespace BirdClubInfoHub.Controllers
             {
                 return NotFound();
             }
-            //if bytearray is empty return default, 5 places (thumbnail x2 profile x2 bird profile)
+            //if bytearray is empty return default
+            if (bird.ProfilePicture.Length == 0)
+            {
+                return File("/img/placeholder/bird.png", "image/png");
+            }
             return File(bird.ProfilePicture, "image/png");
         }
 
@@ -41,7 +46,9 @@ namespace BirdClubInfoHub.Controllers
             Bird? bird = _dbContext.Birds.Find(id);
             if (bird == null || bird.UserId != userId)
             {
-                return NotFound();
+                TempData.Add("notification", "Bird not found!");
+                TempData.Add("error", "");
+                return RedirectToAction("Index");
             }
             return View(bird);
         }
@@ -65,6 +72,14 @@ namespace BirdClubInfoHub.Controllers
                 return RedirectToAction("Index", "Login");
             }
             bird.User = user;
+            if (bird.Species.IsNullOrEmpty())
+            {
+                bird.Species = "Unknown";
+            }
+            if (bird.Description.IsNullOrEmpty())
+            {
+                bird.Description = "No description";
+            }
             if (profilePicture != null)
             {
                 using MemoryStream memoryStream = new();
@@ -73,6 +88,9 @@ namespace BirdClubInfoHub.Controllers
             }
             _dbContext.Birds.Add(bird);
             _dbContext.SaveChanges();
+
+            TempData.Add("notification", "Bird added!");
+            TempData.Add("success", "");
             return RedirectToAction("Index");
         }
 
@@ -84,7 +102,9 @@ namespace BirdClubInfoHub.Controllers
             Bird? bird = _dbContext.Birds.Find(id);
             if (bird == null || bird.UserId != userId)
             {
-                return NotFound();
+                TempData.Add("notification", "Bird not found!");
+                TempData.Add("error", "");
+                return RedirectToAction("Index");
             }
             return View(bird);
         }
@@ -94,14 +114,17 @@ namespace BirdClubInfoHub.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(Bird bird, IFormFile profilePicture)
         {
+            int? userId =  HttpContext.Session.GetInt32("USER_ID");
             Bird? birdInDb = _dbContext.Birds.Find(bird.Id);
-            if (birdInDb == null || birdInDb.UserId != HttpContext.Session.GetInt32("USER_ID"))
+            if (birdInDb == null || birdInDb.UserId != userId)
             {
-                return NotFound();
+                TempData.Add("notification", "Bird not found!");
+                TempData.Add("error", "");
+                return RedirectToAction("Index");
             }
             birdInDb.Name = bird.Name;
-            birdInDb.Description = bird.Description;
-            birdInDb.Species = bird.Species;
+            birdInDb.Species = bird.Species.IsNullOrEmpty() ? bird.Species : "Unknown";
+            birdInDb.Description = bird.Description.IsNullOrEmpty() ? bird.Description : "No description";
             if (profilePicture != null)
             {
                 using MemoryStream memoryStream = new();
@@ -110,6 +133,9 @@ namespace BirdClubInfoHub.Controllers
             }
             _dbContext.Birds.Update(birdInDb);
             _dbContext.SaveChanges();
+
+            TempData.Add("notification", "Bird updated!");
+            TempData.Add("success", "");
             return RedirectToAction("Index");
         }
 

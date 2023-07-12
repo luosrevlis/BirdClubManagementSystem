@@ -1,196 +1,88 @@
-﻿@model IEnumerable<BirdClubManagementSystem.Models.MembershipRequest>
+﻿@model IEnumerable<MembershipRequest>
 
 @{
-    ViewData["Title"] = "ViewPending Membership";
-}
-@section Styles
-{
-    @*<link rel="stylesheet" href="~/css/reset.css" />*@
-    <link rel="stylesheet" href="~/css/view-pending/approval.css" />
+    ViewData["Title"] = "Full List";
 }
 
-@* add code html(sticky table) *@
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/reset.css" />
+    <link rel="stylesheet" href="~/css/list.css" />
+    <link rel="stylesheet" href="~/css/membership-request/index.css" />
+}
+
 <section class="table-header">
-        <h1>Membership Pending List</h1>
-    </section>
-    <div class="sticky-table">
-        
-        <table>
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Address</th>
-                    <th>Phone number</th>
-                    <th>Email</th>
-                    <th>Status</th>
-                    <th>Options</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>
-                        <div class="user">
-                            <!-- <img src="https://source.unsplash.com/random" alt=""> -->
-                            <span>Vantcii</span>
-                        </div>
-                    </td>
-                    <td>Thu Duc, Ho Chi Minh City</td>
-                    <td>0686868686</td>
-                    <td>conangnoiday@gmail.com</td>
-                    <td>
-                        <p class="status pending">Pending</p>
-                    </td>
-                    <td>
-                        <div class="option">
-                            <a href="" class="app-btn btn-accept">Accept</a>
-                            <a href="" class="app-btn btn-reject">Reject</a>
-                        </div>
-                    </td>
-                </tr>
-                <!-- row 2 -->
-                <tr>
-                    <td>
-                        <div class="user">
-                            <!-- <img src="https://source.unsplash.com/random" alt=""> -->
-                            <span>Vantcii</span>
-                        </div>
-                    </td>
-                    <td>content2</td>
-                    <td>content3</td>
-                    <td>content4</td>
-                    <td>
-                        <p class="status accepted">Accepted</p>
-                    </td>
-                    <td>
-                        <div class="option">
-                            <a href="" class="app-btn btn-accept">Accept</a>
-                            <a href="" class="app-btn btn-reject">Reject</a>
-                        </div>
-                    </td>
-                </tr>
-                <!-- row 3 -->
-                <tr>
-                    <td>
-                        <div class="user">
-                            <!-- <img src="https://source.unsplash.com/random" alt=""> -->
-                            <span>Vantcii</span>
-                        </div>
-                    </td>
-                    <td>content2</td>
-                    <td>content3</td>
-                    <td>content4</td>
-                    <td>
-                        <p class="status rejected">Rejected</p>
-                    </td>
-                    <td>
-                        <div class="option">
-                            <a href="" class="app-btn btn-accept">Accept</a>
-                            <a href="" class="app-btn btn-reject">Reject</a>
-                        </div>
-                    </td>
-                </tr>
-                <!-- row 4 -->
-                <tr>
-                    <td>
-                        <div class="user">
-                            <!-- <img src="https://source.unsplash.com/random" alt=""> -->
-                            <span>Vantcii</span>
-                        </div>
-                    </td>
-                    <td>content2</td>
-                    <td>content3</td>
-                    <td>content4</td>
-                    <td>
-                        <p class="status accepted">Accepted</p>
-                    </td>
-                    <td>
-                        <div class="option">
-                            <a href="" class="app-btn btn-accept">Accept</a>
-                            <a href="" class="app-btn btn-reject">Reject</a>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <div class="user">
-                            <!-- <img src="https://source.unsplash.com/random" alt=""> -->
-                            <span>Vantcii</span>
-                        </div>
-                    </td>
-                    <td>content2</td>
-                    <td>content3</td>
-                    <td>content4</td>
-                    <td>
-                        <p class="status accepted">Accepted</p>
-                    </td>
-                    <td>
-                        <div class="option">
-                            <a href="" class="app-btn btn-accept">Accept</a>
-                            <a href="" class="app-btn btn-reject">Reject</a>
-                        </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-
-
-
-
-
-@* <h1>ViewPending</h1>
-
-<p>
-    <a asp-action="Index">View all requests</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Address)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PhoneNumber)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Email)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Status)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
+    <h2>Membership requests</h2>
+    <h4>Pending list</h4>
+</section>
+<div class="option">
+    <a class="button action-button" asp-action="Index">
+        View full list
+    </a>
+</div>
+<div class="sticky-table">
+    <table>
+        <thead>
             <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Address)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.PhoneNumber)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Email)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Status)
-                </td>
-                <td>
-                    @if (item.Status == "Pending")
-                    {
-                        <a asp-action="Accept" asp-route-id="@item.Id">Accept</a>
-                        <a asp-action="Reject" asp-route-id="@item.Id">Reject</a>
-                    }
-                </td>
+                <th>Name</th>
+                <th>Address</th>
+                <th>Phone number</th>
+                <th>Email</th>
+                <th>Status</th>
+                <th>Options</th>
             </tr>
-        }
-    </tbody>
-</table> *@
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Name</td>
+                    <td>@item.Address</td>
+                    <td>@item.PhoneNumber</td>
+                    <td>@item.Email</td>
+                    <td>@item.Status</td>
+                    <td class="option">
+                        <a class="button confirm-button" onclick="initAccept(@item.Id)">
+                            <i class="fa-solid fa-check"></i>
+                        </a>
+                        <a class="button delete-button" onclick="initReject(@item.Id)">
+                            <i class="fa-solid fa-xmark"></i>
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<div class="accept-container">
+    <form class="accept-form" asp-action="Accept">
+        <h2>Are you sure you want to accept this request?</h2>
+        <p>This action cannot be undone!</p>
+
+        <input type="hidden" id="req-id" name="Id" />
+
+        <div class="accept-control">
+            <input class="button confirm-button" type="submit" value="Accept" />
+            <button class="button cancel-button" type="button" onclick="cancelAccept()">Cancel</button>
+        </div>
+    </form>
+</div>
+
+<div class="delete-container">
+    <form class="delete-form" asp-action="Reject">
+        <h2>Are you sure you want to reject this request?</h2>
+        <p>This action cannot be undone!</p>
+
+        <input type="hidden" id="req-id" name="Id" />
+
+        <div class="delete-control">
+            <input class="button delete-button" type="submit" value="Reject" />
+            <button class="button cancel-button" type="button" onclick="cancelReject()">Cancel</button>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <script src="~/js/membership-request/index.js"></script>
+}
