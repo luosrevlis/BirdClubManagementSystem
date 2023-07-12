@@ -179,7 +179,7 @@ a {
 .nav-login-link {
   background-color: #AD82D9;
   color: #fff;
-  padding: 1rem 1.5rem;
+  padding: 0.5rem 1rem;
   border-radius: 0.5rem;
 }
 
@@ -504,7 +504,7 @@ footer {
     flex-flow: column nowrap;
     top: 10vh;
     right: 0;
-    width: 25%;
+    width: 30%;
     display: none;
   }
 
@@ -517,7 +517,7 @@ footer {
   }
 
   .nav-user-utils-container {
-    width: 25%;
+    width: 30%;
     justify-content: flex-end;
   }
 
@@ -541,5 +541,25 @@ footer {
 
   .footer-link {
     margin: 0 0 1rem 0;
+  }
+
+  .nav-logo-container {
+    width: auto;
+  }
+
+  .nav-logo-img-container {
+    height: 60%;
+  }
+
+  .nav-club-title {
+    font-size: 1.5rem;
+  }
+
+  .nav-user-utils-container {
+    flex: 1;
+  }
+
+  .nav-bar-container {
+    width: 40%;
   }
 }
