@@ -16,7 +16,7 @@ body {
     /* padding: 20px;
     display: flex;
     align-items: center; */
-    background-color: #c8ebb1;
+    background-color: #c8b4ba;
 }
 body,
 input,
@@ -111,10 +111,63 @@ table .user img{
     opacity: 0.6;
 }
 
+.action-button {
+    background-color: #4F77FF;
+    color: #fff;
+}
+
+.confirm-button {
+    background-color: #2e8364;
+    color: #fff;
+}
+
+.delete-button {
+    background-color: #f00;
+    color: #fff
+}
+
+.cancel-button {
+    background-color: #0000;
+    color: #4F77FF
+}
+
+.delete-container {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #00000077;
+    width: 100%;
+    height: 100vh;
+    display: none;
+    justify-content: center;
+    align-items: center;
+}
+
+.delete-form {
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+    background-color: #fff;
+    border-radius: 0.5rem;
+}
+
+.delete-control {
+    margin-top: 2rem;
+    width: 100%;
+}
+
+.delete-control .button {
+    width: 100%;
+}
+
 /* Responsive */
 @media (max-width:1078px){
-    .button{
+    .button {
         display: block;
-        margin-bottom: 5px;
+        width: fit-content;
+        margin: 0.2rem auto;
     }
 }

@@ -1,14 +1,198 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
+@section Styles
+    {
+    <link rel="stylesheet" href="~/css/home/index.css" />
+}
 
-<div class="text-center">
-    <h1 class="display-4">Welcome @ViewBag.Message</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-    @{
-        if (Context.Session.GetInt32("USER_ID") != null)
-        {
-            <a asp-action="Index" asp-controller="Logout">Logout</a>
-        }
-    }
+<!--nav_background  -->
+<section class="home">
+    <div class="home-text">
+        <h1>Everything we do to make <span class="gradient-text">club better</span></h1>
+        <p>Join the right club, services, and support, so your passion and
+            your bird can go up every day</p>
+        <a target="_blank" href="./request.html" class="home-btn">JOIN NOW</a>
+    </div>
+    <div class="home-mask">
+        <img src="./img/bulbul/bul-mask2.png" alt="">
+    </div>
+</section>
+
+<!--homepage birds_slider  -->
+<h1 class="slider-title">You Can Discover Us</h1>
+<div class="slider">
+    <div class="list">
+        <div class="item">
+            <img src="~/img/homepage/slide4.png" alt="">
+        </div>
+        <div class="item">
+            <img src="~/img/homepage/slide1.png" alt="">
+        </div>
+        <div class="item">
+            <img src="~/img/homepage/cm3.png" alt="">
+        </div>
+        <div class="item">
+            <img src="~/img/homepage/slide3.png" alt="">
+        </div>
+        <div class="item">
+            <img src="~/img/homepage/slide2.png" alt="">
+        </div>
+    </div>
+    <div class="buttons">
+        <button id="prev">&lt;</button>
+        <button id="next">&gt;</button>
+    </div>
+    <ul class="dots">
+        <li class="active"></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+    </ul>
 </div>
+<!--homepage field trip moments  -->
+
+<!--homepage locations  -->
+
+<!--homepage ppricing card introduction   -->
+<div class="pricing-title">
+    <h1 class="big-title">Become an official member</h1>
+    <h3 class="sub-title">Pay entrance fee easily with VNPay</h3>
+    <div class="pricing-sale">
+        <span>Yearly</span>
+        <button>Save 20%</button>
+    </div>
+</div>
+<section class="pricing">
+    <div class="pricing-container">
+        <div class="pricing-container-card">
+            <div class="card-desc">
+                <h3>FOR MONTH</h3>
+                <h6>
+                    <span>50,000VND</span>/mo
+                </h6>
+                <h5>The benefits you get</h5>
+                <!-- each field -->
+                <div class="card-desc_list">
+                    <img src="~/img/homepage/check_icon.svg" alt="">
+                    <p>Become an official member</p>
+                </div>
+                <!-- field 2 -->
+                <div class="card-desc_list">
+                    <img src="~/img/homepage/check_icon.svg" alt="">
+                    <p>Create your blogs</p>
+                </div>
+                <!-- field 3 -->
+                <div class="card-desc_list">
+                    <img src="~/img/homepage/check_icon.svg" alt="">
+                    <p>Join the events</p>
+                </div>
+                <!-- field 4 -->
+                <div class="card-desc_list">
+                    <img src="~/img/homepage/check_icon.svg" alt="">
+                    <p>Bring you birds to tournaments</p>
+                </div>
+                <!-- field 5 -->
+                <div class="card-desc_list">
+                    <img src="~/img/homepage/check_icon.svg" alt="">
+                    <p>Have a field trips with other members</p>
+                </div>
+                <!-- field 6 -->
+                <div class="card-desc_list">
+                    <img src="~/img/homepage/check_icon.svg" alt="">
+                    <p>Unlimited meetings every month</p>
+                </div>
+            </div>
+            <div class="pricing-button"></div>
+        </div>
+        <!-- card 2 -->
+        <div class="pricing-container-card">
+            <div class="card-desc">
+                <h3>FOR YEAR</h3>
+                <h6>
+                    <span>480,000VND</span>/yr
+                </h6>
+                <h5>The benefits you get</h5>
+                <!-- each field -->
+                <div class="card-desc_list">
+                    <img src="~/img/homepage/check_icon.svg" alt="">
+                    <p>Become an official member</p>
+                </div>
+                <!-- field 2 -->
+                <div class="card-desc_list">
+                    <img src="~/img/homepage/check_icon.svg" alt="">
+                    <p>Create your blogs</p>
+                </div>
+                <!-- field 3 -->
+                <div class="card-desc_list">
+                    <img src="~/img/homepage/check_icon.svg" alt="">
+                    <p>Join the events</p>
+                </div>
+                <!-- field 4 -->
+                <div class="card-desc_list">
+                    <img src="~/img/homepage/check_icon.svg" alt="">
+                    <p>Bring you birds to tournaments</p>
+                </div>
+                <!-- field 5 -->
+                <div class="card-desc_list">
+                    <img src="~/img/homepage/check_icon.svg" alt="">
+                    <p>Have a field trips with other members</p>
+                </div>
+                <!-- field 6 -->
+                <div class="card-desc_list">
+                    <img src="~/img/homepage/check_icon.svg" alt="">
+                    <p>Unlimited meetings every month</p>
+                </div>
+            </div>
+            <div class="pricing-button"></div>
+        </div>
+    </div>
+</section>
+
+
+<!-- homepage member rating -->
+<section class="customers" id="customers">
+    <div class="customers-heading">
+        <h1 class="box-title">What our members are saying about us </h1>
+        <h5>Member passion satisfaction is a primary goal for our club</h5>
+    </div>
+    <!-- card container -->
+    <div class="customers-container">
+        <div class="box">
+            <img class="box-avatar" src="~/img/homepage/mem1.png" alt="">
+            <h2>Antonella</h2>
+            <h3>Member</h3>
+            <div class="stars">
+                <img src="~/img/homepage/stars.svg" alt="">
+            </div>
+            <p>Since joining the club, I have made more friends and shared knowledge about our passion.</p>
+        </div>
+        <div class="box">
+            <img class="box-avatar" src="~/img/homepage/mem2.png" alt="">
+            <h2>Mason Greenwood</h2>
+            <h3>Member</h3>
+            <div class="stars">
+                <img src="~/img/homepage/stars.svg" alt="">
+            </div>
+            <p>This club help me feel easily when I take care of my bird.</p>
+        </div>
+        <div class="box">
+            <img class="box-avatar" src="~/img/homepage/mem3.png" alt="">
+            <h2>Jessica</h2>
+            <h3>Member</h3>
+            <div class="stars">
+                <img src="~/img/homepage/stars.svg" alt="">
+            </div>
+            <p>Truly a great club. I get to enjoy and experience things that I have never tried before. Now, I have a
+                place to meet and exchange many things with friends.</p>
+        </div>
+    </div>
+</section>
+
+<!-- link js -->
+@section Scripts {
+    @{
+        <script src="~/js/home/index.js"></script>
+    }
+}

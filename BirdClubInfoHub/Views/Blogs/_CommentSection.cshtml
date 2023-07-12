@@ -4,31 +4,6 @@
     var userSessionId = Context.Session.GetInt32("USER_ID") ?? 0;
 }
 
-@* <div class="card mt-2 border-primary">
-    <div class="card-body">
-        <h5 class="card-title">@comment.User.Name</h5>
-        @{
-            if (comment.ModifiedDate != new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified))
-            {
-                <h6 class="card-subtitle">Modified at @comment.ModifiedDate</h6>
-            }
-            else
-            {
-                <h6 class="card-subtitle">@comment.CreatedDate</h6>
-            }
-        }
-        <p class="card-text">@comment.Contents</p>
-        @{
-            if (userSessionId != null && comment.UserId == userSessionId)
-            {
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editModal" data-comment-id="@comment.Id">Edit</button>
-                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" data-comment-id="@comment.Id">Delete</button>
-            }
-        }
-    </div>
-</div>
-<br /> *@
-
 <div class="comments-container">
     <h2 class="comments-container-title">Comments</h2>
 

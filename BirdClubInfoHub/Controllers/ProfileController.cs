@@ -25,7 +25,7 @@ namespace BirdClubInfoHub.Controllers
             //if image is empty return default
             if (user.ProfilePicture.Length == 0)
             {
-                return File("/img/nav/ava_placeholder.jpg", "image/png");
+                return File("/img/placeholder/user.jpg", "image/png");
             }
             return File(user.ProfilePicture, "image/png");
         }
@@ -38,7 +38,7 @@ namespace BirdClubInfoHub.Controllers
             User? user = _dbContext.Users.Find(userID);
             if (user == null)
             {
-                return NotFound();
+                return RedirectToAction("Index", "Login");
             }
             return View(user);
         }
@@ -48,14 +48,10 @@ namespace BirdClubInfoHub.Controllers
         public ActionResult Edit(int id)
         {
             int? userID = HttpContext.Session.GetInt32("USER_ID");
-            if (id != userID)
+            User? user = _dbContext.Users.Find(id);
+            if (user == null || id != userID)
             {
                 return RedirectToAction("Index", "Login");
-            }
-            User? user = _dbContext.Users.Find(id);
-            if (user == null)
-            {
-                return NotFound();
             }
             return View(user);
         }
@@ -75,6 +71,9 @@ namespace BirdClubInfoHub.Controllers
             userInDb.Phone = user.Phone;
             _dbContext.Users.Update(userInDb);
             _dbContext.SaveChanges();
+
+            TempData.Add("notification", "Profile updated!");
+            TempData.Add("success", "");
             return RedirectToAction("Index");
         }
 
@@ -83,14 +82,10 @@ namespace BirdClubInfoHub.Controllers
         public ActionResult ChangeProfilePicture(int id)
         {
             int? userID = HttpContext.Session.GetInt32("USER_ID");
-            if (id != userID)
+            User? user = _dbContext.Users.Find(id);
+            if (user == null || id != userID)
             {
                 return RedirectToAction("Index", "Login");
-            }
-            User? user = _dbContext.Users.Find(id);
-            if (user == null)
-            {
-                return NotFound();
             }
             return View(user);
         }
@@ -103,7 +98,7 @@ namespace BirdClubInfoHub.Controllers
             User? user = _dbContext.Users.Find(id);
             if (user == null)
             {
-                return NotFound();
+                return RedirectToAction("Index", "Login");
             }
             using (MemoryStream memoryStream = new())
             {
@@ -112,18 +107,10 @@ namespace BirdClubInfoHub.Controllers
             }
             _dbContext.Users.Update(user);
             _dbContext.SaveChanges();
-            return RedirectToAction("Index");
-        }
 
-        [Authenticated]
-        public ActionResult ChangePassword(int id)
-        {
-            int? userID = HttpContext.Session.GetInt32("USER_ID");
-            if (id != userID)
-            {
-                return RedirectToAction("Index", "Login");
-            }
-            return View();
+            TempData.Add("notification", "Profile picture updated!");
+            TempData.Add("success", "");
+            return RedirectToAction("Index");
         }
 
         [HttpPost]
@@ -134,30 +121,30 @@ namespace BirdClubInfoHub.Controllers
             string newPassword = formCollection["NewPassword"]!;
             string confirmPassword = formCollection["ConfirmPassword"]!;
             User? user = _dbContext.Users.Find(HttpContext.Session.GetInt32("USER_ID"));
-            PasswordHasher<User> passwordHasher = new();
             if (user == null)
             {
                 TempData.Add("notification", "Account not found!");
                 TempData.Add("error", "");
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "Login");
             }
+            PasswordHasher<User> passwordHasher = new();
             if (passwordHasher.VerifyHashedPassword(user, user.Password, oldPassword) == PasswordVerificationResult.Failed)
             {
                 TempData.Add("notification", "Incorrect old password!");
                 TempData.Add("error", "");
-                return View();
+                return RedirectToAction("Index");
             }
             if (oldPassword == newPassword)
             {
                 TempData.Add("notification", "New password can not be identical to old password!");
                 TempData.Add("error", "");
-                return View();
+                return RedirectToAction("Index");
             }
             if (newPassword != confirmPassword)
             {
                 TempData.Add("notification", "Password does not match!");
                 TempData.Add("error", "");
-                return View();
+                return RedirectToAction("Index");
             }
             user.Password = passwordHasher.HashPassword(user, newPassword);
             _dbContext.Users.Update(user);

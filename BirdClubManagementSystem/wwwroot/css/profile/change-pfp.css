@@ -1,0 +1,25 @@
+﻿.upload-button-container {
+    display: flex;
+    margin: 0.5rem;
+}
+
+.upload-button {
+    cursor: pointer;
+    padding: 0.2rem;
+    border-radius: 1rem;
+    background-color: #c8b4ba;
+    color: #fff !important;
+}
+
+.upload-button:hover {
+    opacity: 0.6;
+}
+
+#profile-picture {
+    display: none;
+}
+
+#preview-pfp {
+    max-width: 100%;
+    border-radius: 2rem;
+}
