@@ -1,233 +1,111 @@
-﻿@model IEnumerable<BirdClubManagementSystem.Models.Blog>
+﻿@model IEnumerable<Blog>
 
 @section Styles
 {
-    <link rel="stylesheet" href="~/css/blogs/blogs.css" />
+    <link rel="stylesheet" href="~/css/blog/blog.css" />
+    <link rel="stylesheet" href="~/css/reset.css" />
+    <link rel="stylesheet" href="~/css/list.css" />
 }
 
-<section class="blogs-container">
-    <article class="blog-container">
-        <div class="blog-img-container">
-            <img class="blog-img" src="~/img/blogs/bird1.jpg" alt="bird" />
-        </div>
-        <h2 class="blog-heading">Lorem, ipsum dolor sit amet consectetur adipisicing elit.</h2>
-        <p class="blog-description">Lorem ipsum, dolor sit amet consectetur adipisicing elit.</p>
-        <div class="blog-author-container">
-            <div class="blog-author-detail-container">
-                <div class="blog-author-img-container">
-                    <img class="blog-author-img" src="~/img/blogs/ava.svg" alt="author" />
-                </div>
-                <div class="blog-author-name-status-container">
-                    <p class="blog-author-name">John Doe</p>
-                    <div class="blog-author-status-container">
-                        <div class="blog-author-status-img-container">
-                            <img class="blog-author-status-img" src="~/img/blogs/status.svg" alt="status" />
-                        </div>
-                        <p class="blog-author-role">Member</p>
-                    </div>
-                </div>
-            </div>
-            <p class="blog-publish-date">17/06/2023</p>
-        </div>
-    </article>
+@{
+    ViewData["Title"] = "Index";
+}
 
-    <article class="blog-container">
-        <div class="blog-img-container">
-            <img class="blog-img" src="~/img/blogs/bird2.jpg" alt="bird" />
-        </div>
-        <h2 class="blog-heading">Lorem, ipsum dolor sit amet consectetur adipisicing elit.</h2>
-        <p class="blog-description">Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
-        <div class="blog-author-container">
-            <div class="blog-author-detail-container">
-                <div class="blog-author-img-container">
-                    <img class="blog-author-img" src="~/img/blogs/ava.svg" alt="author" />
-                </div>
-                <div class="blog-author-name-status-container">
-                    <p class="blog-author-name">John Doe</p>
-                    <div class="blog-author-status-container">
-                        <div class="blog-author-status-img-container">
-                            <img class="blog-author-status-img" src="~/img/blogs/status.svg" alt="status" />
-                        </div>
-                        <p class="blog-author-role">Member</p>
-                    </div>
-                </div>
-            </div>
-            <p class="blog-publish-date">17/06/2023</p>
-        </div>
-    </article>
-
-    <article class="blog-container">
-        <div class="blog-img-container">
-            <img class="blog-img" src="~/img/blogs/bird3.jpg" alt="bird" />
-        </div>
-        <h2 class="blog-heading">Lorem, ipsum dolor sit amet consectetur adipisicing elit.</h2>
-        <p class="blog-description">Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
-        <div class="blog-author-container">
-            <div class="blog-author-detail-container">
-                <div class="blog-author-img-container">
-                    <img class="blog-author-img" src="~/img/blogs/ava.svg" alt="author" />
-                </div>
-                <div class="blog-author-name-status-container">
-                    <p class="blog-author-name">John Doe</p>
-                    <div class="blog-author-status-container">
-                        <div class="blog-author-status-img-container">
-                            <img class="blog-author-status-img" src="~/img/blogs/status.svg" alt="status" />
-                        </div>
-                        <p class="blog-author-role">Member</p>
-                    </div>
-                </div>
-            </div>
-            <p class="blog-publish-date">17/06/2023</p>
-        </div>
-    </article>
-
-    <article class="blog-container">
-        <div class="blog-img-container">
-            <img class="blog-img" src="~/img/blogs/bird4.jpg" alt="bird" />
-        </div>
-        <h2 class="blog-heading">Lorem, ipsum dolor sit amet consectetur adipisicing elit.</h2>
-        <p class="blog-description">Lorem ipsum, dolor sit amet consectetur adipisicing elit.</p>
-        <div class="blog-author-container">
-            <div class="blog-author-detail-container">
-                <div class="blog-author-img-container">
-                    <img class="blog-author-img" src="~/img/blogs/ava.svg" alt="author" />
-                </div>
-                <div class="blog-author-name-status-container">
-                    <p class="blog-author-name">John Doe</p>
-                    <div class="blog-author-status-container">
-                        <div class="blog-author-status-img-container">
-                            <img class="blog-author-status-img" src="~/img/blogs/status.svg" alt="status" />
-                        </div>
-                        <p class="blog-author-role">Member</p>
-                    </div>
-                </div>
-            </div>
-            <p class="blog-publish-date">17/06/2023</p>
-        </div>
-    </article>
-
-    <article class="blog-container">
-        <div class="blog-img-container">
-            <img class="blog-img" src="~/img/blogs/bird5.jpg" alt="bird" />
-        </div>
-        <h2 class="blog-heading">Lorem, ipsum dolor sit amet consectetur adipisicing elit.</h2>
-        <p class="blog-description">Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
-        <div class="blog-author-container">
-            <div class="blog-author-detail-container">
-                <div class="blog-author-img-container">
-                    <img class="blog-author-img" src="~/img/blogs/ava.svg" alt="author" />
-                </div>
-                <div class="blog-author-name-status-container">
-                    <p class="blog-author-name">John Doe</p>
-                    <div class="blog-author-status-container">
-                        <div class="blog-author-status-img-container">
-                            <img class="blog-author-status-img" src="~/img/blogs/status.svg" alt="status" />
-                        </div>
-                        <p class="blog-author-role">Member</p>
-                    </div>
-                </div>
-            </div>
-            <p class="blog-publish-date">17/06/2023</p>
-        </div>
-    </article>
-
-    <article class="blog-container">
-        <div class="blog-img-container">
-            <img class="blog-img" src="~/img/blogs/bird6.jpg" alt="bird" />
-        </div>
-        <h2 class="blog-heading">Lorem, ipsum dolor sit amet consectetur adipisicing elit.</h2>
-        <p class="blog-description">Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
-        <div class="blog-author-container">
-            <div class="blog-author-detail-container">
-                <div class="blog-author-img-container">
-                    <img class="blog-author-img" src="~/img/blogs/ava.svg" alt="author" />
-                </div>
-                <div class="blog-author-name-status-container">
-                    <p class="blog-author-name">John Doe</p>
-                    <div class="blog-author-status-container">
-                        <div class="blog-author-status-img-container">
-                            <img class="blog-author-status-img" src="~/img/blogs/status.svg" alt="status" />
-                        </div>
-                        <p class="blog-author-role">Member</p>
-                    </div>
-                </div>
-            </div>
-            <p class="blog-publish-date">17/06/2023</p>
-        </div>
-    </article>
-
-    <article class="blog-container">
-        <div class="blog-img-container">
-            <img class="blog-img" src="~/img/blogs/bird7.jpg" alt="bird" />
-        </div>
-        <h2 class="blog-heading">Lorem, ipsum dolor sit amet consectetur adipisicing elit.</h2>
-        <p class="blog-description">Lorem ipsum, dolor sit amet consectetur adipisicing elit.</p>
-        <div class="blog-author-container">
-            <div class="blog-author-detail-container">
-                <div class="blog-author-img-container">
-                    <img class="blog-author-img" src="~/img/blogs/ava.svg" alt="author" />
-                </div>
-                <div class="blog-author-name-status-container">
-                    <p class="blog-author-name">John Doe</p>
-                    <div class="blog-author-status-container">
-                        <div class="blog-author-status-img-container">
-                            <img class="blog-author-status-img" src="~/img/blogs/status.svg" alt="status" />
-                        </div>
-                        <p class="blog-author-role">Member</p>
-                    </div>
-                </div>
-            </div>
-            <p class="blog-publish-date">17/06/2023</p>
-        </div>
-    </article>
-
-    <article class="blog-container">
-        <div class="blog-img-container">
-            <img class="blog-img" src="~/img/blogs/bird1.jpg" alt="bird" />
-        </div>
-        <h2 class="blog-heading">Lorem, ipsum dolor sit amet consectetur adipisicing elit.</h2>
-        <p class="blog-description">Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
-        <div class="blog-author-container">
-            <div class="blog-author-detail-container">
-                <div class="blog-author-img-container">
-                    <img class="blog-author-img" src="~/img/blogs/ava.svg" alt="author" />
-                </div>
-                <div class="blog-author-name-status-container">
-                    <p class="blog-author-name">John Doe</p>
-                    <div class="blog-author-status-container">
-                        <div class="blog-author-status-img-container">
-                            <img class="blog-author-status-img" src="~/img/blogs/status.svg" alt="status" />
-                        </div>
-                        <p class="blog-author-role">Member</p>
-                    </div>
-                </div>
-            </div>
-            <p class="blog-publish-date">17/06/2023</p>
-        </div>
-    </article>
-
-    <article class="blog-container">
-        <div class="blog-img-container">
-            <img class="blog-img" src="~/img/blogs/bird2.jpg" alt="bird" />
-        </div>
-        <h2 class="blog-heading">Lorem, ipsum dolor sit amet consectetur adipisicing elit.</h2>
-        <p class="blog-description">Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
-        <div class="blog-author-container">
-            <div class="blog-author-detail-container">
-                <div class="blog-author-img-container">
-                    <img class="blog-author-img" src="~/img/blogs/ava.svg" alt="author" />
-                </div>
-                <div class="blog-author-name-status-container">
-                    <p class="blog-author-name">John Doe</p>
-                    <div class="blog-author-status-container">
-                        <div class="blog-author-status-img-container">
-                            <img class="blog-author-status-img" src="~/img/blogs/status.svg" alt="status" />
-                        </div>
-                        <p class="blog-author-role">Member</p>
-                    </div>
-                </div>
-            </div>
-            <p class="blog-publish-date">17/06/2023</p>
-        </div>
-    </article>
+<section class="table-header">
+    <h2>Blog history</h2>
 </section>
+<div class="option">
+    <a class="button action-button" asp-action="Create" asp-controller="Blogs">
+        <i class="fa-solid fa-circle-plus"></i>
+        Create new blog
+    </a>
+</div>
+<div class="sticky-table">
+    <table>
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Category</th>
+                <th>Date created / modified</th>
+                <th>Status</th>
+                <th>Options</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Title</td>
+                    <td>@item.BlogCategory.Name</td>
+                    <td>@item.DateCreated</td>
+                    <td>@item.Status</td>
+                    <td class="option">
+                        @if (item.Status == "Accepted")
+                        {
+                            <a class="button action-button" asp-action="Details" asp-controller="Blogs" asp-route-id="@item.Id">
+                                <i class="fa-solid fa-eye"></i>
+                            </a>
+                            <a class="button delete-button" onclick="initDelete(@item.Id)">
+                                <i class="fa-solid fa-trash"></i>
+                            </a>
+                        }
+                        @if (item.Status == "Pending")
+                        {
+                            <a class="button action-button" asp-action="Details" asp-route-id="@item.Id">
+                                <i class="fa-solid fa-eye"></i>
+                            </a>
+                            <a class="button confirm-button" onclick="initAccept(@item.Id)">
+                                <i class="fa-solid fa-check"></i>
+                            </a>
+                            <a class="button reject-button" onclick="initReject(@item.Id)">
+                                <i class="fa-solid fa-x"></i>
+                            </a>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<div class="delete-container">
+    <form class="delete-form" asp-action="Delete">
+        <h2>Are you sure you want to delete this blog?</h2>
+        <p>This action cannot be undone!</p>
+
+        <input type="hidden" class="blog-id" name="Id" />
+
+        <div class="delete-control">
+            <input class="button delete-button" type="submit" value="Delete" />
+            <button class="button cancel-button" type="button" onclick="cancelDelete()">Cancel</button>
+        </div>
+    </form>
+</div>
+
+<div class="accept-container">
+    <form class="accept-form" asp-action="Accept">
+        <h2>Are you sure you want to acccept this blog?</h2>
+        <input type="hidden" class="blog-id" name="Id" />
+
+        <div class="accept-control">
+            <input class="button confirm-button" type="submit" value="Accept" />
+            <button class="button cancel-button" type="button" onclick="cancelAccept()">Cancel</button>
+        </div>
+    </form>
+</div>
+
+<div class="reject-container">
+    <form class="reject-form" asp-action="Reject">
+        <h2>Are you sure you want to reject this blog?</h2>
+        <input type="hidden" class="blog-id" name="Id" />
+
+        <div class="reject-control">
+            <input class="button reject-button" type="submit" value="Reject" />
+            <button class="button cancel-button" type="button" onclick="cancelReject()">Cancel</button>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <script src="~/js/blog/index.js"></script>
+}
