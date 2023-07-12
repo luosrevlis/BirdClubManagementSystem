@@ -21,10 +21,10 @@
     <header>
         <nav>
             <div class="nav-logo-container">
-                <div class="logo-img-container">
-                    <img src="~/img/nav/club_logo.svg" alt="logo" />
+                <div class="nav-logo-img-container">
+                    <img class="nav-logo-img" src="~/img/nav/club_logo.svg" alt="logo" />
                 </div>
-                <h1 class="club-title">VNCMBC</h1>
+                <h1 class="nav-club-title">VNCMBC</h1>
             </div>
 
             <div class="nav-bar-container">
@@ -38,8 +38,8 @@
             <div class="nav-user-utils-container">
                 @if (userId != null)
                 {
-                    <div class="ava-container">
-                        <img src="@Url.Action("GetImageFromBytes", "Profile", new { id = userId })" alt="avatar" onclick="toggleMenu()" />
+                    <div class="nav-ava-container">
+                        <img class="nav-ava-img" src="@Url.Action("GetImageFromBytes", "Profile", new { id = userId })" alt="avatar" onclick="toggleMenu()" />
                     </div>
 
                     @* add here dropdown *@
@@ -82,15 +82,15 @@
                 }
                 else
                 {
-                    <a asp-controller="Login" asp-action="Index" class="action-link">Log In</a>
-                    <div class="ava-container">
-                        <img src="~/img/placeholder/user.jpg" alt="avatar" />
+                    <a asp-controller="Login" asp-action="Index" class="nav-login-link">Log In</a>
+                    <div class="nav-ava-container">
+                        <img class="nav-ava-img" src="~/img/placeholder/user.jpg" alt="avatar" />
                     </div>
                 }
-            </div>
 
-            <div class="nav-toggle">
-                <p>V</p>
+                <div class="nav-menu-icon-container">
+                    <img class="nav-menu-icon" src="~/img/nav/menu.png" alt="menu icon" />
+                </div>
             </div>
         </nav>
     </header>
@@ -108,39 +108,41 @@
                 <h1>VNCMBC</h1>
             </div>
 
-            <div class="footer-link-container">
-                <h2>Club</h2>
-                <div class="footer-link-box">
-                    <a class="footer-link">About</a>
-                    <a class="footer-link">Events</a>
-                    <a class="footer-link">Blogs</a>
+            <div class="footer-link-body">
+                <div class="footer-link-container">
+                    <h2>Club</h2>
+                    <div class="footer-link-box">
+                        <a class="footer-link">About</a>
+                        <a class="footer-link">Events</a>
+                        <a class="footer-link">Blogs</a>
+                    </div>
                 </div>
-            </div>
 
-            <div class="footer-link-container">
-                <h2>Services</h2>
-                <div class="footer-link-box">
-                    <a class="footer-link">Community</a>
-                    <a class="footer-link">Tournaments</a>
-                    <a class="footer-link">Pricing</a>
+                <div class="footer-link-container">
+                    <h2>Services</h2>
+                    <div class="footer-link-box">
+                        <a class="footer-link">Community</a>
+                        <a class="footer-link">Tournaments</a>
+                        <a class="footer-link">Pricing</a>
+                    </div>
                 </div>
-            </div>
 
-            <div class="footer-link-container">
-                <h2>Contact</h2>
-                <div class="footer-link-box">
-                    <a class="footer-link">Help desk</a>
-                    <a class="footer-link">Chat</a>
-                    <a class="footer-link">Forum</a>
+                <div class="footer-link-container">
+                    <h2>Contact</h2>
+                    <div class="footer-link-box">
+                        <a class="footer-link">Help desk</a>
+                        <a class="footer-link">Chat</a>
+                        <a class="footer-link">Forum</a>
+                    </div>
                 </div>
-            </div>
 
-            <div class="footer-link-container">
-                <h2>Payment</h2>
-                <div class="footer-link-box">
-                    <a class="footer-link">
-                        <img src="~/img/footer/vnpay_logo.png" alt="vn pay logo" />
-                    </a>
+                <div class="footer-link-container">
+                    <h2>Payment</h2>
+                    <div class="footer-link-box">
+                        <a class="footer-link">
+                            <img src="~/img/footer/vnpay_logo.png" alt="vn pay logo" />
+                        </a>
+                    </div>
                 </div>
             </div>
 
