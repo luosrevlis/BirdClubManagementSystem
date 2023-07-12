@@ -5,6 +5,7 @@
 // add functions that you want to run after the page is FULLY loaded here
 function init() {
     setUpNavBar();
+    setUpActiveNavLink();
 }
 
 // add multiple event listeners to one element
@@ -44,4 +45,24 @@ function setUpNavBar() {
 let subMenu = document.getElementById("subMenu");
 function toggleMenu(){
     subMenu.classList.toggle("open-menu")
+}
+
+// set up active nav link
+function setUpActiveNavLink() {
+    const path = window.location.pathname.toLowerCase();
+    const navLinks = document.getElementsByClassName("nav-link");
+
+    if (path.includes("home") && path.includes("index")) {
+        navLinks.item(0).classList.add("nav-active");
+    } else if (path.includes("home") && path.includes("about")) {
+        navLinks.item(1).classList.add("nav-active");
+    } else if (path.includes("blogs")) {
+        navLinks.item(2).classList.add("nav-active");
+    } else if (path.includes("clubevents")) {
+        navLinks.item(3).classList.add("nav-active");
+    } else if (path.includes("home") && path.includes("contact")) {
+        navLinks.item(4).classList.add("nav-active");
+    } else {
+        navLinks.item(0).classList.add("nav-active");
+    }
 }
