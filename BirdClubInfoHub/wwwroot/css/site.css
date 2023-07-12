@@ -528,6 +528,10 @@ footer {
   .nav-menu-icon-container {
     display: flex;
   }
+
+  .nav-login-link {
+    margin-right: 1rem;
+  }
 }
 
 @media screen and (max-width: 768px) {
