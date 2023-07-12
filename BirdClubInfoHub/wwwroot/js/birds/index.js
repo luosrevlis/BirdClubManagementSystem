@@ -1,4 +1,4 @@
-let items = document.querySelectorAll('.item');
+/*let items = document.querySelectorAll('.item');
 console.log(items);
 items.forEach(item => {
     item.addEventListener('mousemove', (e)=>{
@@ -6,7 +6,7 @@ items.forEach(item => {
         let positionX = (positionPx / item.offsetWidth) * 100;
         console.log(positionX, positionPx);
 
-        let positionPy = event.y - item.getBoundingClientRect().top;
+        let positionPy = e.y - item.getBoundingClientRect().top;
         let positionY = (positionPy / item.offsetHeight) * 100;
 
         
@@ -17,4 +17,4 @@ items.forEach(item => {
         item.style.setProperty('--rX', '0deg');
         item.style.setProperty('--rY', '0deg');
     })
-})
+})*/

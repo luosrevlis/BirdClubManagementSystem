@@ -52,7 +52,7 @@ body {
     margin: 2rem;
     transform-style: preserve-3d;
     transform: perspective(100rem);
-    cursor: pointer;
+    /*cursor: pointer;*/
 }
 .item {
     --rX: 0deg;
@@ -79,16 +79,16 @@ body {
     z-index: -1;
 }
 /* add edit and delete button */
-.item input {
+/*.item input {
     cursor: pointer;
     padding: 5px 20px;
     border: 1px solid #b21065;
     border-radius: 20px;
-    background-image: 
+    background-image:*/ 
          /* lớp trên cùng làm hiệu ứng phủ sáng */
-        repeating-linear-gradient(60deg,#bc058255 0 10px, transparent 10px 20px), /* lớp này tạo ra một hiệu ứng đường kẻ vô hạn thành */
-        linear-gradient(to bottom, #EF08A6, #ee6c8f); /* lớp dưới cùng là màu nền */
-    color: #fff;
+        /*repeating-linear-gradient(60deg,#bc058255 0 10px, transparent 10px 20px),*/ /* lớp này tạo ra một hiệu ứng đường kẻ vô hạn thành */
+        /*linear-gradient(to bottom, #EF08A6, #ee6c8f);*/ /* lớp dưới cùng là màu nền */
+    /*color: #fff;
     font-family: sans-serif;
     font-weight: bold;
     text-shadow: 0 1px 0 #efb7de;
@@ -101,11 +101,45 @@ body {
     box-shadow: 
         0 0px 0 #0005,
         0 0px 0 #BD1360,
-        0 0px 0 7px #fff;
+        0 0px 0 7px #fff;*/
         /* 0 0 30px 30px #e260ae; */
-    transform: translateY(5px);
+    /*transform: translateY(5px);
+}*/
+
+/*button mới*/
+.bird-actions {
+    display: flex;
+    justify-content: center;
 }
 
+.bird-btn {
+    display: inline-flex;
+    width: 25%;
+    margin: 0.2rem;
+    padding: 0.5rem 0;
+    border-radius: 0.5rem;
+    border: none;
+    justify-content: center;
+}
+
+.bird-btn:hover {
+    opacity: 0.6;
+}
+
+.edit-btn {
+    background-color: #4F77FF;
+    color: #fff;
+}
+
+.achievements-btn {
+    background-color: #FFD700;
+    color: #fff;
+}
+
+.delete-btn {
+    background-color: #f00;
+    color: #fff
+}
 
 @media screen and (max-width: 767px) {
     .bird-main{

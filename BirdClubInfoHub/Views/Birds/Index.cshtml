@@ -3,72 +3,45 @@
 @{
     ViewData["Title"] = "Your Birds";
 }
-@section Styles
-    {
+
+@section Styles {
     <link rel="stylesheet" href="~/css/birds/index.css" />
 }
 
 <div class="container-bird">
     <div class="container-bird-info">
         <h2>Your birds</h2>
-        <a type="submit" class="btn bird-add-btn">Add Bird</a>
+        <a asp-action="Create" class="btn bird-add-btn">Add Bird</a>
     </div>
 </div>
 
 <hr style="border: 1px solid #9e6b55;">
 
 <section class="bird-main">
-    <a style="text-decoration: none;color: black;" href="" class="bird-link">
+    @foreach (var item in Model)
+    {
         <div class="wrap">
             <div class="item">
-                <p>Ní ơi</p>
-                <img src="~/img/birds/cm5.png" alt="">
-                <input class="bird-btn edit" type="submit" value="Edit">
-                <input class="bird-btn delete" type="submit" value="Delete">
+                <p>@item.Name</p>
+                <a style ="text-decoration: none;color: #000;" href="" class="bird-link">
+                    <img src="@Url.Action("GetImageFromBytes", "Birds", new { id = item.Id })" alt="">
+                </a>
+                <div class="bird-actions">
+                    <a class="bird-btn edit-btn" asp-action="Edit">
+                        <i class="fa-solid fa-pen-to-square"></i>
+                    </a>
+                    <a class="bird-btn achievements-btn">
+                        <i class="fa-solid fa-trophy"></i>
+                    </a>
+                    <a class="bird-btn delete-btn" onclick="initDelete(@item.Id)">
+                        <i class="fa-solid fa-trash"></i>
+                    </a>
+                </div>
             </div>
         </div>
-    </a>
-    <!-- card 2: khi bấm vào ra deatil chim(crud) -->
-    <a style="text-decoration: none;color: black;" href="" class="bird-link">
-        <div class="wrap">
-            <div class="item">
-                <p>A phồ</p>
-                <img src="~/img/birds/cm6.png" alt="">
-                <div class="bird-btn-edit"></div>
-                <input class="bird-btn edit" type="submit" value="Edit" id="#e">
-                <input class="bird-btn delete" type="submit" value="Delete">
-            </div>
-        </div>
-    </a>
-    <!-- card 3 -->
-    <a style="text-decoration: none;color: black;" href="" class="bird-link">
-        <div class="wrap">
-            <div class="item">
-                <p>Bảo bảo</p>
-                <img src="~/img/birds/cm7.png" alt="">
-                <input class="bird-btn edit" type="submit" value="Edit">
-                <input class="bird-btn delete" type="submit" value="Delete">
-            </div>
-
-        </div>
-    </a>
-
-    <!-- card 4 -->
-    <a style="text-decoration: none;color: black;" href="" class="bird-link">
-        <div class="wrap">
-            <div class="item">
-                <p>A lữ</p>
-                <img src="~/img/birds/cm4.png" alt="">
-                <input class="bird-btn edit" type="submit" value="Edit">
-                <input class="bird-btn delete" type="submit" value="Delete">
-            </div>
-        </div>
-    </a>
+    }
 </section>
 
-@* link js *@
 @section Scripts {
-    @{
-        <script src="~/js/birds/index.js"></script>
-    }
+    <script src="~/js/birds/index.js"></script>
 }
