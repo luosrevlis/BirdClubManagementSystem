@@ -4,40 +4,40 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
+@section Styles {
+    <link rel="stylesheet" href="~/css/form.css" />
+    <link rel="stylesheet" href="~/css/birds/create-edit.css" />
+}
 
-<div>
-    <h4>Bird</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Species)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Species)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ProfilePicture)
-        </dt>
-        <dd class = "col-sm-10">
-            <img src="@Url.Action("GetImageFromBytes", "Birds", new { id = Model.Id })" />
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Delete" asp-route-id="@Model?.Id">Delete</a> |
-    <a asp-action="Index">Back to List</a>
+<div class="main-form">
+    <section class="container-template">
+        <h2>Bird details</h2>
+        <form class="form">
+
+            <div class="input-box name-field">
+                <label>Name</label>
+                <input asp-for="Name" placeholder="Enter bird name" required class="name" readonly />
+            </div>
+
+            <div class="input-box species-field">
+                <label>Species</label>
+                <input asp-for="Species" placeholder="Enter species" required class="species" readonly />
+            </div>
+
+            <div class="input-box address-field">
+                <label>Short description</label>
+                <input asp-for="Description" placeholder="Enter a short description" required class="description" readonly />
+            </div>
+
+            <div class="input-box pfp-file-field">
+                <label>Profile picture</label>
+                <img id="preview-pfp" src="@Url.Action("GetImageFromBytes", "Birds", new { id = Model.Id })" />
+            </div>
+
+            <button class="button" asp-action="Edit" asp-route-id="@Model.Id">Edit</button>
+        </form>
+        <div class="back-region">
+            <a asp-action="Index" class="back-link">Back</a>
+        </div>
+    </section>
 </div>

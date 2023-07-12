@@ -1,12 +1,13 @@
 ﻿using BirdClubManagementSystem.Data;
+using BirdClubManagementSystem.Filters;
 using BirdClubManagementSystem.Models;
 using FluentEmail.Core;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Policy;
 using System.Text;
 
 namespace BirdClubManagementSystem.Controllers
 {
+    [StaffAuthenticated]
     public class MembershipRequestsController : Controller
     {
         private readonly BcmsDbContext _dbContext;
@@ -32,24 +33,16 @@ namespace BirdClubManagementSystem.Controllers
             return View(requests);
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Accept(int id)
         {
             MembershipRequest? request = _dbContext.MembershipRequests.Find(id);
             if (request == null)
             {
-                return NotFound();
-            }
-            return View(request);
-        }
-
-        [HttpPost, ActionName("Accept")]
-        [ValidateAntiForgeryToken]
-        public IActionResult AcceptConfirmed(int id)
-        {
-            MembershipRequest? request = _dbContext.MembershipRequests.Find(id);
-            if (request == null)
-            {
-                return NotFound();
+                TempData.Add("notification", "Request not found!");
+                TempData.Add("error", "");
+                return RedirectToAction("Index");
             }
             request.Status = "Accepted";
             _dbContext.MembershipRequests.Update(request);
@@ -68,27 +61,21 @@ namespace BirdClubManagementSystem.Controllers
                 .Body(bodyContent.ToString());
             email.Send();
 
+            TempData.Add("notification", "Request accepted!");
+            TempData.Add("success", "");
             return RedirectToAction("Index");
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Reject(int id)
         {
             MembershipRequest? request = _dbContext.MembershipRequests.Find(id);
             if (request == null)
             {
-                return NotFound();
-            }
-            return View(request);
-        }
-
-        [HttpPost, ActionName("Reject")]
-        [ValidateAntiForgeryToken]
-        public IActionResult RejectConfirmed(int id)
-        {
-            MembershipRequest? request = _dbContext.MembershipRequests.Find(id);
-            if (request == null)
-            {
-                return NotFound();
+                TempData.Add("notification", "Request not found!");
+                TempData.Add("error", "");
+                return RedirectToAction("Index");
             }
             request.Status = "Rejected";
             _dbContext.MembershipRequests.Update(request);
@@ -104,6 +91,8 @@ namespace BirdClubManagementSystem.Controllers
                 .Body(bodyContent.ToString());
             email.Send();
 
+            TempData.Add("notification", "Request rejected!");
+            TempData.Add("success", "");
             return RedirectToAction("Index");
         }
     }

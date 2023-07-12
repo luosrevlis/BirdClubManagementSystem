@@ -51,7 +51,7 @@ header {
   height: 10vh;
   background-color: #B8D9D0;
   position: relative;
-  z-index: 9999;
+  z-index: 9;
 }
 
 nav {
@@ -148,18 +148,18 @@ a {
 }
 
 .nav-link {
-  color: #7B88A8;
+  color: #7B88A8 !important;
   margin: 0 1.5rem;
 }
 
 .nav-link:hover,
 .nav-link:focus {
-  color: #34C635;
+  color: #34C635 !important;
 }
 
 .nav-link.active {
   position: relative;
-  color: #34C635;
+  color: #34C635 !important;
 }
 
 .nav-link.active::before {
@@ -208,6 +208,10 @@ a {
   padding: 20px;
   margin: 0 10px;
   border-radius: 0 0 10px 10px;
+}
+
+#subMenu {
+    z-index: 10;
 }
 
 .user-info {
@@ -500,7 +504,7 @@ footer {
 
   .nav-bar-container {
     position: absolute;
-    z-index: 9999;
+    z-index: 9;
     flex-flow: column nowrap;
     top: 10vh;
     right: 0;

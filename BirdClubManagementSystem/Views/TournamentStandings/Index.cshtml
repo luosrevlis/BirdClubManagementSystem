@@ -1,49 +1,79 @@
-﻿@model IEnumerable<BirdClubManagementSystem.Models.TournamentStanding>
+﻿@model IEnumerable<TournamentStanding>
 
 @{
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+@section Styles {
+    <link rel="stylesheet" href="~/css/reset.css" />
+    <link rel="stylesheet" href="~/css/list.css" />
+}
 
-<a asp-action="Index" asp-controller="ClubEvents">Back to list</a>
-<p>
-    <a asp-action="Create" asp-route-tournamentid="@ViewBag.TournamentId">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Tournament)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Bird)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Placement)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
+<section class="table-header">
+    <h2>Tournament rankings</h2>
+</section>
+<div class="sticky-table">
+    <table>
+        <thead>
             <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Tournament.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Bird.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Placement)
-                </td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                </td>
+                <th>Bird</th>
+                <th>User</th>
+                <th>Placement</th>
+                <th>Options</th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Bird.Name</td>
+                    <td>@item.Bird.User.Name</td>
+                    @switch (item.Placement)
+                    {
+                        case "1st":
+                            <td>First place</td>
+                            break;
+                        case "2st":
+                            <td>Second place</td>
+                            break;
+                        case "3rd":
+                            <td>Third place</td>
+                            break;
+                        case "Participation":
+                            <td>Participation</td>
+                            break;
+                        default:
+                            <td></td>
+                            break;
+                    }
+                    <td class="option">
+                        <a class="button action-button" asp-action="Edit" asp-route-id="@item.Id">
+                            <i class="fa-solid fa-pen-to-square"></i>
+                        </a>
+                        <a class="button delete-button" onclick="initDelete(@item.Id)">
+                            <i class="fa-solid fa-trash"></i>
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<div class="delete-container">
+    <form class="delete-form" asp-action="Delete">
+        <h2>Are you sure you want to delete this ranking?</h2>
+        <p>This action cannot be undone!</p>
+
+        <input type="hidden" id="ts-id" name="Id" />
+
+        <div class="delete-control">
+            <input class="button delete-button" type="submit" value="Delete" />
+            <button class="button cancel-button" type="button" onclick="cancelDelete()">Cancel</button>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <script src="~/js/tournament-standing/index.js"></script>
+}

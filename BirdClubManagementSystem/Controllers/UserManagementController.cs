@@ -29,7 +29,9 @@ namespace BirdClubManagementSystem.Controllers
             User? user = _dbContext.Users.Find(id);
             if (user == null)
             {
-                return NotFound();
+                TempData.Add("notification", "Account not found!");
+                TempData.Add("error", "");
+                return RedirectToAction("Index");
             }
             return View(user);
         }
@@ -45,11 +47,21 @@ namespace BirdClubManagementSystem.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create(User user)
         {
+            User? userInDb = _dbContext.Users.FirstOrDefault(u => u.Email == user.Email);
+            if (userInDb != null)
+            {
+                TempData.Add("notification", "Email existed!");
+                TempData.Add("error", "An account with the same email already existed!");
+                return RedirectToAction("Index");
+            }
             PasswordHasher<User> passwordHasher = new();
             user.Password = passwordHasher.HashPassword(user, user.Password);
             user.JoinDate = DateTime.Now;
             _dbContext.Users.Add(user);
             _dbContext.SaveChanges();
+
+            TempData.Add("notification", "Account created!");
+            TempData.Add("success", "");
             return RedirectToAction("Index");
         }
 
@@ -84,18 +96,10 @@ namespace BirdClubManagementSystem.Controllers
             userInDb.Role = user.Role;
             _dbContext.Users.Update(userInDb);
             _dbContext.SaveChanges();
-            return RedirectToAction("Index");
-        }
 
-        // GET: UserManagementController/Delete/5
-        public IActionResult Delete(int id)
-        {
-            User? user = _dbContext.Users.Find(id);
-            if (user == null)
-            {
-                return NotFound();
-            }
-            return View(user);
+            TempData.Add("notification", "Account updated!");
+            TempData.Add("success", "");
+            return RedirectToAction("Index");
         }
 
         // POST: UserManagementController/Delete/5
@@ -106,10 +110,15 @@ namespace BirdClubManagementSystem.Controllers
             User? user = _dbContext.Users.Find(id);
             if (user == null)
             {
-                return NotFound();
+                TempData.Add("notification", "Account not found!");
+                TempData.Add("error", "");
+                return View("Index");
             }
             _dbContext.Users.Remove(user);
             _dbContext.SaveChanges();
+
+            TempData.Add("notification", "Account deleted!");
+            TempData.Add("success", "");
             return RedirectToAction("Index");
         }
     }

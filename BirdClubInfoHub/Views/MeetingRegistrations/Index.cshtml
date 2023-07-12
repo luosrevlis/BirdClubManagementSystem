@@ -5,9 +5,8 @@
 }
 
 @section Styles {
-    @*<link rel="stylesheet" href="~/css/reset.css" />*@
+    <link rel="stylesheet" href="~/css/reset.css" />
     <link rel="stylesheet" href="~/css/list.css" />
-    <link rel="stylesheet" href="~/css/event-registration/index.css" />
 }
 
 <section class="table-header">
@@ -29,7 +28,7 @@
                     <td class="option">
                         <a class="button delete-button" onclick="initDelete(@item.Id)">
                             <i class="fa-solid fa-xmark"></i>
-                            Cancel registration
+                            Cancel
                         </a>
                     </td>
                 </tr>
@@ -38,14 +37,14 @@
     </table>
 </div>
 
-<div class="delete-reg-container">
-    <form class="delete-reg-form" asp-action="Delete">
+<div class="delete-container">
+    <form class="delete-form" asp-action="Delete">
         <h2>Are you sure you want to cancel this registration?</h2>
         <p>This action cannot be undone!</p>
 
         <input type="hidden" id="reg-id" name="Id" />
 
-        <div class="delete-reg-control">
+        <div class="delete-control">
             <input class="button delete-button" type="submit" value="Delete" />
             <button class="button cancel-button" type="button" onclick="cancelDelete()">Cancel</button>
         </div>
