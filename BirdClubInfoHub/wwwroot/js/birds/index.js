@@ -18,3 +18,13 @@ items.forEach(item => {
         item.style.setProperty('--rY', '0deg');
     })
 })*/
+
+function initDelete(birdId) {
+    document.querySelector(".delete-container").style.display = "flex";
+    document.querySelector("#bird-id").value = birdId;
+}
+
+function cancelDelete() {
+    document.querySelector(".delete-container").style.display = "none";
+    document.querySelector("#bird-id").value = "";
+}

@@ -27,10 +27,10 @@
                     <img src="@Url.Action("GetImageFromBytes", "Birds", new { id = item.Id })" alt="">
                 </a>
                 <div class="bird-actions">
-                    <a class="bird-btn edit-btn" asp-action="Edit">
+                    <a class="bird-btn edit-btn" asp-action="Edit" asp-route-id="@item.Id">
                         <i class="fa-solid fa-pen-to-square"></i>
                     </a>
-                    <a class="bird-btn achievements-btn">
+                    <a class="bird-btn achievements-btn" asp-action="ViewAchievements" asp-route-id="@item.Id">
                         <i class="fa-solid fa-trophy"></i>
                     </a>
                     <a class="bird-btn delete-btn" onclick="initDelete(@item.Id)">
@@ -41,6 +41,20 @@
         </div>
     }
 </section>
+
+<div class="delete-container">
+    <form class="delete-form" asp-action="Delete">
+        <h2>Are you sure you want to delete this bird?</h2>
+        <p>This action cannot be undone!</p>
+
+        <input type="hidden" id="bird-id" name="Id" />
+
+        <div class="delete-control">
+            <input class="bird-btn delete-btn" type="submit" value="Delete" />
+            <button class="bird-btn cancel-btn" type="button" onclick="cancelDelete()">Cancel</button>
+        </div>
+    </form>
+</div>
 
 @section Scripts {
     <script src="~/js/birds/index.js"></script>
