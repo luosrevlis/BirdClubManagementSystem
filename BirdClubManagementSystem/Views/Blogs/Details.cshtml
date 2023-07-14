@@ -39,11 +39,11 @@
 
     <div class="blog-utils-container">
         <div class="blog-control-container">
-            @* @if (@Model.Status.Equals("Pending"))
-            { *@
+            @if (@Model.Status.Equals("Pending"))
+            {
                 <button class="control-button confirm-button" type="button" onclick="initAccept(@Model.Id)">Accept</button>
                 <button type="button" class="control-button reject-button" onclick="initReject(@Model.Id)">Reject</button>
-            @* } *@
+            }
             <a class="control-button cancel-button" asp-action="Index">Back to List</a>
         </div>
 
