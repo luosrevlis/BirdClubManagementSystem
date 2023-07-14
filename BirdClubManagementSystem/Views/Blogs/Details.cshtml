@@ -1,55 +1,97 @@
-﻿@model BirdClubManagementSystem.Models.Blog
+﻿@model Blog
+
+@section Styles
+{
+    <link rel="stylesheet" href="~/css/blog/detail.css" />
+    @* <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" /> *@
+}
 
 @{
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
+<section class="blog-section">
+    <div class="blog-comment-container">
+        <div class="blog-container">
+            <div class="blog-thumbnail-container">
+                <img class="blog-thumbnail" src="@Url.Action("GetImageFromBytes", "Blogs", new { id = Model.Id })" alt="thumbnail" />
+            </div>
 
-<div>
-    <h4>Pending blog</h4>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.User)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.User.Name)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.DateCreated)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.DateCreated)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.BlogCategory)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.BlogCategory.Name)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Title)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Title)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Contents)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.Raw(Model.Contents)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Thumbnail)
-        </dt>
-        <dd class="col-sm-10">
-            <img src="@Url.Action("GetImageFromBytes", "Blogs", new { id = Model.Id })" />
-        </dd>
-    </dl>
+            <div class="blog-body">
+                <div class="blog-info-container">
+                    <div class="blog-author-info-container">
+                        <div class="blog-author-ava-container">
+                            <img class="blog-author-ava" src="@Url.Action("GetImageFromBytes", "Profile", new { id = Model.UserId })" alt="author" />
+                        </div>
+
+                        <p class="blog-author-name">By @Model.User.Name</p>
+                    </div>
+
+                    <p class="blog-create-date">@Model.DateCreated.ToString("dd MMMM, yyyy")</p>
+                </div>
+
+                <h2 class="blog-title">@Model.Title</h2>
+
+                <div class="blog-content">@Html.Raw(Model.Contents)</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="blog-utils-container">
+        <div class="blog-control-container">
+            @* @if (@Model.Status.Equals("Pending"))
+            { *@
+                <button class="control-button confirm-button" type="button" onclick="initAccept(@Model.Id)">Accept</button>
+                <button type="button" class="control-button reject-button" onclick="initReject(@Model.Id)">Reject</button>
+            @* } *@
+            <a class="control-button cancel-button" asp-action="Index">Back to List</a>
+        </div>
+
+        <div class="search-blogs-container">
+            <h2>Search</h2>
+            <form class="search-box-container">
+                <input class="search-box" type="text" placeholder="Search something..." />
+            </form>
+        </div>
+        <div class="latest-blogs-container">
+            <h2>Latest News</h2>
+            <div class="latest-blog">
+                <div class="latest-blog-thumbnail-container">
+                    <img class="latest-blog-thumbnail" src="@Url.Action("GetImageFromBytes", "Blogs", new { id = Model.Id })" alt="thumbnail" />
+                </div>
+
+                <div class="latest-blog-title">@Model.Title</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="accept-container">
+    <form class="accept-form" asp-action="Accept">
+        <h2>Are you sure you want to acccept this blog?</h2>
+        <input type="hidden" class="blog-id" name="Id" />
+
+        <div class="accept-control">
+            <input class="button confirm-button" type="submit" value="Accept" />
+            <button class="button cancel-button" type="button" onclick="cancelAccept()">Cancel</button>
+        </div>
+    </form>
 </div>
-<div>
-    <a asp-action="Accept" asp-route-id="@Model.Id">Accept</a> |
-    <a asp-action="Reject" asp-route-id="@Model.Id">Reject</a> |
-    <a asp-action="Index">Back to List</a>
+
+<div class="reject-container">
+    <form class="reject-form" asp-action="Reject">
+        <h2>Are you sure you want to reject this blog?</h2>
+        <input type="hidden" class="blog-id" name="Id" />
+
+        <div class="reject-control">
+            <input class="button reject-button" type="submit" value="Reject" />
+            <button class="button cancel-button" type="button" onclick="cancelReject()">Cancel</button>
+        </div>
+    </form>
 </div>
+
+@section Scripts
+{
+    <script src="~/lib/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.min.js"></script>
+    <script src="~/js/blog/detail.js"></script>
+}
