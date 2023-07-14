@@ -12,6 +12,12 @@
 <section class="table-header">
     <h2>Tournament rankings</h2>
 </section>
+<div class="option">
+    <a class="button action-button" asp-action="Create" asp-route-tournamentid="@ViewBag.TournamentId">
+        <i class="fa-solid fa-circle-plus"></i>
+        Add ranking information
+    </a>
+</div>
 <div class="sticky-table">
     <table>
         <thead>
@@ -33,7 +39,7 @@
                         case "1st":
                             <td>First place</td>
                             break;
-                        case "2st":
+                        case "2nd":
                             <td>Second place</td>
                             break;
                         case "3rd":

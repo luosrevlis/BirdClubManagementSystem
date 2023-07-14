@@ -2,6 +2,7 @@
 using BirdClubInfoHub.Filters;
 using BirdClubInfoHub.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
 namespace BirdClubInfoHub.Controllers
@@ -139,32 +140,42 @@ namespace BirdClubInfoHub.Controllers
             return RedirectToAction("Index");
         }
 
-        [Authenticated]
-        // GET: BirdsController/Delete/5
+        // POST: BirdsController/Delete/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Delete(int id)
         {
             int? userId = HttpContext.Session.GetInt32("USER_ID");
             Bird? bird = _dbContext.Birds.Find(id);
             if (bird == null || bird.UserId != userId)
             {
-                return NotFound();
-            }
-            return View(bird);
-        }
-
-        // POST: BirdsController/Delete/5
-        [HttpPost,ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeletePOST(int id)
-        {
-            Bird? bird = _dbContext.Birds.Find(id);
-            if (bird == null)
-            {
-                return NotFound();
+                TempData.Add("notification", "Bird not found!");
+                TempData.Add("error", "");
+                return RedirectToAction("Index");
             }
             _dbContext.Birds.Remove(bird);
             _dbContext.SaveChanges();
+
+            TempData.Add("notification", "Bird deleted!");
+            TempData.Add("success", "");
             return RedirectToAction("Index");
+        }
+
+        public ActionResult ViewAchievements(int id)
+        {
+            int? userId = HttpContext.Session.GetInt32("USER_ID");
+            Bird? bird = _dbContext.Birds.Find(id);
+            if (bird == null || bird.UserId != userId)
+            {
+                TempData.Add("notification", "Bird not found!");
+                TempData.Add("error", "");
+                return RedirectToAction("Index");
+            }
+            bird.TournamentStandings = _dbContext.TournamentStandings
+                .Where(ts => ts.BirdId == id)
+                .Include(ts => ts.Tournament)
+                .ToList();
+            return View(bird);
         }
     }
 }

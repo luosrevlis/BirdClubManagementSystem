@@ -24,6 +24,10 @@ body {
     /* background: linear-gradient(135deg,#7E9680,#AE6378) ; */
     background-color: #B8D9D0
 }
+main{
+    display: grid;
+    /*align-items: center;*/
+}
 input{
     font-family: "Poppins", sans-serif;
 }
@@ -34,6 +38,8 @@ input{
     background:#fff;/*edit here*/
     padding: 25px 30px;
     border-radius: 5px;
+    align-items:center;
+    margin-bottom:60px;
 }
 .container .title{
     font-size:25px;

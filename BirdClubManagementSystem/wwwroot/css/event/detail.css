@@ -94,8 +94,12 @@
     width: 100%;
 }
 
+.event-description > * {
+    max-width: 100% !important;
+}
+
 .event-entrance-container {
-    display: flex;
+    /*display: flex;*/
     flex-flow: row nowrap;
     justify-content: space-between;
     align-items: center;

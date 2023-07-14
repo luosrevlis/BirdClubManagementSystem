@@ -17,7 +17,11 @@ namespace BirdClubInfoHub.Controllers
 
         public IActionResult Index()
         {
-            ViewBag.Message = HttpContext.Session.GetString("USER_NAME");
+            return View();
+        }
+
+        public IActionResult About()
+        {
             return View();
         }
 
