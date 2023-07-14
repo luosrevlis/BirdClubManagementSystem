@@ -50,6 +50,24 @@
     </div>
 }
 
+@if (Model.Status == "Ended")
+{
+    <div class="navtab ">
+        <button class="btn navtab-btn" id="1">Highlights</button>
+    </div>
+    <div class="ranking-container">
+        <div class="tab-content">
+            <!-- Highlights -->
+            <div class="highlight tab-content-item" data-id="1">
+                <h1 class="highlight-title">Highlights</h1>
+                <div class="highlight-container">
+                    @Html.Raw(Model.Highlights)
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
 @section Scripts {
     <script src="~/js/event/detail.js"></script>
 }
