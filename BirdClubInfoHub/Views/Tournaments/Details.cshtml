@@ -54,6 +54,70 @@
     </div>
 }
 
+@if (Model.Status == "Ended")
+{
+    <div class="navtab ">
+        <button class="btn navtab-btn" id="1">Highlights</button>
+        <button class="btn navtab-btn" id="2">Ranking</button>
+    </div>
+    <div class="ranking-container">
+        <div class="tab-content">
+            <!-- Highlights -->
+            <div class="highlight tab-content-item" data-id="1">
+                <h1 class="highlight-title">Highlights</h1>
+                <div class="highlight-container">
+                    @Html.Raw(Model.Highlights)
+                </div>
+            </div>
+            <!-- Bird standings -->
+            <main class="table tab-content-item" data-id="2">
+                <section class="ranking-header">
+                    <h1>Leaderboard</h1>
+                </section>
+                <section class="ranking-body">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Bird</th>
+                                <th>User</th>
+                                <th>Placement</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.TournamentStandings)
+                            {
+                                <tr>
+                                    <td>@item.Bird.Name</td>
+                                    <td>@item.Bird.User.Name</td>
+                                    @switch (item.Placement)
+                                    {
+                                        case "1st":
+                                            <td>First place</td>
+                                            break;
+                                        case "2nd":
+                                            <td>Second place</td>
+                                            break;
+                                        case "3rd":
+                                            <td>Third place</td>
+                                            break;
+                                        case "Participation":
+                                            <td>Participation</td>
+                                            break;
+                                        default:
+                                            <td></td>
+                                            break;
+                                    }
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </section>
+            </main>
+        </div>
+
+    </div>
+}
+
 @section Scripts {
     <script src="~/js/event/detail.js"></script>
 }

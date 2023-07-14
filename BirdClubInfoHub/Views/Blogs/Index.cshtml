@@ -48,15 +48,15 @@
         <div class="latest-blogs-container">
             <h2>Latest News</h2>
 
-            @foreach (var item in Model)
+            @foreach (var item in Model.Take(3))
             {
-                <div class="latest-blog">
+                <a class="latest-blog" asp-action="Details" asp-route-id="@item.Id">
                     <div class="latest-blog-thumbnail-container">
                         <img class="latest-blog-thumbnail" src="@Url.Action("GetImageFromBytes", "Blogs", new { id = item.Id })" alt="thumbnail" />
                     </div>
 
                     <div class="latest-blog-title">@item.Title</div>
-                </div>
+                </a>
             }
         </div>
     </div>

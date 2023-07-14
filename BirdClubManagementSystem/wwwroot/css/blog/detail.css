@@ -20,7 +20,6 @@
     flex-flow: column nowrap;
     justify-content: center;
     align-items: center;
-    margin: 2rem;
 }
 
 .blog-thumbnail-container {
@@ -105,15 +104,42 @@
     width: 20%;
 }
 
-.create-blog-button,
-.back-button {
+.control-button {
     display: flex;
     justify-content: center;
     align-items: center;
     width: 100%;
-    background-color: #4F77FF;
     padding: 0.5rem 1rem;
     border-radius: 0.5rem;
+    color: #fff;
+    border: none;
+    font-size: 1rem;
+}
+
+.control-button:nth-child(n + 2) {
+    margin-top: 1rem;
+}
+
+.button {
+    margin: 0.2rem;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    border: none;
+    cursor: pointer;
+}
+
+.confirm-button {
+    background-color: #2e8364;
+    color: #fff;
+}
+
+.reject-button {
+    background-color: #f00;
+    color: #fff
+}
+
+.cancel-button {
+    background-color: #4F77FF;
     color: #fff;
 }
 
@@ -145,8 +171,6 @@
     justify-content: space-between;
     align-items: flex-start;
     border-radius: 0.5rem;
-    text-decoration: none;
-    color: #000;
 }
 
 .latest-blog-thumbnail-container {
@@ -180,178 +204,9 @@
     box-shadow: 0.1rem 0.1rem 0.5rem #000;
 }
 
-hr {
-    width: 100%;
-}
-
-.comments-container {
-    margin-top: 2rem;
-    width: 100%;
-    display: flex;
-    flex-flow: column nowrap;
-    justify-content: center;
-    align-items: center;
-    border: 0.1rem solid #000;
-}
-
-.comments-container > *:last-child {
-    margin-bottom: 2rem;
-}
-
-.comments-container-title,
-.comment-container {
-    width: 80%;
-    margin-top: 2rem;
-}
-
-.comment-body {
-    margin-top: 1rem;
-    display: flex;
-    flex-flow: row nowrap;
-    justify-content: flex-start;
-    align-items: flex-start;
-}
-
-.comment-author-ava-container {
-    width: 5rem;
-    height: 5rem;
-    overflow: hidden;
-    border-radius: 5rem;
-    border: 0.1rem solid #000;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.comment-author-ava {
-    width: auto;
-    height: 100%;
-}
-
-.comment-content-container {
-    margin-left: 2rem;
-    display: flex;
-    flex-flow: column nowrap;
-    justify-content: flex-start;
-    align-items: flex-start;
-    flex: 1;
-}
-
-.comment-info-container {
-    width: 100%;
-    display: flex;
-    flex-flow: row nowrap;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 0.5rem;
-}
-
-.comment-date {
-    color: #7B88A8;
-}
-
-.comment-content {
-    width: 100%;
-    margin-top: 1rem;
-    color: #7B88A8;
-}
-
-.create-comment-container {
-    margin-top: 2rem;
-    width: 80%;
-}
-
-.create-comment-title {
-    margin-top: 1rem;
-}
-
-.create-comment-form {
-    margin-top: 1rem;
-}
-
-.create-comment-box,
-.edit-comment-box {
-    width: 100%;
-    padding: 1rem;
-    box-sizing: border-box;
-    border: 0.1rem solid #E7E5EA;
-    border-radius: 0.5rem;
-    font-size: 1rem;
-    transition: all 0.2s ease-in;
-    resize: none;
-}
-
-.create-comment-box:hover,
-.edit-comment-box:hover,
-.create-comment-box:focus,
-.edit-comment-box:focus {
-    border: 0.1rem solid #000;
-}
-
-.create-comment-button {
-    margin-top: 1rem;
-    padding: 0.5rem 1rem;
-    color: #fff;
-    background-color: #4F77FF;
-    box-sizing: border-box;
-    border: none;
-    border-radius: 0.5rem;
-    cursor: pointer;
-}
-
-.update-comment-container {
-    margin-top: 1rem;
-    width: 100%;
-    display: flex;
-    flex-flow: row nowrap;
-    justify-content: flex-end;
-    align-items: center;
-}
-
-.edit-button,
-.delete-button,
-.accept-button,
-.cancel-button {
-    padding: 0.5rem 1rem;
-    border: none;
-    border-radius: 0.5rem;
-    color: #fff;
-    cursor: pointer;
-}
-
-.edit-button,
-.accept-button {
-    background-color: #4F77FF;
-}
-
-.delete-button,
-.cancel-button {
-    margin-left: 1rem;
-    background-color: #ff0000;
-}
-
-.edit-comment-container {
-    display: none;
-    flex: 1;
-    margin-left: 1rem;
-    flex-flow: column nowrap;
-    justify-content: center;
-    align-items: center;
-}
-
-.edit-control-container {
-    width: 100%;
-}
-
-.edit-control-container {
-    margin-top: 1rem;
-    display: flex;
-    flex-flow: row nowrap;
-    justify-content: flex-end;
-    align-items: center;
-}
-
-.delete-comment-container {
+.delete-container,
+.accept-container,
+.reject-container {
     position: fixed;
     top: 50%;
     left: 50%;
@@ -364,7 +219,9 @@ hr {
     align-items: center;
 }
 
-.delete-comment-form {
+.delete-form,
+.accept-form,
+.reject-form {
     display: flex;
     flex-flow: column nowrap;
     justify-content: center;
@@ -372,20 +229,6 @@ hr {
     padding: 2rem;
     background-color: #fff;
     border-radius: 0.5rem;
-}
-
-.delete-comment-control {
-    margin-top: 2rem;
-}
-
-.back-button.big-view {
-    width: auto;
-    align-self: flex-start;
-}
-
-.back-button.small-view {
-    margin-bottom: 2rem;
-    display: none;
 }
 
 @media screen and (max-width: 1200px) {
@@ -441,6 +284,15 @@ hr {
 
     .edit-comment-container {
         width: 100%;
+        margin-top: 1rem;
+    }
+
+    .blog-info-container {
+        flex-flow: column nowrap;
+        align-items: flex-start;
+    }
+
+    .blog-create-date {
         margin-top: 1rem;
     }
 }

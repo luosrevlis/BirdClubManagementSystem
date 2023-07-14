@@ -2,6 +2,7 @@
 using BirdClubInfoHub.Models;
 using BirdClubInfoHub.Data;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 
 namespace BirdClubInfoHub.Controllers
 {
@@ -29,6 +30,14 @@ namespace BirdClubInfoHub.Controllers
                 TempData.Add("notification", "Tournament not found!");
                 TempData.Add("error", "");
                 return RedirectToAction("Index", "ClubEvents");
+            }
+            if (tournament.Status == "Ended")
+            {
+                tournament.TournamentStandings = _dbContext.TournamentStandings
+                    .Where(ts => ts.TournamentId == id)
+                    .Include(ts => ts.Bird)
+                    .ThenInclude(bird => bird.User)
+                    .ToList();
             }
 
             // if not open, return unavailable

@@ -1,0 +1,52 @@
+﻿@model Bird
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/reset.css" />
+    <link rel="stylesheet" href="~/css/list.css" />
+}
+
+<section class="table-header">
+    <h2>@Model.Name's tournament rankings</h2>
+</section>
+<div class="sticky-table">
+    <table>
+        <thead>
+            <tr>
+                <th>Tournament</th>
+                <th>Tournament Date</th>
+                <th>Placement</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.TournamentStandings)
+            {
+                <tr>
+                    <td>@item.Tournament.Name</td>
+                    <td>@item.Tournament.Date</td>
+                    @switch (item.Placement)
+                    {
+                        case "1st":
+                            <td>First place</td>
+                            break;
+                        case "2nd":
+                            <td>Second place</td>
+                            break;
+                        case "3rd":
+                            <td>Third place</td>
+                            break;
+                        case "Participation":
+                            <td>Participation</td>
+                            break;
+                        default:
+                            <td></td>
+                            break;
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

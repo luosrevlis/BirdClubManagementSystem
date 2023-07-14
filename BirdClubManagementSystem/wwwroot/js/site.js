@@ -4,7 +4,8 @@
 
 // add functions that you want to run after the page is FULLY loaded here
 function init() {
-    setNavBarHover();
+    setUpNavBar();
+    setUpActiveNavLink();
 }
 
 // add multiple event listeners to one element
@@ -21,34 +22,47 @@ function addEventListeners(elements, events, func, funcArgs) {
     });
 }
 
-function setNavBarHover() {
-    const navToggle = document.getElementsByClassName("nav-toggle").item(0);
-    const navBar = document.getElementsByClassName("nav-bar-container").item(0);
-    const navHeight = getComputedStyle(document.documentElement).getPropertyValue("--navHeight");
-    const navHeightNum = parseFloat(navHeight.replace(/[^\d.]/g, ""));
-    const navBarHeight = getComputedStyle(document.documentElement).getPropertyValue("--navBarHeight");
-    const navBarHeightNum = parseFloat(navBarHeight.replace(/[^\d.]/g, ""));
-
-    addEventListeners(
-        [navToggle, navBar],
-        ["pointerenter"],
-        () => {
-            navBar.style.cssText += "top: " + navHeightNum + "rem";
-            navToggle.style.top = navHeightNum + navBarHeightNum + "rem";
-        },
-        [navBar]);
-
-    addEventListeners(
-        [navToggle, navBar],
-        ["pointerleave"],
-        () => {
-            navBar.style.cssText += "top: " + (navHeightNum - navBarHeightNum) + "rem";
-            navToggle.style.top = navHeightNum + "rem";
-        },
-        [navBar]);
+function setUpNavBar() {
+    window.addEventListener("resize", e => {
+        Array.from(document.getElementsByClassName("nav-bar-container")).forEach(nav => {
+            if (window.innerWidth <= 992) {
+                nav.style.display = "none";
+            } else {
+                nav.style.display = "flex";
+            }
+        })
+    })
+    Array.from(document.getElementsByClassName("nav-menu-icon-container")).forEach((e) => {
+        e.addEventListener("pointerdown", () => {
+            Array.from(document.getElementsByClassName("nav-bar-container")).forEach(nav => {
+                nav.style.display = nav.style.display == "none" ? "flex" : "none";
+            });
+        });
+    })
 }
+
 // js for dropdown
 let subMenu = document.getElementById("subMenu");
-function toggleMenu(){
+function toggleMenu() {
     subMenu.classList.toggle("open-menu")
+}
+
+// set up active nav link
+function setUpActiveNavLink() {
+    const path = window.location.pathname.toLowerCase();
+    const navLinks = document.getElementsByClassName("nav-link");
+
+    if (path.includes("home") && path.includes("index")) {
+        navLinks.item(0).classList.add("nav-active");
+    }  else if (path.includes("blogs")) {
+        navLinks.item(1).classList.add("nav-active");
+    } else if (path.includes("clubevents")) {
+        navLinks.item(2).classList.add("nav-active");
+    } else if (path.includes("home") && path.includes("about")) {
+        navLinks.item(3).classList.add("nav-active");
+    } else if (path.includes("home") && path.includes("contact")) {
+        navLinks.item(4).classList.add("nav-active");
+    } else {
+        navLinks.item(0).classList.add("nav-active");
+    }
 }

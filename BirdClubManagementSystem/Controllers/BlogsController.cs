@@ -80,18 +80,6 @@ namespace BirdClubManagementSystem.Controllers
             return RedirectToAction("Index");
         }
 
-        public IActionResult Delete(int id)
-        {
-            Blog? blog = _dbContext.Blogs.Find(id);
-            if (blog == null || blog.Status != "Pending")
-            {
-                return NotFound();
-            }
-            blog.User = _dbContext.Users.Find(blog.UserId)!;
-            blog.BlogCategory = _dbContext.BlogCategories.Find(blog.BlogCategoryId)!;
-            return View(blog);
-        }
-
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public IActionResult DeleteConfirmed(int id)
@@ -104,18 +92,6 @@ namespace BirdClubManagementSystem.Controllers
             _dbContext.Blogs.Remove(blog);
             _dbContext.SaveChanges();
             return RedirectToAction("Index");
-        }
-
-        public IActionResult Accept(int id)
-        {
-            Blog? blog = _dbContext.Blogs.Find(id);
-            if (blog == null || blog.Status != "Pending")
-            {
-                return NotFound();
-            }
-            blog.User = _dbContext.Users.Find(blog.UserId)!;
-            blog.BlogCategory = _dbContext.BlogCategories.Find(blog.BlogCategoryId)!;
-            return View(blog);
         }
 
         [HttpPost, ActionName("Accept")]
@@ -131,18 +107,6 @@ namespace BirdClubManagementSystem.Controllers
             _dbContext.Blogs.Update(blog);
             _dbContext.SaveChanges();
             return RedirectToAction("Index");
-        }
-
-        public IActionResult Reject(int id)
-        {
-            Blog? blog = _dbContext.Blogs.Find(id);
-            if (blog == null || blog.Status != "Pending")
-            {
-                return NotFound();
-            }
-            blog.User = _dbContext.Users.Find(blog.UserId)!;
-            blog.BlogCategory = _dbContext.BlogCategories.Find(blog.BlogCategoryId)!;
-            return View(blog);
         }
 
         [HttpPost, ActionName("Reject")]

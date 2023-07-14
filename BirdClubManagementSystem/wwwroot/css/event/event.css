@@ -98,3 +98,34 @@
     border-top-left-radius: 0.5rem;
     border-bottom-left-radius: 0.5rem;
 }
+
+.events-control {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.control-button {
+    padding: 0.5rem 1rem;
+    margin: 0 0.5rem;
+    background-color: #4f77ff;
+    color: #fff;
+    border-radius: 0.5rem;
+}
+
+@media screen and (max-width: 768px) {
+    .event-name {
+        font-size: 0.5rem;
+    }
+
+    .events-control {
+        flex-flow: column nowrap;
+    }
+
+    .control-button {
+        width: 100%;
+        margin: 0;
+        margin-top: 1rem;
+    }
+}

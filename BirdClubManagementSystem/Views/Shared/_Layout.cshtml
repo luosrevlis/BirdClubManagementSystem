@@ -28,11 +28,11 @@
             </div>
 
             <div class="nav-bar-container">
-                <a asp-controller="Home" asp-action="Index" class="nav-link nav-active">Home</a>
-                <a asp-controller="Home" asp-action="About" class="nav-link">About</a>
+                <a asp-controller="Home" asp-action="Index" class="nav-link">Home</a>
                 <a asp-controller="Blogs" asp-action="Index" class="nav-link">Blogs</a>
                 <a asp-controller="ClubEvents" asp-action="Index" class="nav-link">Events</a>
-                <a asp-controller="Home" asp-action="Contact" class="nav-link">Contact</a>
+                <a asp-controller="Home" asp-action="About" class="nav-link">About us</a>
+                <a asp-controller="Home" asp-action="Contact" class="nav-link">Contact us</a>
             </div>
 
             <div class="nav-user-utils-container">
@@ -49,38 +49,46 @@
                                 <img src="@Url.Action("GetImageFromBytes", "Profile", new { id = userId })" alt="avatar" />
                                 <h2>@Context.Session.GetString("USER_NAME")</h2>
                             </div>
-                            <hr>
+                            <hr />
 
                             <a asp-action="Index" asp-controller="Profile" class="sub-menu-link">
                                 <img src="~/img/icon_svg/profile.svg" alt="icon">
                                 <p>Edit profile</p>
-                                <span>></span>
+                                <span>&gt;</span>
                             </a>
                             <a asp-action="Index" asp-controller="Birds" class="sub-menu-link">
                                 <img src="~/img/icon_svg/bird_profile.svg" alt="icon">
                                 <p>Your Birds</p>
-                                <span>></span>
+                                <span>&gt;</span>
                             </a>
                             <a asp-action="Index" asp-controller="BlogHistory" class="sub-menu-link">
                                 <img src="~/img/icon_svg/blogs.svg" alt="icon">
                                 <p>Blog History</p>
-                                <span>></span>
+                                <span>&gt;</span>
                             </a>
-                            <a href="#" class="sub-menu-link">
-                                <img src="~/img/icon_svg/headphones.svg" alt="icon">
-                                <p>Help & Contact</p>
-                                <span>></span>
+                            <hr />
+
+                            <a asp-action="Index" asp-controller="FieldTripRegistrations" class="sub-menu-link">
+                                <img src="~/img/icon_svg/blogs.svg" alt="icon">
+                                <p>Registered Field Trips</p>
+                                <span>&gt;</span>
                             </a>
-                            @* add dashboard icon for dropdown *@
-                            <a href="#" class="sub-menu-link">
-                                <img src="~/img/icon_svg/dashboard.svg" alt="icon">
-                                <p>Dashboard</p>
-                                <span>></span>
+                            <a asp-action="Index" asp-controller="MeetingRegistrations" class="sub-menu-link">
+                                <img src="~/img/icon_svg/blogs.svg" alt="icon">
+                                <p>Registered Meetings</p>
+                                <span>&gt;</span>
                             </a>
+                            <a asp-action="Index" asp-controller="TournamentRegistrations" class="sub-menu-link">
+                                <img src="~/img/icon_svg/blogs.svg" alt="icon">
+                                <p>Registered Tournaments</p>
+                                <span>&gt;</span>
+                            </a>
+                            <hr />
+
                             <a asp-action="Index" asp-controller="Logout" class="sub-menu-link">
                                 <img src="~/img/icon_svg/log-out.svg" alt="icon">
                                 <p>Log out</p>
-                                <span>></span>
+                                <span>&gt;</span>
                             </a>
                         </div>
                     </div>
@@ -115,9 +123,9 @@
                 <div class="footer-link-container">
                     <h2>Club</h2>
                     <div class="footer-link-box">
-                        <a class="footer-link">About</a>
-                        <a class="footer-link">Events</a>
-                        <a class="footer-link">Blogs</a>
+                        <a asp-controller="Blogs" asp-action="Index" class="footer-link">Blogs</a>
+                        <a asp-controller="ClubEvents" asp-action="Index" class="footer-link">Events</a>
+                        <a asp-action="About" class="footer-link">About us</a>
                     </div>
                 </div>
 
@@ -142,7 +150,7 @@
                 <div class="footer-link-container">
                     <h2>Payment</h2>
                     <div class="footer-link-box">
-                        <a class="footer-link">
+                        <a href="https://vnpay.vn" class="footer-link">
                             <img src="~/img/footer/vnpay_logo.png" alt="vn pay logo" />
                         </a>
                     </div>
@@ -151,11 +159,8 @@
 
             <div class="footer-feedback-container">
                 <h2>Feedbacks</h2>
-                <p>Give us your feedback about our club. Thanks for your visiting today.</p>
-                <form class="feedback-container">
-                    <input type="text" placeholder="Enter your feedback" required />
-                    <input type="submit" value="SUBMIT" />
-                </form>
+                <p>Have just the perfect idea for our next update?</p>
+                <a asp-controller="Feedbacks" asp-action="Create" class="feedback-button">Tell us!</a>
                 <p>Your feedbacks will help us develop our club and extend community for everyone.</p>
             </div>
         </div>

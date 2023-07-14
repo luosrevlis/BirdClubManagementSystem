@@ -21,5 +21,7 @@ namespace BirdClubInfoHub.Models
         public string Highlights { get; set; } = string.Empty;
 
         public ICollection<TournamentRegistration> TournamentRegistrations { get; set; } = new List<TournamentRegistration>();
+
+        public ICollection<TournamentStanding> TournamentStandings { get; set; } = new List<TournamentStanding>();
     }
 }
