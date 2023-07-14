@@ -502,6 +502,7 @@ footer {
         right: 0;
         width: 30%;
         display: none;
+        border-bottom-left-radius: 0.5rem;
     }
 
     .nav-link:nth-last-of-type(n + 2) {

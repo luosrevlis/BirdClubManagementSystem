@@ -12,6 +12,7 @@
 
 <section class="blog-section">
     <div class="blog-comment-container">
+        <a asp-action="Index" class="back-button big-view">Back</a>
         <div class="blog-container">
             <div class="blog-thumbnail-container">
                 <img class="blog-thumbnail" src="@Url.Action("GetImageFromBytes", "Blogs", new { id = Model.Id })" alt="thumbnail" />
@@ -41,6 +42,7 @@
     </div>
 
     <div class="blog-utils-container">
+        <a asp-action="Index" class="back-button small-view">Back</a>
         <a class="create-blog-button" asp-controller="Blogs" asp-action="Create">Create Blog</a>
         <div class="search-blogs-container">
             <h2>Search</h2>
@@ -48,7 +50,7 @@
                 <input class="search-box" type="text" placeholder="Search something..." />
             </form>
         </div>
-        <div class="latest-blogs-container">
+        @* <div class="latest-blogs-container">
             <h2>Latest News</h2>
             <div class="latest-blog">
                 <div class="latest-blog-thumbnail-container">
@@ -57,7 +59,7 @@
 
                 <div class="latest-blog-title">@Model.Title</div>
             </div>
-        </div>
+        </div> *@
     </div>
 </section>
 
