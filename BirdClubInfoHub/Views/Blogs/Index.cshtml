@@ -29,7 +29,7 @@
 
                     <h2 class="blog-title">@item.Title</h2>
 
-                    <div class="blog-content">@Html.Raw(item.Contents)</div>
+                    @*<div class="blog-content">@Html.Raw(item.Contents)</div>*@
 
                     <a class="blog-detail-button" asp-controller="Blogs" asp-action="Details" asp-route-id="@item.Id">Read more</a>
                 </div>

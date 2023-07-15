@@ -85,7 +85,7 @@ namespace BirdClubManagementSystem.Controllers
         public IActionResult DeleteConfirmed(int id)
         {
             Blog? blog = _dbContext.Blogs.Find(id);
-            if (blog == null || blog.Status != "Pending")
+            if (blog == null)
             {
                 return NotFound();
             }

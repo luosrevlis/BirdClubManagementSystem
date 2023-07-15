@@ -13,7 +13,7 @@ function checkName() {
         return false;
     }
     nameField.classList.remove("invalid");
-    return false;
+    return true;
 }
 
 nameInput.addEventListener("keyup", checkName);
