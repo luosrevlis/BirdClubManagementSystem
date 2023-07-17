@@ -48,7 +48,7 @@
                 <label for="blog-thumbnail" class="input-label thumbnail-submit-button">Choose a thumbnail</label>
                 <input id="blog-thumbnail" class="input" type="file" name="thumbnailFile" accept="image/*" onchange="loadFile(event)" />
             </div>
-            <img id="preview-thumbnail" src="@Url.Action("GetImageFromBytes", "Blogs", new { id = Model.Id })" style="width: 100%" />
+            <img id="preview-thumbnail" src="@Url.Action("GetImageFromBytes", "Blogs", new { id = Model.Id })" />
         </div>
 
         <input class="create-blog-create-button" type="submit" value="Save" />

@@ -35,7 +35,9 @@ namespace BirdClubInfoHub.Controllers
             Blog? blog = _dbContext.Blogs.Find(id);
             if (blog == null)
             {
-                return NotFound();
+                TempData.Add("notification", "Blog not found!");
+                TempData.Add("error", "");
+                return RedirectToAction("Index");
             }
             blog.User = _dbContext.Users.Find(blog.UserId)!;
             blog.BlogCategory = _dbContext.BlogCategories.Find(blog.BlogCategoryId)!;

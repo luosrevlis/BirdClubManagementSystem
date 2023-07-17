@@ -1,4 +1,8 @@
-﻿.form .input-box textarea {
+﻿.select-box {
+    height: fit-content;
+}
+
+.form .input-box textarea {
     position: relative;
     height: 200px;
     width: 100%;

@@ -12,7 +12,7 @@
 }
 
 <section class="table-header">
-    <h2>Blog history</h2>
+    <h2>Blog list</h2>
 </section>
 <div class="option">
     <a class="button action-button" asp-action="Create" asp-controller="Blogs">
@@ -59,6 +59,12 @@
                             </a>
                             <a class="button reject-button" onclick="initReject(@item.Id)">
                                 <i class="fa-solid fa-x"></i>
+                            </a>
+                        }
+                        @if (item.Status == "Rejected")
+                        {
+                            <a class="button delete-button" onclick="initDelete(@item.Id)">
+                                <i class="fa-solid fa-trash"></i>
                             </a>
                         }
                     </td>

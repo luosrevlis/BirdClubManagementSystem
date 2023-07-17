@@ -1,3 +1,7 @@
+body {
+    background-color: #F7F5F1;
+}
+
 .event-section {
     width: 80%;
     display: flex;
@@ -15,6 +19,7 @@
     align-items: center;
     box-shadow: 0.1rem 0.1rem 0.2rem #0007003a;
     padding: 1rem;
+    background-color: #fff;
 }
 
 .event-description *:not(img) {

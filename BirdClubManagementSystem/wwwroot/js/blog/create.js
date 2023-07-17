@@ -1,4 +1,4 @@
-document.getElementById("blog-thumbnail").onchange = (e) => {
-    const fileName = e.target.files[0].name;
-    document.getElementById("thumbnail-name").textContent = "You selected: " + fileName;
+var loadFile = function (event) {
+	var image = document.getElementById('preview-thumbnail');
+	image.src = URL.createObjectURL(event.target.files[0]);
 };

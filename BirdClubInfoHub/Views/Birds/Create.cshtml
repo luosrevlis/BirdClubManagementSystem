@@ -12,7 +12,7 @@
 <div class="main-form">
     <section class="container-template">
         <h2>Create new bird</h2>
-        <form asp-action="Create" class="form" onsubmit="return checkName()">
+        <form asp-action="Create" class="form" enctype="multipart/form-data" onsubmit="return checkName()">
 
             <div class="input-box name-field">
                 <label>Name</label>
@@ -26,12 +26,12 @@
 
             <div class="input-box species-field">
                 <label>Species</label>
-                <input asp-for="Species" placeholder="Enter species" required class="species" />
+                <input name="Species" placeholder="Enter species" class="species" />
             </div>
 
             <div class="input-box address-field">
                 <label>Short description</label>
-                <input asp-for="Description" placeholder="Enter a short description" required class="description" />
+                <input name="Description" placeholder="Enter a short description" class="description" />
             </div>
 
             <div class="input-box pfp-file-field">
@@ -39,7 +39,7 @@
                 <div class="upload-button-container">
                     <label for="profile-picture" class="upload-button">Choose a file</label>
                 </div>
-                <input type="file" id="profile-picture" name="profilePicture" accept="image/*" onchange="loadFile(event)" required />
+                <input type="file" id="profile-picture" name="profilePicture" accept="image/*" onchange="loadFile(event)" />
                 <img id="preview-pfp" />
             </div>
 

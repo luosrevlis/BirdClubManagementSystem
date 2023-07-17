@@ -57,6 +57,10 @@
     margin-bottom: 2rem;
 }
 
+    .blog-content * {
+        max-width: 100%;
+    }
+
 .blog-info-container {
     width: 100%;
     display: flex;
