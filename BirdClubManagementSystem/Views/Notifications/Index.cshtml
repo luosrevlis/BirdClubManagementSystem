@@ -1,38 +1,52 @@
-﻿@model BirdClubManagementSystem.Models.Notification
+﻿@model Notification
 
 @{
-    ViewData["Title"] = "Send notification email";
+    ViewData["Title"] = "Notification";
 }
 
-<h1>Send notification email</h1>
+@section Styles {
+    <link rel="stylesheet" href="~/css/form.css" />
+    <link rel="stylesheet" href="~/css/notification/index.css" />
+}
 
-<h4>Notification</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="SendNotification">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label value="Role" class="control-label"></label>
-                @foreach (KeyValuePair<string, bool> pair in Model.IsRoleSelected)
-                {
-                    <input asp-for="IsRoleSelected[pair.Key]" type="checkbox"/>@pair.Key<br/>
-                }
-                <span asp-validation-for="Recipients" class="text-danger"></span>
+<div class="main-form">
+    <section class="container-template">
+        <h2>Send a notification email</h2>
+        <form asp-action="SendNotification" class="form" onsubmit="return checkContents()">
+
+            <div class="input-box role-field">
+                <label>Send to</label>
             </div>
-            <div class="form-group">
-                <label asp-for="Recipients" class="control-label"></label>
-                <select asp-for="Recipients" asp-items="ViewBag.CustomOptions"></select>
-                <span asp-validation-for="Recipients" class="text-danger"></span>
+
+            @foreach (KeyValuePair<string, bool> pair in Model.IsRoleSelected)
+            {
+                <input asp-for="IsRoleSelected[pair.Key]" type="checkbox" />
+                @pair.Key
+                <br />
+            }
+
+            <div class="input-box recipients-field">
+                <label>Custom recipients</label>
+                <div class="select-box">
+                    <select asp-for="Recipients" asp-items="ViewBag.CustomOptions"></select>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="Contents" class="control-label"></label>
-                <textarea asp-for="Contents" class="form-control" rows="5" cols="100"></textarea>
-                <span asp-validation-for="Contents" class="text-danger"></span>
+
+            <div class="input-box contents-field">
+                <label>Contents</label>
+                <textarea asp-for="Contents" placeholder="Enter notification contents" rows="10" required class="contents"></textarea>
+                <!-- add error message here -->
+                <span class="error contents-error">
+                    <img src="~/img/resetpass/alert-circle.svg" alt="">
+                    <p class="error-text">Contents cannot be empty</p>
+                </span>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Send" class="btn btn-primary" />
-            </div>
+
+            <input class="button" type="submit" value="Send" />
         </form>
-    </div>
+    </section>
 </div>
+
+@section Scripts {
+    <script src="~/js/notification/index.js"></script>
+}
