@@ -17,6 +17,6 @@ function initReject(reqId) {
 }
 
 function cancelReject() {
-    rejectContainer.querySelector(".delete-container").style.display = "none";
+    rejectContainer.style.display = "none";
     rejectContainer.querySelector("#req-id").value = "";
 }
