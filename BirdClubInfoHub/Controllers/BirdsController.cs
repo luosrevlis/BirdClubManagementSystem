@@ -124,8 +124,8 @@ namespace BirdClubInfoHub.Controllers
                 return RedirectToAction("Index");
             }
             birdInDb.Name = bird.Name;
-            birdInDb.Species = bird.Species.IsNullOrEmpty() ? bird.Species : "Unknown";
-            birdInDb.Description = bird.Description.IsNullOrEmpty() ? bird.Description : "No description";
+            birdInDb.Species = bird.Species.IsNullOrEmpty() ? "Unknown" : bird.Species;
+            birdInDb.Description = bird.Description.IsNullOrEmpty() ? "No description" : bird.Description;
             if (profilePicture != null)
             {
                 using MemoryStream memoryStream = new();
