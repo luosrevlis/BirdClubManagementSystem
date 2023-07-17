@@ -3,6 +3,7 @@ using BirdClubManagementSystem.Filters;
 using BirdClubManagementSystem.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 
 namespace BirdClubManagementSystem.Controllers
 {
@@ -33,12 +34,10 @@ namespace BirdClubManagementSystem.Controllers
 
         public IActionResult Index()
         {
-            List<Blog> blogs = _dbContext.Blogs.ToList();
-            foreach (Blog blog in blogs)
-            {
-                blog.User = _dbContext.Users.Find(blog.UserId)!;
-                blog.BlogCategory = _dbContext.BlogCategories.Find(blog.BlogCategoryId)!;
-            }
+            List<Blog> blogs = _dbContext.Blogs
+                .Include(blog => blog.User)
+                .Include(blog => blog.BlogCategory)
+                .ToList();
             return View(blogs);
         }
 
@@ -47,7 +46,9 @@ namespace BirdClubManagementSystem.Controllers
             Blog? blog = _dbContext.Blogs.Find(id);
             if (blog == null)
             {
-                return NotFound();
+                TempData.Add("notification", "Blog not found!");
+                TempData.Add("error", "");
+                return RedirectToAction("Index");
             }
             blog.User = _dbContext.Users.Find(blog.UserId)!;
             blog.BlogCategory = _dbContext.BlogCategories.Find(blog.BlogCategoryId)!;
@@ -77,50 +78,68 @@ namespace BirdClubManagementSystem.Controllers
             blog.Status = "Accepted";
             _dbContext.Blogs.Add(blog);
             _dbContext.SaveChanges();
+
+            TempData.Add("notification", "Blog created!");
+            TempData.Add("success", "");
             return RedirectToAction("Index");
         }
 
-        [HttpPost, ActionName("Delete")]
+        [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult DeleteConfirmed(int id)
+        public IActionResult Delete(int id)
         {
             Blog? blog = _dbContext.Blogs.Find(id);
             if (blog == null)
             {
-                return NotFound();
+                TempData.Add("notification", "Blog not found!");
+                TempData.Add("error", "");
+                return RedirectToAction("Index");
             }
             _dbContext.Blogs.Remove(blog);
             _dbContext.SaveChanges();
+
+            TempData.Add("notification", "Blog deleted!");
+            TempData.Add("success", "");
             return RedirectToAction("Index");
         }
 
-        [HttpPost, ActionName("Accept")]
+        [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult AcceptConfirmed(int id)
+        public IActionResult Accept(int id)
         {
             Blog? blog = _dbContext.Blogs.Find(id);
             if (blog == null || blog.Status != "Pending")
             {
-                return NotFound();
+                TempData.Add("notification", "Blog not found!");
+                TempData.Add("error", "");
+                return RedirectToAction("Index");
             }
             blog.Status = "Accepted";
             _dbContext.Blogs.Update(blog);
             _dbContext.SaveChanges();
+
+            TempData.Add("notification", "Blog accepted!");
+            TempData.Add("success", "");
             return RedirectToAction("Index");
         }
 
-        [HttpPost, ActionName("Reject")]
+        [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult RejectConfirmed(int id)
+        public IActionResult Reject(int id)
         {
             Blog? blog = _dbContext.Blogs.Find(id);
             if (blog == null || blog.Status != "Pending")
             {
-                return NotFound();
+                TempData.Add("notification", "Blog not found!");
+                TempData.Add("error", "");
+                return RedirectToAction("Index");
             }
             blog.Status = "Rejected";
             _dbContext.Blogs.Update(blog);
             _dbContext.SaveChanges();
+
+            TempData.Add("notification", "Blog rejected!");
+            TempData.Add("success", "");
             return RedirectToAction("Index");
         }
     }

@@ -47,7 +47,9 @@ namespace BirdClubInfoHub.Controllers
             Blog? blog = _dbContext.Blogs.Find(id);
             if (blog == null)
             {
-                return NotFound();
+                TempData.Add("notification", "Blog not found!");
+                TempData.Add("error", "");
+                return RedirectToAction("Index");
             }
             blog.User = _dbContext.Users.Find(blog.UserId)!;
             blog.BlogCategory = _dbContext.BlogCategories.Find(blog.BlogCategoryId)!;
@@ -83,6 +85,9 @@ namespace BirdClubInfoHub.Controllers
             blog.Status = "Pending";
             _dbContext.Blogs.Add(blog);
             _dbContext.SaveChanges();
+
+            TempData.Add("notification", "Blog submitted!");
+            TempData.Add("success", "Please wait for a moderator to approve your blog.");
             return RedirectToAction("Index");
         }
 
@@ -90,7 +95,8 @@ namespace BirdClubInfoHub.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult AddComment(Comment comment)
         {
-            if (comment.UserId == 0) {
+            if (comment.UserId == 0)
+            {
                 return RedirectToAction("Index", "Login");
             }
             comment.User = _dbContext.Users.Find(comment.UserId)!;
@@ -99,11 +105,7 @@ namespace BirdClubInfoHub.Controllers
             _dbContext.Comments.Add(comment);
             _dbContext.SaveChanges();
 
-            Blog blog = comment.Blog;
-            blog.Comments = _dbContext.Comments.Where(cmt => cmt.BlogId == blog.Id)
-                .Include(cmt => cmt.User).ToList();
-            // return PartialView("_CommentSection", blog);
-            return RedirectToAction("Details", new { id = blog.Id });
+            return RedirectToAction("Details", new { id = comment.BlogId });
         }
 
         [HttpPost]
@@ -113,18 +115,16 @@ namespace BirdClubInfoHub.Controllers
             Comment? commentInDb = _dbContext.Comments.Find(comment.Id);
             if (commentInDb == null)
             {
-                return NotFound();
+                TempData.Add("notification", "Comment not found!");
+                TempData.Add("error", "");
+                return RedirectToAction("Index");
             }
             commentInDb.Contents = comment.Contents;
             commentInDb.ModifiedDate = DateTime.Now;
             _dbContext.Comments.Update(commentInDb);
             _dbContext.SaveChanges();
 
-            Blog blog = _dbContext.Blogs.Find(commentInDb.BlogId)!;
-            blog.Comments = _dbContext.Comments.Where(cm => cm.BlogId == blog.Id)
-                .Include(cm => cm.User).ToList();
-            // return PartialView("_CommentSection", blog);
-            return RedirectToAction("Details", new { id = blog.Id });
+            return RedirectToAction("Details", new { id = comment.BlogId });
         }
 
         [HttpPost]
@@ -134,16 +134,14 @@ namespace BirdClubInfoHub.Controllers
             Comment? comment = _dbContext.Comments.Find(id);
             if (comment == null)
             {
-                return NotFound();
+                TempData.Add("notification", "Comment not found!");
+                TempData.Add("error", "");
+                return RedirectToAction("Index");
             }
             _dbContext.Comments.Remove(comment);
             _dbContext.SaveChanges();
 
-            Blog blog = _dbContext.Blogs.Find(comment.BlogId)!;
-            blog.Comments = _dbContext.Comments.Where(cm => cm.BlogId == blog.Id)
-                .Include(cm => cm.User).ToList();
-            // return PartialView("_CommentSection", blog);
-            return RedirectToAction("Details", new { id = blog.Id });
+            return RedirectToAction("Details", new { id = comment.BlogId });
         }
     }
 }

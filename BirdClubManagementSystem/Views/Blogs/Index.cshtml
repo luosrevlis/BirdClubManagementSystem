@@ -61,6 +61,12 @@
                                 <i class="fa-solid fa-x"></i>
                             </a>
                         }
+                        @if (item.Status == "Rejected")
+                        {
+                            <a class="button delete-button" onclick="initDelete(@item.Id)">
+                                <i class="fa-solid fa-trash"></i>
+                            </a>
+                        }
                     </td>
                 </tr>
             }
