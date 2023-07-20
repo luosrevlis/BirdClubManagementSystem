@@ -68,6 +68,10 @@ namespace BirdClubManagementSystem.Controllers
         public IActionResult Create(Blog blog, IFormFile thumbnailFile)
         {
             blog.User = _dbContext.Users.Find(blog.UserId)!;
+            if (blog.BlogCategoryId == 0)
+            {
+                blog.BlogCategoryId = 8;
+            }
             blog.BlogCategory = _dbContext.BlogCategories.Find(blog.BlogCategoryId)!;
             if (thumbnailFile != null)
             {
