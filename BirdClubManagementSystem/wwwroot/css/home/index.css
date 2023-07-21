@@ -41,6 +41,7 @@ body {
 .method-card img {
     margin-top: 87px;
     margin-bottom: 17px;
+    width: 60px;
 }
 
 .method-container h1 {
