@@ -1,5 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800&display=swap');
-
 /* CAU HINH TRUOC ROOT */
 :root {
     --color-primary: #7380ec;
@@ -231,7 +229,8 @@ aside .sidebar a:hover img {
 main {
     margin-left: 1.6rem;
     margin-top: 1.4rem;
-    margin-right: 28rem;
+    display: block;
+    padding-top: 0;
 }
 
 main .date {
@@ -249,7 +248,7 @@ main .date input[type='date'] {
 
 main .insights {
     display: grid;
-    grid-template-columns: repeat(4, 50%);
+    grid-template-columns: repeat(4, 40%);
     gap: 2rem;
 }
 
@@ -369,6 +368,8 @@ main .insights small {
 /* =========================RIGHT=================== */
 .right {
     margin-top: 1.8rem;
+    position: absolute;
+    right: 0;
 }
 
 .right .top {
@@ -386,6 +387,15 @@ main .insights small {
     display: flex;
     gap: 2rem;
     text-align: right;
+}
+
+.profile-photo {
+    padding-right: 50px;
+}
+
+.profile-photo img{
+    width: 50px;
+    border-radius: 25px;
 }
 
 /* ================RESPONSIVE=================== */
@@ -439,7 +449,7 @@ main .insights small {
     }
     .recent-member-card{
         background-color: transparent;
-        border-radius: none !important;
+        border-radius: 0 !important;
         box-shadow: none;
     }
     .recent-member h3{
@@ -511,11 +521,6 @@ main .insights small {
         height: 3.4rem;
     }
 
-    aside .sidebar a:last-child {
-        position: absolute;
-        bottom: 5rem;
-    }
-
     aside .close {
         display: inline-block;
         cursor: pointer;
@@ -538,7 +543,7 @@ main .insights small {
         padding: 0 1rem;
     }
     main .insights{
-        
+        grid-template-columns: 60%;
     }
 
     .right {
@@ -591,7 +596,7 @@ main .insights small {
     }
     .recent-member-card{
         background-color: transparent;
-        border-radius: none !important;
+        border-radius: 0 !important;
         box-shadow: none;
     }
     .recent-member h3{
@@ -620,6 +625,4 @@ main .insights small {
         padding: 30px;
         border-radius: 50%;
     }
-
-
 }
