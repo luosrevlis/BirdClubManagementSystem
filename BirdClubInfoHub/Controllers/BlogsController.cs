@@ -34,11 +34,30 @@ namespace BirdClubInfoHub.Controllers
         // GET: BlogsController
         public ActionResult Index()
         {
-            List<Blog> blogs = _dbContext.Blogs.Where(blog => blog.Status == "Accepted")
+            List<Blog> blogs = _dbContext.Blogs
+                .Where(blog => blog.Status == "Accepted")
+                .Include(blog => blog.User)
+                .Include(blog => blog.BlogCategory)
+                .OrderByDescending(blog => blog.DateCreated)
+                .ToList();
+            ViewBag.NewBlogs = blogs.Take(3);
+            return View(blogs);
+        }
+
+        public ActionResult Search(string keyword)
+        {
+            List<Blog> matches = _dbContext.Blogs.Where(blog => blog.Status == "Accepted")
+                .Where(blog => blog.Title.Contains(keyword) || blog.Contents.Contains(keyword))
                 .Include(blog => blog.User)
                 .Include(blog => blog.BlogCategory)
                 .ToList();
-            return View(blogs);
+            ViewBag.SearchKey = keyword;
+
+            ViewBag.NewBlogs = _dbContext.Blogs
+                .Where(blog => blog.Status == "Accepted")
+                .OrderByDescending(blog => blog.DateCreated)
+                .Take(3);
+            return View("Index", matches);
         }
 
         // GET: BlogsController/Details/5
@@ -56,6 +75,10 @@ namespace BirdClubInfoHub.Controllers
             blog.Comments = _dbContext.Comments.Where(comment => comment.BlogId == blog.Id)
                 .Include(comment => comment.User).ToList();
 
+            ViewBag.NewBlogs = _dbContext.Blogs
+                .Where(blog => blog.Status == "Accepted")
+                .OrderByDescending(blog => blog.DateCreated)
+                .Take(3);
             return View(blog);
         }
 

@@ -5,6 +5,10 @@
     <link rel="stylesheet" href="~/css/blog/blog.css" />
 }
 
+@if (ViewBag.SearchKey != null)
+{
+    <h1>Showing search results for "@ViewBag.SearchKey"</h1>
+}
 <section class="blogs-section">
     <div class="blogs-container">
         @foreach (var item in Model)
@@ -41,14 +45,17 @@
         <a class="create-blog-button" asp-controller="Blogs" asp-action="Create">Create Blog</a>
         <div class="search-blogs-container">
             <h2>Search</h2>
-            <form class="search-box-container">
-                <input class="search-box" type="text" placeholder="Search something..." />
+            <form asp-action="Search" class="search-box-container">
+                <input name="keyword" class="search-box" type="text" placeholder="Search..." />
+                <button class="search-button" type="submit">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </button>
             </form>
         </div>
         <div class="latest-blogs-container">
             <h2>Latest News</h2>
 
-            @foreach (var item in Model.Take(3))
+            @foreach (var item in ViewBag.NewBlogs)
             {
                 <a class="latest-blog" asp-action="Details" asp-route-id="@item.Id">
                     <div class="latest-blog-thumbnail-container">
