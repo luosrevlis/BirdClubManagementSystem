@@ -40,7 +40,11 @@ namespace BirdClubInfoHub.Controllers
                 .Include(blog => blog.BlogCategory)
                 .OrderByDescending(blog => blog.DateCreated)
                 .ToList();
+
+            SelectList categoryOptions = new(_dbContext.BlogCategories, nameof(BlogCategory.Id), nameof(BlogCategory.Name));
+            ViewBag.CategoryOptions = categoryOptions;
             ViewBag.NewBlogs = blogs.Take(3);
+
             return View(blogs);
         }
 
@@ -51,12 +55,33 @@ namespace BirdClubInfoHub.Controllers
                 .Include(blog => blog.User)
                 .Include(blog => blog.BlogCategory)
                 .ToList();
-            ViewBag.SearchKey = keyword;
 
+            ViewBag.SearchKey = keyword;
+            SelectList categoryOptions = new(_dbContext.BlogCategories, nameof(BlogCategory.Id), nameof(BlogCategory.Name));
+            ViewBag.CategoryOptions = categoryOptions;
             ViewBag.NewBlogs = _dbContext.Blogs
                 .Where(blog => blog.Status == "Accepted")
                 .OrderByDescending(blog => blog.DateCreated)
                 .Take(3);
+
+            return View("Index", matches);
+        }
+
+        public ActionResult Filter(int blogCategoryId)
+        {
+            List<Blog> matches = _dbContext.Blogs.Where(blog => blog.Status == "Accepted" && blog.BlogCategoryId == blogCategoryId)
+                .Include(blog => blog.User)
+                .Include(blog => blog.BlogCategory)
+                .ToList();
+
+            ViewBag.Category = _dbContext.BlogCategories.Find(blogCategoryId)!.Name;
+            SelectList categoryOptions = new(_dbContext.BlogCategories, nameof(BlogCategory.Id), nameof(BlogCategory.Name));
+            ViewBag.CategoryOptions = categoryOptions;
+            ViewBag.NewBlogs = _dbContext.Blogs
+                .Where(blog => blog.Status == "Accepted")
+                .OrderByDescending(blog => blog.DateCreated)
+                .Take(3);
+
             return View("Index", matches);
         }
 
@@ -75,10 +100,13 @@ namespace BirdClubInfoHub.Controllers
             blog.Comments = _dbContext.Comments.Where(comment => comment.BlogId == blog.Id)
                 .Include(comment => comment.User).ToList();
 
+            SelectList categoryOptions = new(_dbContext.BlogCategories, nameof(BlogCategory.Id), nameof(BlogCategory.Name));
+            ViewBag.CategoryOptions = categoryOptions;
             ViewBag.NewBlogs = _dbContext.Blogs
                 .Where(blog => blog.Status == "Accepted")
                 .OrderByDescending(blog => blog.DateCreated)
                 .Take(3);
+
             return View(blog);
         }
 

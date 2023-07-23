@@ -136,6 +136,7 @@
 }
 
 .search-blogs-container,
+.filter-blogs-container,
 .latest-blogs-container {
     width: 100%;
     margin-top: 2rem;
@@ -157,6 +158,29 @@
 }
 
 .search-button {
+    width: 22%;
+    background-color: #b8d9d0;
+    font-size: 1rem;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    border: 0.1rem solid #b8d9d0;
+    box-sizing: border-box;
+}
+
+.filter-box-container {
+    margin-top: 1rem;
+}
+
+.filter-select {
+    width: 75%;
+    font-size: 1rem;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    border: 0.1rem solid #888682;
+    box-sizing: border-box;
+}
+
+.filter-button {
     width: 22%;
     background-color: #b8d9d0;
     font-size: 1rem;
