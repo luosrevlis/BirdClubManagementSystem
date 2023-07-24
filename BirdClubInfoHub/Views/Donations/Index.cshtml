@@ -1,0 +1,60 @@
+﻿@model PaymentInformationModel
+
+@{
+    ViewData["Title"] = "Donation";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/form.css" />
+    <link rel="stylesheet" href="~/css/donation/index.css" />
+}
+
+<div class="main-form">
+    <section class="container-template">
+        <h2>Make a donation</h2>
+        <h5>Your support is highly appreciated!</h5>
+        <form asp-action="GeneratePaymentUrl" class="form" onsubmit="return validateAll()">
+
+            <div class="input-box name-field">
+                <label>Name</label>
+                <input asp-for="Name" placeholder="Enter name" required class="name" />
+                <!-- add error message here -->
+                <span class="error name-error">
+                    <img src="~/img/resetpass/alert-circle.svg" alt="">
+                    <p class="error-text">Name cannot be empty.</p>
+                </span>
+            </div>
+
+            <div class="input-box email-field">
+                <label>Email</label>
+                <input asp-for="Email" placeholder="Enter email address" required class="email" />
+                <!-- add error message here -->
+                <span class="error mail-error">
+                    <img src="~/img/resetpass/alert-circle.svg" alt="">
+                    <p class="error-text">Please enter a valid email address.</p>
+                </span>
+            </div>
+
+            <div class="input-box amount-field">
+                <label>Amount (VND)</label>
+                <input asp-for="Amount" placeholder="Enter amount" type="number" required class="amount" />
+                <!-- add error message here -->
+                <span class="error amount-error">
+                    <img src="~/img/resetpass/alert-circle.svg" alt="">
+                    <p class="error-text">Please enter a number between 1000 and 999999999</p>
+                </span>
+            </div>
+
+            <div class="input-box message-field">
+                <label>Message</label>
+                <textarea asp-for="OrderDescription" placeholder="Give us a message" rows="10" required class="message"></textarea>
+            </div>
+
+            <input class="button" type="submit" value="Donate" />
+        </form>
+    </section>
+</div>
+
+@section Scripts {
+    <script src="~/js/donation/index.js"></script>
+}

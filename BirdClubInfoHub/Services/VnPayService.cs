@@ -25,7 +25,7 @@ namespace BirdClubInfoHub.Services
             pay.AddRequestData("vnp_CurrCode", _configuration["VnPay:CurrCode"]!);
             pay.AddRequestData("vnp_IpAddr", pay.GetIpAddress(context));
             pay.AddRequestData("vnp_Locale", _configuration["VnPay:Locale"]!);
-            pay.AddRequestData("vnp_OrderInfo", $"{model.Name} {model.OrderDescription} {model.Amount}"); //model stuff
+            pay.AddRequestData("vnp_OrderInfo", $"{model.Name} {model.Email} {model.OrderDescription} {model.Amount}"); //model stuff
             pay.AddRequestData("vnp_OrderType", model.OrderType);
             pay.AddRequestData("vnp_ReturnUrl", returnUrl);
             pay.AddRequestData("vnp_TxnRef", timeNow.Ticks.ToString());
