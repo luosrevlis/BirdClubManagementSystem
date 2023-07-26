@@ -12,14 +12,15 @@ body {
 
 .event-body {
     margin-top: 2rem;
-    width: 50%;
+    width: 100%;
     display: flex;
     flex-flow: column nowrap;
     justify-content: center;
     align-items: center;
-    box-shadow: 0.1rem 0.1rem 0.2rem #0007003a;
+    box-shadow: 0rem 0rem 1rem #0007003a;
     padding: 1rem;
     background-color: #fff;
+    border-radius: 0.5rem;
 }
 
 .event-description *:not(img) {
