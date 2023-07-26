@@ -106,68 +106,6 @@
         @RenderBody()
     </main>
 
-    <footer>
-        <div class="footer-body">
-            <div class="footer-logo-container">
-                <div class="footer-logo-img-container">
-                    <img src="~/img/footer/logo.svg" alt="logo" />
-                </div>
-                <h1>VNCMBC</h1>
-            </div>
-
-            <div class="footer-link-body">
-                <div class="footer-link-container">
-                    <h2>Club</h2>
-                    <div class="footer-link-box">
-                        <a asp-controller="Blogs" asp-action="Index" class="footer-link">Blogs</a>
-                        <a asp-controller="ClubEvents" asp-action="Index" class="footer-link">Events</a>
-                        <a asp-action="About" class="footer-link">About us</a>
-                    </div>
-                </div>
-
-                <div class="footer-link-container">
-                    <h2>Services</h2>
-                    <div class="footer-link-box">
-                        <a class="footer-link">Community</a>
-                        <a class="footer-link">Tournaments</a>
-                        <a class="footer-link">Pricing</a>
-                    </div>
-                </div>
-
-                <div class="footer-link-container">
-                    <h2>Contact</h2>
-                    <div class="footer-link-box">
-                        <a class="footer-link">Help desk</a>
-                        <a class="footer-link">Chat</a>
-                        <a class="footer-link">Forum</a>
-                    </div>
-                </div>
-
-                <div class="footer-link-container">
-                    <h2>Payment</h2>
-                    <div class="footer-link-box">
-                        <a href="https://vnpay.vn" class="footer-link">
-                            <img src="~/img/footer/vnpay_logo.png" alt="vn pay logo" />
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="footer-feedback-container">
-                <h2>Feedbacks</h2>
-                <p>Have just the perfect idea for our next update?</p>
-                <a asp-controller="Feedbacks" asp-action="Create" class="feedback-button">Tell us!</a>
-                <p>Your feedbacks will help us develop our club and extend community for everyone.</p>
-            </div>
-        </div>
-
-        <div class="footer-line"></div>
-
-        <div class="footer-tail">
-            <p>&copy; 2023 Vietnam Bird Club. All Rights Reserved. Terms &amp; Conditions. Privacy Policy.</p>
-        </div>
-    </footer>
-
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     @await Html.PartialAsync("_Notification")

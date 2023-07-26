@@ -37,6 +37,7 @@ namespace BirdClubManagementSystem.Controllers
             List<Blog> blogs = _dbContext.Blogs
                 .Include(blog => blog.User)
                 .Include(blog => blog.BlogCategory)
+                .OrderByDescending(blog => blog.DateCreated)
                 .ToList();
             return View(blogs);
         }

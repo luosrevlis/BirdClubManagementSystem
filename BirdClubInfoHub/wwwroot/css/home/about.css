@@ -77,6 +77,7 @@ section {
     color:#FFFFFF ;
     flex-shrink: 0;
     transition: .3s;
+    margin-top: 1rem;
 }
 .about-btn:hover{
     background:#b5ba7e ;

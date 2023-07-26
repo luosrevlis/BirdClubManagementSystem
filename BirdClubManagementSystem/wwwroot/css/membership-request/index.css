@@ -29,3 +29,10 @@
 .accept-control .button {
     width: 100%;
 }
+
+.table-header {
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: flex-start;
+    align-items: center;
+}

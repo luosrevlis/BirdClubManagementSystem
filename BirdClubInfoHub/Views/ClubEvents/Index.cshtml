@@ -49,33 +49,38 @@
                     {
                         string controller = string.Empty;
                         string image = string.Empty;
+                        string bgColor = string.Empty;
                         switch (e)
                         {
                             case FieldTrip:
                                 controller = "FieldTrips";
-                                image = "fieldtrip-banner.jpg";
+                                image = "fieldtrip-banner.png";
+                                bgColor = "#4f78ff";
                                 break;
                             case Meeting:
                                 controller = "Meetings";
                                 image = "meeting-banner.png";
+                                bgColor = "#AD82D9";
                                 break;
                             case Tournament:
                                 controller = "Tournaments";
                                 image = "tournament-banner.png";
+                                bgColor = "#AD82D9";
                                 break;
                             default:
                                 break;
                         }
 
                         <a class="event-container" asp-controller="@controller" asp-action="Details" asp-route-id="@e.Id">
+                            <div class="event-name" style="background-color: @bgColor;">
+                                <h2>@e.Name</h2>
+                            </div>
+
                             <div class="bg-container">
                                 <img class="bg" src="~/img/events/@image" alt="bg" />
                             </div>
-
-                            <div class="event-name">
-                                <h2>@e.Name</h2>
-                            </div>
-                            <div class="event-time">
+                            
+                            <div class="event-time" style="background-color: @bgColor;">
                                 <p>@e.Date.TimeOfDay</p>
                             </div>
                         </a>

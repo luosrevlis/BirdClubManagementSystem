@@ -16,6 +16,12 @@ body {
 .container-bird{
     margin: 10px 0 20px 20px;
 }
+.container-bird-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
 .container-bird-info h2{
     color: #fff;
     font-weight: 600;
