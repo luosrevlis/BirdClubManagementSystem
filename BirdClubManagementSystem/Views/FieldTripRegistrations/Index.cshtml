@@ -7,6 +7,7 @@
 @section Styles {
     <link rel="stylesheet" href="~/css/reset.css" />
     <link rel="stylesheet" href="~/css/list.css" />
+    <link rel="stylesheet" href="~/css/event-registration/index.css" />
 }
 
 <section class="table-header">
@@ -40,6 +41,13 @@
                         <a class="button delete-button" onclick="initDelete(@item.Id)">
                             <i class="fa-solid fa-trash"></i>
                         </a>
+                        @if (!item.PaymentReceived)
+                        {
+                            <a class="button confirm-button" onclick="initToggle(@item.Id)">
+                                <i class="fa-solid fa-money-bill-1-wave"></i>
+                                <i class="fa-solid fa-check"></i>
+                            </a>
+                        }
                     </td>
                 </tr>
             }
@@ -57,6 +65,19 @@
         <div class="delete-control">
             <input class="button delete-button" type="submit" value="Delete" />
             <button class="button cancel-button" type="button" onclick="cancelDelete()">Cancel</button>
+        </div>
+    </form>
+</div>
+
+<div class="toggle-container">
+    <form class="toggle-form" asp-action="MarkAsPaid">
+        <h2>Mark this registration as already paid?</h2>
+
+        <input type="hidden" id="reg-id" name="Id" />
+
+        <div class="toggle-control">
+            <input class="button confirm-button" type="submit" value="Mark as paid" />
+            <button class="button cancel-button" type="button" onclick="cancelToggle()">Cancel</button>
         </div>
     </form>
 </div>
