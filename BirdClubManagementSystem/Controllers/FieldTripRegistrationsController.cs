@@ -46,5 +46,25 @@ namespace BirdClubManagementSystem.Controllers
             TempData.Add("success", "");
             return RedirectToAction("Index", new RouteValueDictionary(new { fieldTripId = registration.FieldTripId }));
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult MarkAsPaid(int id)
+        {
+            FieldTripRegistration? registration = _dbContext.FieldTripRegistrations.Find(id);
+            if (registration == null)
+            {
+                TempData.Add("notification", "Participant not found!");
+                TempData.Add("error", "");
+                return RedirectToAction("Index", "ClubEvents");
+            }
+            registration.PaymentReceived = true;
+            _dbContext.FieldTripRegistrations.Update(registration);
+            _dbContext.SaveChanges();
+
+            TempData.Add("notification", "Entry has been marked as Payment received!");
+            TempData.Add("success", "");
+            return RedirectToAction("Index", new RouteValueDictionary(new { fieldTripId = registration.FieldTripId }));
+        }
     }
 }
