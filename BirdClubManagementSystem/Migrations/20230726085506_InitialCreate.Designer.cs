@@ -12,15 +12,15 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BirdClubManagementSystem.Migrations
 {
     [DbContext(typeof(BcmsDbContext))]
-    [Migration("20230612020853_AddTourStanding")]
-    partial class AddTourStanding
+    [Migration("20230726085506_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.5")
+                .HasAnnotation("ProductVersion", "7.0.7")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -37,6 +37,14 @@ namespace BirdClubManagementSystem.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<byte[]>("ProfilePicture")
+                        .IsRequired()
+                        .HasColumnType("varbinary(max)");
+
                     b.Property<string>("Species")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -51,6 +59,65 @@ namespace BirdClubManagementSystem.Migrations
                     b.ToTable("Birds");
                 });
 
+            modelBuilder.Entity("BirdClubManagementSystem.Models.Blog", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("BlogCategoryId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Contents")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<byte[]>("Thumbnail")
+                        .IsRequired()
+                        .HasColumnType("varbinary(max)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BlogCategoryId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Blogs");
+                });
+
+            modelBuilder.Entity("BirdClubManagementSystem.Models.BlogCategory", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("BlogCategories");
+                });
+
             modelBuilder.Entity("BirdClubManagementSystem.Models.Comment", b =>
                 {
                     b.Property<int>("Id")
@@ -59,19 +126,25 @@ namespace BirdClubManagementSystem.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("BlogId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Contents")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("PostId")
-                        .HasColumnType("int");
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("ModifiedDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("PostId");
+                    b.HasIndex("BlogId");
 
                     b.HasIndex("UserId");
 
@@ -86,7 +159,7 @@ namespace BirdClubManagementSystem.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Content")
+                    b.Property<string>("Contents")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -122,10 +195,18 @@ namespace BirdClubManagementSystem.Migrations
                     b.Property<int>("Fee")
                         .HasColumnType("int");
 
-                    b.Property<bool>("Status")
-                        .HasColumnType("bit");
+                    b.Property<string>("Highlights")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("RegistrationCloseDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Status")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -141,6 +222,9 @@ namespace BirdClubManagementSystem.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("FieldTripId")
                         .HasColumnType("int");
@@ -178,10 +262,18 @@ namespace BirdClubManagementSystem.Migrations
                     b.Property<int>("Fee")
                         .HasColumnType("int");
 
-                    b.Property<bool>("Status")
-                        .HasColumnType("bit");
+                    b.Property<string>("Highlights")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("RegistrationCloseDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Status")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -197,6 +289,9 @@ namespace BirdClubManagementSystem.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("MeetingId")
                         .HasColumnType("int");
@@ -240,56 +335,13 @@ namespace BirdClubManagementSystem.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.ToTable("MembershipRequests");
-                });
-
-            modelBuilder.Entity("BirdClubManagementSystem.Models.Post", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("CategoryID")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Contents")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("PostCategoryId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("UserID")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PostCategoryId");
-
-                    b.HasIndex("UserID");
-
-                    b.ToTable("Posts");
-                });
-
-            modelBuilder.Entity("BirdClubManagementSystem.Models.PostCategory", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("PostCategories");
                 });
 
             modelBuilder.Entity("BirdClubManagementSystem.Models.Tournament", b =>
@@ -310,10 +362,18 @@ namespace BirdClubManagementSystem.Migrations
                     b.Property<int>("Fee")
                         .HasColumnType("int");
 
-                    b.Property<bool>("Status")
-                        .HasColumnType("bit");
+                    b.Property<string>("Highlights")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("RegistrationCloseDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Status")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -332,6 +392,9 @@ namespace BirdClubManagementSystem.Migrations
 
                     b.Property<int>("BirdId")
                         .HasColumnType("int");
+
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("datetime2");
 
                     b.Property<bool>("PaymentReceived")
                         .HasColumnType("bit");
@@ -391,6 +454,12 @@ namespace BirdClubManagementSystem.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<DateTime>("JoinDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("LastLogin")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -402,6 +471,17 @@ namespace BirdClubManagementSystem.Migrations
                     b.Property<string>("Phone")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<byte[]>("ProfilePicture")
+                        .IsRequired()
+                        .HasColumnType("varbinary(max)");
+
+                    b.Property<string>("ResetPasswordCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("ResetPasswordRequestTime")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Role")
                         .IsRequired()
@@ -426,11 +506,30 @@ namespace BirdClubManagementSystem.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("BirdClubManagementSystem.Models.Blog", b =>
+                {
+                    b.HasOne("BirdClubManagementSystem.Models.BlogCategory", "BlogCategory")
+                        .WithMany("Blogs")
+                        .HasForeignKey("BlogCategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("BirdClubManagementSystem.Models.User", "User")
+                        .WithMany("Blogs")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("BlogCategory");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("BirdClubManagementSystem.Models.Comment", b =>
                 {
-                    b.HasOne("BirdClubManagementSystem.Models.Post", "Post")
+                    b.HasOne("BirdClubManagementSystem.Models.Blog", "Blog")
                         .WithMany("Comments")
-                        .HasForeignKey("PostId")
+                        .HasForeignKey("BlogId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -440,7 +539,7 @@ namespace BirdClubManagementSystem.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Post");
+                    b.Navigation("Blog");
 
                     b.Navigation("User");
                 });
@@ -484,31 +583,12 @@ namespace BirdClubManagementSystem.Migrations
                         .IsRequired();
 
                     b.HasOne("BirdClubManagementSystem.Models.User", "User")
-                        .WithMany()
+                        .WithMany("MeetingRegistrations")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Meeting");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("BirdClubManagementSystem.Models.Post", b =>
-                {
-                    b.HasOne("BirdClubManagementSystem.Models.PostCategory", "PostCategory")
-                        .WithMany("Posts")
-                        .HasForeignKey("PostCategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("BirdClubManagementSystem.Models.User", "User")
-                        .WithMany("Posts")
-                        .HasForeignKey("UserID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("PostCategory");
 
                     b.Navigation("User");
                 });
@@ -535,7 +615,7 @@ namespace BirdClubManagementSystem.Migrations
             modelBuilder.Entity("BirdClubManagementSystem.Models.TournamentStanding", b =>
                 {
                     b.HasOne("BirdClubManagementSystem.Models.Bird", "Bird")
-                        .WithMany()
+                        .WithMany("TournamentStandings")
                         .HasForeignKey("BirdId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -554,6 +634,18 @@ namespace BirdClubManagementSystem.Migrations
             modelBuilder.Entity("BirdClubManagementSystem.Models.Bird", b =>
                 {
                     b.Navigation("TournamentRegistrations");
+
+                    b.Navigation("TournamentStandings");
+                });
+
+            modelBuilder.Entity("BirdClubManagementSystem.Models.Blog", b =>
+                {
+                    b.Navigation("Comments");
+                });
+
+            modelBuilder.Entity("BirdClubManagementSystem.Models.BlogCategory", b =>
+                {
+                    b.Navigation("Blogs");
                 });
 
             modelBuilder.Entity("BirdClubManagementSystem.Models.FieldTrip", b =>
@@ -566,16 +658,6 @@ namespace BirdClubManagementSystem.Migrations
                     b.Navigation("MeetingRegistrations");
                 });
 
-            modelBuilder.Entity("BirdClubManagementSystem.Models.Post", b =>
-                {
-                    b.Navigation("Comments");
-                });
-
-            modelBuilder.Entity("BirdClubManagementSystem.Models.PostCategory", b =>
-                {
-                    b.Navigation("Posts");
-                });
-
             modelBuilder.Entity("BirdClubManagementSystem.Models.Tournament", b =>
                 {
                     b.Navigation("TournamentRegistrations");
@@ -585,11 +667,13 @@ namespace BirdClubManagementSystem.Migrations
                 {
                     b.Navigation("Birds");
 
+                    b.Navigation("Blogs");
+
                     b.Navigation("Comments");
 
                     b.Navigation("FieldTripRegistrations");
 
-                    b.Navigation("Posts");
+                    b.Navigation("MeetingRegistrations");
                 });
 #pragma warning restore 612, 618
         }
