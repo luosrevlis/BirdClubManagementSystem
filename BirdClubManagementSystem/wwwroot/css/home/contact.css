@@ -17,6 +17,7 @@ body {
 /* Add method list */
 .method-container {
     padding-bottom: 100px;
+    width: 100%;
 }
 
 .method-list {

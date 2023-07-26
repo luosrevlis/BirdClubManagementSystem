@@ -15,6 +15,7 @@
 
 @{
     var userId = Context.Session.GetInt32("USER_ID");
+    var userRole = Context.Session.GetString("USER_ROLE");
 }
 
 <body>
@@ -29,10 +30,10 @@
 
             <div class="nav-bar-container">
                 <a asp-controller="Home" asp-action="Index" class="nav-link">Home</a>
+                <a asp-controller="MembershipRequests" asp-action="Index" class="nav-link">Membership</a>
                 <a asp-controller="Blogs" asp-action="Index" class="nav-link">Blogs</a>
                 <a asp-controller="ClubEvents" asp-action="Index" class="nav-link">Events</a>
-                <a asp-controller="Home" asp-action="About" class="nav-link">About us</a>
-                <a asp-controller="Home" asp-action="Contact" class="nav-link">Contact us</a>
+                <a asp-controller="Feedbacks" asp-action="Index" class="nav-link">Feedbacks</a>
             </div>
 
             <div class="nav-user-utils-container">
@@ -56,31 +57,26 @@
                                 <p>Edit profile</p>
                                 <span>&gt;</span>
                             </a>
-                            <a asp-action="Index" asp-controller="Birds" class="sub-menu-link">
-                                <img src="~/img/icon_svg/bird_profile.svg" alt="icon">
-                                <p>Your Birds</p>
-                                <span>&gt;</span>
-                            </a>
-                            <a asp-action="Index" asp-controller="BlogHistory" class="sub-menu-link">
-                                <img src="~/img/icon_svg/blogs.svg" alt="icon">
-                                <p>Blog History</p>
-                                <span>&gt;</span>
-                            </a>
                             <hr />
 
-                            <a asp-action="Index" asp-controller="FieldTripRegistrations" class="sub-menu-link">
-                                <img src="~/img/icon_svg/blogs.svg" alt="icon">
-                                <p>Registered Field Trips</p>
-                                <span>&gt;</span>
-                            </a>
-                            <a asp-action="Index" asp-controller="MeetingRegistrations" class="sub-menu-link">
-                                <img src="~/img/icon_svg/blogs.svg" alt="icon">
-                                <p>Registered Meetings</p>
-                                <span>&gt;</span>
-                            </a>
-                            <a asp-action="Index" asp-controller="TournamentRegistrations" class="sub-menu-link">
-                                <img src="~/img/icon_svg/blogs.svg" alt="icon">
-                                <p>Registered Tournaments</p>
+                            @if (userRole == "Admin")
+                            {
+                                <a asp-action="Index" asp-controller="UserManagement" class="sub-menu-link">
+                                    <img src="~/img/icon_svg/profile.svg" alt="icon">
+                                    <p>User management</p>
+                                    <span>&gt;</span>
+                                </a>
+                                <a asp-action="Index" asp-controller="Dashboard" class="sub-menu-link">
+                                    <img src="~/img/dashboard/dashboard-icon.svg" alt="icon">
+                                    <p>Dashboard</p>
+                                    <span>&gt;</span>
+                                </a>
+                                <hr />
+                            }
+
+                            <a asp-action="Index" asp-controller="Notification" class="sub-menu-link">
+                                <img src="~/img/contact/mail-icon.svg" alt="icon">
+                                <p>Send a notification</p>
                                 <span>&gt;</span>
                             </a>
                             <hr />

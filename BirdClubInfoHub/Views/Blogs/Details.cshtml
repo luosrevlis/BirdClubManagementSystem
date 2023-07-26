@@ -42,24 +42,41 @@
     </div>
 
     <div class="blog-utils-container">
-        <a asp-action="Index" class="back-button small-view">Back</a>
         <a class="create-blog-button" asp-controller="Blogs" asp-action="Create">Create Blog</a>
         <div class="search-blogs-container">
             <h2>Search</h2>
-            <form class="search-box-container">
-                <input class="search-box" type="text" placeholder="Search something..." />
+            <form asp-action="Search" class="search-box-container">
+                <input name="keyword" class="search-box" type="text" placeholder="Search..." />
+                <button class="search-button" type="submit">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </button>
             </form>
         </div>
-        @* <div class="latest-blogs-container">
+        <div class="filter-blogs-container">
+            <h2>Filter</h2>
+            <form asp-action="Filter" class="filter-box-container">
+                <select name="blogCategoryId" class="filter-select" asp-items="ViewBag.CategoryOptions">
+                    <option value="" hidden>Choose a category</option>
+                </select>
+                <button class="filter-button" type="submit">
+                    <i class="fa-solid fa-filter"></i>
+                </button>
+            </form>
+        </div>
+        <div class="latest-blogs-container">
             <h2>Latest News</h2>
-            <div class="latest-blog">
-                <div class="latest-blog-thumbnail-container">
-                    <img class="latest-blog-thumbnail" src="@Url.Action("GetImageFromBytes", "Blogs", new { id = Model.Id })" alt="thumbnail" />
-                </div>
 
-                <div class="latest-blog-title">@Model.Title</div>
-            </div>
-        </div> *@
+            @foreach (var item in ViewBag.NewBlogs)
+            {
+                <a class="latest-blog" asp-action="Details" asp-route-id="@item.Id">
+                    <div class="latest-blog-thumbnail-container">
+                        <img class="latest-blog-thumbnail" src="@Url.Action("GetImageFromBytes", "Blogs", new { id = item.Id })" alt="thumbnail" />
+                    </div>
+
+                    <div class="latest-blog-title">@item.Title</div>
+                </a>
+            }
+        </div>
     </div>
 </section>
 

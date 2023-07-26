@@ -54,13 +54,13 @@ function setUpActiveNavLink() {
 
     if (path.includes("home") && path.includes("index")) {
         navLinks.item(0).classList.add("nav-active");
-    }  else if (path.includes("blogs")) {
+    } else if (path.includes("membershiprequests")) {
         navLinks.item(1).classList.add("nav-active");
-    } else if (path.includes("clubevents")) {
+    } else if (path.includes("blogs")) {
         navLinks.item(2).classList.add("nav-active");
-    } else if (path.includes("home") && path.includes("about")) {
+    } else if (path.includes("clubevents")) {
         navLinks.item(3).classList.add("nav-active");
-    } else if (path.includes("home") && path.includes("contact")) {
+    } else if (path.includes("feedbacks")) {
         navLinks.item(4).classList.add("nav-active");
     } else {
         navLinks.item(0).classList.add("nav-active");

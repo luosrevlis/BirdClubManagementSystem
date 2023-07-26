@@ -1,0 +1,136 @@
+@model User
+
+@{
+    ViewData["Title"] = "Admin Dashboard";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/dashboard/index.css" />
+    <link rel="stylesheet" href="~/css/hide-header-footer.css" />
+    @* link google icons *@
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons+Sharp">
+}
+
+<div class="dashboard-container">
+    <aside>
+        <div class="top">
+            <div class="logo">
+                <img src="~/img/dashboard/logo1.png" alt="">
+                <h2 class="text-muted">VNCMBC</h2>
+            </div>
+            <div class="close" id="close-btn">
+                <span class="material-icons-sharp">close</span>
+            </div>
+        </div>
+        <!-- side bar -->
+        <div class="sidebar">
+            <a href="#" class="active">
+                <img src="~/img/dashboard/dashboard-icon.svg" alt="">
+                <h3>Dashboard</h3>
+            </a>
+            <a asp-controller="Home" asp-action="Index">
+                <img src="~/img/dashboard/home-icon.svg" alt="">
+                <h3>Home</h3>
+            </a>
+            <a asp-controller="Logout" asp-action="Index">
+                <img src="~/img/dashboard/log-out-icon.svg" alt="">
+                <h3>Logout</h3>
+            </a>
+        </div>
+    </aside>
+    <!-- ------------------------END OF ASIDE------------------ -->
+    <main>
+        <h1>Dashboard Overview</h1>
+
+        <div class="insights">
+            <div class="sales card">
+                <span class="material-icons-sharp">groups</span>
+                <div class="middle">
+                    <div class="left">
+                        <h3>Members Join</h3>
+                        <h1>@ViewBag.NewMembers</h1>
+                        <h3>Members</h3>
+                    </div>
+                </div>
+                <small class="text-muted">Last 7 days</small>
+            </div>
+            <!-- ===================END OF MEMBER =================== -->
+            <div class="expenses">
+                <span class="material-icons-sharp">bar_chart</span>
+                <div class="middle">
+                    <div class="left">
+                        <h3>Blogs Published</h3>
+                        <h1>@ViewBag.NewBlogs</h1>
+                        <h3>Blogs</h3>
+                    </div>
+                </div>
+                <small class="text-muted">Last 7 days</small>
+            </div>
+            <!-- ===================END OF BLOGS =================== -->
+            <div class="event">
+                <span class="material-icons-sharp">stacked_line_chart</span>
+                <div class="middle">
+                    <div class="left">
+                        <h3>Events Hosted</h3>
+                        <h1>@ViewBag.NewEvents</h1>
+                        <h3>Events</h3>
+                    </div>
+                </div>
+                <small class="text-muted">Last 30 days</small>
+            </div>
+            <!-- ===================END OF EVENT =================== -->
+            <div class="income">
+                <span class="material-icons-sharp">payments</span>
+                <div class="middle">
+                    <div class="left">
+                        <h3>Events' Revenue</h3>
+                        <h1>@ViewBag.Revenue</h1>
+                        <h3>VND</h3>
+                    </div>
+                </div>
+                <small class="text-muted">Last 30 days</small>
+            </div>
+            <!-- ===================END OF EVENT"S REVENUE =================== -->
+
+        </div>
+        <!-- =====================END OF INSIGHTS========================= -->
+        <div class="recent-member">
+            <h3>Rate of active members</h3>
+            <div class="recent-member-card">
+                <div class="recent-member-title">
+                    <h2>
+                        <span class="material-icons-sharp">
+                            inventory
+                        </span>
+                    </h2>
+                    <h1>Active Rating</h1>
+                </div>
+                <div class="recent-member-rate">
+                    <h1>@ViewBag.ActiveRate%</h1>
+                </div>
+            </div>
+        </div>
+    </main>
+    <!-- END OF MAIN -->
+    <div class="right">
+        <div class="top">
+            <button id="menu-btn">
+                <span class="material-icons-sharp">menu</span>
+            </button>
+            <div class="profile">
+                <div class="info">
+                    <p>Hey, <b>@Model.Name</b> </p>
+                    <small class="text-muted">@Model.Role</small>
+                </div>
+                <div class="profile-photo">
+                    <img src="@Url.Action("GetImageFromBytes", "Profile", new { id = Model.Id })" alt="">
+                </div>
+            </div>
+        </div>
+        <!-- END OF TOP -->
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/dashboard/index.js"></script>
+}

@@ -34,11 +34,55 @@ namespace BirdClubInfoHub.Controllers
         // GET: BlogsController
         public ActionResult Index()
         {
-            List<Blog> blogs = _dbContext.Blogs.Where(blog => blog.Status == "Accepted")
+            List<Blog> blogs = _dbContext.Blogs
+                .Where(blog => blog.Status == "Accepted")
+                .Include(blog => blog.User)
+                .Include(blog => blog.BlogCategory)
+                .OrderByDescending(blog => blog.DateCreated)
+                .ToList();
+
+            SelectList categoryOptions = new(_dbContext.BlogCategories, nameof(BlogCategory.Id), nameof(BlogCategory.Name));
+            ViewBag.CategoryOptions = categoryOptions;
+            ViewBag.NewBlogs = blogs.Take(3);
+
+            return View(blogs);
+        }
+
+        public ActionResult Search(string keyword)
+        {
+            List<Blog> matches = _dbContext.Blogs.Where(blog => blog.Status == "Accepted")
+                .Where(blog => blog.Title.Contains(keyword) || blog.Contents.Contains(keyword))
                 .Include(blog => blog.User)
                 .Include(blog => blog.BlogCategory)
                 .ToList();
-            return View(blogs);
+
+            ViewBag.SearchKey = keyword;
+            SelectList categoryOptions = new(_dbContext.BlogCategories, nameof(BlogCategory.Id), nameof(BlogCategory.Name));
+            ViewBag.CategoryOptions = categoryOptions;
+            ViewBag.NewBlogs = _dbContext.Blogs
+                .Where(blog => blog.Status == "Accepted")
+                .OrderByDescending(blog => blog.DateCreated)
+                .Take(3);
+
+            return View("Index", matches);
+        }
+
+        public ActionResult Filter(int blogCategoryId)
+        {
+            List<Blog> matches = _dbContext.Blogs.Where(blog => blog.Status == "Accepted" && blog.BlogCategoryId == blogCategoryId)
+                .Include(blog => blog.User)
+                .Include(blog => blog.BlogCategory)
+                .ToList();
+
+            ViewBag.Category = _dbContext.BlogCategories.Find(blogCategoryId)!.Name;
+            SelectList categoryOptions = new(_dbContext.BlogCategories, nameof(BlogCategory.Id), nameof(BlogCategory.Name));
+            ViewBag.CategoryOptions = categoryOptions;
+            ViewBag.NewBlogs = _dbContext.Blogs
+                .Where(blog => blog.Status == "Accepted")
+                .OrderByDescending(blog => blog.DateCreated)
+                .Take(3);
+
+            return View("Index", matches);
         }
 
         // GET: BlogsController/Details/5
@@ -55,6 +99,13 @@ namespace BirdClubInfoHub.Controllers
             blog.BlogCategory = _dbContext.BlogCategories.Find(blog.BlogCategoryId)!;
             blog.Comments = _dbContext.Comments.Where(comment => comment.BlogId == blog.Id)
                 .Include(comment => comment.User).ToList();
+
+            SelectList categoryOptions = new(_dbContext.BlogCategories, nameof(BlogCategory.Id), nameof(BlogCategory.Name));
+            ViewBag.CategoryOptions = categoryOptions;
+            ViewBag.NewBlogs = _dbContext.Blogs
+                .Where(blog => blog.Status == "Accepted")
+                .OrderByDescending(blog => blog.DateCreated)
+                .Take(3);
 
             return View(blog);
         }
@@ -75,6 +126,10 @@ namespace BirdClubInfoHub.Controllers
         public ActionResult Create(Blog blog, IFormFile thumbnailFile)
         {
             blog.User = _dbContext.Users.Find(blog.UserId)!;
+            if (blog.BlogCategoryId == 0)
+            {
+                blog.BlogCategoryId = 8;
+            }
             blog.BlogCategory = _dbContext.BlogCategories.Find(blog.BlogCategoryId)!;
             if (thumbnailFile != null)
             {
