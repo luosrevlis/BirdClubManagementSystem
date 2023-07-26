@@ -1,9 +1,11 @@
-﻿using BirdClubManagementSystem.Models;
+﻿using BirdClubManagementSystem.Filters;
+using BirdClubManagementSystem.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
 namespace BirdClubManagementSystem.Controllers
 {
+    [StaffAuthenticated]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -14,12 +16,6 @@ namespace BirdClubManagementSystem.Controllers
         }
 
         public IActionResult Index()
-        {
-            ViewBag.Message = HttpContext.Session.GetString("USER_NAME");
-            return View();
-        }
-
-        public IActionResult About()
         {
             return View();
         }

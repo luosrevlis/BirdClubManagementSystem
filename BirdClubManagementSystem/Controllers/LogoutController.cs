@@ -9,7 +9,7 @@ namespace BirdClubManagementSystem.Controllers
             HttpContext.Session.Remove("USER_ID");
             HttpContext.Session.Remove("USER_NAME");
             HttpContext.Session.Remove("USER_ROLE");
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "Login");
         }
     }
 }
