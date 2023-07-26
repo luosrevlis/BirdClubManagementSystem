@@ -48,16 +48,20 @@
                     @foreach (var e in dateBlock.Value)
                     {
                         string controller = string.Empty;
+                        string image = string.Empty;
                         switch (e)
                         {
                             case FieldTrip:
                                 controller = "FieldTrips";
+                                image = "fieldtrip-banner.jpg";
                                 break;
                             case Meeting:
                                 controller = "Meetings";
+                                image = "meeting-banner.png";
                                 break;
                             case Tournament:
                                 controller = "Tournaments";
+                                image = "tournament-banner.png";
                                 break;
                             default:
                                 break;
@@ -65,7 +69,7 @@
 
                         <a class="event-container" asp-controller="@controller" asp-action="Details" asp-route-id="@e.Id">
                             <div class="bg-container">
-                                <img class="bg" src="~/img/events/bg.jpg" alt="bg" />
+                                <img class="bg" src="~/img/events/@image" alt="bg" />
                             </div>
 
                             <div class="event-name">
