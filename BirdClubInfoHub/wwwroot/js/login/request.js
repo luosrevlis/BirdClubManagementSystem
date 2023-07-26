@@ -38,7 +38,9 @@ function checkAddress(){
 }
 
 function checkPhonenumber(){
-    if(phonenumberInput.value === ""){
+    const phonenumberPattern = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/;
+
+    if (!phonenumberInput.value.match(phonenumberPattern)) {
         phonenumberField.classList.add("invalid");
         return false;
     }

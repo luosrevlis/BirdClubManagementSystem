@@ -53,6 +53,7 @@ namespace BirdClubInfoHub.Controllers
             List<Blog> matches = _dbContext.Blogs.Where(blog => blog.Status == "Accepted" && blog.Title.Contains(keyword))
                 .Include(blog => blog.User)
                 .Include(blog => blog.BlogCategory)
+                .OrderByDescending(blog => blog.DateCreated)
                 .ToList();
 
             ViewBag.SearchKey = keyword;
@@ -71,6 +72,7 @@ namespace BirdClubInfoHub.Controllers
             List<Blog> matches = _dbContext.Blogs.Where(blog => blog.Status == "Accepted" && blog.BlogCategoryId == blogCategoryId)
                 .Include(blog => blog.User)
                 .Include(blog => blog.BlogCategory)
+                .OrderByDescending(blog => blog.DateCreated)
                 .ToList();
 
             ViewBag.Category = _dbContext.BlogCategories.Find(blogCategoryId)!.Name;
