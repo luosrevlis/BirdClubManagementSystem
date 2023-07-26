@@ -50,8 +50,7 @@ namespace BirdClubInfoHub.Controllers
 
         public ActionResult Search(string keyword)
         {
-            List<Blog> matches = _dbContext.Blogs.Where(blog => blog.Status == "Accepted")
-                .Where(blog => blog.Title.Contains(keyword) || blog.Contents.Contains(keyword))
+            List<Blog> matches = _dbContext.Blogs.Where(blog => blog.Status == "Accepted" && blog.Title.Contains(keyword))
                 .Include(blog => blog.User)
                 .Include(blog => blog.BlogCategory)
                 .ToList();
@@ -128,7 +127,7 @@ namespace BirdClubInfoHub.Controllers
             blog.User = _dbContext.Users.Find(blog.UserId)!;
             if (blog.BlogCategoryId == 0)
             {
-                blog.BlogCategoryId = 8;
+                blog.BlogCategoryId = 7;
             }
             blog.BlogCategory = _dbContext.BlogCategories.Find(blog.BlogCategoryId)!;
             if (thumbnailFile != null)
