@@ -36,11 +36,12 @@ main {
     flex-flow: column nowrap;
     justify-content: flex-start;
     align-items: center;
+    margin-bottom: 2rem;
 }
 
-    main > * {
-        margin-top: 2rem;
-    }
+main > * {
+    margin-top: 2rem;
+}
 
 header {
     width: 100%;

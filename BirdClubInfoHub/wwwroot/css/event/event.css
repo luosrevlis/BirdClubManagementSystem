@@ -8,11 +8,11 @@
     flex-flow: column nowrap;
     justify-content: center;
     align-items: flex-start;
-    margin-top: 4rem;
+    margin-top: 2rem;
 }
 
 .events-container > *:nth-child(n + 2) {
-    margin-top: 4rem;
+    margin-top: 2rem;
 }
 
 .events-as-date-container {
