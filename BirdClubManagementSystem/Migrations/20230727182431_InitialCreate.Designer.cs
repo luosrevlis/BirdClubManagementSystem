@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BirdClubManagementSystem.Migrations
 {
     [DbContext(typeof(BcmsDbContext))]
-    [Migration("20230726085506_InitialCreate")]
+    [Migration("20230727182431_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -39,7 +39,8 @@ namespace BirdClubManagementSystem.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
                     b.Property<byte[]>("ProfilePicture")
                         .IsRequired()
@@ -79,7 +80,8 @@ namespace BirdClubManagementSystem.Migrations
 
                     b.Property<string>("Status")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(3)
+                        .HasColumnType("nvarchar(3)");
 
                     b.Property<byte[]>("Thumbnail")
                         .IsRequired()
@@ -87,7 +89,8 @@ namespace BirdClubManagementSystem.Migrations
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");
@@ -111,7 +114,8 @@ namespace BirdClubManagementSystem.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
                     b.HasKey("Id");
 
@@ -131,7 +135,8 @@ namespace BirdClubManagementSystem.Migrations
 
                     b.Property<string>("Contents")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
@@ -161,11 +166,13 @@ namespace BirdClubManagementSystem.Migrations
 
                     b.Property<string>("Contents")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");
@@ -185,12 +192,17 @@ namespace BirdClubManagementSystem.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("ExpectedEndDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("Fee")
                         .HasColumnType("int");
@@ -201,14 +213,25 @@ namespace BirdClubManagementSystem.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
-                    b.Property<DateTime>("RegistrationCloseDate")
+                    b.Property<DateTime>("RegCloseDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("RegLimit")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("RegOpenDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Status")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(3)
+                        .HasColumnType("nvarchar(3)");
 
                     b.HasKey("Id");
 
@@ -252,12 +275,17 @@ namespace BirdClubManagementSystem.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("ExpectedEndDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("Fee")
                         .HasColumnType("int");
@@ -268,14 +296,25 @@ namespace BirdClubManagementSystem.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
-                    b.Property<DateTime>("RegistrationCloseDate")
+                    b.Property<DateTime>("RegCloseDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("RegLimit")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("RegOpenDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Status")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(3)
+                        .HasColumnType("nvarchar(3)");
 
                     b.HasKey("Id");
 
@@ -321,23 +360,28 @@ namespace BirdClubManagementSystem.Migrations
 
                     b.Property<string>("Address")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(15)
+                        .HasColumnType("nvarchar(15)");
 
                     b.Property<string>("Status")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(3)
+                        .HasColumnType("nvarchar(3)");
 
                     b.HasKey("Id");
 
@@ -352,12 +396,17 @@ namespace BirdClubManagementSystem.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("ExpectedEndDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("Fee")
                         .HasColumnType("int");
@@ -368,14 +417,25 @@ namespace BirdClubManagementSystem.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
-                    b.Property<DateTime>("RegistrationCloseDate")
+                    b.Property<DateTime>("RegCloseDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("RegLimit")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("RegOpenDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Status")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(3)
+                        .HasColumnType("nvarchar(3)");
 
                     b.HasKey("Id");
 
@@ -424,7 +484,8 @@ namespace BirdClubManagementSystem.Migrations
 
                     b.Property<string>("Placement")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(3)
+                        .HasColumnType("nvarchar(3)");
 
                     b.Property<int>("TournamentId")
                         .HasColumnType("int");
@@ -448,29 +509,34 @@ namespace BirdClubManagementSystem.Migrations
 
                     b.Property<string>("Address")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<DateTime>("JoinDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("LastLogin")
+                    b.Property<DateTime?>("LastLogin")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
                     b.Property<string>("Password")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(86)
+                        .HasColumnType("nvarchar(86)");
 
                     b.Property<string>("Phone")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(15)
+                        .HasColumnType("nvarchar(15)");
 
                     b.Property<byte[]>("ProfilePicture")
                         .IsRequired()
@@ -478,14 +544,16 @@ namespace BirdClubManagementSystem.Migrations
 
                     b.Property<string>("ResetPasswordCode")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(6)
+                        .HasColumnType("nvarchar(6)");
 
-                    b.Property<DateTime>("ResetPasswordRequestTime")
+                    b.Property<DateTime?>("ResetPasswordRequestTime")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Role")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(3)
+                        .HasColumnType("nvarchar(3)");
 
                     b.HasKey("Id");
 
@@ -621,7 +689,7 @@ namespace BirdClubManagementSystem.Migrations
                         .IsRequired();
 
                     b.HasOne("BirdClubManagementSystem.Models.Tournament", "Tournament")
-                        .WithMany()
+                        .WithMany("TournamentStandings")
                         .HasForeignKey("TournamentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -661,6 +729,8 @@ namespace BirdClubManagementSystem.Migrations
             modelBuilder.Entity("BirdClubManagementSystem.Models.Tournament", b =>
                 {
                     b.Navigation("TournamentRegistrations");
+
+                    b.Navigation("TournamentStandings");
                 });
 
             modelBuilder.Entity("BirdClubManagementSystem.Models.User", b =>
