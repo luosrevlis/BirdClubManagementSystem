@@ -39,7 +39,7 @@ namespace BirdClubManagementSystem.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create(FieldTrip fieldTrip)
         {
-            if (fieldTrip.Date < fieldTrip.RegCloseDate)
+            if (fieldTrip.StartDate < fieldTrip.RegCloseDate)
             {
                 TempData.Add("notification", "Date error!");
                 TempData.Add("error", "Event cannot take place before registration is closed!");
@@ -72,7 +72,7 @@ namespace BirdClubManagementSystem.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Edit(FieldTrip fieldTrip)
         {
-            if (fieldTrip.Date < fieldTrip.RegCloseDate)
+            if (fieldTrip.StartDate < fieldTrip.RegCloseDate)
             {
                 TempData.Add("notification", "Date error!");
                 TempData.Add("error", "Event cannot take place before registration is closed!");
@@ -86,7 +86,7 @@ namespace BirdClubManagementSystem.Controllers
                 return RedirectToAction("Index", "ClubEvents");
             }
             fieldTripInDb.Name = fieldTrip.Name;
-            fieldTripInDb.Date = fieldTrip.Date;
+            fieldTripInDb.StartDate = fieldTrip.StartDate;
             fieldTripInDb.RegCloseDate = fieldTrip.RegCloseDate;
             fieldTripInDb.Description = fieldTrip.Description;
             _dbContext.FieldTrips.Update(fieldTripInDb);
