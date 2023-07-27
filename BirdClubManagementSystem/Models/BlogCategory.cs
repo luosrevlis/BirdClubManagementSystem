@@ -4,7 +4,6 @@ namespace BirdClubManagementSystem.Models
 {
     public class BlogCategory
     {
-        [Key]
         public int Id { get; set; }
 
         [Required, MinLength(1), MaxLength(255)]

@@ -6,8 +6,10 @@ namespace BirdClubManagementSystem.Models
     {
         public int Id { get; set; }
 
+        [Required]
         public int UserId { get; set; }
 
+        [Required]
         public int MeetingId { get; set; }
 
         [Required]

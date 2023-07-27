@@ -4,7 +4,6 @@ namespace BirdClubManagementSystem.Models
 {
     public class Blog
     {
-        [Key]
         public int Id { get; set; }
 
         [Required]

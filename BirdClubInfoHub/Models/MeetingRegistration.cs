@@ -1,13 +1,18 @@
-﻿namespace BirdClubInfoHub.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace BirdClubInfoHub.Models
 {
     public class MeetingRegistration
     {
         public int Id { get; set; }
 
+        [Required]
         public int UserId { get; set; }
 
+        [Required]
         public int MeetingId { get; set; }
 
+        [Required]
         public DateTime DateCreated { get; set; } = DateTime.Now;
 
         public bool PaymentReceived { get; set; } = true;

@@ -1,14 +1,20 @@
-﻿namespace BirdClubInfoHub.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace BirdClubInfoHub.Models
 {
     public class Feedback
     {
         public int Id { get; set; }
 
+        [Required]
         public int UserId { get; set; }
 
-        public string Title { get; set; } = string.Empty;
+        [Required, MinLength(1), MaxLength(255)]
+        // TO-DO: fe check max
+        public string Title { get; set; } = "No title";
 
-        public string Contents { get; set; } = string.Empty;
+        [Required, MinLength(1), MaxLength(1000)]
+        public string Contents { get; set; } = "No content";
 
         public User User { get; set; } = new User();
     }

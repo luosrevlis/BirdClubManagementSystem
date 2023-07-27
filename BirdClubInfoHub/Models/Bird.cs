@@ -6,13 +6,15 @@ namespace BirdClubInfoHub.Models
     {
         public int Id { get; set; }
 
+        [Required]
         public int UserId { get; set; }
 
-        public string Name { get; set; } = string.Empty;
+        [Required, MinLength(1), MaxLength(255)]
+        public string Name { get; set; } = null!;
 
-        public string Description { get; set; } = string.Empty;
+        public string Description { get; set; } = "No description";
 
-        public string Species { get; set; } = string.Empty;
+        public string Species { get; set; } = "Unknown";
 
         public byte[] ProfilePicture { get; set; } = Array.Empty<byte>();
 

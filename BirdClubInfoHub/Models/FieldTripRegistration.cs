@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace BirdClubInfoHub.Models
 {
@@ -6,10 +6,13 @@ namespace BirdClubInfoHub.Models
     {
         public int Id { get; set; }
 
+        [Required]
         public int UserId { get; set; }
 
+        [Required]
         public int FieldTripId { get; set; }
 
+        [Required]
         public DateTime DateCreated { get; set; } = DateTime.Now;
 
         public bool PaymentReceived { get; set; } = false;
