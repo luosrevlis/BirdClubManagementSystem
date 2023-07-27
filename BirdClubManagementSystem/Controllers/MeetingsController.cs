@@ -39,7 +39,7 @@ namespace BirdClubManagementSystem.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create(Meeting meeting)
         {
-            if (meeting.Date < meeting.RegistrationCloseDate)
+            if (meeting.Date < meeting.RegCloseDate)
             {
                 TempData.Add("notification", "Date error!");
                 TempData.Add("error", "Event cannot take place before registration is closed!");
@@ -72,7 +72,7 @@ namespace BirdClubManagementSystem.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Edit(Meeting meeting)
         {
-            if (meeting.Date < meeting.RegistrationCloseDate)
+            if (meeting.Date < meeting.RegCloseDate)
             {
                 TempData.Add("notification", "Date error!");
                 TempData.Add("error", "Event cannot take place before registration is closed!");
@@ -87,7 +87,7 @@ namespace BirdClubManagementSystem.Controllers
             }
             meetingInDb.Name = meeting.Name;
             meetingInDb.Date = meeting.Date;
-            meetingInDb.RegistrationCloseDate = meeting.RegistrationCloseDate;
+            meetingInDb.RegCloseDate = meeting.RegCloseDate;
             meetingInDb.Description = meeting.Description;
             _dbContext.Meetings.Update(meetingInDb);
             _dbContext.SaveChanges();
