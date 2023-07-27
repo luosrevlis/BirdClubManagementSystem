@@ -6,8 +6,10 @@ namespace BirdClubManagementSystem.Models
     {
         public int Id { get; set; }
 
+        [Required]
         public int TournamentId { get; set; }
 
+        [Required]
         public int BirdId { get; set; }
 
         [Required, MinLength(3), MaxLength(3)]
