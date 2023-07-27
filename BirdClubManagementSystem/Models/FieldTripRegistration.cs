@@ -1,4 +1,6 @@
-﻿namespace BirdClubManagementSystem.Models
+﻿using Microsoft.Build.Framework;
+
+namespace BirdClubManagementSystem.Models
 {
     public class FieldTripRegistration
     {
@@ -8,6 +10,7 @@
 
         public int FieldTripId { get; set; }
 
+        [Required]
         public DateTime DateCreated { get; set; } = DateTime.Now;
 
         public bool PaymentReceived { get; set; } = false;

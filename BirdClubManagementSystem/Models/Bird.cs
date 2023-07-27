@@ -1,4 +1,6 @@
-﻿namespace BirdClubManagementSystem.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace BirdClubManagementSystem.Models
 {
     public class Bird
     {
