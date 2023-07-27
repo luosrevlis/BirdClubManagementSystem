@@ -21,10 +21,10 @@ namespace BirdClubManagementSystem.Models
         public string Title { get; set; } = "No title";
 
         [Required, MinLength(1)]
-        public string Contents { get; set; } = string.Empty;
+        public string Contents { get; set; } = "No content";
 
         [Required, MinLength(3), MaxLength(3)]
-        public string Status { get; set; } = string.Empty;
+        public string Status { get; set; } = null!;
 
         public byte[] Thumbnail { get; set; } = Array.Empty<byte>();
 

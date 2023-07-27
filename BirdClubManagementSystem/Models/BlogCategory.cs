@@ -7,8 +7,8 @@ namespace BirdClubManagementSystem.Models
         [Key]
         public int Id { get; set; }
 
-        [Required, MinLength(1), MaxLength(100)]
-        public string Name { get; set; } = string.Empty;
+        [Required, MinLength(1), MaxLength(255)]
+        public string Name { get; set; } = null!;
 
         public ICollection<Blog> Blogs { get; set; } = new List<Blog>();
     }

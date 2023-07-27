@@ -10,8 +10,8 @@ namespace BirdClubManagementSystem.Models
         [Required]
         public int UserId { get; set; }
 
-        [Required, MinLength(1), MaxLength(50)]
-        public string Name { get; set; } = string.Empty;
+        [Required, MinLength(1), MaxLength(255)]
+        public string Name { get; set; } = null!;
 
         public string Description { get; set; } = "No description";
 

@@ -15,7 +15,7 @@ namespace BirdClubManagementSystem.Models
 
         [Required, MinLength(1), MaxLength(1000)]
         // TO-DO: fe check max
-        public string Contents { get; set; } = string.Empty;
+        public string Contents { get; set; } = "No content";
 
         [Required]
         // TO-DO: be assign this field when submit
