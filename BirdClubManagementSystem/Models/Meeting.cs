@@ -1,20 +1,36 @@
-﻿namespace BirdClubManagementSystem.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace BirdClubManagementSystem.Models
 {
     public class Meeting : IClubEvent
     {
         public int Id { get; set; }
 
-        public string Name { get; set; } = string.Empty;
+        [Required, MinLength(1), MaxLength(255)]
+        public string Name { get; set; } = null!;
 
-        public DateTime RegistrationCloseDate { get; set; }
+        public DateTime RegOpenDate { get; set; }
 
-        public DateTime Date { get; set; }
+        public DateTime RegCloseDate { get; set; }
 
-        public string Description { get; set; } = string.Empty;
+        public DateTime StartDate { get; set; }
 
+        public DateTime ExpectedEndDate { get; set; }
+
+        [Required, MinLength(1), MaxLength(255)]
+        public string Address { get; set; } = null!;
+
+        [Required, Range(1, 200)]
+        public int RegLimit { get; set; }
+
+        [Required, MinLength(1)]
+        public string Description { get; set; } = null!;
+
+        [Required]
         public int Fee { get; set; } = 0;
 
-        public string Status { get; set; } = string.Empty;
+        [Required, MinLength(3), MaxLength(3)]
+        public string Status { get; set; } = null!;
 
         public string Highlights { get; set; } = string.Empty;
 

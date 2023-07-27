@@ -14,7 +14,7 @@ namespace BirdClubManagementSystem.Models
         [Required, MinLength(84), MaxLength(86)]
         public string Password { get; set; } = null!;
 
-        [Required, MinLength(1), MaxLength(100)]
+        [Required, MinLength(1), MaxLength(255)]
         public string Name { get; set; } = null!;
 
         [Required, MinLength(1), MaxLength(255)] 

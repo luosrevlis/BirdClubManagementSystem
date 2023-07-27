@@ -71,6 +71,10 @@ namespace BirdClubInfoHub.Controllers
             // open, logged in, eligible birds
             ViewBag.Status = "Available";
             SelectList birdOptions = new(birds, nameof(Bird.Id), nameof(Bird.Name));
+
+            // kiểm bn chim đk chưa trả tiền
+            // nếu >2, viewbag.status = ...
+
             ViewBag.BirdOptions = birdOptions;
             return View(tournament);
         }
