@@ -129,7 +129,7 @@ namespace BirdClubManagementSystem.Controllers
                 TempData.Add("error", "");
                 return RedirectToAction("Index", "ClubEvents");
             }
-            tournament.Status = "Registrtion Closed";
+            tournament.Status = "Registration Closed";
             _dbContext.Tournaments.Update(tournament);
             _dbContext.SaveChanges();
 
