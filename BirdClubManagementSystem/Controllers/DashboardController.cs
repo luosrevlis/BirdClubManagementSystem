@@ -74,7 +74,9 @@ namespace BirdClubManagementSystem.Controllers
 
         private double GetActiveRate(int days)
         {
-            int activeCount = _dbContext.Users.Count(user => user.LastLogin.AddDays(days) >= DateTime.Now);
+            int activeCount = _dbContext.Users
+                .Select(user => user.LastLogin ?? new DateTime())
+                .Count(dt => dt.AddDays(days) >= DateTime.Now);
             int totalCount = _dbContext.Users.Count();
             return activeCount * 100.0 / totalCount;
         }

@@ -1,4 +1,6 @@
-﻿namespace BirdClubManagementSystem.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace BirdClubManagementSystem.Models
 {
     public class MeetingRegistration
     {
@@ -8,6 +10,7 @@
 
         public int MeetingId { get; set; }
 
+        [Required]
         public DateTime DateCreated { get; set; } = DateTime.Now;
 
         public bool PaymentReceived { get; set; } = true;
