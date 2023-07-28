@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BirdClubInfoHub.Data;
 using BirdClubInfoHub.Filters;
+using BirdClubInfoHub.Models.DTOs;
 using BirdClubInfoHub.Models.Entities;
 using BirdClubInfoHub.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -14,6 +15,7 @@ namespace BirdClubInfoHub.Controllers
         private readonly BcmsDbContext _dbContext;
         private readonly IVnPayService _vnPayService;
         private readonly IMapper _mapper;
+        private const int PageSize = 10;
 
         public TournamentRegistrationsController(
             BcmsDbContext dbContext,
@@ -25,7 +27,7 @@ namespace BirdClubInfoHub.Controllers
             _mapper = mapper;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(int page = 1)
         {
             int? userId = HttpContext.Session.GetInt32("USER_ID");
             User? user = _dbContext.Users.Find(userId);
@@ -33,14 +35,17 @@ namespace BirdClubInfoHub.Controllers
             {
                 return RedirectToAction("Index", "Login");
             }
-            List<TournamentRegistration> registrations = _dbContext.TournamentRegistrations
+            List<TournamentRegistrationDTO> registrations = _dbContext.TournamentRegistrations
                 .Include(tr => tr.Bird)
                 .ThenInclude(bird => bird.User)
                 .Where(tr => tr.Bird.UserId == userId)
                 .Include(tr => tr.Tournament)
+                .Select(tr => _mapper.Map<TournamentRegistrationDTO>(tr))
                 .ToList();
-            registrations.RemoveAll(tr => tr.Tournament.Status != "Open" && tr.Tournament.Status != "Registration Closed");
-            return View(registrations);
+            //registrations.RemoveAll(tr => tr.Tournament.Status != "Open" && tr.Tournament.Status != "Registration Closed");
+            return View(registrations
+                .Skip((page - 1) * PageSize)
+                .Take(PageSize));
         }
 
         public IActionResult Register(int id, int birdId)

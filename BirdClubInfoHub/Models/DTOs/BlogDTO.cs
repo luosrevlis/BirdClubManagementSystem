@@ -10,5 +10,7 @@
         public string Status { get; set; } = null!;
         public byte[] Thumbnail { get; set; } = Array.Empty<byte>();
         public UserDTO User { get; set; } = null!;
+        public BlogCategoryDTO Category { get; set; } = null!;
+        public List<CommentDTO> Comments { get; set; } = new List<CommentDTO>();
     }
 }

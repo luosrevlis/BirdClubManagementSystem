@@ -12,6 +12,7 @@ namespace BirdClubInfoHub.Controllers
     {
         private readonly BcmsDbContext _dbContext;
         private readonly IMapper _mapper;
+        private const int PageSize = 10;
 
         public MeetingRegistrationsController(
             BcmsDbContext dbContext,
@@ -21,7 +22,7 @@ namespace BirdClubInfoHub.Controllers
             _mapper = mapper;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(int page = 1)
         {
             int? userId = HttpContext.Session.GetInt32("USER_ID");
             User? user = _dbContext.Users.Find(userId);
@@ -35,7 +36,9 @@ namespace BirdClubInfoHub.Controllers
                 .Include(mr => mr.Meeting)
                 .ToList();
             registrations.RemoveAll(mr => mr.Meeting.Status != "Open" && mr.Meeting.Status != "Registration Closed");
-            return View(registrations);
+            return View(registrations
+                .Skip((page - 1) * PageSize)
+                .Take(PageSize);
         }
 
         public IActionResult Register(int id)

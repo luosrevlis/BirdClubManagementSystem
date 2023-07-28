@@ -1,6 +1,6 @@
 ﻿namespace BirdClubInfoHub.Models.DTOs
 {
-    public class FieldTripDTO
+    public class FieldTripDTO : IClubEventDTO
     {
         public int Id { get; set; }
         public string Name { get; set; } = null!;

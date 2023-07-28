@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BirdClubInfoHub.Data;
 using BirdClubInfoHub.Filters;
+using BirdClubInfoHub.Models.DTOs;
 using BirdClubInfoHub.Models.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -45,7 +46,7 @@ namespace BirdClubInfoHub.Controllers
             {
                 return RedirectToAction("Index", "Login");
             }
-            return View(user);
+            return View(_mapper.Map<UserDTO>(user));
         }
 
         // GET: ProfileController/Edit/5
@@ -58,7 +59,7 @@ namespace BirdClubInfoHub.Controllers
             {
                 return RedirectToAction("Index", "Login");
             }
-            return View(user);
+            return View(_mapper.Map<UserDTO>(user));
         }
 
         // POST: ProfileController/Edit/5
@@ -92,7 +93,7 @@ namespace BirdClubInfoHub.Controllers
             {
                 return RedirectToAction("Index", "Login");
             }
-            return View(user);
+            return View(_mapper.Map<UserDTO>(user));
         }
 
         // POST: ProfileController/ChangeProfilePicture/5
