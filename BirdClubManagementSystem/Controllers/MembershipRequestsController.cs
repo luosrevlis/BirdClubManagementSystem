@@ -1,4 +1,5 @@
-﻿using BirdClubManagementSystem.Data;
+﻿using AutoMapper;
+using BirdClubManagementSystem.Data;
 using BirdClubManagementSystem.Filters;
 using BirdClubManagementSystem.Models.Entities;
 using FluentEmail.Core;
@@ -11,12 +12,14 @@ namespace BirdClubManagementSystem.Controllers
     public class MembershipRequestsController : Controller
     {
         private readonly BcmsDbContext _dbContext;
+        private readonly IMapper _mapper;
         private readonly IConfiguration _configuration;
         private readonly IFluentEmailFactory _emailFactory;
 
-        public MembershipRequestsController(BcmsDbContext dbContext, IConfiguration configuration, IFluentEmailFactory emailFactory)
+        public MembershipRequestsController(BcmsDbContext dbContext, IMapper mapper, IConfiguration configuration, IFluentEmailFactory emailFactory)
         {
             _dbContext = dbContext;
+            _mapper = mapper;
             _configuration = configuration;
             _emailFactory = emailFactory;
         }

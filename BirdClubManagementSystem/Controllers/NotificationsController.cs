@@ -1,4 +1,5 @@
-﻿using BirdClubManagementSystem.Data;
+﻿using AutoMapper;
+using BirdClubManagementSystem.Data;
 using BirdClubManagementSystem.Filters;
 using BirdClubManagementSystem.Models.Entities;
 using FluentEmail.Core;
@@ -11,11 +12,13 @@ namespace BirdClubManagementSystem.Controllers
     public class NotificationsController : Controller
     {
         private readonly BcmsDbContext _dbContext;
+        private readonly IMapper _mapper;
         private readonly IFluentEmailFactory _emailFactory;
 
-        public NotificationsController(BcmsDbContext dbContext, IFluentEmailFactory emailFactory)
+        public NotificationsController(BcmsDbContext dbContext, IMapper mapper, IFluentEmailFactory emailFactory)
         {
             _dbContext = dbContext;
+            _mapper = mapper;
             _emailFactory = emailFactory;
         }
 

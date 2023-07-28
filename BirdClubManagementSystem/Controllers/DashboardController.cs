@@ -2,16 +2,19 @@
 using BirdClubManagementSystem.Data;
 using Microsoft.EntityFrameworkCore;
 using BirdClubManagementSystem.Models.Entities;
+using AutoMapper;
 
 namespace BirdClubManagementSystem.Controllers
 {
     public class DashboardController : Controller
     {
         private readonly BcmsDbContext _dbContext;
+        private readonly IMapper _mapper;
 
-        public DashboardController(BcmsDbContext dbContext)
+        public DashboardController(BcmsDbContext dbContext, IMapper mapper)
         {
             _dbContext = dbContext;
+            _mapper = mapper;
         }
 
         public IActionResult Index()

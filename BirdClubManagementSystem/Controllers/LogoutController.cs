@@ -6,9 +6,7 @@ namespace BirdClubManagementSystem.Controllers
     {
         public IActionResult Index()
         {
-            HttpContext.Session.Remove("USER_ID");
-            HttpContext.Session.Remove("USER_NAME");
-            HttpContext.Session.Remove("USER_ROLE");
+            HttpContext.Session.Clear();
             return RedirectToAction("Index", "Login");
         }
     }

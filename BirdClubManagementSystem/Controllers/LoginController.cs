@@ -1,4 +1,5 @@
-﻿using BirdClubManagementSystem.Data;
+﻿using AutoMapper;
+using BirdClubManagementSystem.Data;
 using BirdClubManagementSystem.Models.Entities;
 using FluentEmail.Core;
 using Microsoft.AspNetCore.Identity;
@@ -12,11 +13,13 @@ namespace BirdClubManagementSystem.Controllers
     public class LoginController : Controller
     {
         private readonly BcmsDbContext _dbContext;
+        private readonly IMapper _mapper;
         private readonly IFluentEmailFactory _emailFactory;
 
-        public LoginController(BcmsDbContext dbContext, IFluentEmailFactory emailFactory)
+        public LoginController(BcmsDbContext dbContext, IMapper mapper, IFluentEmailFactory emailFactory)
         {
             _dbContext = dbContext;
+            _mapper = mapper;
             _emailFactory = emailFactory;
         }
 
