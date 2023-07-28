@@ -1,4 +1,5 @@
-﻿using BirdClubInfoHub.Data;
+﻿using AutoMapper;
+using BirdClubInfoHub.Data;
 using BirdClubInfoHub.Filters;
 using BirdClubInfoHub.Models.Entities;
 using BirdClubInfoHub.Services;
@@ -12,11 +13,16 @@ namespace BirdClubInfoHub.Controllers
     {
         private readonly BcmsDbContext _dbContext;
         private readonly IVnPayService _vnPayService;
+        private readonly IMapper _mapper;
 
-        public TournamentRegistrationsController(BcmsDbContext dbContext, IVnPayService vnPayService)
+        public TournamentRegistrationsController(
+            BcmsDbContext dbContext,
+            IVnPayService vnPayService,
+            IMapper mapper)
         {
             _dbContext = dbContext;
             _vnPayService = vnPayService;
+            _mapper = mapper;
         }
 
         public IActionResult Index()

@@ -6,7 +6,7 @@
         public const string Accepted = "ACC";
         public const string Rejected = "REJ";
 
-        public static string Convert(String code)
+        public static string Convert(string code)
         {
             return code switch
             {

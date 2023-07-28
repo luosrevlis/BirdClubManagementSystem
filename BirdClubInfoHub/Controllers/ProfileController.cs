@@ -1,4 +1,5 @@
-﻿using BirdClubInfoHub.Data;
+﻿using AutoMapper;
+using BirdClubInfoHub.Data;
 using BirdClubInfoHub.Filters;
 using BirdClubInfoHub.Models.Entities;
 using Microsoft.AspNetCore.Identity;
@@ -9,10 +10,14 @@ namespace BirdClubInfoHub.Controllers
     public class ProfileController : Controller
     {
         private readonly BcmsDbContext _dbContext;
+        private readonly IMapper _mapper;
 
-        public ProfileController(BcmsDbContext dbContext)
+        public ProfileController(
+            BcmsDbContext dbContext,
+            IMapper mapper)
         {
             _dbContext = dbContext;
+            _mapper = mapper;
         }
 
         public ActionResult GetImageFromBytes(int id)

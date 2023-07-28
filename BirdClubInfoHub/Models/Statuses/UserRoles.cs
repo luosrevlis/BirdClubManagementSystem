@@ -6,7 +6,7 @@
         public const string Member = "MEM";
         public const string Staff = "STF";
 
-        public static string Convert(String code)
+        public static string Convert(string code)
         {
             return code switch
             {

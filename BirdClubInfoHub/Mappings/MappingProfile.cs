@@ -9,30 +9,57 @@ namespace BirdClubInfoHub.Mappings
     {
         public MappingProfile()
         {
-            CreateMap<Bird, BirdDTO>();
+            CreateMap<Bird, BirdDTO>()
+                .ReverseMap();
+
             CreateMap<Blog, BlogDTO>()
                 .ForMember(dest => dest.BlogCategory,
                     src => src.MapFrom(src => src.BlogCategory.Name));
-            CreateMap<BlogCategory, BlogCategoryDTO>();
+            CreateMap<BlogDTO, Blog>();
+
+            CreateMap<BlogCategory, BlogCategoryDTO>()
+                .ReverseMap();
+
             CreateMap<Comment, CommentDTO>()
                 .ForMember(dest => dest.ProfilePicture,
                     src => src.MapFrom(src => src.User.ProfilePicture));
-            CreateMap<Feedback, FeedbackDTO>();
+            CreateMap<CommentDTO, Comment>();
+
+            CreateMap<Feedback, FeedbackDTO>()
+                .ReverseMap();
+
             CreateMap<FieldTrip, FieldTripDTO>()
                 .ForMember(dest => dest.Status,
                     src => src.MapFrom(src => EventStatuses.Convert(src.Status)));
-            CreateMap<FieldTripRegistration, FieldTripRegistrationDTO>();
-            CreateMap<LoginCredential, LoginCredentialDTO>();
+            CreateMap<FieldTripDTO, FieldTrip>();
+
+            CreateMap<FieldTripRegistration, FieldTripRegistrationDTO>()
+                .ReverseMap();
+
+            CreateMap<LoginCredential, LoginCredentialDTO>()
+                .ReverseMap();
+
             CreateMap<Meeting, MeetingDTO>()
                 .ForMember(dest => dest.Status,
                     src => src.MapFrom(src => EventStatuses.Convert(src.Status)));
-            CreateMap<MeetingRegistration, MeetingRegistrationDTO>();
-            CreateMap<MembershipRequest, MembershipRequestDTO>();
+            CreateMap<MeetingDTO, Meeting>();
+
+            CreateMap<MeetingRegistration, MeetingRegistrationDTO>()
+                .ReverseMap();
+
+            CreateMap<MembershipRequest, MembershipRequestDTO>()
+                .ReverseMap();
+
             CreateMap<Tournament, TournamentDTO>()
                 .ForMember(dest => dest.Status,
                     src => src.MapFrom(src => EventStatuses.Convert(src.Status)));
-            CreateMap<TournamentRegistration, TournamentRegistrationDTO>();
-            CreateMap<TournamentStanding, TournamentStandingDTO>();
+            CreateMap<TournamentDTO, Tournament>();
+
+            CreateMap<TournamentRegistration, TournamentRegistrationDTO>()
+                .ReverseMap();
+
+            CreateMap<TournamentStanding, TournamentStandingDTO>()
+                .ReverseMap();
         }
     }
 }
