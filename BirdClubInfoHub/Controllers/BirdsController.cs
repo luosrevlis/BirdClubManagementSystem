@@ -13,6 +13,7 @@ namespace BirdClubInfoHub.Controllers
     {
         private readonly BcmsDbContext _dbContext;
         private readonly IMapper _mapper;
+        private const int PageSize = 10;
 
         public BirdsController(BcmsDbContext dbContext, IMapper mapper)
         {
@@ -42,7 +43,10 @@ namespace BirdClubInfoHub.Controllers
             int? userId = HttpContext.Session.GetInt32("USER_ID");
             List<BirdDTO> birds = _dbContext.Birds
                 .Where(bird => bird.UserId == userId)
-                .Select(bird => _mapper.Map<BirdDTO>(bird)).ToList();
+                .Skip((page - 1) * PageSize)
+                .Take(PageSize)
+                .Select(bird => _mapper.Map<BirdDTO>(bird))
+                .ToList();
             return View(birds);
         }
 
@@ -113,7 +117,7 @@ namespace BirdClubInfoHub.Controllers
                 TempData.Add("error", "");
                 return RedirectToAction("Index");
             }
-            return View(bird);
+            return View(_mapper.Map<BirdDTO>(bird));
         }
 
         // POST: BirdsController/Edit/5

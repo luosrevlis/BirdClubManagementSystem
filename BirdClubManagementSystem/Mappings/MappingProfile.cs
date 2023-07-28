@@ -33,6 +33,10 @@ namespace BirdClubManagementSystem.Mappings
                     src => src.MapFrom(src => EventStatuses.Convert(src.Status)));
             CreateMap<TournamentRegistration, TournamentRegistrationDTO>();
             CreateMap<TournamentStanding, TournamentStandingDTO>();
+            CreateMap<User, UserDTO>()
+                .ForMember(dest => dest.Role,
+                    src => src.MapFrom(src => UserRoles.Convert(src.Role)));
+            CreateMap<UserDTO, User>();
         }
     }
 }
