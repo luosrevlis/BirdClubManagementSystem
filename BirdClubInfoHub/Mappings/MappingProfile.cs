@@ -21,8 +21,7 @@ namespace BirdClubInfoHub.Mappings
                 .ReverseMap();
 
             CreateMap<Comment, CommentDTO>()
-                .ForMember(dest => dest.ProfilePicture,
-                    src => src.MapFrom(src => src.User.ProfilePicture));
+                .ReverseMap();
             CreateMap<CommentDTO, Comment>();
 
             CreateMap<Feedback, FeedbackDTO>()
@@ -60,6 +59,11 @@ namespace BirdClubInfoHub.Mappings
 
             CreateMap<TournamentStanding, TournamentStandingDTO>()
                 .ReverseMap();
+
+            CreateMap<User, UserDTO>()
+                .ForMember(dest => dest.Role,
+                    src => src.MapFrom(src => UserRoles.Convert(src.Role)));
+            CreateMap<UserDTO, User>();
         }
     }
 }

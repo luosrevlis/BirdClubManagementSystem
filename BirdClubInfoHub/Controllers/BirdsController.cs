@@ -37,7 +37,7 @@ namespace BirdClubInfoHub.Controllers
 
         // GET: BirdsController
         [Authenticated]
-        public ActionResult Index()
+        public ActionResult Index(int page = 1)
         {
             int? userId = HttpContext.Session.GetInt32("USER_ID");
             List<BirdDTO> birds = _dbContext.Birds
