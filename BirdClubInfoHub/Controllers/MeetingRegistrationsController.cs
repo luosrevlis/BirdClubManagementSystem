@@ -38,7 +38,7 @@ namespace BirdClubInfoHub.Controllers
             registrations.RemoveAll(mr => mr.Meeting.Status != "Open" && mr.Meeting.Status != "Registration Closed");
             return View(registrations
                 .Skip((page - 1) * PageSize)
-                .Take(PageSize);
+                .Take(PageSize));
         }
 
         public IActionResult Register(int id)
