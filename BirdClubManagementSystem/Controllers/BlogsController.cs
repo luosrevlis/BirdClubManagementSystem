@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BirdClubManagementSystem.Data;
 using BirdClubManagementSystem.Filters;
+using BirdClubManagementSystem.Models.DTOs;
 using BirdClubManagementSystem.Models.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -37,10 +38,11 @@ namespace BirdClubManagementSystem.Controllers
 
         public IActionResult Index()
         {
-            List<Blog> blogs = _dbContext.Blogs
+            List<BlogDTO> blogs = _dbContext.Blogs
                 .Include(blog => blog.User)
                 .Include(blog => blog.BlogCategory)
                 .OrderByDescending(blog => blog.DateCreated)
+                .Select(blog => _mapper.Map<BlogDTO>(blog))
                 .ToList();
             return View(blogs);
         }
