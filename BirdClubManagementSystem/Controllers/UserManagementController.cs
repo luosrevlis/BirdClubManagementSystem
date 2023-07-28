@@ -1,4 +1,5 @@
-﻿using BirdClubManagementSystem.Data;
+﻿using AutoMapper;
+using BirdClubManagementSystem.Data;
 using BirdClubManagementSystem.Filters;
 using BirdClubManagementSystem.Models.Entities;
 using Microsoft.AspNetCore.Identity;
@@ -10,10 +11,12 @@ namespace BirdClubManagementSystem.Controllers
     public class UserManagementController : Controller
     {
         private readonly BcmsDbContext _dbContext;
-        
-        public UserManagementController(BcmsDbContext dbContext)
+        private readonly IMapper _mapper;
+
+        public UserManagementController(BcmsDbContext dbContext, IMapper mapper)
         {
             _dbContext = dbContext;
+            _mapper = mapper;
         }
 
         // GET: UserManagementController

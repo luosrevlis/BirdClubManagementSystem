@@ -1,4 +1,5 @@
-﻿using BirdClubManagementSystem.Data;
+﻿using AutoMapper;
+using BirdClubManagementSystem.Data;
 using BirdClubManagementSystem.Filters;
 using BirdClubManagementSystem.Models.Entities;
 using Microsoft.AspNetCore.Mvc;
@@ -9,10 +10,12 @@ namespace BirdClubManagementSystem.Controllers
     public class TournamentsController : Controller
     {
         private readonly BcmsDbContext _dbContext;
+        private readonly IMapper _mapper;
 
-        public TournamentsController(BcmsDbContext dbContext)
+        public TournamentsController(BcmsDbContext dbContext, IMapper mapper)
         {
             _dbContext = dbContext;
+            _mapper = mapper;
         }
 
         // GET: TournamentsController/Details/5
