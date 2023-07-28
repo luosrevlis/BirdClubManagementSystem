@@ -1,6 +1,7 @@
-﻿using BirdClubManagementSystem.Data;
+﻿using AutoMapper;
+using BirdClubManagementSystem.Data;
 using BirdClubManagementSystem.Filters;
-using BirdClubManagementSystem.Models;
+using BirdClubManagementSystem.Models.Entities;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BirdClubManagementSystem.Controllers
@@ -9,10 +10,12 @@ namespace BirdClubManagementSystem.Controllers
     public class FieldTripsController : Controller
     {
         private readonly BcmsDbContext _dbContext;
+        private readonly IMapper _mapper;
 
-        public FieldTripsController(BcmsDbContext dbContext)
+        public FieldTripsController(BcmsDbContext dbContext, IMapper mapper)
         {
             _dbContext = dbContext;
+            _mapper = mapper;
         }
 
         // GET: FieldTripsController/Details/5
@@ -39,7 +42,7 @@ namespace BirdClubManagementSystem.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create(FieldTrip fieldTrip)
         {
-            if (fieldTrip.Date < fieldTrip.RegistrationCloseDate)
+            if (fieldTrip.StartDate < fieldTrip.RegCloseDate)
             {
                 TempData.Add("notification", "Date error!");
                 TempData.Add("error", "Event cannot take place before registration is closed!");
@@ -72,7 +75,7 @@ namespace BirdClubManagementSystem.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Edit(FieldTrip fieldTrip)
         {
-            if (fieldTrip.Date < fieldTrip.RegistrationCloseDate)
+            if (fieldTrip.StartDate < fieldTrip.RegCloseDate)
             {
                 TempData.Add("notification", "Date error!");
                 TempData.Add("error", "Event cannot take place before registration is closed!");
@@ -86,8 +89,8 @@ namespace BirdClubManagementSystem.Controllers
                 return RedirectToAction("Index", "ClubEvents");
             }
             fieldTripInDb.Name = fieldTrip.Name;
-            fieldTripInDb.Date = fieldTrip.Date;
-            fieldTripInDb.RegistrationCloseDate = fieldTrip.RegistrationCloseDate;
+            fieldTripInDb.StartDate = fieldTrip.StartDate;
+            fieldTripInDb.RegCloseDate = fieldTrip.RegCloseDate;
             fieldTripInDb.Description = fieldTrip.Description;
             _dbContext.FieldTrips.Update(fieldTripInDb);
             _dbContext.SaveChanges();

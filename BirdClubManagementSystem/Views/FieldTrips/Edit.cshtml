@@ -26,7 +26,7 @@
 
             <div class="input-box date-field">
                 <label>Date and time of field trip</label>
-                <input asp-for="Date" placeholder="Enter date and time" required class="date" />
+                <input asp-for="StartDate" placeholder="Enter date and time" required class="date" />
                 <span class="error date-error">
                     <img src="~/img/resetpass/alert-circle.svg" alt="">
                     <p class="error-text">Event cannot take place before registration is closed!</p>
@@ -44,7 +44,7 @@
 
                 <div class="input-box reg-date-field">
                     <label>Registration close date</label>
-                    <input asp-for="RegistrationCloseDate" placeholder="Enter close date" required class="reg-date" />
+                    <input asp-for="RegCloseDate" placeholder="Enter close date" required class="reg-date" />
                 </div>
 
                 <div class="input-box fee-field">

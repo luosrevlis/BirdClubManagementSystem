@@ -1,4 +1,4 @@
-﻿using BirdClubInfoHub.Models;
+﻿using BirdClubInfoHub.Models.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace BirdClubInfoHub.Data

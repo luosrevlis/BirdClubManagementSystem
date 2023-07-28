@@ -1,5 +1,5 @@
 ﻿using BirdClubManagementSystem.Filters;
-using BirdClubManagementSystem.Models;
+using BirdClubManagementSystem.Models.Entities;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 

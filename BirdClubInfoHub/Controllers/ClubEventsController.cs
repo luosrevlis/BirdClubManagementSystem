@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using BirdClubInfoHub.Models;
 using BirdClubInfoHub.Data;
+using BirdClubInfoHub.Models.Entities;
 
 namespace BirdClubInfoHub.Controllers
 {

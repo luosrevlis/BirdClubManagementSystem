@@ -1,17 +1,20 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using BirdClubManagementSystem.Models;
 using BirdClubManagementSystem.Data;
 using Microsoft.EntityFrameworkCore;
+using BirdClubManagementSystem.Models.Entities;
+using AutoMapper;
 
 namespace BirdClubManagementSystem.Controllers
 {
     public class DashboardController : Controller
     {
         private readonly BcmsDbContext _dbContext;
+        private readonly IMapper _mapper;
 
-        public DashboardController(BcmsDbContext dbContext)
+        public DashboardController(BcmsDbContext dbContext, IMapper mapper)
         {
             _dbContext = dbContext;
+            _mapper = mapper;
         }
 
         public IActionResult Index()
@@ -42,9 +45,9 @@ namespace BirdClubManagementSystem.Controllers
 
         private int GetHostedEvents(int days)
         {
-            int fieldTripCount = _dbContext.FieldTrips.Count(ft => ft.Date.AddDays(days) >= DateTime.Now);
-            int meetingCount = _dbContext.Meetings.Count(ft => ft.Date.AddDays(days) >= DateTime.Now);
-            int tournamentCount = _dbContext.Tournaments.Count(ft => ft.Date.AddDays(days) >= DateTime.Now);
+            int fieldTripCount = _dbContext.FieldTrips.Count(ft => ft.StartDate.AddDays(days) >= DateTime.Now);
+            int meetingCount = _dbContext.Meetings.Count(ft => ft.StartDate.AddDays(days) >= DateTime.Now);
+            int tournamentCount = _dbContext.Tournaments.Count(ft => ft.StartDate.AddDays(days) >= DateTime.Now);
             return fieldTripCount + meetingCount + tournamentCount;
         }
 
@@ -52,7 +55,7 @@ namespace BirdClubManagementSystem.Controllers
         {
             long revenue = 0;
             List<FieldTrip> fieldTrips = _dbContext.FieldTrips
-                .Where(ft => ft.Date.AddDays(days) >= DateTime.Now)
+                .Where(ft => ft.StartDate.AddDays(days) >= DateTime.Now)
                 .ToList();
             foreach (FieldTrip fieldTrip in fieldTrips)
             {
@@ -61,7 +64,7 @@ namespace BirdClubManagementSystem.Controllers
                 revenue += regCount * fieldTrip.Fee;
             }
             List<Tournament> tournaments = _dbContext.Tournaments
-                .Where(t => t.Date.AddDays(days) >= DateTime.Now)
+                .Where(t => t.StartDate.AddDays(days) >= DateTime.Now)
                 .ToList();
             foreach (Tournament tournament in tournaments)
             {
@@ -74,7 +77,9 @@ namespace BirdClubManagementSystem.Controllers
 
         private double GetActiveRate(int days)
         {
-            int activeCount = _dbContext.Users.Count(user => user.LastLogin.AddDays(days) >= DateTime.Now);
+            int activeCount = _dbContext.Users
+                .Select(user => user.LastLogin ?? new DateTime())
+                .Count(dt => dt.AddDays(days) >= DateTime.Now);
             int totalCount = _dbContext.Users.Count();
             return activeCount * 100.0 / totalCount;
         }

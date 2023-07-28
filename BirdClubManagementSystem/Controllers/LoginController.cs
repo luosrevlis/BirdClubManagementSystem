@@ -1,5 +1,6 @@
-﻿using BirdClubManagementSystem.Data;
-using BirdClubManagementSystem.Models;
+﻿using AutoMapper;
+using BirdClubManagementSystem.Data;
+using BirdClubManagementSystem.Models.Entities;
 using FluentEmail.Core;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -12,11 +13,13 @@ namespace BirdClubManagementSystem.Controllers
     public class LoginController : Controller
     {
         private readonly BcmsDbContext _dbContext;
+        private readonly IMapper _mapper;
         private readonly IFluentEmailFactory _emailFactory;
 
-        public LoginController(BcmsDbContext dbContext, IFluentEmailFactory emailFactory)
+        public LoginController(BcmsDbContext dbContext, IMapper mapper, IFluentEmailFactory emailFactory)
         {
             _dbContext = dbContext;
+            _mapper = mapper;
             _emailFactory = emailFactory;
         }
 
@@ -119,7 +122,8 @@ namespace BirdClubManagementSystem.Controllers
                 TempData.Add("error", "");
                 return RedirectToAction("Index");
             }
-            if (DateTime.Now > user.ResetPasswordRequestTime.AddMinutes(30))
+            DateTime time = user.ResetPasswordRequestTime ?? new DateTime();
+            if (DateTime.Now > time.AddMinutes(30))
             {
                 TempData.Add("notification", "Verification code has expired!");
                 TempData.Add("error", "");

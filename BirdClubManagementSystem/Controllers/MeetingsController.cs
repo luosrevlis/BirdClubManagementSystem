@@ -1,6 +1,7 @@
-﻿using BirdClubManagementSystem.Data;
+﻿using AutoMapper;
+using BirdClubManagementSystem.Data;
 using BirdClubManagementSystem.Filters;
-using BirdClubManagementSystem.Models;
+using BirdClubManagementSystem.Models.Entities;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BirdClubManagementSystem.Controllers
@@ -9,10 +10,12 @@ namespace BirdClubManagementSystem.Controllers
     public class MeetingsController : Controller
     {
         private readonly BcmsDbContext _dbContext;
+        private readonly IMapper _mapper;
 
-        public MeetingsController(BcmsDbContext dbContext)
+        public MeetingsController(BcmsDbContext dbContext, IMapper mapper)
         {
             _dbContext = dbContext;
+            _mapper = mapper;
         }
 
         // GET: MeetingsController/Details/5
@@ -39,7 +42,7 @@ namespace BirdClubManagementSystem.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create(Meeting meeting)
         {
-            if (meeting.Date < meeting.RegistrationCloseDate)
+            if (meeting.StartDate < meeting.RegCloseDate)
             {
                 TempData.Add("notification", "Date error!");
                 TempData.Add("error", "Event cannot take place before registration is closed!");
@@ -72,7 +75,7 @@ namespace BirdClubManagementSystem.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Edit(Meeting meeting)
         {
-            if (meeting.Date < meeting.RegistrationCloseDate)
+            if (meeting.StartDate < meeting.RegCloseDate)
             {
                 TempData.Add("notification", "Date error!");
                 TempData.Add("error", "Event cannot take place before registration is closed!");
@@ -86,8 +89,8 @@ namespace BirdClubManagementSystem.Controllers
                 return RedirectToAction("Index", "ClubEvents");
             }
             meetingInDb.Name = meeting.Name;
-            meetingInDb.Date = meeting.Date;
-            meetingInDb.RegistrationCloseDate = meeting.RegistrationCloseDate;
+            meetingInDb.StartDate = meeting.StartDate;
+            meetingInDb.RegCloseDate = meeting.RegCloseDate;
             meetingInDb.Description = meeting.Description;
             _dbContext.Meetings.Update(meetingInDb);
             _dbContext.SaveChanges();

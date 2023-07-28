@@ -1,6 +1,7 @@
-﻿using BirdClubManagementSystem.Data;
+﻿using AutoMapper;
+using BirdClubManagementSystem.Data;
 using BirdClubManagementSystem.Filters;
-using BirdClubManagementSystem.Models;
+using BirdClubManagementSystem.Models.Entities;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BirdClubManagementSystem.Controllers
@@ -9,10 +10,12 @@ namespace BirdClubManagementSystem.Controllers
     public class TournamentsController : Controller
     {
         private readonly BcmsDbContext _dbContext;
+        private readonly IMapper _mapper;
 
-        public TournamentsController(BcmsDbContext dbContext)
+        public TournamentsController(BcmsDbContext dbContext, IMapper mapper)
         {
             _dbContext = dbContext;
+            _mapper = mapper;
         }
 
         // GET: TournamentsController/Details/5
@@ -39,7 +42,7 @@ namespace BirdClubManagementSystem.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create(Tournament tournament)
         {
-            if (tournament.Date < tournament.RegistrationCloseDate)
+            if (tournament.StartDate < tournament.RegCloseDate)
             {
                 TempData.Add("notification", "Date error!");
                 TempData.Add("error", "Event cannot take place before registration is closed!");
@@ -72,7 +75,7 @@ namespace BirdClubManagementSystem.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Edit(Tournament tournament)
         {
-            if (tournament.Date < tournament.RegistrationCloseDate)
+            if (tournament.StartDate < tournament.RegCloseDate)
             {
                 TempData.Add("notification", "Date error!");
                 TempData.Add("error", "Event cannot take place before registration is closed!");
@@ -86,8 +89,8 @@ namespace BirdClubManagementSystem.Controllers
                 return RedirectToAction("Index", "ClubEvents");
             }
             tournamentInDb.Name = tournament.Name;
-            tournamentInDb.Date = tournament.Date;
-            tournamentInDb.RegistrationCloseDate = tournament.RegistrationCloseDate;
+            tournamentInDb.StartDate = tournament.StartDate;
+            tournamentInDb.RegCloseDate = tournament.RegCloseDate;
             tournamentInDb.Description = tournament.Description;
             _dbContext.Tournaments.Update(tournamentInDb);
             _dbContext.SaveChanges();
