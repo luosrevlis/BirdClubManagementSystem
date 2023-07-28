@@ -1,5 +1,5 @@
 ﻿using BirdClubManagementSystem.Data;
-using BirdClubManagementSystem.Models;
+using BirdClubManagementSystem.Models.Entities;
 using Coravel.Invocable;
 
 namespace BirdClubManagementSystem.BatchJobs

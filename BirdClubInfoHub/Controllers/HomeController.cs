@@ -1,5 +1,5 @@
 ﻿using BirdClubInfoHub.Data;
-using BirdClubInfoHub.Models;
+using BirdClubInfoHub.Models.Entities;
 using Microsoft.AspNetCore.Mvc;
 using System.Configuration;
 using System.Diagnostics;

@@ -1,6 +1,6 @@
 ﻿using BirdClubManagementSystem.Data;
 using BirdClubManagementSystem.Filters;
-using BirdClubManagementSystem.Models;
+using BirdClubManagementSystem.Models.Entities;
 using FluentEmail.Core;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -22,7 +22,7 @@ namespace BirdClubManagementSystem.Controllers
         public IActionResult Index()
         {
             List<User> users = _dbContext.Users.ToList();
-            SelectList customOptions = new(users, nameof(Models.User.Email), nameof(Models.User.Name));
+            SelectList customOptions = new(users, nameof(Models.Entities.User.Email), nameof(Models.Entities.User.Name));
             ViewBag.CustomOptions = customOptions;
             return View(new Notification());
         }

@@ -1,6 +1,6 @@
 ﻿using BirdClubInfoHub.Data;
 using BirdClubInfoHub.Filters;
-using BirdClubInfoHub.Models;
+using BirdClubInfoHub.Models.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;

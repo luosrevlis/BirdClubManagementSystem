@@ -1,4 +1,4 @@
-﻿using BirdClubInfoHub.Models;
+﻿using BirdClubInfoHub.Models.Entities;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Cryptography;
 

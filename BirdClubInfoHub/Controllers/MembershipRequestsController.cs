@@ -1,5 +1,5 @@
 ﻿using BirdClubInfoHub.Data;
-using BirdClubInfoHub.Models;
+using BirdClubInfoHub.Models.Entities;
 using BirdClubInfoHub.Services;
 using FluentEmail.Core;
 using Microsoft.AspNetCore.Mvc;

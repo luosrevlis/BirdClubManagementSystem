@@ -1,4 +1,6 @@
+using AutoMapper;
 using BirdClubInfoHub.Data;
+using BirdClubInfoHub.Mappings;
 using BirdClubInfoHub.Services;
 using Microsoft.EntityFrameworkCore;
 using System.Net.Mail;
@@ -21,6 +23,7 @@ builder.Services.AddFluentEmail(config.GetSection("Mail")["Sender"], config.GetS
         Port = 25
     });
 builder.Services.AddSession();
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 var app = builder.Build();
 
@@ -34,16 +37,27 @@ if (!app.Environment.IsDevelopment())
 
 //app.UseStatusCodePagesWithRedirects("/StatusCodeError/{0}");
 
-app.UseHttpsRedirection();
-app.UseSession();
-app.UseStaticFiles();
+try
+{
+    app.UseHttpsRedirection();
+    app.UseSession();
+    app.UseStaticFiles();
 
-app.UseRouting();
+    app.UseRouting();
 
-app.UseAuthorization();
+    app.UseAuthorization();
 
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    app.MapControllerRoute(
+        name: "default",
+        pattern: "{controller=Home}/{action=Index}/{id?}");
 
-app.Run();
+    app.Run();
+}
+catch
+{
+    // TO-DO: implement error page
+}
+finally
+{
+    // TO-DO: implement error page
+}

@@ -1,5 +1,5 @@
 ﻿using BirdClubInfoHub.Data;
-using BirdClubInfoHub.Models;
+using BirdClubInfoHub.Models.Entities;
 using FluentEmail.Core;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -120,7 +120,7 @@ namespace BirdClubInfoHub.Controllers
                 return RedirectToAction("Index");
             }
             if (user.ResetPasswordRequestTime == null
-                    || DateTime.Now > user.ResetPasswordRequestTime.Value.AddMinutes(30))
+                || DateTime.Now > user.ResetPasswordRequestTime.Value.AddMinutes(30))
             {
                 TempData.Add("notification", "Verification code has expired!");
                 TempData.Add("error", "");

@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using BirdClubManagementSystem.Models;
 using BirdClubManagementSystem.Data;
 using Microsoft.EntityFrameworkCore;
+using BirdClubManagementSystem.Models.Entities;
 
 namespace BirdClubManagementSystem.Controllers
 {

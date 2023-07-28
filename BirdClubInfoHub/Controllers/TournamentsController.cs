@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using BirdClubInfoHub.Models;
 using BirdClubInfoHub.Data;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using BirdClubInfoHub.Models.Entities;
 
 namespace BirdClubInfoHub.Controllers
 {
