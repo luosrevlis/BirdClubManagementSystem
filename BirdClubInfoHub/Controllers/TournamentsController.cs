@@ -1,18 +1,23 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using BirdClubInfoHub.Models;
 using BirdClubInfoHub.Data;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using BirdClubInfoHub.Models.Entities;
+using AutoMapper;
 
 namespace BirdClubInfoHub.Controllers
 {
     public class TournamentsController : Controller
     {
         private readonly BcmsDbContext _dbContext;
+        private readonly IMapper _mapper;
 
-        public TournamentsController(BcmsDbContext dbContext)
+        public TournamentsController(
+            BcmsDbContext dbContext,
+            IMapper mapper)
         {
             _dbContext = dbContext;
+            _mapper = mapper;
         }
 
         // GET: TournamentsController

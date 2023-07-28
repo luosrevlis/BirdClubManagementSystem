@@ -1,6 +1,6 @@
 ﻿using BirdClubManagementSystem.Data;
 using BirdClubManagementSystem.Filters;
-using BirdClubManagementSystem.Models;
+using BirdClubManagementSystem.Models.Entities;
 using FluentEmail.Core;
 using Microsoft.AspNetCore.Mvc;
 using System.Text;

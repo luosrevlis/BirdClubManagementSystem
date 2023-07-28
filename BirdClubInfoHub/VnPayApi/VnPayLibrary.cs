@@ -2,7 +2,7 @@
 using System.Net;
 using System.Security.Cryptography;
 using System.Text;
-using BirdClubInfoHub.Models;
+using BirdClubInfoHub.Models.Entities;
 
 namespace BirdClubInfoHub.VnPayApi
 {

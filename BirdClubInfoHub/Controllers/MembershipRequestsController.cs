@@ -1,5 +1,6 @@
-﻿using BirdClubInfoHub.Data;
-using BirdClubInfoHub.Models;
+﻿using AutoMapper;
+using BirdClubInfoHub.Data;
+using BirdClubInfoHub.Models.Entities;
 using BirdClubInfoHub.Services;
 using FluentEmail.Core;
 using Microsoft.AspNetCore.Mvc;
@@ -14,16 +15,22 @@ namespace BirdClubInfoHub.Controllers
         private readonly IFluentEmailFactory _emailFactory;
         private readonly IVnPayService _vnPayService;
         private readonly IAccountGenerationService _accountGenerationService;
+        private readonly IMapper _mapper;
 
-        public MembershipRequestsController
-            (BcmsDbContext dbContext, IConfiguration configuration, IFluentEmailFactory emailFactory,
-            IVnPayService vnPayService, IAccountGenerationService accountGenerationService)
+        public MembershipRequestsController(
+            BcmsDbContext dbContext,
+            IConfiguration configuration,
+            IFluentEmailFactory emailFactory,
+            IVnPayService vnPayService,
+            IAccountGenerationService accountGenerationService,
+            IMapper mapper)
         {
             _dbContext = dbContext;
             _configuration = configuration;
             _emailFactory = emailFactory;
             _vnPayService = vnPayService;
             _accountGenerationService = accountGenerationService;
+            _mapper = mapper;
         }
 
         public IActionResult Index()

@@ -1,16 +1,19 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using BirdClubInfoHub.Models;
 using BirdClubInfoHub.Data;
+using BirdClubInfoHub.Models.Entities;
+using AutoMapper;
 
 namespace BirdClubInfoHub.Controllers
 {
     public class ClubEventsController : Controller
     {
         private readonly BcmsDbContext _dbContext;
+        private readonly IMapper _mapper;
 
-        public ClubEventsController(BcmsDbContext dbContext)
+        public ClubEventsController(BcmsDbContext dbContext, IMapper mapper)
         {
             _dbContext = dbContext;
+            _mapper = mapper;
         }
 
         public IActionResult Index()

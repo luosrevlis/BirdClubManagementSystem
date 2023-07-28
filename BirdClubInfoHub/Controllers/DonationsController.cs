@@ -1,5 +1,6 @@
-﻿using BirdClubInfoHub.Data;
-using BirdClubInfoHub.Models;
+﻿using AutoMapper;
+using BirdClubInfoHub.Data;
+using BirdClubInfoHub.Models.Entities;
 using BirdClubInfoHub.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,11 +10,16 @@ namespace BirdClubInfoHub.Controllers
     {
         private readonly BcmsDbContext _dbContext;
         private readonly IVnPayService _vnPayService;
+        private readonly IMapper _mapper;
 
-        public DonationsController(BcmsDbContext dbContext, IVnPayService vnPayService)
+        public DonationsController(
+            BcmsDbContext dbContext,
+            IVnPayService vnPayService,
+            IMapper mapper)
         {
             _dbContext = dbContext;
             _vnPayService = vnPayService;
+            _mapper = mapper;
         }
 
         public IActionResult Index()

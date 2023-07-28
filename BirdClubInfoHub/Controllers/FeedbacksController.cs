@@ -1,6 +1,7 @@
-﻿using BirdClubInfoHub.Data;
+﻿using AutoMapper;
+using BirdClubInfoHub.Data;
 using BirdClubInfoHub.Filters;
-using BirdClubInfoHub.Models;
+using BirdClubInfoHub.Models.Entities;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BirdClubInfoHub.Controllers
@@ -9,10 +10,14 @@ namespace BirdClubInfoHub.Controllers
     public class FeedbacksController : Controller
     {
         private readonly BcmsDbContext _dbContext;
+        private readonly IMapper _mapper;
 
-        public FeedbacksController(BcmsDbContext dbContext)
+        public FeedbacksController(
+            BcmsDbContext dbContext,
+            IMapper mapper)
         {
             _dbContext = dbContext;
+            _mapper = mapper;
         }
 
         public IActionResult Index()

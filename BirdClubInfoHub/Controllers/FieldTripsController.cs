@@ -1,18 +1,23 @@
-﻿using BirdClubInfoHub.Models;
-using BirdClubInfoHub.Data;
+﻿using BirdClubInfoHub.Data;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using BirdClubInfoHub.Filters;
+using BirdClubInfoHub.Models.Entities;
+using AutoMapper;
 
 namespace BirdClubInfoHub.Controllers
 {
     public class FieldTripsController : Controller
     {
         private readonly BcmsDbContext _dbContext;
+        private readonly IMapper _mapper;
 
-        public FieldTripsController(BcmsDbContext dbContext)
+        public FieldTripsController(
+            BcmsDbContext dbContext,
+            IMapper mapper)
         {
             _dbContext = dbContext;
+            _mapper = mapper;
         }
 
         // GET: FieldTripsController/Details/5

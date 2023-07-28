@@ -1,17 +1,22 @@
-﻿using BirdClubInfoHub.Models;
-using BirdClubInfoHub.Data;
+﻿using BirdClubInfoHub.Data;
 using Microsoft.AspNetCore.Mvc;
 using BirdClubInfoHub.Filters;
+using BirdClubInfoHub.Models.Entities;
+using AutoMapper;
 
 namespace BirdClubInfoHub.Controllers
 {
     public class MeetingsController : Controller
     {
         private readonly BcmsDbContext _dbContext;
+        private readonly IMapper _mapper;
 
-        public MeetingsController(BcmsDbContext dbContext)
+        public MeetingsController(
+            BcmsDbContext dbContext,
+            IMapper mapper)
         {
             _dbContext = dbContext;
+            _mapper = mapper;
         }
 
         // GET: MeetingsController/Details/5
