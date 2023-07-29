@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Blog>
+﻿@model IEnumerable<BlogDTO>
 
 @{
     ViewData["Title"] = "Index";
@@ -34,7 +34,7 @@
             {
                 <tr>
                     <td>@item.Title</td>
-                    <td>@item.BlogCategory.Name</td>
+                    <td>@item.BlogCategory</td>
                     <td>@item.DateCreated</td>
                     <td>@item.Status</td>
                     <td class="option">

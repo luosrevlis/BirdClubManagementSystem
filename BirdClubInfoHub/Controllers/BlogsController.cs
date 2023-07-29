@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using BirdClubInfoHub.Data;
 using BirdClubInfoHub.Filters;
+using BirdClubInfoHub.Models.DTOs;
 using BirdClubInfoHub.Models.Entities;
+using BirdClubInfoHub.Models.Statuses;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -12,6 +14,7 @@ namespace BirdClubInfoHub.Controllers
     {
         private readonly BcmsDbContext _dbContext;
         private readonly IMapper _mapper;
+        private const int PageSize = 10;
 
         public BlogsController(BcmsDbContext dbContext, IMapper mapper)
         {
@@ -35,16 +38,22 @@ namespace BirdClubInfoHub.Controllers
         }
 
         // GET: BlogsController
-        public ActionResult Index()
+        public ActionResult Index(int page = 1)
         {
-            List<Blog> blogs = _dbContext.Blogs
-                .Where(blog => blog.Status == "Accepted")
+            List<BlogDTO> blogs = _dbContext.Blogs
+                .Where(blog => blog.Status == BlogStatuses.Accepted)
+                .Skip((page - 1) * PageSize)
+                .Take(PageSize)
                 .Include(blog => blog.User)
                 .Include(blog => blog.BlogCategory)
                 .OrderByDescending(blog => blog.DateCreated)
+                .Select(blog => _mapper.Map<BlogDTO>(blog))
                 .ToList();
 
-            SelectList categoryOptions = new(_dbContext.BlogCategories, nameof(BlogCategory.Id), nameof(BlogCategory.Name));
+            SelectList categoryOptions = new(
+                _dbContext.BlogCategories,
+                nameof(BlogCategory.Id),
+                nameof(BlogCategory.Name));
             ViewBag.CategoryOptions = categoryOptions;
             ViewBag.NewBlogs = blogs.Take(3);
 
@@ -53,17 +62,23 @@ namespace BirdClubInfoHub.Controllers
 
         public ActionResult Search(string keyword)
         {
-            List<Blog> matches = _dbContext.Blogs.Where(blog => blog.Status == "Accepted" && blog.Title.Contains(keyword))
+            List<BlogDTO> matches = _dbContext.Blogs
+                .Where(blog => blog.Status == BlogStatuses.Accepted
+                    && blog.Title.Contains(keyword))
                 .Include(blog => blog.User)
                 .Include(blog => blog.BlogCategory)
                 .OrderByDescending(blog => blog.DateCreated)
+                .Select(blog => _mapper.Map<BlogDTO>(blog))
                 .ToList();
 
             ViewBag.SearchKey = keyword;
-            SelectList categoryOptions = new(_dbContext.BlogCategories, nameof(BlogCategory.Id), nameof(BlogCategory.Name));
+            SelectList categoryOptions = new(
+                _dbContext.BlogCategories,
+                nameof(BlogCategory.Id),
+                nameof(BlogCategory.Name));
             ViewBag.CategoryOptions = categoryOptions;
             ViewBag.NewBlogs = _dbContext.Blogs
-                .Where(blog => blog.Status == "Accepted")
+                .Where(blog => blog.Status == BlogStatuses.Accepted)
                 .OrderByDescending(blog => blog.DateCreated)
                 .Take(3);
 
@@ -72,17 +87,24 @@ namespace BirdClubInfoHub.Controllers
 
         public ActionResult Filter(int blogCategoryId)
         {
-            List<Blog> matches = _dbContext.Blogs.Where(blog => blog.Status == "Accepted" && blog.BlogCategoryId == blogCategoryId)
+            List<BlogDTO> matches = _dbContext.Blogs
+                .Where(blog => blog.Status == BlogStatuses.Accepted
+                    && blog.BlogCategoryId == blogCategoryId)
                 .Include(blog => blog.User)
                 .Include(blog => blog.BlogCategory)
                 .OrderByDescending(blog => blog.DateCreated)
+                .Select(blog => _mapper.Map<BlogDTO>(blog))
                 .ToList();
 
-            ViewBag.Category = _dbContext.BlogCategories.Find(blogCategoryId)!.Name;
-            SelectList categoryOptions = new(_dbContext.BlogCategories, nameof(BlogCategory.Id), nameof(BlogCategory.Name));
+            ViewBag.Category = _dbContext.BlogCategories
+                .Find(blogCategoryId)!.Name;
+            SelectList categoryOptions = new(
+                _dbContext.BlogCategories,
+                nameof(BlogCategory.Id),
+                nameof(BlogCategory.Name));
             ViewBag.CategoryOptions = categoryOptions;
             ViewBag.NewBlogs = _dbContext.Blogs
-                .Where(blog => blog.Status == "Accepted")
+                .Where(blog => blog.Status == BlogStatuses.Accepted)
                 .OrderByDescending(blog => blog.DateCreated)
                 .Take(3);
 
@@ -100,9 +122,12 @@ namespace BirdClubInfoHub.Controllers
                 return RedirectToAction("Index");
             }
             blog.User = _dbContext.Users.Find(blog.UserId)!;
-            blog.BlogCategory = _dbContext.BlogCategories.Find(blog.BlogCategoryId)!;
-            blog.Comments = _dbContext.Comments.Where(comment => comment.BlogId == blog.Id)
-                .Include(comment => comment.User).ToList();
+            blog.BlogCategory = _dbContext.BlogCategories
+                .Find(blog.BlogCategoryId)!;
+            blog.Comments = _dbContext.Comments
+                .Where(comment => comment.BlogId == blog.Id)
+                .Include(comment => comment.User)
+                .ToList();
 
             SelectList categoryOptions = new(_dbContext.BlogCategories, nameof(BlogCategory.Id), nameof(BlogCategory.Name));
             ViewBag.CategoryOptions = categoryOptions;
@@ -111,17 +136,19 @@ namespace BirdClubInfoHub.Controllers
                 .OrderByDescending(blog => blog.DateCreated)
                 .Take(3);
 
-            return View(blog);
+            return View(_mapper.Map<BlogDTO>(blog));
         }
 
         [Authenticated]
         // GET: BlogsController/Create
         public ActionResult Create()
         {
-            int? userId = HttpContext.Session.GetInt32("USER_ID");
-            SelectList categoryOptions = new(_dbContext.BlogCategories, nameof(BlogCategory.Id), nameof(BlogCategory.Name));
+            SelectList categoryOptions = new(
+                _dbContext.BlogCategories,
+                nameof(BlogCategory.Id),
+                nameof(BlogCategory.Name));
             ViewBag.CategoryOptions = categoryOptions;
-            return View(new Blog() { UserId = (int)userId! });
+            return View();
         }
 
         // POST: BlogsController/Create

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BirdClubInfoHub.Data;
 using BirdClubInfoHub.Filters;
+using BirdClubInfoHub.Models.DTOs;
 using BirdClubInfoHub.Models.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -13,6 +14,7 @@ namespace BirdClubInfoHub.Controllers
     {
         private readonly BcmsDbContext _dbContext;
         private readonly IMapper _mapper;
+        private const int PageSize = 10;
 
         public BlogHistoryController(BcmsDbContext dbContext, IMapper mapper)
         {
@@ -20,15 +22,19 @@ namespace BirdClubInfoHub.Controllers
             _mapper = mapper;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(int page = 1)
         {
             int? userId = HttpContext.Session.GetInt32("USER_ID");
             if (userId == null)
             {
                 return RedirectToAction("Index", "Login");
             }
-            List<Blog> createdBlogs = _dbContext.Blogs.Where(blog => blog.UserId == userId)
+            List<BlogDTO> createdBlogs = _dbContext.Blogs
+                .Where(blog => blog.UserId == userId)
+                .Skip((page - 1) * PageSize)
+                .Take(PageSize)
                 .Include(blog => blog.BlogCategory)
+                .Select(blog => _mapper.Map<BlogDTO>(blog))
                 .ToList();
             return View(createdBlogs);
         }
@@ -48,7 +54,7 @@ namespace BirdClubInfoHub.Controllers
             {
                 return RedirectToAction("Details", "Blogs", new { id });
             }
-            return View(blog);
+            return View(_mapper.Map<BlogDTO>(blog));
         }
 
         public IActionResult Edit(int id)
@@ -60,9 +66,12 @@ namespace BirdClubInfoHub.Controllers
                 TempData.Add("error", "");
                 return RedirectToAction("Index");
             }
-            SelectList categoryOptions = new(_dbContext.BlogCategories, nameof(BlogCategory.Id), nameof(BlogCategory.Name));
+            SelectList categoryOptions = new(
+                _dbContext.BlogCategories,
+                nameof(BlogCategory.Id),
+                nameof(BlogCategory.Name));
             ViewBag.CategoryOptions = categoryOptions;
-            return View(blog);
+            return View(_mapper.Map<BlogDTO>(blog));
         }
 
         [HttpPost]

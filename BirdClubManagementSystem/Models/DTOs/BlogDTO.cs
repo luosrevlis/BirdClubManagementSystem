@@ -9,6 +9,5 @@
         public string Title { get; set; } = "No title";
         public string Contents { get; set; } = "No content";
         public string Status { get; set; } = null!;
-        public byte[] Thumbnail { get; set; } = Array.Empty<byte>();
     }
 }

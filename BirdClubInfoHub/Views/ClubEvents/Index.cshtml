@@ -1,4 +1,4 @@
-﻿@model IEnumerable<IClubEvent>
+﻿@model IEnumerable<IClubEventDTO>
 
 @section Styles
 {
@@ -8,22 +8,21 @@
 @{
     ViewData["Title"] = "Index";
 
-    var modelAfterSorted = Model.OrderByDescending(m => m.StartDate);
-    var dateBlocks = new Dictionary<DateTime, IEnumerable<IClubEvent>>();
-    if (modelAfterSorted.Any())
+    var dateBlocks = new Dictionary<DateTime, IEnumerable<IClubEventDTO>>();
+    if (Model.Any())
     {
-        DateTime currentDateTime = modelAfterSorted.First().StartDate.Date;
-        var clubEvents = Enumerable.Empty<IClubEvent>();
-        foreach (var item in modelAfterSorted)
+        DateTime currentDateTime = Model.First().StartDate.Date;
+        var clubEvents = Enumerable.Empty<IClubEventDTO>();
+        foreach (var item in Model)
         {
             if (item.StartDate.Date != currentDateTime) {
                 dateBlocks.Add(currentDateTime, clubEvents);
                 currentDateTime = item.StartDate.Date;
-                clubEvents = Enumerable.Empty<IClubEvent>();
+                clubEvents = Enumerable.Empty<IClubEventDTO>();
             }
             clubEvents = clubEvents.Append(item);
         }
-        if (modelAfterSorted.Any()) {
+        if (Model.Any()) {
             dateBlocks.Add(currentDateTime, clubEvents);
         }
     }

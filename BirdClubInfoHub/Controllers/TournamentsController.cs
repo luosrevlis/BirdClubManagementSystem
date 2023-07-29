@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using BirdClubInfoHub.Models.Entities;
 using AutoMapper;
+using BirdClubInfoHub.Models.DTOs;
 
 namespace BirdClubInfoHub.Controllers
 {
@@ -49,7 +50,7 @@ namespace BirdClubInfoHub.Controllers
             if (tournament.Status != "Open")
             {
                 ViewBag.Status = "Unavailable";
-                return View(tournament);
+                return View(_mapper.Map<TournamentDTO>(tournament));
             }
 
             // open but not logged in, return unauth
@@ -57,7 +58,7 @@ namespace BirdClubInfoHub.Controllers
             if (userId == null)
             {
                 ViewBag.Status = "Unauth";
-                return View(tournament);
+                return View(_mapper.Map<TournamentDTO>(tournament));
             }
 
             // open, logged in, no eligible birds
@@ -70,7 +71,7 @@ namespace BirdClubInfoHub.Controllers
             if (!birds.Any())
             {
                 ViewBag.Status = "Registered";
-                return View(tournament);
+                return View(_mapper.Map<TournamentDTO>(tournament));
             }
 
             // open, logged in, eligible birds
@@ -81,7 +82,7 @@ namespace BirdClubInfoHub.Controllers
             // nếu >2, viewbag.status = ...
 
             ViewBag.BirdOptions = birdOptions;
-            return View(tournament);
+            return View(_mapper.Map<TournamentDTO>(tournament));
         }
     }
 }

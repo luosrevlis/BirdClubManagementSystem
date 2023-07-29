@@ -7,5 +7,7 @@
         public int TournamentId { get; set; }
         public DateTime DateCreated { get; set; } = DateTime.Now;
         public bool PaymentReceived { get; set; } = false;
+        public TournamentDTO Tournament { get; set; } = null!;
+        public BirdDTO Bird { get; set; } = null!;
     }
 }

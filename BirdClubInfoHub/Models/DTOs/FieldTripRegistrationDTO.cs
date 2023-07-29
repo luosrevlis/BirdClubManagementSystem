@@ -7,5 +7,6 @@
         public int FieldTripId { get; set; }
         public DateTime DateCreated { get; set; } = DateTime.Now;
         public bool PaymentReceived { get; set; } = false;
+        public FieldTripDTO FieldTrip { get; set; } = null!;
     }
 }

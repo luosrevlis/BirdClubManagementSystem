@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using BirdClubInfoHub.Data;
 using BirdClubInfoHub.Filters;
+using BirdClubInfoHub.Models.DTOs;
 using BirdClubInfoHub.Models.Entities;
+using BirdClubInfoHub.Models.Statuses;
 using BirdClubInfoHub.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -14,6 +16,7 @@ namespace BirdClubInfoHub.Controllers
         private readonly BcmsDbContext _dbContext;
         private readonly IVnPayService _vnPayService;
         private readonly IMapper _mapper;
+        private const int PageSize = 10;
 
         public FieldTripRegistrationsController(
             BcmsDbContext dbContext,
@@ -25,7 +28,7 @@ namespace BirdClubInfoHub.Controllers
             _mapper = mapper;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(int page = 1)
         {
             int? userId = HttpContext.Session.GetInt32("USER_ID");
             User? user = _dbContext.Users.Find(userId);
@@ -33,13 +36,16 @@ namespace BirdClubInfoHub.Controllers
             {
                 return RedirectToAction("Index", "Login");
             }
-            List<FieldTripRegistration> registrations = _dbContext.FieldTripRegistrations
+            List<FieldTripRegistrationDTO> registrations = _dbContext.FieldTripRegistrations
                 .Where(ftr => ftr.UserId == userId)
                 .Include(ftr => ftr.User)
                 .Include(ftr => ftr.FieldTrip)
+                .Select(ftr => _mapper.Map<FieldTripRegistrationDTO>(ftr))
                 .ToList();
-            registrations.RemoveAll(ftr => ftr.FieldTrip.Status != "Open" && ftr.FieldTrip.Status != "Registration Closed");
-            return View(registrations);
+            //registrations.RemoveAll(ftr => ftr.Status != "Open" && ftr.FieldTrip.Status != "Registration Closed");
+            return View(registrations
+                .Skip((page - 1) * PageSize)
+                .Take(PageSize));
         }
 
         public IActionResult Register(int id)

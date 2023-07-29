@@ -1,4 +1,4 @@
-﻿@model Blog
+﻿@model BlogDTO
 
 @{
     var userSessionId = Context.Session.GetInt32("USER_ID") ?? 0;
@@ -13,7 +13,7 @@
             <hr />
             <div class="comment-body">
                 <div class="comment-author-ava-container">
-                    <img class="comment-author-ava" src="@Url.Action("GetImageFromBytes", "Profile", new { id = comment.UserId })" alt="avatar" />
+                    <img class="comment-author-ava" src="@Url.Action("GetImageFromBytes", "Profile", new { id = comment.User.Id })" alt="avatar" />
                 </div>
 
                 <div class="comment-content-container" data-comment-id="@comment.Id">
@@ -38,11 +38,11 @@
                         var updateComment = new Comment();
                         updateComment.Id = comment.Id;
                         updateComment.BlogId = Model.Id;
-                        updateComment.UserId = comment.UserId;
+                        updateComment.UserId = comment.User.Id;
                         updateComment.Contents = comment.Contents;
                     }
 
-                    @if (comment.UserId == userSessionId)
+                    @if (comment.User.Id == userSessionId)
                     {
                         <div class="update-comment-container">
                             <button
