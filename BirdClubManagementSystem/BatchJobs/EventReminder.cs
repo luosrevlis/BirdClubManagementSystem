@@ -29,7 +29,7 @@ namespace BirdClubManagementSystem.BatchJobs
             var mailList = from ftr in _dbContext.FieldTripRegistrations
                            join ft in _dbContext.FieldTrips on ftr.FieldTripId equals ft.Id
                            join user in _dbContext.Users on ftr.UserId equals user.Id
-                           where ft.StartDate.Date == date
+                           where ft.StartDate.HasValue && ft.StartDate.Value.Date == date
                            select (new
                            {
                                userName = user.Name,
@@ -53,7 +53,7 @@ namespace BirdClubManagementSystem.BatchJobs
             var mailList = from mr in _dbContext.MeetingRegistrations
                            join m in _dbContext.Meetings on mr.MeetingId equals m.Id
                            join user in _dbContext.Users on mr.UserId equals user.Id
-                           where m.StartDate.Date == date
+                           where m.StartDate.HasValue && m.StartDate.Value.Date == date
                            select (new
                            {
                                userName = user.Name,
@@ -78,7 +78,7 @@ namespace BirdClubManagementSystem.BatchJobs
                            join t in _dbContext.Tournaments on tr.TournamentId equals t.Id
                            join bird in _dbContext.Birds on tr.BirdId equals bird.Id
                            join user in _dbContext.Users on bird.UserId equals user.Id
-                           where t.StartDate.Date == date
+                           where t.StartDate.HasValue && t.StartDate.Value.Date == date
                            select (new
                            {
                                userName = user.Name,

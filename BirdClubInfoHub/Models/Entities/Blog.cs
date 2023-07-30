@@ -25,7 +25,7 @@ namespace BirdClubInfoHub.Models.Entities
         [Required, MinLength(3), MaxLength(3)]
         public string Status { get; set; } = null!;
 
-        public byte[] Thumbnail { get; set; } = Array.Empty<byte>();
+        public byte[]? Thumbnail { get; set; } = null!;
 
         public User User { get; set; } = new User();
 

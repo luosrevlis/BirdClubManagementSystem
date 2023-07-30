@@ -26,7 +26,9 @@ namespace BirdClubInfoHub.Controllers
         public IActionResult Index(DateTime month, int page = 1, string keyword = "", string status = "")
         {
             IQueryable<Meeting> matches = _dbContext.Meetings
-                .Where(m => m.StartDate.Month == month.Month && m.StartDate.Year == month.Year);
+                .Where(m => m.StartDate.HasValue
+                    && m.StartDate.Value.Month == month.Month
+                    && m.StartDate.Value.Year == month.Year);
             if (!string.IsNullOrEmpty(status))
             {
                 matches = matches.Where(m => m.Status == status);
