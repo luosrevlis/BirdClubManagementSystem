@@ -181,11 +181,13 @@ namespace BirdClubInfoHub.Controllers
                 TempData.Add("error", "");
                 return RedirectToAction("Index");
             }
-            bird.TournamentStandings = _dbContext.TournamentStandings
+            List<TournamentStandingDTO> tournamentStandings =
+                _dbContext.TournamentStandings
                 .Where(ts => ts.BirdId == id)
                 .Include(ts => ts.Tournament)
+                .Select(ts => _mapper.Map<TournamentStandingDTO>(ts))
                 .ToList();
-            return View(bird);
+            return View(tournamentStandings);
         }
     }
 }

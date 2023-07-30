@@ -2,6 +2,7 @@
 using BirdClubInfoHub.Data;
 using BirdClubInfoHub.Models.Entities;
 using AutoMapper;
+using BirdClubInfoHub.Models.DTOs;
 
 namespace BirdClubInfoHub.Controllers
 {
@@ -9,6 +10,7 @@ namespace BirdClubInfoHub.Controllers
     {
         private readonly BcmsDbContext _dbContext;
         private readonly IMapper _mapper;
+        private const int PageSize = 10;
 
         public ClubEventsController(BcmsDbContext dbContext, IMapper mapper)
         {
@@ -16,13 +18,23 @@ namespace BirdClubInfoHub.Controllers
             _mapper = mapper;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(int page = 1)
         {
-            List<IClubEvent> eventList = new();
-            eventList.AddRange(_dbContext.FieldTrips.Cast<IClubEvent>());
-            eventList.AddRange(_dbContext.Meetings.Cast<IClubEvent>());
-            eventList.AddRange(_dbContext.Tournaments.Cast<IClubEvent>());
-            return View(eventList);
+            List<IClubEventDTO> eventList = new();
+            eventList.AddRange(_dbContext.FieldTrips
+                .Select(e => _mapper.Map<FieldTripDTO>(e))
+                .Cast<IClubEventDTO>());
+            eventList.AddRange(_dbContext.Meetings
+                .Select(e => _mapper.Map<MeetingDTO>(e))
+                .Cast<IClubEventDTO>());
+            eventList.AddRange(_dbContext.Tournaments
+                .Select(e => _mapper.Map<TournamentDTO>(e))
+                .Cast<IClubEventDTO>());
+            eventList.Sort((e1, e2) => -e1.StartDate
+                .CompareTo(e2.StartDate));
+            return View(eventList
+                .Skip((page - 1) * PageSize)
+                .Take(PageSize));
         }
     }
 }

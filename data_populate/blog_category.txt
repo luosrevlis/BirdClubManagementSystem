@@ -1,0 +1,8 @@
+tblBlogCategory:
+1-Phân biệt chào mào
+2-Kỹ thuật chăm sóc
+3-Các loại bệnh
+4-Các loại cám
+5-Phụ kiện chào mào
+6-Các loại chim khác
+7-Khác

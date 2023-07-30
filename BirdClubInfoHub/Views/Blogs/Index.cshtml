@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Blog>
+﻿@model IEnumerable<BlogDTO>
 
 @section Styles
 {
@@ -26,7 +26,7 @@
                     <div class="blog-info-container">
                         <div class="blog-author-info-container">
                             <div class="blog-author-ava-container">
-                                <img class="blog-author-ava" src="@Url.Action("GetImageFromBytes", "Profile", new { id = item.UserId })" alt="author" />
+                                <img class="blog-author-ava" src="@Url.Action("GetImageFromBytes", "Profile", new { id = item.User.Id })" alt="author" />
                             </div>
 
                             <p class="blog-author-name">By @item.User.Name</p>

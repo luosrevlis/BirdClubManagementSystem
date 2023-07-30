@@ -1,4 +1,4 @@
-﻿@model Bird
+﻿@model IEnumerable<TournamentStandingDTO>
 
 @{
     ViewData["Title"] = "Index";
@@ -10,7 +10,7 @@
 }
 
 <section class="table-header">
-    <h2>@Model.Name's tournament rankings</h2>
+    <h2>Tournament rankings</h2>
 </section>
 <div class="sticky-table">
     <table>
@@ -22,7 +22,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var item in Model.TournamentStandings)
+            @foreach (var item in Model)
             {
                 <tr>
                     <td>@item.Tournament.Name</td>
@@ -38,6 +38,7 @@
                         case "3rd":
                             <td>Third place</td>
                             break;
+                        @* TO-DO: change this into "Participated" *@
                         case "Participation":
                             <td>Participation</td>
                             break;
