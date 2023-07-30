@@ -1,8 +1,8 @@
-﻿using BirdClubInfoHub.Data;
-using Microsoft.AspNetCore.Mvc;
-using BirdClubInfoHub.Filters;
+﻿using AutoMapper;
+using BirdClubInfoHub.Data;
+using BirdClubInfoHub.Models.DTOs;
 using BirdClubInfoHub.Models.Entities;
-using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 
 namespace BirdClubInfoHub.Controllers
 {
@@ -10,13 +10,39 @@ namespace BirdClubInfoHub.Controllers
     {
         private readonly BcmsDbContext _dbContext;
         private readonly IMapper _mapper;
+        private const int PageSize = 10;
 
-        public MeetingsController(
-            BcmsDbContext dbContext,
-            IMapper mapper)
+        public MeetingsController(BcmsDbContext dbContext, IMapper mapper)
         {
             _dbContext = dbContext;
             _mapper = mapper;
+        }
+
+        public IActionResult Index(int page = 1, string keyword = "", string status = "")
+        {
+            return Index(DateTime.Now, page, keyword, status);
+        }
+
+        public IActionResult Index(DateTime month, int page = 1, string keyword = "", string status = "")
+        {
+            IQueryable<Meeting> matches = _dbContext.Meetings
+                .Where(m => m.StartDate.Month == month.Month && m.StartDate.Year == month.Year);
+            if (!string.IsNullOrEmpty(status))
+            {
+                matches = matches.Where(m => m.Status == status);
+            }
+            if (!string.IsNullOrEmpty(keyword))
+            {
+                matches = matches.Where(m => m.Name.ToLower().Contains(keyword.ToLower()));
+            }
+
+            List<MeetingDTO> meetings = matches
+                .Skip((page - 1) * PageSize)
+                .Take(PageSize)
+                .OrderByDescending(m => m.StartDate)
+                .Select(m => _mapper.Map<MeetingDTO>(m))
+                .ToList();
+            return View(meetings);
         }
 
         // GET: MeetingsController/Details/5

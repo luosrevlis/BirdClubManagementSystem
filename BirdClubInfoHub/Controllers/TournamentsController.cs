@@ -1,10 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
 using BirdClubInfoHub.Data;
+using BirdClubInfoHub.Models.DTOs;
+using BirdClubInfoHub.Models.Entities;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using BirdClubInfoHub.Models.Entities;
-using AutoMapper;
-using BirdClubInfoHub.Models.DTOs;
 
 namespace BirdClubInfoHub.Controllers
 {
@@ -12,19 +12,39 @@ namespace BirdClubInfoHub.Controllers
     {
         private readonly BcmsDbContext _dbContext;
         private readonly IMapper _mapper;
+        private const int PageSize = 10;
 
-        public TournamentsController(
-            BcmsDbContext dbContext,
-            IMapper mapper)
+        public TournamentsController(BcmsDbContext dbContext, IMapper mapper)
         {
             _dbContext = dbContext;
             _mapper = mapper;
         }
 
-        // GET: TournamentsController
-        public IActionResult Index()
+        public IActionResult Index(int page = 1, string keyword = "", string status = "")
         {
-            return View();
+            return Index(DateTime.Now, page, keyword, status);
+        }
+
+        public IActionResult Index(DateTime month, int page = 1, string keyword = "", string status = "")
+        {
+            IQueryable<Tournament> matches = _dbContext.Tournaments
+                .Where(t => t.StartDate.Month == month.Month && t.StartDate.Year == month.Year);
+            if (!string.IsNullOrEmpty(status))
+            {
+                matches = matches.Where(t => t.Status == status);
+            }
+            if (!string.IsNullOrEmpty(keyword))
+            {
+                matches = matches.Where(t => t.Name.ToLower().Contains(keyword.ToLower()));
+            }
+
+            List<TournamentDTO> tournaments = matches
+                .Skip((page - 1) * PageSize)
+                .Take(PageSize)
+                .OrderByDescending(t => t.StartDate)
+                .Select(t => _mapper.Map<TournamentDTO>(t))
+                .ToList();
+            return View(tournaments);
         }
 
         // GET: TournamentsController/Details/5
@@ -65,6 +85,10 @@ namespace BirdClubInfoHub.Controllers
             HashSet<int> registeredBirds = _dbContext.TournamentRegistrations
                 .Where(tr => tr.TournamentId == id)
                 .Select(tr => tr.BirdId).ToHashSet();
+
+            // kiểm bn chim đk chưa trả tiền
+            // nếu >2, viewbag.status = ...
+
             List<Bird> birds = _dbContext.Birds
                 .Where(bird => bird.UserId == userId && !registeredBirds.Contains(bird.Id))
                 .ToList();
@@ -77,9 +101,6 @@ namespace BirdClubInfoHub.Controllers
             // open, logged in, eligible birds
             ViewBag.Status = "Available";
             SelectList birdOptions = new(birds, nameof(Bird.Id), nameof(Bird.Name));
-
-            // kiểm bn chim đk chưa trả tiền
-            // nếu >2, viewbag.status = ...
 
             ViewBag.BirdOptions = birdOptions;
             return View(_mapper.Map<TournamentDTO>(tournament));

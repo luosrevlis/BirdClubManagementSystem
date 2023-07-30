@@ -36,13 +36,13 @@ namespace BirdClubInfoHub.Controllers
                 matches = matches.Where(ft => ft.Name.ToLower().Contains(keyword.ToLower()));
             }
 
-            List<FieldTripDTO> fielsTrips = matches
+            List<FieldTripDTO> fieldTrips = matches
                 .Skip((page - 1) * PageSize)
                 .Take(PageSize)
                 .OrderByDescending(ft => ft.StartDate)
                 .Select(ft => _mapper.Map<FieldTripDTO>(ft))
                 .ToList();
-            return View();
+            return View(fieldTrips);
         }
 
         // GET: FieldTripsController/Details/5
