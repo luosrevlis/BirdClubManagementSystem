@@ -58,7 +58,8 @@ namespace BirdClubManagementSystem.Controllers
             }
             blog.User = _dbContext.Users.Find(blog.UserId)!;
             blog.BlogCategory = _dbContext.BlogCategories.Find(blog.BlogCategoryId)!;
-            return View(blog);
+            BlogDTO dto = _mapper.Map<BlogDTO>(blog);
+            return View(dto);
         }
 
         public IActionResult Create()
