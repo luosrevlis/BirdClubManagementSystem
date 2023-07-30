@@ -17,21 +17,33 @@ namespace BirdClubInfoHub.Controllers
             _mapper = mapper;
         }
 
-        public IActionResult Index(int page = 1, string keyword = "")
+        public IActionResult Index(int page = 1, string keyword = "", string status = "")
+        {
+            return Index(DateTime.Now, page, keyword, status);
+        }
+
+        public IActionResult Index(DateTime month, int page = 1, string keyword = "", string status = "")
         {
             List<IClubEventDTO> eventList = new();
             eventList.AddRange(_dbContext.FieldTrips
-                .Where(e => e.Name.ToLower().Contains(keyword.ToLower()))
+                .Where(e => e.Name.ToLower().Contains(keyword.ToLower())
+                && e.StartDate.Month == month.Month && e.StartDate.Year == month.Year)
                 .Select(e => _mapper.Map<FieldTripDTO>(e))
                 .Cast<IClubEventDTO>());
             eventList.AddRange(_dbContext.Meetings
-                .Where(e => e.Name.ToLower().Contains(keyword.ToLower()))
+                .Where(e => e.Name.ToLower().Contains(keyword.ToLower())
+                && e.StartDate.Month == month.Month && e.StartDate.Year == month.Year)
                 .Select(e => _mapper.Map<MeetingDTO>(e))
                 .Cast<IClubEventDTO>());
             eventList.AddRange(_dbContext.Tournaments
-                .Where(e => e.Name.ToLower().Contains(keyword.ToLower()))
+                .Where(e => e.Name.ToLower().Contains(keyword.ToLower())
+                && e.StartDate.Month == month.Month && e.StartDate.Year == month.Year)
                 .Select(e => _mapper.Map<TournamentDTO>(e))
                 .Cast<IClubEventDTO>());
+            if (!string.IsNullOrEmpty(status))
+            {
+                eventList = eventList.Where(e => e.Status == status).ToList();
+            }
             eventList = eventList
                 .OrderByDescending(e => e.StartDate)
                 .Skip((page - 1) * PageSize)

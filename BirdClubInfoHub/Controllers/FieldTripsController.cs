@@ -1,9 +1,8 @@
-﻿using BirdClubInfoHub.Data;
-using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics;
-using BirdClubInfoHub.Filters;
+﻿using AutoMapper;
+using BirdClubInfoHub.Data;
+using BirdClubInfoHub.Models.DTOs;
 using BirdClubInfoHub.Models.Entities;
-using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 
 namespace BirdClubInfoHub.Controllers
 {
@@ -11,13 +10,39 @@ namespace BirdClubInfoHub.Controllers
     {
         private readonly BcmsDbContext _dbContext;
         private readonly IMapper _mapper;
+        private const int PageSize = 10;
 
-        public FieldTripsController(
-            BcmsDbContext dbContext,
-            IMapper mapper)
+        public FieldTripsController(BcmsDbContext dbContext, IMapper mapper)
         {
             _dbContext = dbContext;
             _mapper = mapper;
+        }
+
+        public IActionResult Index(int page = 1, string keyword = "", string status = "")
+        {
+            return Index(DateTime.Now, page, keyword, status);
+        }
+
+        public IActionResult Index(DateTime month, int page = 1, string keyword = "", string status = "")
+        {
+            IQueryable<FieldTrip> matches = _dbContext.FieldTrips
+                .Where(ft => ft.StartDate.Month == month.Month && ft.StartDate.Year == month.Year);
+            if (!string.IsNullOrEmpty(status))
+            {
+                matches = matches.Where(ft => ft.Status == status);
+            }
+            if (!string.IsNullOrEmpty(keyword))
+            {
+                matches = matches.Where(ft => ft.Name.ToLower().Contains(keyword.ToLower()));
+            }
+
+            List<FieldTripDTO> fielsTrips = matches
+                .Skip((page - 1) * PageSize)
+                .Take(PageSize)
+                .OrderByDescending(ft => ft.StartDate)
+                .Select(ft => _mapper.Map<FieldTripDTO>(ft))
+                .ToList();
+            return View();
         }
 
         // GET: FieldTripsController/Details/5
