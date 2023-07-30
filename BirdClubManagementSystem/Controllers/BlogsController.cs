@@ -3,6 +3,7 @@ using BirdClubManagementSystem.Data;
 using BirdClubManagementSystem.Filters;
 using BirdClubManagementSystem.Models.DTOs;
 using BirdClubManagementSystem.Models.Entities;
+using BirdClubManagementSystem.Models.Statuses;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -14,6 +15,7 @@ namespace BirdClubManagementSystem.Controllers
     {
         private readonly BcmsDbContext _dbContext;
         private readonly IMapper _mapper;
+        const int PageSize = 10;
 
         public BlogsController(BcmsDbContext dbContext, IMapper mapper)
         {
@@ -36,9 +38,21 @@ namespace BirdClubManagementSystem.Controllers
             return File(blog.Thumbnail, "image/png");
         }
 
-        public IActionResult Index()
+        public IActionResult Index(int page = 1, string keyword = "", int categoryId = 0)
         {
-            List<BlogDTO> blogs = _dbContext.Blogs
+            IQueryable<Blog> matches = _dbContext.Blogs;
+            if (string.IsNullOrEmpty(keyword))
+            {
+                matches = matches.Where(blog => blog.Title.ToLower().Contains(keyword.ToLower()));
+            }
+            if (categoryId != 0)
+            {
+                matches = matches.Where(blog => blog.BlogCategoryId == categoryId);
+            }
+
+            List<BlogDTO> blogs = matches
+                .Skip((page - 1) * PageSize)
+                .Take(PageSize)
                 .Include(blog => blog.User)
                 .Include(blog => blog.BlogCategory)
                 .OrderByDescending(blog => blog.DateCreated)
@@ -58,27 +72,25 @@ namespace BirdClubManagementSystem.Controllers
             }
             blog.User = _dbContext.Users.Find(blog.UserId)!;
             blog.BlogCategory = _dbContext.BlogCategories.Find(blog.BlogCategoryId)!;
-            BlogDTO dto = _mapper.Map<BlogDTO>(blog);
-            return View(dto);
+            return View(_mapper.Map<BlogDTO>(blog));
         }
 
         public IActionResult Create()
         {
-            int? userId = HttpContext.Session.GetInt32("USER_ID");
-            SelectList categoryOptions = new(_dbContext.BlogCategories, nameof(BlogCategory.Id), nameof(BlogCategory.Name));
+            SelectList categoryOptions = new(
+                _dbContext.BlogCategories,
+                nameof(BlogCategory.Id),
+                nameof(BlogCategory.Name));
             ViewBag.CategoryOptions = categoryOptions;
-            return View(new Blog() { UserId = (int)userId! });
+            return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(Blog blog, IFormFile thumbnailFile)
+        public IActionResult Create(BlogDTO dto, IFormFile thumbnailFile)
         {
+            Blog blog = _mapper.Map<Blog>(dto);
             blog.User = _dbContext.Users.Find(blog.UserId)!;
-            if (blog.BlogCategoryId == 0)
-            {
-                blog.BlogCategoryId = 7;
-            }
             blog.BlogCategory = _dbContext.BlogCategories.Find(blog.BlogCategoryId)!;
             if (thumbnailFile != null)
             {
@@ -86,7 +98,7 @@ namespace BirdClubManagementSystem.Controllers
                 thumbnailFile.CopyTo(memoryStream);
                 blog.Thumbnail = memoryStream.ToArray();
             }
-            blog.Status = "Accepted";
+            blog.Status = BlogStatuses.Accepted;
             _dbContext.Blogs.Add(blog);
             _dbContext.SaveChanges();
 
@@ -125,7 +137,7 @@ namespace BirdClubManagementSystem.Controllers
                 TempData.Add("error", "");
                 return RedirectToAction("Index");
             }
-            blog.Status = "Accepted";
+            blog.Status = BlogStatuses.Accepted;
             _dbContext.Blogs.Update(blog);
             _dbContext.SaveChanges();
 
@@ -145,7 +157,7 @@ namespace BirdClubManagementSystem.Controllers
                 TempData.Add("error", "");
                 return RedirectToAction("Index");
             }
-            blog.Status = "Rejected";
+            blog.Status = BlogStatuses.Rejected;
             _dbContext.Blogs.Update(blog);
             _dbContext.SaveChanges();
 

@@ -14,7 +14,7 @@ namespace BirdClubInfoHub.Controllers
     {
         private readonly BcmsDbContext _dbContext;
         private readonly IMapper _mapper;
-        private const int PageSize = 10;
+        private const int PageSize = 10; //TODO move to config?
 
         public BlogsController(BcmsDbContext dbContext, IMapper mapper)
         {
@@ -38,10 +38,20 @@ namespace BirdClubInfoHub.Controllers
         }
 
         // GET: BlogsController
-        public ActionResult Index(int page = 1)
+        public ActionResult Index(int page = 1, string keyword = "", int categoryId = 0)
         {
-            List<BlogDTO> blogs = _dbContext.Blogs
-                .Where(blog => blog.Status == BlogStatuses.Accepted)
+            IQueryable<Blog> matches = _dbContext.Blogs
+                .Where(blog => blog.Status == BlogStatuses.Accepted);
+            if (string.IsNullOrEmpty(keyword))
+            {
+                matches = matches.Where(blog => blog.Title.ToLower().Contains(keyword.ToLower()));
+            }
+            if (categoryId != 0)
+            {
+                matches = matches.Where(blog => blog.BlogCategoryId == categoryId);
+            }
+            
+            List<BlogDTO> blogs = matches
                 .Skip((page - 1) * PageSize)
                 .Take(PageSize)
                 .Include(blog => blog.User)
@@ -55,60 +65,15 @@ namespace BirdClubInfoHub.Controllers
                 nameof(BlogCategory.Id),
                 nameof(BlogCategory.Name));
             ViewBag.CategoryOptions = categoryOptions;
-            ViewBag.NewBlogs = blogs.Take(3);
+
+            ViewBag.NewBlogs = _dbContext.Blogs
+                .Where(blog => blog.Status == BlogStatuses.Accepted)
+                .OrderByDescending(blog => blog.DateCreated)
+                .Take(3) //TODO move 3 to config or const
+                .Select(blog => _mapper.Map<BlogDTO>(blog))
+                .ToList();
 
             return View(blogs);
-        }
-
-        public ActionResult Search(string keyword)
-        {
-            List<BlogDTO> matches = _dbContext.Blogs
-                .Where(blog => blog.Status == BlogStatuses.Accepted
-                    && blog.Title.Contains(keyword))
-                .Include(blog => blog.User)
-                .Include(blog => blog.BlogCategory)
-                .OrderByDescending(blog => blog.DateCreated)
-                .Select(blog => _mapper.Map<BlogDTO>(blog))
-                .ToList();
-
-            ViewBag.SearchKey = keyword;
-            SelectList categoryOptions = new(
-                _dbContext.BlogCategories,
-                nameof(BlogCategory.Id),
-                nameof(BlogCategory.Name));
-            ViewBag.CategoryOptions = categoryOptions;
-            ViewBag.NewBlogs = _dbContext.Blogs
-                .Where(blog => blog.Status == BlogStatuses.Accepted)
-                .OrderByDescending(blog => blog.DateCreated)
-                .Take(3);
-
-            return View("Index", matches);
-        }
-
-        public ActionResult Filter(int blogCategoryId)
-        {
-            List<BlogDTO> matches = _dbContext.Blogs
-                .Where(blog => blog.Status == BlogStatuses.Accepted
-                    && blog.BlogCategoryId == blogCategoryId)
-                .Include(blog => blog.User)
-                .Include(blog => blog.BlogCategory)
-                .OrderByDescending(blog => blog.DateCreated)
-                .Select(blog => _mapper.Map<BlogDTO>(blog))
-                .ToList();
-
-            ViewBag.Category = _dbContext.BlogCategories
-                .Find(blogCategoryId)!.Name;
-            SelectList categoryOptions = new(
-                _dbContext.BlogCategories,
-                nameof(BlogCategory.Id),
-                nameof(BlogCategory.Name));
-            ViewBag.CategoryOptions = categoryOptions;
-            ViewBag.NewBlogs = _dbContext.Blogs
-                .Where(blog => blog.Status == BlogStatuses.Accepted)
-                .OrderByDescending(blog => blog.DateCreated)
-                .Take(3);
-
-            return View("Index", matches);
         }
 
         // GET: BlogsController/Details/5
@@ -122,19 +87,23 @@ namespace BirdClubInfoHub.Controllers
                 return RedirectToAction("Index");
             }
             blog.User = _dbContext.Users.Find(blog.UserId)!;
-            blog.BlogCategory = _dbContext.BlogCategories
-                .Find(blog.BlogCategoryId)!;
+            blog.BlogCategory = _dbContext.BlogCategories.Find(blog.BlogCategoryId)!;
             blog.Comments = _dbContext.Comments
                 .Where(comment => comment.BlogId == blog.Id)
                 .Include(comment => comment.User)
                 .ToList();
 
-            SelectList categoryOptions = new(_dbContext.BlogCategories, nameof(BlogCategory.Id), nameof(BlogCategory.Name));
+            SelectList categoryOptions = new(
+                _dbContext.BlogCategories,
+                nameof(BlogCategory.Id),
+                nameof(BlogCategory.Name));
             ViewBag.CategoryOptions = categoryOptions;
             ViewBag.NewBlogs = _dbContext.Blogs
-                .Where(blog => blog.Status == "Accepted")
+                .Where(blog => blog.Status == BlogStatuses.Accepted)
                 .OrderByDescending(blog => blog.DateCreated)
-                .Take(3);
+                .Take(3)
+                .Select(blog => _mapper.Map<BlogDTO>(blog))
+                .ToList();
 
             return View(_mapper.Map<BlogDTO>(blog));
         }
@@ -154,21 +123,18 @@ namespace BirdClubInfoHub.Controllers
         // POST: BlogsController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Blog blog, IFormFile thumbnailFile)
+        public ActionResult Create(BlogDTO dto, IFormFile thumbnailFile)
         {
-            blog.User = _dbContext.Users.Find(blog.UserId)!;
-            if (blog.BlogCategoryId == 0)
-            {
-                blog.BlogCategoryId = 7;
-            }
-            blog.BlogCategory = _dbContext.BlogCategories.Find(blog.BlogCategoryId)!;
+            Blog blog = _mapper.Map<Blog>(dto);
+            blog.User = _dbContext.Users.Find(dto.User.Id)!;
+            blog.BlogCategory = _dbContext.BlogCategories.Find(dto.BlogCategory.Id)!;
             if (thumbnailFile != null)
             {
                 using MemoryStream memoryStream = new();
                 thumbnailFile.CopyTo(memoryStream);
                 blog.Thumbnail = memoryStream.ToArray();
             }
-            blog.Status = "Pending";
+            blog.Status = BlogStatuses.Pending;
             _dbContext.Blogs.Add(blog);
             _dbContext.SaveChanges();
 

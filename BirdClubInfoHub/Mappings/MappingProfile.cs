@@ -13,16 +13,13 @@ namespace BirdClubInfoHub.Mappings
                 .ReverseMap();
 
             CreateMap<Blog, BlogDTO>()
-                .ForMember(dest => dest.BlogCategory,
-                    src => src.MapFrom(src => src.BlogCategory.Name));
-            CreateMap<BlogDTO, Blog>();
+                .ReverseMap();
 
             CreateMap<BlogCategory, BlogCategoryDTO>()
                 .ReverseMap();
 
             CreateMap<Comment, CommentDTO>()
                 .ReverseMap();
-            CreateMap<CommentDTO, Comment>();
 
             CreateMap<Feedback, FeedbackDTO>()
                 .ReverseMap();
