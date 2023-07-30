@@ -15,7 +15,7 @@ namespace BirdClubManagementSystem.Controllers
     {
         private readonly BcmsDbContext _dbContext;
         private readonly IMapper _mapper;
-        const int PageSize = 10;
+        private const int PageSize = 10;
 
         public BlogsController(BcmsDbContext dbContext, IMapper mapper)
         {
@@ -40,11 +40,8 @@ namespace BirdClubManagementSystem.Controllers
 
         public IActionResult Index(int page = 1, string keyword = "", int categoryId = 0)
         {
-            IQueryable<Blog> matches = _dbContext.Blogs;
-            if (string.IsNullOrEmpty(keyword))
-            {
-                matches = matches.Where(blog => blog.Title.ToLower().Contains(keyword.ToLower()));
-            }
+            IQueryable<Blog> matches = _dbContext.Blogs
+                .Where(blog => blog.Title.ToLower().Contains(keyword.ToLower()));
             if (categoryId != 0)
             {
                 matches = matches.Where(blog => blog.BlogCategoryId == categoryId);

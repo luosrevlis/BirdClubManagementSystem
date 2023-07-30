@@ -41,11 +41,8 @@ namespace BirdClubInfoHub.Controllers
         public ActionResult Index(int page = 1, string keyword = "", int categoryId = 0)
         {
             IQueryable<Blog> matches = _dbContext.Blogs
-                .Where(blog => blog.Status == BlogStatuses.Accepted);
-            if (string.IsNullOrEmpty(keyword))
-            {
-                matches = matches.Where(blog => blog.Title.ToLower().Contains(keyword.ToLower()));
-            }
+                .Where(blog => blog.Status == BlogStatuses.Accepted)
+                .Where(blog => blog.Title.ToLower().Contains(keyword.ToLower()));
             if (categoryId != 0)
             {
                 matches = matches.Where(blog => blog.BlogCategoryId == categoryId);

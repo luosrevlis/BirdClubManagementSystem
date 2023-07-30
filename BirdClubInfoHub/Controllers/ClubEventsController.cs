@@ -1,8 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
 using BirdClubInfoHub.Data;
-using BirdClubInfoHub.Models.Entities;
-using AutoMapper;
 using BirdClubInfoHub.Models.DTOs;
+using Microsoft.AspNetCore.Mvc;
 
 namespace BirdClubInfoHub.Controllers
 {
@@ -18,23 +17,27 @@ namespace BirdClubInfoHub.Controllers
             _mapper = mapper;
         }
 
-        public IActionResult Index(int page = 1)
+        public IActionResult Index(int page = 1, string keyword = "")
         {
             List<IClubEventDTO> eventList = new();
             eventList.AddRange(_dbContext.FieldTrips
+                .Where(e => e.Name.ToLower().Contains(keyword.ToLower()))
                 .Select(e => _mapper.Map<FieldTripDTO>(e))
                 .Cast<IClubEventDTO>());
             eventList.AddRange(_dbContext.Meetings
+                .Where(e => e.Name.ToLower().Contains(keyword.ToLower()))
                 .Select(e => _mapper.Map<MeetingDTO>(e))
                 .Cast<IClubEventDTO>());
             eventList.AddRange(_dbContext.Tournaments
+                .Where(e => e.Name.ToLower().Contains(keyword.ToLower()))
                 .Select(e => _mapper.Map<TournamentDTO>(e))
                 .Cast<IClubEventDTO>());
-            eventList.Sort((e1, e2) => -e1.StartDate
-                .CompareTo(e2.StartDate));
-            return View(eventList
+            eventList = eventList
+                .OrderByDescending(e => e.StartDate)
                 .Skip((page - 1) * PageSize)
-                .Take(PageSize));
+                .Take(PageSize)
+                .ToList();
+            return View(eventList);
         }
     }
 }
