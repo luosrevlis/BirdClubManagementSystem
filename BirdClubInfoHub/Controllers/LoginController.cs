@@ -16,10 +16,8 @@ namespace BirdClubInfoHub.Controllers
         private readonly IFluentEmailFactory _emailFactory;
         private readonly IMapper _mapper;
 
-        public LoginController(
-            BcmsDbContext dbContext,
-            IFluentEmailFactory emailFactory,
-            IMapper mapper)
+        public LoginController
+            (BcmsDbContext dbContext, IFluentEmailFactory emailFactory, IMapper mapper)
         {
             _dbContext = dbContext;
             _emailFactory = emailFactory;
@@ -71,9 +69,8 @@ namespace BirdClubInfoHub.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult ResetPassword(IFormCollection formCollection)
+        public IActionResult ResetPassword(string userEmail)
         {
-            string userEmail = formCollection["userEmail"]!;
             User? user = _dbContext.Users.FirstOrDefault(x => x.Email == userEmail);
             if (user == null)
             {
@@ -116,8 +113,8 @@ namespace BirdClubInfoHub.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult VerifyCode(IFormCollection formCollection)
         {
-            string userEmail = formCollection["userEmail"]!;
-            string? code = formCollection["code"];
+            string userEmail = formCollection["userEmail"].ToString();
+            string code = formCollection["code"].ToString();
             User? user = _dbContext.Users.FirstOrDefault(user => user.Email == userEmail);
             if (user == null)
             {
@@ -132,27 +129,18 @@ namespace BirdClubInfoHub.Controllers
                 TempData.Add("error", "");
                 return RedirectToAction("Index");
             }
-            if (code == null || code.Length != 6 || !code.Equals(user.ResetPasswordCode))
+            if (string.IsNullOrEmpty(code) || !code.Equals(user.ResetPasswordCode))
             {
                 TempData.Add("notification", "Verification code is incorrect!");
                 TempData.Add("error", "");
                 return View("VerifyCode", userEmail);
             }
+            HttpContext.Session.SetString("CODE", code);
             return RedirectToAction("NewPassword", new RouteValueDictionary(new { userEmail }));
         }
 
         public IActionResult NewPassword(string userEmail)
         {
-            return View("NewPassword", userEmail);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult NewPassword(IFormCollection formCollection)
-        {
-            string userEmail = formCollection["userEmail"]!;
-            string newPassword = formCollection["newPassword"]!;
-            string confirmPassword = formCollection["confirmPassword"]!;
             User? user = _dbContext.Users.FirstOrDefault(user => user.Email == userEmail);
             if (user == null)
             {
@@ -160,12 +148,40 @@ namespace BirdClubInfoHub.Controllers
                 TempData.Add("error", "");
                 return RedirectToAction("Index");
             }
+
+            string? code = HttpContext.Session.GetString("CODE");
+            if (code == null || !code.Equals(user.ResetPasswordCode))
+            {
+                TempData.Add("notification", "Verification code is incorrect!");
+                TempData.Add("error", "");
+                return View("VerifyCode", userEmail);
+            }
+
+            return View("NewPassword", userEmail);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult NewPassword(IFormCollection formCollection)
+        {
+            string userEmail = formCollection["userEmail"].ToString();
+            User? user = _dbContext.Users.FirstOrDefault(user => user.Email == userEmail);
+            if (user == null)
+            {
+                TempData.Add("notification", "Account not found!");
+                TempData.Add("error", "");
+                return RedirectToAction("Index");
+            }
+            
+            string newPassword = formCollection["newPassword"].ToString();
+            string confirmPassword = formCollection["confirmPassword"].ToString();
             if (confirmPassword != newPassword)
             {
                 TempData.Add("notification", "Password does not match!");
                 TempData.Add("error", "");
                 return View("NewPassword", userEmail);
             }
+
             PasswordHasher<User> passwordHasher = new();
             user.Password = passwordHasher.HashPassword(user, newPassword);
             user.ResetPasswordCode = string.Empty;

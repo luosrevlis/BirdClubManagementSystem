@@ -22,15 +22,27 @@ namespace BirdClubInfoHub.Controllers
             _mapper = mapper;
         }
 
-        public IActionResult Index(int page = 1)
+        public IActionResult Index(int page = 1, string keyword = "", int categoryId = 0)
         {
             int? userId = HttpContext.Session.GetInt32("USER_ID");
             if (userId == null)
             {
                 return RedirectToAction("Index", "Login");
             }
-            List<BlogDTO> createdBlogs = _dbContext.Blogs
-                .Where(blog => blog.UserId == userId)
+
+            IQueryable<Blog> matches = _dbContext.Blogs
+                .Where(blog => blog.UserId == userId);
+            if (!string.IsNullOrEmpty(keyword))
+            {
+                matches = matches.Where(blog => blog.Title.ToLower().Contains(keyword.ToLower()));
+            }
+            if (categoryId != 0)
+            {
+                matches = matches.Where(blog => blog.BlogCategoryId == categoryId);
+            }
+
+            List<BlogDTO> createdBlogs = matches
+                .OrderByDescending(blog => blog.DateCreated)
                 .Skip((page - 1) * PageSize)
                 .Take(PageSize)
                 .Include(blog => blog.BlogCategory)
@@ -48,12 +60,12 @@ namespace BirdClubInfoHub.Controllers
                 TempData.Add("error", "");
                 return RedirectToAction("Index");
             }
-            blog.User = _dbContext.Users.Find(blog.UserId)!;
-            blog.BlogCategory = _dbContext.BlogCategories.Find(blog.BlogCategoryId)!;
             if (blog.Status == "Accepted")
             {
                 return RedirectToAction("Details", "Blogs", new { id });
             }
+            blog.User = _dbContext.Users.Find(blog.UserId)!;
+            blog.BlogCategory = _dbContext.BlogCategories.Find(blog.BlogCategoryId)!;
             return View(_mapper.Map<BlogDTO>(blog));
         }
 
@@ -76,25 +88,25 @@ namespace BirdClubInfoHub.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(Blog blog, IFormFile thumbnailFile)
+        public IActionResult Edit(BlogDTO dto, IFormFile thumbnailFile)
         {
-            Blog? blogInDb = _dbContext.Blogs.Find(blog.Id);
-            if (blogInDb == null || blogInDb.Status != "Pending")
+            Blog? blog = _dbContext.Blogs.Find(dto.Id);
+            if (blog == null || blog.Status != "Pending")
             {
                 TempData.Add("notification", "Blog not found!");
                 TempData.Add("error", "");
                 return RedirectToAction("Index");
             }
-            blogInDb.BlogCategoryId = blog.BlogCategoryId;
-            blogInDb.Title = blog.Title;
-            blogInDb.Contents = blog.Contents;
+            blog.BlogCategoryId = dto.BlogCategory.Id; //TODO test change category
+            blog.Title = dto.Title;
+            blog.Contents = dto.Contents;
             if (thumbnailFile != null)
             {
                 using MemoryStream memoryStream = new();
                 thumbnailFile.CopyTo(memoryStream);
-                blogInDb.Thumbnail = memoryStream.ToArray();
+                blog.Thumbnail = memoryStream.ToArray();
             }
-            _dbContext.Blogs.Update(blogInDb);
+            _dbContext.Blogs.Update(blog);
             _dbContext.SaveChanges();
 
             TempData.Add("notification", "Blog updated!");

@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using BirdClubInfoHub.Data;
+using BirdClubInfoHub.Models.DTOs;
 using BirdClubInfoHub.Models.Entities;
+using BirdClubInfoHub.Models.Statuses;
 using BirdClubInfoHub.Services;
 using FluentEmail.Core;
 using Microsoft.AspNetCore.Mvc;
@@ -45,18 +47,22 @@ namespace BirdClubInfoHub.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(MembershipRequest request)
+        public IActionResult Create(MembershipRequestDTO dto)
         {
-            User? user = _dbContext.Users.FirstOrDefault(x => x.Email == request.Email);
-            if (user != null)
+            MembershipRequest? request = _dbContext.MembershipRequests
+                .FirstOrDefault(mr => mr.Email == dto.Email && mr.Status != MemRequestStatuses.Rejected);
+            User? user = _dbContext.Users.FirstOrDefault(u => u.Email == dto.Email);
+            if (user != null || request != null)
             {
-                TempData.Add("notification", "Email already existed");
-                TempData.Add("error", "This email has been registered!");
-                return View(request);
+                TempData.Add("notification", "Account or request already existed");
+                TempData.Add("error", "");
+                return View(dto);
             }
-            request.Status = "Pending";
+            request = _mapper.Map<MembershipRequest>(dto);
+            request.Status = MemRequestStatuses.Pending;
             _dbContext.MembershipRequests.Add(request);
             _dbContext.SaveChanges();
+
             TempData.Add("notification", "Your request has been recorded");
             TempData.Add("success", "Please wait while our staff handle the request. You will receive an email upon request approval.");
             return RedirectToAction("Index", "Home");
@@ -65,7 +71,7 @@ namespace BirdClubInfoHub.Controllers
         public IActionResult GeneratePaymentUrl(int id)
         {
             MembershipRequest? request = _dbContext.MembershipRequests.Find(id);
-            if (request == null || request.Status != "Accepted")
+            if (request == null || request.Status != MemRequestStatuses.Accepted)
             {
                 TempData.Add("notification", "Error");
                 TempData.Add("error", "It seems like something went wrong. Please resubmit your membership request.");
@@ -99,7 +105,7 @@ namespace BirdClubInfoHub.Controllers
                 TempData.Add("error", "Please reattempt the payment process.");
                 return RedirectToAction("Index", "Home");
             }
-            request.Status = "Payment Received";
+            request.Status = MemRequestStatuses.PaymentReceived;
             _dbContext.MembershipRequests.Update(request);
             _dbContext.Users.Add(_accountGenerationService.GenerateAccount(request, out LoginCredential credential));
             _dbContext.SaveChanges();

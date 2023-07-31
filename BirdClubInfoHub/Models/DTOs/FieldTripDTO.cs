@@ -14,5 +14,7 @@
         public int Fee { get; set; }
         public string Status { get; set; } = null!;
         public string? Highlights { get; set; }
+        public ICollection<FieldTripRegistrationDTO> FieldTripRegistrations { get; set; }
+            = new List<FieldTripRegistrationDTO>();
     }
 }

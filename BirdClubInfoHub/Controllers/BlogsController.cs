@@ -41,19 +41,22 @@ namespace BirdClubInfoHub.Controllers
         public ActionResult Index(int page = 1, string keyword = "", int categoryId = 0)
         {
             IQueryable<Blog> matches = _dbContext.Blogs
-                .Where(blog => blog.Status == BlogStatuses.Accepted)
-                .Where(blog => blog.Title.ToLower().Contains(keyword.ToLower()));
+                .Where(blog => blog.Status == BlogStatuses.Accepted);
+            if (!string.IsNullOrEmpty(keyword))
+            {
+                matches = matches.Where(blog => blog.Title.ToLower().Contains(keyword.ToLower()));
+            }
             if (categoryId != 0)
             {
                 matches = matches.Where(blog => blog.BlogCategoryId == categoryId);
             }
             
             List<BlogDTO> blogs = matches
+                .OrderByDescending(blog => blog.DateCreated)
                 .Skip((page - 1) * PageSize)
                 .Take(PageSize)
                 .Include(blog => blog.User)
                 .Include(blog => blog.BlogCategory)
-                .OrderByDescending(blog => blog.DateCreated)
                 .Select(blog => _mapper.Map<BlogDTO>(blog))
                 .ToList();
 
@@ -140,40 +143,42 @@ namespace BirdClubInfoHub.Controllers
             return RedirectToAction("Index");
         }
 
+        [Authenticated]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult AddComment(Comment comment)
+        public ActionResult AddComment(CommentDTO dto)
         {
-            if (comment.UserId == 0)
+            if (dto.User.Id == 0)
             {
                 return RedirectToAction("Index", "Login");
             }
-            comment.User = _dbContext.Users.Find(comment.UserId)!;
-            comment.Blog = _dbContext.Blogs.Find(comment.BlogId)!;
+            Comment comment = _mapper.Map<Comment>(dto);
+            comment.User = _dbContext.Users.Find(dto.User.Id)!;
+            comment.Blog = _dbContext.Blogs.Find(dto.Blog.Id)!;
             comment.CreatedDate = DateTime.Now;
             _dbContext.Comments.Add(comment);
             _dbContext.SaveChanges();
 
-            return RedirectToAction("Details", new { id = comment.BlogId });
+            return RedirectToAction("Details", new { id = dto.Blog.Id });
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult EditComment(Comment comment)
+        public ActionResult EditComment(CommentDTO dto)
         {
-            Comment? commentInDb = _dbContext.Comments.Find(comment.Id);
-            if (commentInDb == null)
+            Comment? comment = _dbContext.Comments.Find(dto.Id);
+            if (comment == null)
             {
                 TempData.Add("notification", "Comment not found!");
                 TempData.Add("error", "");
                 return RedirectToAction("Index");
             }
-            commentInDb.Contents = comment.Contents;
-            commentInDb.ModifiedDate = DateTime.Now;
-            _dbContext.Comments.Update(commentInDb);
+            comment.Contents = dto.Contents;
+            comment.ModifiedDate = DateTime.Now;
+            _dbContext.Comments.Update(comment);
             _dbContext.SaveChanges();
 
-            return RedirectToAction("Details", new { id = comment.BlogId });
+            return RedirectToAction("Details", new { id = dto.Blog.Id });
         }
 
         [HttpPost]
