@@ -14,5 +14,7 @@
         public int Fee { get; set; } = 0;
         public string Status { get; set; } = null!;
         public string? Highlights { get; set; }
+        public ICollection<MeetingRegistrationDTO> MeetingRegistrations { get; set; }
+            = new List<MeetingRegistrationDTO>();
     }
 }

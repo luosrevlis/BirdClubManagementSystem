@@ -14,5 +14,9 @@
         public int Fee { get; set; }
         public string Status { get; set; } = null!;
         public string? Highlights { get; set; }
+        public ICollection<TournamentRegistrationDTO> TournamentRegistrations { get; set; }
+            = new List<TournamentRegistrationDTO>();
+        public ICollection<TournamentStandingDTO> TournamentStandings { get; set; }
+            = new List<TournamentStandingDTO>();
     }
 }
