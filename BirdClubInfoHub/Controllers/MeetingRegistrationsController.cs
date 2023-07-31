@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BirdClubInfoHub.Data;
 using BirdClubInfoHub.Filters;
+using BirdClubInfoHub.Models.DTOs;
 using BirdClubInfoHub.Models.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -14,15 +15,14 @@ namespace BirdClubInfoHub.Controllers
         private readonly IMapper _mapper;
         private const int PageSize = 10;
 
-        public MeetingRegistrationsController(
-            BcmsDbContext dbContext,
-            IMapper mapper)
+        public MeetingRegistrationsController
+            (BcmsDbContext dbContext, IMapper mapper)
         {
             _dbContext = dbContext;
             _mapper = mapper;
         }
 
-        public IActionResult Index(int page = 1)
+        public IActionResult Index(int page = 1, string keyword = "")
         {
             int? userId = HttpContext.Session.GetInt32("USER_ID");
             User? user = _dbContext.Users.Find(userId);
@@ -30,15 +30,23 @@ namespace BirdClubInfoHub.Controllers
             {
                 return RedirectToAction("Index", "Login");
             }
-            List<MeetingRegistration> registrations = _dbContext.MeetingRegistrations
+
+            IQueryable<MeetingRegistration> matches = _dbContext.MeetingRegistrations
                 .Where(mr => mr.UserId == userId)
-                .Include(mr => mr.User)
-                .Include(mr => mr.Meeting)
-                .ToList();
-            registrations.RemoveAll(mr => mr.Meeting.Status != "Open" && mr.Meeting.Status != "Registration Closed");
-            return View(registrations
+                .Include(mr => mr.Meeting);
+            if (!string.IsNullOrEmpty(keyword))
+            {
+                matches = matches.Where(mr => mr.Meeting.Name.ToLower().Contains(keyword.ToLower()));
+            }
+
+            List<MeetingRegistrationDTO> registrations = matches
+                .OrderByDescending(mr => mr.DateCreated)
                 .Skip((page - 1) * PageSize)
-                .Take(PageSize));
+                .Take(PageSize)
+                .Select(mr => _mapper.Map<MeetingRegistrationDTO>(mr))
+                .ToList();
+            //registrations.RemoveAll(mr => mr.Meeting.Status != "Open" && mr.Meeting.Status != "Registration Closed");
+            return View(registrations);
         }
 
         public IActionResult Register(int id)
@@ -66,7 +74,7 @@ namespace BirdClubInfoHub.Controllers
 
             TempData.Add("notification", "Registration success!");
             TempData.Add("success", "");
-            return RedirectToAction("Details", "Meetings", new { id = meeting.Id });
+            return RedirectToAction("Index");
         }
 
         [HttpPost]

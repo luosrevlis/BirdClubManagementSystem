@@ -18,17 +18,15 @@ namespace BirdClubInfoHub.Controllers
         private readonly IMapper _mapper;
         private const int PageSize = 10;
 
-        public FieldTripRegistrationsController(
-            BcmsDbContext dbContext,
-            IVnPayService vnPayService,
-            IMapper mapper)
+        public FieldTripRegistrationsController
+            (BcmsDbContext dbContext, IVnPayService vnPayService, IMapper mapper)
         {
             _dbContext = dbContext;
             _vnPayService = vnPayService;
             _mapper = mapper;
         }
 
-        public IActionResult Index(int page = 1)
+        public IActionResult Index(int page = 1, string keyword = "")
         {
             int? userId = HttpContext.Session.GetInt32("USER_ID");
             User? user = _dbContext.Users.Find(userId);
@@ -36,16 +34,23 @@ namespace BirdClubInfoHub.Controllers
             {
                 return RedirectToAction("Index", "Login");
             }
-            List<FieldTripRegistrationDTO> registrations = _dbContext.FieldTripRegistrations
+
+            IQueryable<FieldTripRegistration> matches = _dbContext.FieldTripRegistrations
                 .Where(ftr => ftr.UserId == userId)
-                .Include(ftr => ftr.User)
-                .Include(ftr => ftr.FieldTrip)
+                .Include(ftr => ftr.FieldTrip);
+            if (!string.IsNullOrEmpty(keyword))
+            {
+                matches = matches.Where(ftr => ftr.FieldTrip.Name.ToLower().Contains(keyword.ToLower()));
+            }
+
+            List<FieldTripRegistrationDTO> registrations = matches
+                .OrderByDescending(ftr => ftr.DateCreated)
+                .Skip((page - 1) * PageSize)
+                .Take(PageSize)
                 .Select(ftr => _mapper.Map<FieldTripRegistrationDTO>(ftr))
                 .ToList();
             //registrations.RemoveAll(ftr => ftr.Status != "Open" && ftr.FieldTrip.Status != "Registration Closed");
-            return View(registrations
-                .Skip((page - 1) * PageSize)
-                .Take(PageSize));
+            return View(registrations);
         }
 
         public IActionResult Register(int id)
@@ -124,15 +129,15 @@ namespace BirdClubInfoHub.Controllers
             FieldTripRegistration? registration = _dbContext.FieldTripRegistrations.Find(id);
             if (registration == null)
             {
-                TempData.Add("notification", "Error");
-                TempData.Add("error", "It seems like something went wrong. Please re-register.");
-                return RedirectToAction("Index", "ClubEvents");
+                TempData.Add("notification", "Registration not found!");
+                TempData.Add("error", "");
+                return RedirectToAction("Index");
             }
             if (!model.Success || model.VnPayResponseCode != "00")
             {
                 TempData.Add("notification", "Payment failed!");
                 TempData.Add("error", "Please reattempt the payment process.");
-                return RedirectToAction("Details", "FieldTrips", new { id = registration.FieldTripId });
+                return RedirectToAction("Index");
             }
             registration.PaymentReceived = true;
             _dbContext.FieldTripRegistrations.Update(registration);

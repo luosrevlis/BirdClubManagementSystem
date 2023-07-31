@@ -17,17 +17,15 @@ namespace BirdClubInfoHub.Controllers
         private readonly IMapper _mapper;
         private const int PageSize = 10;
 
-        public TournamentRegistrationsController(
-            BcmsDbContext dbContext,
-            IVnPayService vnPayService,
-            IMapper mapper)
+        public TournamentRegistrationsController
+            (BcmsDbContext dbContext, IVnPayService vnPayService, IMapper mapper)
         {
             _dbContext = dbContext;
             _vnPayService = vnPayService;
             _mapper = mapper;
         }
 
-        public IActionResult Index(int page = 1)
+        public IActionResult Index(int page = 1, string keyword = "")
         {
             int? userId = HttpContext.Session.GetInt32("USER_ID");
             User? user = _dbContext.Users.Find(userId);
@@ -35,17 +33,24 @@ namespace BirdClubInfoHub.Controllers
             {
                 return RedirectToAction("Index", "Login");
             }
-            List<TournamentRegistrationDTO> registrations = _dbContext.TournamentRegistrations
+
+            IQueryable<TournamentRegistration> matches = _dbContext.TournamentRegistrations
                 .Include(tr => tr.Bird)
-                .ThenInclude(bird => bird.User)
                 .Where(tr => tr.Bird.UserId == userId)
-                .Include(tr => tr.Tournament)
+                .Include(tr => tr.Tournament);
+            if (!string.IsNullOrEmpty(keyword))
+            {
+                matches = matches.Where(tr => tr.Tournament.Name.ToLower().Contains(keyword.ToLower()));
+            }
+
+            List<TournamentRegistrationDTO> registrations = matches
+                .OrderByDescending(tr => tr.DateCreated)
+                .Skip((page - 1) * PageSize)
+                .Take(PageSize)
                 .Select(tr => _mapper.Map<TournamentRegistrationDTO>(tr))
                 .ToList();
             //registrations.RemoveAll(tr => tr.Tournament.Status != "Open" && tr.Tournament.Status != "Registration Closed");
-            return View(registrations
-                .Skip((page - 1) * PageSize)
-                .Take(PageSize));
+            return View(registrations);
         }
 
         public IActionResult Register(int id, int birdId)
@@ -58,7 +63,7 @@ namespace BirdClubInfoHub.Controllers
                 return RedirectToAction("Index", "ClubEvents");
             }
             Bird? bird = _dbContext.Birds.Find(birdId);
-            if (bird == null)
+            if (bird == null || bird.UserId != HttpContext.Session.GetInt32("USER_ID"))
             {
                 TempData.Add("notification", "Bird not found!");
                 TempData.Add("error", "");
@@ -84,7 +89,7 @@ namespace BirdClubInfoHub.Controllers
                 return RedirectToAction("Index", "ClubEvents");
             }
             Bird? bird = _dbContext.Birds.Find(birdId);
-            if (bird == null)
+            if (bird == null || bird.UserId != HttpContext.Session.GetInt32("USER_ID"))
             {
                 TempData.Add("notification", "Bird not found!");
                 TempData.Add("error", "");
@@ -127,15 +132,15 @@ namespace BirdClubInfoHub.Controllers
             TournamentRegistration? registration = _dbContext.TournamentRegistrations.Find(id);
             if (registration == null)
             {
-                TempData.Add("notification", "Error");
-                TempData.Add("error", "It seems like something went wrong. Please re-register.");
-                return RedirectToAction("Index", "ClubEvents");
+                TempData.Add("notification", "Registration not found!");
+                TempData.Add("error", "");
+                return RedirectToAction("Index");
             }
             if (!model.Success || model.VnPayResponseCode != "00")
             {
                 TempData.Add("notification", "Payment failed!");
                 TempData.Add("error", "Please reattempt the payment process.");
-                return RedirectToAction("Details", "Tournaments", new { id = registration.TournamentId });
+                return RedirectToAction("Index");
             }
             registration.PaymentReceived = true;
             _dbContext.TournamentRegistrations.Update(registration);
