@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BirdClubManagementSystem.Data;
 using BirdClubManagementSystem.Filters;
+using BirdClubManagementSystem.Models.DTOs;
 using BirdClubManagementSystem.Models.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -12,20 +13,33 @@ namespace BirdClubManagementSystem.Controllers
     {
         private readonly BcmsDbContext _dbContext;
         private readonly IMapper _mapper;
+        private const int PageSize = 10;
 
-        public MeetingRegistrationsController(BcmsDbContext dbContext, IMapper mapper)
+        public MeetingRegistrationsController
+            (BcmsDbContext dbContext, IMapper mapper)
         {
             _dbContext = dbContext;
             _mapper = mapper;
         }
 
         // GET: MeetingRegistrationsController
-        public ActionResult Index(int meetingId)
+        public ActionResult Index(int meetingId, int page = 1, string keyword = "")
         {
-            List<MeetingRegistration> registrations = _dbContext.MeetingRegistrations
+            HttpContext.Session.SetInt32("MEETING_ID", meetingId);
+
+            IQueryable<MeetingRegistration> matches = _dbContext.MeetingRegistrations
                 .Where(mr => mr.MeetingId == meetingId)
-                .Include(mr => mr.User)
-                .Include(mr => mr.Meeting)
+                .Include(mr => mr.User);
+            if (!string.IsNullOrEmpty(keyword))
+            {
+                matches = matches.Where(mr => mr.User.Name.ToLower().Contains(keyword.ToLower()));
+            }
+
+            List<MeetingRegistrationDTO> registrations = matches
+                .OrderByDescending(mr => mr.DateCreated)
+                .Skip((page - 1) * PageSize)
+                .Take(PageSize)
+                .Select(mr => _mapper.Map<MeetingRegistrationDTO>(mr))
                 .ToList();
             return View(registrations);
         }
@@ -35,19 +49,20 @@ namespace BirdClubManagementSystem.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Delete(int id)
         {
+            int meetingId = HttpContext.Session.GetInt32("MEETING_ID") ?? 0;
             MeetingRegistration? registration = _dbContext.MeetingRegistrations.Find(id);
             if (registration == null)
             {
                 TempData.Add("notification", "Participant not found!");
                 TempData.Add("error", "");
-                return RedirectToAction("Index", "ClubEvents");
+                return RedirectToAction("Index", new RouteValueDictionary(new { meetingId }));
             }
             _dbContext.MeetingRegistrations.Remove(registration);
             _dbContext.SaveChanges();
 
             TempData.Add("notification", "Participant removed!");
             TempData.Add("success", "");
-            return RedirectToAction("Index", new RouteValueDictionary(new { meetingId = registration.MeetingId }));
+            return RedirectToAction("Index", new RouteValueDictionary(new { meetingId }));
         }
     }
 }
