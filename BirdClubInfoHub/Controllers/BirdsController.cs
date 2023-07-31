@@ -38,11 +38,19 @@ namespace BirdClubInfoHub.Controllers
 
         // GET: BirdsController
         [Authenticated]
-        public ActionResult Index(int page = 1)
+        public ActionResult Index(int page = 1, string keyword = "")
         {
             int? userId = HttpContext.Session.GetInt32("USER_ID");
-            List<BirdDTO> birds = _dbContext.Birds
-                .Where(bird => bird.UserId == userId)
+
+            IQueryable<Bird> matches = _dbContext.Birds
+                .Where(bird => bird.UserId == userId);
+            if (!string.IsNullOrEmpty(keyword))
+            {
+                matches = matches.Where(bird => bird.Name.ToLower().Contains(keyword.ToLower()));
+            }
+
+            List<BirdDTO> birds = matches
+                .OrderBy(bird => bird.Name)
                 .Skip((page - 1) * PageSize)
                 .Take(PageSize)
                 .Select(bird => _mapper.Map<BirdDTO>(bird))
@@ -74,7 +82,7 @@ namespace BirdClubInfoHub.Controllers
         // POST: BirdsController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Bird bird, IFormFile profilePicture)
+        public ActionResult Create(BirdDTO dto, IFormFile profilePicture)
         {
             int? userId = HttpContext.Session.GetInt32("USER_ID");
             User? user = _dbContext.Users.Find(userId);
@@ -82,12 +90,14 @@ namespace BirdClubInfoHub.Controllers
             {
                 return RedirectToAction("Index", "Login");
             }
+
+            Bird bird = _mapper.Map<Bird>(dto);
             bird.User = user;
-            if (bird.Species.IsNullOrEmpty())
+            if (string.IsNullOrEmpty(bird.Species))
             {
                 bird.Species = "Unknown";
             }
-            if (bird.Description.IsNullOrEmpty())
+            if (string.IsNullOrEmpty(bird.Description))
             {
                 bird.Description = "No description";
             }
@@ -123,26 +133,26 @@ namespace BirdClubInfoHub.Controllers
         // POST: BirdsController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(Bird bird, IFormFile profilePicture)
+        public ActionResult Edit(BirdDTO dto, IFormFile profilePicture)
         {
             int? userId =  HttpContext.Session.GetInt32("USER_ID");
-            Bird? birdInDb = _dbContext.Birds.Find(bird.Id);
-            if (birdInDb == null || birdInDb.UserId != userId)
+            Bird? bird = _dbContext.Birds.Find(dto.Id);
+            if (bird == null || bird.UserId != userId)
             {
                 TempData.Add("notification", "Bird not found!");
                 TempData.Add("error", "");
                 return RedirectToAction("Index");
             }
-            birdInDb.Name = bird.Name;
-            birdInDb.Species = bird.Species.IsNullOrEmpty() ? "Unknown" : bird.Species;
-            birdInDb.Description = bird.Description.IsNullOrEmpty() ? "No description" : bird.Description;
+            bird.Name = dto.Name;
+            bird.Species = string.IsNullOrEmpty(dto.Species) ? "Unknown" : dto.Species;
+            bird.Description = string.IsNullOrEmpty(dto.Description) ? "No description" : dto.Description;
             if (profilePicture != null)
             {
                 using MemoryStream memoryStream = new();
                 profilePicture.CopyTo(memoryStream);
-                birdInDb.ProfilePicture = memoryStream.ToArray();
+                bird.ProfilePicture = memoryStream.ToArray();
             }
-            _dbContext.Birds.Update(birdInDb);
+            _dbContext.Birds.Update(bird);
             _dbContext.SaveChanges();
 
             TempData.Add("notification", "Bird updated!");
