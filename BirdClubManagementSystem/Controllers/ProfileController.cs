@@ -27,7 +27,7 @@ namespace BirdClubManagementSystem.Controllers
                 return NotFound();
             }
             //if image is empty return default
-            if (user.ProfilePicture.Length == 0)
+            if (user.ProfilePicture == null || user.ProfilePicture.Length == 0)
             {
                 return File("/img/placeholder/user.jpg", "image/png");
             }

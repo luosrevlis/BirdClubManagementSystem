@@ -22,7 +22,7 @@ namespace BirdClubManagementSystem.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("BirdClubManagementSystem.Models.Bird", b =>
+            modelBuilder.Entity("BirdClubManagementSystem.Models.Entities.Bird", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -40,7 +40,6 @@ namespace BirdClubManagementSystem.Migrations
                         .HasColumnType("nvarchar(255)");
 
                     b.Property<byte[]>("ProfilePicture")
-                        .IsRequired()
                         .HasColumnType("varbinary(max)");
 
                     b.Property<string>("Species")
@@ -57,7 +56,7 @@ namespace BirdClubManagementSystem.Migrations
                     b.ToTable("Birds");
                 });
 
-            modelBuilder.Entity("BirdClubManagementSystem.Models.Blog", b =>
+            modelBuilder.Entity("BirdClubManagementSystem.Models.Entities.Blog", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -81,7 +80,6 @@ namespace BirdClubManagementSystem.Migrations
                         .HasColumnType("nvarchar(3)");
 
                     b.Property<byte[]>("Thumbnail")
-                        .IsRequired()
                         .HasColumnType("varbinary(max)");
 
                     b.Property<string>("Title")
@@ -101,7 +99,7 @@ namespace BirdClubManagementSystem.Migrations
                     b.ToTable("Blogs");
                 });
 
-            modelBuilder.Entity("BirdClubManagementSystem.Models.BlogCategory", b =>
+            modelBuilder.Entity("BirdClubManagementSystem.Models.Entities.BlogCategory", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -119,7 +117,7 @@ namespace BirdClubManagementSystem.Migrations
                     b.ToTable("BlogCategories");
                 });
 
-            modelBuilder.Entity("BirdClubManagementSystem.Models.Comment", b =>
+            modelBuilder.Entity("BirdClubManagementSystem.Models.Entities.Comment", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -153,7 +151,7 @@ namespace BirdClubManagementSystem.Migrations
                     b.ToTable("Comments");
                 });
 
-            modelBuilder.Entity("BirdClubManagementSystem.Models.Feedback", b =>
+            modelBuilder.Entity("BirdClubManagementSystem.Models.Entities.Feedback", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -181,7 +179,7 @@ namespace BirdClubManagementSystem.Migrations
                     b.ToTable("Feedbacks");
                 });
 
-            modelBuilder.Entity("BirdClubManagementSystem.Models.FieldTrip", b =>
+            modelBuilder.Entity("BirdClubManagementSystem.Models.Entities.FieldTrip", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -198,14 +196,13 @@ namespace BirdClubManagementSystem.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("ExpectedEndDate")
+                    b.Property<DateTime?>("ExpectedEndDate")
                         .HasColumnType("datetime2");
 
                     b.Property<int>("Fee")
                         .HasColumnType("int");
 
                     b.Property<string>("Highlights")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
@@ -213,13 +210,13 @@ namespace BirdClubManagementSystem.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
-                    b.Property<DateTime>("RegCloseDate")
+                    b.Property<DateTime?>("RegCloseDate")
                         .HasColumnType("datetime2");
 
                     b.Property<int>("RegLimit")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("RegOpenDate")
+                    b.Property<DateTime?>("RegOpenDate")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime>("StartDate")
@@ -235,7 +232,7 @@ namespace BirdClubManagementSystem.Migrations
                     b.ToTable("FieldTrips");
                 });
 
-            modelBuilder.Entity("BirdClubManagementSystem.Models.FieldTripRegistration", b =>
+            modelBuilder.Entity("BirdClubManagementSystem.Models.Entities.FieldTripRegistration", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -264,7 +261,7 @@ namespace BirdClubManagementSystem.Migrations
                     b.ToTable("FieldTripRegistrations");
                 });
 
-            modelBuilder.Entity("BirdClubManagementSystem.Models.Meeting", b =>
+            modelBuilder.Entity("BirdClubManagementSystem.Models.Entities.Meeting", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -281,14 +278,13 @@ namespace BirdClubManagementSystem.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("ExpectedEndDate")
+                    b.Property<DateTime?>("ExpectedEndDate")
                         .HasColumnType("datetime2");
 
                     b.Property<int>("Fee")
                         .HasColumnType("int");
 
                     b.Property<string>("Highlights")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
@@ -296,13 +292,13 @@ namespace BirdClubManagementSystem.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
-                    b.Property<DateTime>("RegCloseDate")
+                    b.Property<DateTime?>("RegCloseDate")
                         .HasColumnType("datetime2");
 
                     b.Property<int>("RegLimit")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("RegOpenDate")
+                    b.Property<DateTime?>("RegOpenDate")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime>("StartDate")
@@ -318,7 +314,7 @@ namespace BirdClubManagementSystem.Migrations
                     b.ToTable("Meetings");
                 });
 
-            modelBuilder.Entity("BirdClubManagementSystem.Models.MeetingRegistration", b =>
+            modelBuilder.Entity("BirdClubManagementSystem.Models.Entities.MeetingRegistration", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -347,7 +343,7 @@ namespace BirdClubManagementSystem.Migrations
                     b.ToTable("MeetingRegistrations");
                 });
 
-            modelBuilder.Entity("BirdClubManagementSystem.Models.MembershipRequest", b =>
+            modelBuilder.Entity("BirdClubManagementSystem.Models.Entities.MembershipRequest", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -385,7 +381,7 @@ namespace BirdClubManagementSystem.Migrations
                     b.ToTable("MembershipRequests");
                 });
 
-            modelBuilder.Entity("BirdClubManagementSystem.Models.Tournament", b =>
+            modelBuilder.Entity("BirdClubManagementSystem.Models.Entities.Tournament", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -402,14 +398,13 @@ namespace BirdClubManagementSystem.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("ExpectedEndDate")
+                    b.Property<DateTime?>("ExpectedEndDate")
                         .HasColumnType("datetime2");
 
                     b.Property<int>("Fee")
                         .HasColumnType("int");
 
                     b.Property<string>("Highlights")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
@@ -417,13 +412,13 @@ namespace BirdClubManagementSystem.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
-                    b.Property<DateTime>("RegCloseDate")
+                    b.Property<DateTime?>("RegCloseDate")
                         .HasColumnType("datetime2");
 
                     b.Property<int>("RegLimit")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("RegOpenDate")
+                    b.Property<DateTime?>("RegOpenDate")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime>("StartDate")
@@ -439,7 +434,7 @@ namespace BirdClubManagementSystem.Migrations
                     b.ToTable("Tournaments");
                 });
 
-            modelBuilder.Entity("BirdClubManagementSystem.Models.TournamentRegistration", b =>
+            modelBuilder.Entity("BirdClubManagementSystem.Models.Entities.TournamentRegistration", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -468,7 +463,7 @@ namespace BirdClubManagementSystem.Migrations
                     b.ToTable("TournamentRegistrations");
                 });
 
-            modelBuilder.Entity("BirdClubManagementSystem.Models.TournamentStanding", b =>
+            modelBuilder.Entity("BirdClubManagementSystem.Models.Entities.TournamentStanding", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -496,7 +491,7 @@ namespace BirdClubManagementSystem.Migrations
                     b.ToTable("TournamentStandings");
                 });
 
-            modelBuilder.Entity("BirdClubManagementSystem.Models.User", b =>
+            modelBuilder.Entity("BirdClubManagementSystem.Models.Entities.User", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -536,11 +531,9 @@ namespace BirdClubManagementSystem.Migrations
                         .HasColumnType("nvarchar(15)");
 
                     b.Property<byte[]>("ProfilePicture")
-                        .IsRequired()
                         .HasColumnType("varbinary(max)");
 
                     b.Property<string>("ResetPasswordCode")
-                        .IsRequired()
                         .HasMaxLength(6)
                         .HasColumnType("nvarchar(6)");
 
@@ -560,9 +553,9 @@ namespace BirdClubManagementSystem.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("BirdClubManagementSystem.Models.Bird", b =>
+            modelBuilder.Entity("BirdClubManagementSystem.Models.Entities.Bird", b =>
                 {
-                    b.HasOne("BirdClubManagementSystem.Models.User", "User")
+                    b.HasOne("BirdClubManagementSystem.Models.Entities.User", "User")
                         .WithMany("Birds")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -571,15 +564,15 @@ namespace BirdClubManagementSystem.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("BirdClubManagementSystem.Models.Blog", b =>
+            modelBuilder.Entity("BirdClubManagementSystem.Models.Entities.Blog", b =>
                 {
-                    b.HasOne("BirdClubManagementSystem.Models.BlogCategory", "BlogCategory")
+                    b.HasOne("BirdClubManagementSystem.Models.Entities.BlogCategory", "BlogCategory")
                         .WithMany("Blogs")
                         .HasForeignKey("BlogCategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("BirdClubManagementSystem.Models.User", "User")
+                    b.HasOne("BirdClubManagementSystem.Models.Entities.User", "User")
                         .WithMany("Blogs")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -590,15 +583,15 @@ namespace BirdClubManagementSystem.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("BirdClubManagementSystem.Models.Comment", b =>
+            modelBuilder.Entity("BirdClubManagementSystem.Models.Entities.Comment", b =>
                 {
-                    b.HasOne("BirdClubManagementSystem.Models.Blog", "Blog")
+                    b.HasOne("BirdClubManagementSystem.Models.Entities.Blog", "Blog")
                         .WithMany("Comments")
                         .HasForeignKey("BlogId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("BirdClubManagementSystem.Models.User", "User")
+                    b.HasOne("BirdClubManagementSystem.Models.Entities.User", "User")
                         .WithMany("Comments")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -609,9 +602,9 @@ namespace BirdClubManagementSystem.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("BirdClubManagementSystem.Models.Feedback", b =>
+            modelBuilder.Entity("BirdClubManagementSystem.Models.Entities.Feedback", b =>
                 {
-                    b.HasOne("BirdClubManagementSystem.Models.User", "User")
+                    b.HasOne("BirdClubManagementSystem.Models.Entities.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -620,15 +613,15 @@ namespace BirdClubManagementSystem.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("BirdClubManagementSystem.Models.FieldTripRegistration", b =>
+            modelBuilder.Entity("BirdClubManagementSystem.Models.Entities.FieldTripRegistration", b =>
                 {
-                    b.HasOne("BirdClubManagementSystem.Models.FieldTrip", "FieldTrip")
+                    b.HasOne("BirdClubManagementSystem.Models.Entities.FieldTrip", "FieldTrip")
                         .WithMany("FieldTripRegistrations")
                         .HasForeignKey("FieldTripId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("BirdClubManagementSystem.Models.User", "User")
+                    b.HasOne("BirdClubManagementSystem.Models.Entities.User", "User")
                         .WithMany("FieldTripRegistrations")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -639,15 +632,15 @@ namespace BirdClubManagementSystem.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("BirdClubManagementSystem.Models.MeetingRegistration", b =>
+            modelBuilder.Entity("BirdClubManagementSystem.Models.Entities.MeetingRegistration", b =>
                 {
-                    b.HasOne("BirdClubManagementSystem.Models.Meeting", "Meeting")
+                    b.HasOne("BirdClubManagementSystem.Models.Entities.Meeting", "Meeting")
                         .WithMany("MeetingRegistrations")
                         .HasForeignKey("MeetingId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("BirdClubManagementSystem.Models.User", "User")
+                    b.HasOne("BirdClubManagementSystem.Models.Entities.User", "User")
                         .WithMany("MeetingRegistrations")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -658,15 +651,15 @@ namespace BirdClubManagementSystem.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("BirdClubManagementSystem.Models.TournamentRegistration", b =>
+            modelBuilder.Entity("BirdClubManagementSystem.Models.Entities.TournamentRegistration", b =>
                 {
-                    b.HasOne("BirdClubManagementSystem.Models.Bird", "Bird")
+                    b.HasOne("BirdClubManagementSystem.Models.Entities.Bird", "Bird")
                         .WithMany("TournamentRegistrations")
                         .HasForeignKey("BirdId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("BirdClubManagementSystem.Models.Tournament", "Tournament")
+                    b.HasOne("BirdClubManagementSystem.Models.Entities.Tournament", "Tournament")
                         .WithMany("TournamentRegistrations")
                         .HasForeignKey("TournamentId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -677,15 +670,15 @@ namespace BirdClubManagementSystem.Migrations
                     b.Navigation("Tournament");
                 });
 
-            modelBuilder.Entity("BirdClubManagementSystem.Models.TournamentStanding", b =>
+            modelBuilder.Entity("BirdClubManagementSystem.Models.Entities.TournamentStanding", b =>
                 {
-                    b.HasOne("BirdClubManagementSystem.Models.Bird", "Bird")
+                    b.HasOne("BirdClubManagementSystem.Models.Entities.Bird", "Bird")
                         .WithMany("TournamentStandings")
                         .HasForeignKey("BirdId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("BirdClubManagementSystem.Models.Tournament", "Tournament")
+                    b.HasOne("BirdClubManagementSystem.Models.Entities.Tournament", "Tournament")
                         .WithMany("TournamentStandings")
                         .HasForeignKey("TournamentId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -696,41 +689,41 @@ namespace BirdClubManagementSystem.Migrations
                     b.Navigation("Tournament");
                 });
 
-            modelBuilder.Entity("BirdClubManagementSystem.Models.Bird", b =>
+            modelBuilder.Entity("BirdClubManagementSystem.Models.Entities.Bird", b =>
                 {
                     b.Navigation("TournamentRegistrations");
 
                     b.Navigation("TournamentStandings");
                 });
 
-            modelBuilder.Entity("BirdClubManagementSystem.Models.Blog", b =>
+            modelBuilder.Entity("BirdClubManagementSystem.Models.Entities.Blog", b =>
                 {
                     b.Navigation("Comments");
                 });
 
-            modelBuilder.Entity("BirdClubManagementSystem.Models.BlogCategory", b =>
+            modelBuilder.Entity("BirdClubManagementSystem.Models.Entities.BlogCategory", b =>
                 {
                     b.Navigation("Blogs");
                 });
 
-            modelBuilder.Entity("BirdClubManagementSystem.Models.FieldTrip", b =>
+            modelBuilder.Entity("BirdClubManagementSystem.Models.Entities.FieldTrip", b =>
                 {
                     b.Navigation("FieldTripRegistrations");
                 });
 
-            modelBuilder.Entity("BirdClubManagementSystem.Models.Meeting", b =>
+            modelBuilder.Entity("BirdClubManagementSystem.Models.Entities.Meeting", b =>
                 {
                     b.Navigation("MeetingRegistrations");
                 });
 
-            modelBuilder.Entity("BirdClubManagementSystem.Models.Tournament", b =>
+            modelBuilder.Entity("BirdClubManagementSystem.Models.Entities.Tournament", b =>
                 {
                     b.Navigation("TournamentRegistrations");
 
                     b.Navigation("TournamentStandings");
                 });
 
-            modelBuilder.Entity("BirdClubManagementSystem.Models.User", b =>
+            modelBuilder.Entity("BirdClubManagementSystem.Models.Entities.User", b =>
                 {
                     b.Navigation("Birds");
 

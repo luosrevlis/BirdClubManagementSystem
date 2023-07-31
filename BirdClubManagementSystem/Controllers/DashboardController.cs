@@ -45,9 +45,12 @@ namespace BirdClubManagementSystem.Controllers
 
         private int GetHostedEvents(int days)
         {
-            int fieldTripCount = _dbContext.FieldTrips.Count(ft => ft.StartDate.AddDays(days) >= DateTime.Now);
-            int meetingCount = _dbContext.Meetings.Count(ft => ft.StartDate.AddDays(days) >= DateTime.Now);
-            int tournamentCount = _dbContext.Tournaments.Count(ft => ft.StartDate.AddDays(days) >= DateTime.Now);
+            int fieldTripCount = _dbContext.FieldTrips
+                .Count(ft => ft.StartDate.AddDays(days) >= DateTime.Now);
+            int meetingCount = _dbContext.Meetings
+                .Count(ft => ft.StartDate.AddDays(days) >= DateTime.Now);
+            int tournamentCount = _dbContext.Tournaments
+                .Count(ft => ft.StartDate.AddDays(days) >= DateTime.Now);
             return fieldTripCount + meetingCount + tournamentCount;
         }
 

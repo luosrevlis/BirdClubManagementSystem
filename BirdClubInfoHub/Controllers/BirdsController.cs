@@ -29,7 +29,7 @@ namespace BirdClubInfoHub.Controllers
                 return NotFound();
             }
             //if bytearray is empty return default
-            if (bird.ProfilePicture.Length == 0)
+            if (bird.ProfilePicture == null || bird.ProfilePicture.Length == 0)
             {
                 return File("/img/placeholder/bird.png", "image/png");
             }

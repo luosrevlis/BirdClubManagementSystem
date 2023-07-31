@@ -9,8 +9,8 @@ namespace BirdClubInfoHub.Models.Entities
         [Required]
         public int UserId { get; set; }
 
-        [Required, MinLength(1), MaxLength(255)]
         // TO-DO: fe check max
+        [Required, MinLength(1), MaxLength(255)]
         public string Title { get; set; } = "No title";
 
         [Required, MinLength(1), MaxLength(1000)]

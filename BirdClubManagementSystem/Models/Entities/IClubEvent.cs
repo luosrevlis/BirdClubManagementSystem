@@ -6,13 +6,13 @@
 
         public string Name { get; set; }
 
-        public DateTime RegOpenDate { get; set; }
+        public DateTime? RegOpenDate { get; set; }
 
-        public DateTime RegCloseDate { get; set; }
+        public DateTime? RegCloseDate { get; set; }
 
         public DateTime StartDate { get; set; }
 
-        public DateTime ExpectedEndDate { get; set; }
+        public DateTime? ExpectedEndDate { get; set; }
 
         public string Address { get; set; }
 
@@ -24,6 +24,6 @@
 
         public string Status { get; set; }
 
-        public string Highlights { get; set; }
+        public string? Highlights { get; set; }
     }
 }

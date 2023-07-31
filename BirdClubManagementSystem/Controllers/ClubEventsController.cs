@@ -29,17 +29,20 @@ namespace BirdClubManagementSystem.Controllers
             List<IClubEventDTO> eventList = new();
             eventList.AddRange(_dbContext.FieldTrips
                 .Where(e => e.Name.ToLower().Contains(keyword.ToLower())
-                && e.StartDate.Month == month.Month && e.StartDate.Year == month.Year)
+                    && e.StartDate.Month == month.Month
+                    && e.StartDate.Year == month.Year)
                 .Select(e => _mapper.Map<FieldTripDTO>(e))
                 .Cast<IClubEventDTO>());
             eventList.AddRange(_dbContext.Meetings
                 .Where(e => e.Name.ToLower().Contains(keyword.ToLower())
-                && e.StartDate.Month == month.Month && e.StartDate.Year == month.Year)
+                    && e.StartDate.Month == month.Month
+                    && e.StartDate.Year == month.Year)
                 .Select(e => _mapper.Map<MeetingDTO>(e))
                 .Cast<IClubEventDTO>());
             eventList.AddRange(_dbContext.Tournaments
                 .Where(e => e.Name.ToLower().Contains(keyword.ToLower())
-                && e.StartDate.Month == month.Month && e.StartDate.Year == month.Year)
+                    && e.StartDate.Month == month.Month
+                    && e.StartDate.Year == month.Year)
                 .Select(e => _mapper.Map<TournamentDTO>(e))
                 .Cast<IClubEventDTO>());
             if (!string.IsNullOrEmpty(status))
