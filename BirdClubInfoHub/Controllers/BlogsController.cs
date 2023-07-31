@@ -30,7 +30,7 @@ namespace BirdClubInfoHub.Controllers
                 return NotFound();
             }
             // if thumbnail is empty return default thumbnail
-            if (blog.Thumbnail.Length == 0)
+            if (blog.Thumbnail == null || blog.Thumbnail.Length == 0)
             {
                 return File("/img/placeholder/blog.png", "image/png");
             }

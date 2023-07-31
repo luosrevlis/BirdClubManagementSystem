@@ -219,7 +219,7 @@ namespace BirdClubManagementSystem.Migrations
                     b.Property<DateTime?>("RegOpenDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime?>("StartDate")
+                    b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Status")
@@ -301,7 +301,7 @@ namespace BirdClubManagementSystem.Migrations
                     b.Property<DateTime?>("RegOpenDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime?>("StartDate")
+                    b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Status")
@@ -421,7 +421,7 @@ namespace BirdClubManagementSystem.Migrations
                     b.Property<DateTime?>("RegOpenDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime?>("StartDate")
+                    b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Status")

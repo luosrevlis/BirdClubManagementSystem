@@ -13,7 +13,8 @@ namespace BirdClubInfoHub.Models.Entities
 
         public DateTime? RegCloseDate { get; set; } = null!;
 
-        public DateTime? StartDate { get; set; } = null!;
+        [Required]
+        public DateTime StartDate { get; set; } = DateTime.Now;
 
         public DateTime? ExpectedEndDate { get; set; } = null!;
 

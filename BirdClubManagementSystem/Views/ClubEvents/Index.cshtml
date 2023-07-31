@@ -8,22 +8,21 @@
 @{
     ViewData["Title"] = "Index";
 
-    var modelAfterSorted = Model.Where(m => m.StartDate.HasValue);
     var dateBlocks = new Dictionary<DateTime, IEnumerable<IClubEvent>>();
-    if (modelAfterSorted.Any())
+    if (Model.Any())
     {
-        DateTime currentDateTime = modelAfterSorted.First().StartDate.Value.Date;
+        DateTime currentDateTime = Model.First().StartDate.Date;
         var clubEvents = Enumerable.Empty<IClubEvent>();
-        foreach (var item in modelAfterSorted)
+        foreach (var item in Model)
         {
-            if (item.StartDate.Value.Date != currentDateTime) {
+            if (item.StartDate.Date != currentDateTime) {
                 dateBlocks.Add(currentDateTime, clubEvents);
-                currentDateTime = item.StartDate.Value.Date;
+                currentDateTime = item.StartDate.Date;
                 clubEvents = Enumerable.Empty<IClubEvent>();
             }
             clubEvents = clubEvents.Append(item);
         }
-        if (modelAfterSorted.Any()) {
+        if (Model.Any()) {
             dateBlocks.Add(currentDateTime, clubEvents);
         }
     }
@@ -87,7 +86,7 @@
                             </div>
                             
                             <div class="event-time" style="background-color: @bgColor;">
-                                <p>@e.StartDate.Value.TimeOfDay</p>
+                                <p>@e.StartDate.TimeOfDay</p>
                             </div>
                         </a>
                     }

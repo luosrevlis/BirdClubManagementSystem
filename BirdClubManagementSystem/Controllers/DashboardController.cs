@@ -46,14 +46,11 @@ namespace BirdClubManagementSystem.Controllers
         private int GetHostedEvents(int days)
         {
             int fieldTripCount = _dbContext.FieldTrips
-                .Count(ft => ft.StartDate.HasValue
-                    && ft.StartDate.Value.AddDays(days) >= DateTime.Now);
+                .Count(ft => ft.StartDate.AddDays(days) >= DateTime.Now);
             int meetingCount = _dbContext.Meetings
-                .Count(ft => ft.StartDate.HasValue
-                    && ft.StartDate.Value.AddDays(days) >= DateTime.Now);
+                .Count(ft => ft.StartDate.AddDays(days) >= DateTime.Now);
             int tournamentCount = _dbContext.Tournaments
-                .Count(ft => ft.StartDate.HasValue
-                    && ft.StartDate.Value.AddDays(days) >= DateTime.Now);
+                .Count(ft => ft.StartDate.AddDays(days) >= DateTime.Now);
             return fieldTripCount + meetingCount + tournamentCount;
         }
 
@@ -61,8 +58,7 @@ namespace BirdClubManagementSystem.Controllers
         {
             long revenue = 0;
             List<FieldTrip> fieldTrips = _dbContext.FieldTrips
-                .Where(ft => ft.StartDate.HasValue
-                    && ft.StartDate.Value.AddDays(days) >= DateTime.Now)
+                .Where(ft => ft.StartDate.AddDays(days) >= DateTime.Now)
                 .ToList();
             foreach (FieldTrip fieldTrip in fieldTrips)
             {
@@ -71,8 +67,7 @@ namespace BirdClubManagementSystem.Controllers
                 revenue += regCount * fieldTrip.Fee;
             }
             List<Tournament> tournaments = _dbContext.Tournaments
-                .Where(t => t.StartDate.HasValue
-                    && t.StartDate.Value.AddDays(days) >= DateTime.Now)
+                .Where(t => t.StartDate.AddDays(days) >= DateTime.Now)
                 .ToList();
             foreach (Tournament tournament in tournaments)
             {

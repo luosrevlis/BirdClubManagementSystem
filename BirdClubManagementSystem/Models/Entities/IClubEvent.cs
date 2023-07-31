@@ -10,7 +10,7 @@
 
         public DateTime? RegCloseDate { get; set; }
 
-        public DateTime? StartDate { get; set; }
+        public DateTime StartDate { get; set; }
 
         public DateTime? ExpectedEndDate { get; set; }
 
