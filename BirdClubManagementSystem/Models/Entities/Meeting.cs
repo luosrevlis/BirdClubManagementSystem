@@ -9,7 +9,7 @@ namespace BirdClubManagementSystem.Models.Entities
         [Required, MinLength(1), MaxLength(255)]
         public string Name { get; set; } = null!;
 
-        public DateTime? RegOpenDate { get; set; 
+        public DateTime? RegOpenDate { get; set; } 
 
         public DateTime? RegCloseDate { get; set; }
 

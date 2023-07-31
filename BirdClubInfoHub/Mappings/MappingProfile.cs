@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using BirdClubInfoHub.Models.DTOs;
 using BirdClubInfoHub.Models.Entities;
-using BirdClubInfoHub.Models.Statuses;
 
 namespace BirdClubInfoHub.Mappings
 {
