@@ -17,13 +17,12 @@ namespace BirdClubInfoHub.Controllers
             _mapper = mapper;
         }
 
-        public IActionResult Index(int page = 1, string keyword = "", string status = "")
+        public IActionResult Index(DateTime month = new DateTime(), int page = 1, string keyword = "", string status = "")
         {
-            return Index(DateTime.Now, page, keyword, status);
-        }
-
-        public IActionResult Index(DateTime month, int page = 1, string keyword = "", string status = "")
-        {
+            if (month == new DateTime())
+            {
+                month = DateTime.Now;
+            }
             List<IClubEventDTO> eventList = new();
             eventList.AddRange(_dbContext.FieldTrips
                 .Where(e => e.Name.ToLower().Contains(keyword.ToLower())

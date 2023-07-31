@@ -1,6 +1,4 @@
-using AutoMapper;
 using BirdClubInfoHub.Data;
-using BirdClubInfoHub.Mappings;
 using BirdClubInfoHub.Services;
 using Microsoft.EntityFrameworkCore;
 using System.Net.Mail;

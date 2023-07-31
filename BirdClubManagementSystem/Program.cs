@@ -22,6 +22,7 @@ builder.Services.AddFluentEmail(config.GetSection("Mail")["Sender"], config.GetS
         Port = 25
     });
 builder.Services.AddSession();
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 var app = builder.Build();
 
