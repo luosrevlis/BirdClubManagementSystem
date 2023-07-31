@@ -25,9 +25,7 @@ namespace BirdClubManagementSystem.Mappings
                 .ReverseMap();
 
             CreateMap<FieldTrip, FieldTripDTO>()
-                .ForMember(dest => dest.Status,
-                    src => src.MapFrom(src => EventStatuses.Convert(src.Status)));
-            CreateMap<FieldTripDTO, FieldTrip>();
+                .ReverseMap();
 
             CreateMap<FieldTripRegistration, FieldTripRegistrationDTO>()
                 .ReverseMap();
@@ -36,9 +34,7 @@ namespace BirdClubManagementSystem.Mappings
                 .ReverseMap();
 
             CreateMap<Meeting, MeetingDTO>()
-                .ForMember(dest => dest.Status,
-                    src => src.MapFrom(src => EventStatuses.Convert(src.Status)));
-            CreateMap<MeetingDTO, Meeting>();
+                .ReverseMap();
 
             CreateMap<MeetingRegistration, MeetingRegistrationDTO>()
                 .ReverseMap();
@@ -47,9 +43,7 @@ namespace BirdClubManagementSystem.Mappings
                 .ReverseMap();
 
             CreateMap<Tournament, TournamentDTO>()
-                .ForMember(dest => dest.Status,
-                    src => src.MapFrom(src => EventStatuses.Convert(src.Status)));
-            CreateMap<TournamentDTO, Tournament>();
+                .ReverseMap();
 
             CreateMap<TournamentRegistration, TournamentRegistrationDTO>()
                 .ReverseMap();
@@ -58,9 +52,7 @@ namespace BirdClubManagementSystem.Mappings
                 .ReverseMap();
 
             CreateMap<User, UserDTO>()
-                .ForMember(dest => dest.Role,
-                    src => src.MapFrom(src => UserRoles.Convert(src.Role)));
-            CreateMap<UserDTO, User>();
+                .ReverseMap();
         }
     }
 }

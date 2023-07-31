@@ -16,7 +16,7 @@ namespace BirdClubManagementSystem.Models.Entities
 
         public string Species { get; set; } = "Unknown";
 
-        public byte[]? ProfilePicture { get; set; } = null!;
+        public byte[]? ProfilePicture { get; set; }
 
         public User User { get; set; } = new User();
 
