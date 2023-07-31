@@ -10,16 +10,11 @@ namespace BirdClubInfoHub.Controllers
     {
         private readonly BcmsDbContext _dbContext;
         private readonly IVnPayService _vnPayService;
-        private readonly IMapper _mapper;
 
-        public DonationsController(
-            BcmsDbContext dbContext,
-            IVnPayService vnPayService,
-            IMapper mapper)
+        public DonationsController(BcmsDbContext dbContext, IVnPayService vnPayService)
         {
             _dbContext = dbContext;
             _vnPayService = vnPayService;
-            _mapper = mapper;
         }
 
         public IActionResult Index()

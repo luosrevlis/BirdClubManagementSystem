@@ -2,7 +2,9 @@
 using BirdClubInfoHub.Data;
 using BirdClubInfoHub.Models.DTOs;
 using BirdClubInfoHub.Models.Entities;
+using BirdClubInfoHub.Models.Statuses;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace BirdClubInfoHub.Controllers
 {
@@ -12,22 +14,21 @@ namespace BirdClubInfoHub.Controllers
         private readonly IMapper _mapper;
         private const int PageSize = 10;
 
-        public MeetingsController(BcmsDbContext dbContext, IMapper mapper)
+        public MeetingsController
+            (BcmsDbContext dbContext, IMapper mapper)
         {
             _dbContext = dbContext;
             _mapper = mapper;
         }
 
-        public IActionResult Index(int page = 1, string keyword = "", string status = "")
+        public IActionResult Index(DateTime month = new DateTime(), int page = 1, string keyword = "", string status = "")
         {
-            return Index(DateTime.Now, page, keyword, status);
-        }
-
-        public IActionResult Index(DateTime month, int page = 1, string keyword = "", string status = "")
-        {
+            if (month.Ticks < 1)
+            {
+                month = DateTime.Now;
+            }
             IQueryable<Meeting> matches = _dbContext.Meetings
-                .Where(m => m.StartDate.Month == month.Month
-                    && m.StartDate.Year == month.Year);
+                .Where(m => m.StartDate.Month == month.Month && m.StartDate.Year == month.Year);
             if (!string.IsNullOrEmpty(status))
             {
                 matches = matches.Where(m => m.Status == status);
@@ -38,9 +39,9 @@ namespace BirdClubInfoHub.Controllers
             }
 
             List<MeetingDTO> meetings = matches
+                .OrderByDescending(m => m.StartDate)
                 .Skip((page - 1) * PageSize)
                 .Take(PageSize)
-                .OrderByDescending(m => m.StartDate)
                 .Select(m => _mapper.Map<MeetingDTO>(m))
                 .ToList();
             return View(meetings);
@@ -57,31 +58,38 @@ namespace BirdClubInfoHub.Controllers
                 return RedirectToAction("Index", "ClubEvents");
             }
 
-            // if not open, return unavailable
-            if (meeting.Status != "Open")
+            MeetingDTO dto = _mapper.Map<MeetingDTO>(meeting);
+            dto.MeetingRegistrations = _dbContext.MeetingRegistrations
+                .Where(mr => mr.MeetingId == id)
+                .Include(mr => mr.User)
+                .Select(mr => _mapper.Map<MeetingRegistrationDTO>(mr))
+                .ToList();
+
+            // not open
+            if (meeting.Status != EventStatuses.RegOpened)
             {
                 ViewBag.Status = "Unavailable";
-                return View(meeting);
+                return View(dto);
             }
 
-            // open but not logged in, return unauth
+            // open but not logged in
             int? userId = HttpContext.Session.GetInt32("USER_ID");
             if (userId == null)
             {
                 ViewBag.Status = "Unauth";
-                return View(meeting);
+                return View(dto);
             }
 
             // open, logged in, already registered
             if (_dbContext.MeetingRegistrations.FirstOrDefault(x => x.MeetingId == id && x.UserId == userId) != null)
             {
                 ViewBag.Status = "Registered";
-                return View(meeting);
+                return View(dto);
             }
 
             // open, logged in, not registered
             ViewBag.Status = "Available";
-            return View(meeting);
+            return View(dto);
         }
     }
 }

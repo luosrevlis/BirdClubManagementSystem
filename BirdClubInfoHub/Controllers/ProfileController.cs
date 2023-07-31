@@ -13,9 +13,8 @@ namespace BirdClubInfoHub.Controllers
         private readonly BcmsDbContext _dbContext;
         private readonly IMapper _mapper;
 
-        public ProfileController(
-            BcmsDbContext dbContext,
-            IMapper mapper)
+        public ProfileController
+            (BcmsDbContext dbContext, IMapper mapper)
         {
             _dbContext = dbContext;
             _mapper = mapper;
@@ -65,17 +64,17 @@ namespace BirdClubInfoHub.Controllers
         // POST: ProfileController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(User user)
+        public ActionResult Edit(UserDTO dto)
         {
-            User? userInDb = _dbContext.Users.Find(user.Id);
-            if (userInDb == null)
+            User? user = _dbContext.Users.Find(dto.Id);
+            if (user == null)
             {
                 return RedirectToAction("Index", "Login");
             }
-            userInDb.Name = user.Name;
-            userInDb.Address = user.Address;
-            userInDb.Phone = user.Phone;
-            _dbContext.Users.Update(userInDb);
+            user.Name = dto.Name;
+            user.Address = dto.Address;
+            user.Phone = dto.Phone;
+            _dbContext.Users.Update(user);
             _dbContext.SaveChanges();
 
             TempData.Add("notification", "Profile updated!");
@@ -123,9 +122,9 @@ namespace BirdClubInfoHub.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult ChangePassword(IFormCollection formCollection)
         {
-            string oldPassword = formCollection["OldPassword"]!;
-            string newPassword = formCollection["NewPassword"]!;
-            string confirmPassword = formCollection["ConfirmPassword"]!;
+            string oldPassword = formCollection["OldPassword"].ToString();
+            string newPassword = formCollection["NewPassword"].ToString();
+            string confirmPassword = formCollection["ConfirmPassword"].ToString();
             User? user = _dbContext.Users.Find(HttpContext.Session.GetInt32("USER_ID"));
             if (user == null)
             {

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BirdClubInfoHub.Data;
 using BirdClubInfoHub.Models.DTOs;
+using BirdClubInfoHub.Models.Entities;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BirdClubInfoHub.Controllers
@@ -19,29 +20,28 @@ namespace BirdClubInfoHub.Controllers
 
         public IActionResult Index(DateTime month = new DateTime(), int page = 1, string keyword = "", string status = "")
         {
-            if (month == new DateTime())
+            if (month.Ticks < 1)
             {
                 month = DateTime.Now;
             }
             List<IClubEventDTO> eventList = new();
             eventList.AddRange(_dbContext.FieldTrips
-                .Where(e => e.Name.ToLower().Contains(keyword.ToLower())
-                    && e.StartDate.Month == month.Month
-                    && e.StartDate.Year == month.Year)
+                .Where(e => e.StartDate.Month == month.Month && e.StartDate.Year == month.Year)
                 .Select(e => _mapper.Map<FieldTripDTO>(e))
                 .Cast<IClubEventDTO>());
             eventList.AddRange(_dbContext.Meetings
-                .Where(e => e.Name.ToLower().Contains(keyword.ToLower())
-                    && e.StartDate.Month == month.Month
-                    && e.StartDate.Year == month.Year)
+                .Where(e => e.StartDate.Month == month.Month && e.StartDate.Year == month.Year)
                 .Select(e => _mapper.Map<MeetingDTO>(e))
                 .Cast<IClubEventDTO>());
             eventList.AddRange(_dbContext.Tournaments
-                .Where(e => e.Name.ToLower().Contains(keyword.ToLower())
-                    && e.StartDate.Month == month.Month
-                    && e.StartDate.Year == month.Year)
+                .Where(e => e.StartDate.Month == month.Month && e.StartDate.Year == month.Year)
                 .Select(e => _mapper.Map<TournamentDTO>(e))
                 .Cast<IClubEventDTO>());
+
+            if (!string.IsNullOrEmpty(keyword))
+            {
+                eventList = eventList.Where(e => e.Name.ToLower().Contains(keyword.ToLower())).ToList();
+            }
             if (!string.IsNullOrEmpty(status))
             {
                 eventList = eventList.Where(e => e.Status == status).ToList();

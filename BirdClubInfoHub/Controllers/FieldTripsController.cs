@@ -2,7 +2,9 @@
 using BirdClubInfoHub.Data;
 using BirdClubInfoHub.Models.DTOs;
 using BirdClubInfoHub.Models.Entities;
+using BirdClubInfoHub.Models.Statuses;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace BirdClubInfoHub.Controllers
 {
@@ -12,22 +14,22 @@ namespace BirdClubInfoHub.Controllers
         private readonly IMapper _mapper;
         private const int PageSize = 10;
 
-        public FieldTripsController(BcmsDbContext dbContext, IMapper mapper)
+        public FieldTripsController
+            (BcmsDbContext dbContext, IMapper mapper)
         {
             _dbContext = dbContext;
             _mapper = mapper;
         }
 
-        public IActionResult Index(int page = 1, string keyword = "", string status = "")
+        public IActionResult Index(DateTime month = new DateTime(), int page = 1, string keyword = "", string status = "")
         {
-            return Index(DateTime.Now, page, keyword, status);
-        }
-
-        public IActionResult Index(DateTime month, int page = 1, string keyword = "", string status = "")
-        {
+            if (month.Ticks < 1)
+            {
+                month = DateTime.Now;
+            }
+            
             IQueryable<FieldTrip> matches = _dbContext.FieldTrips
-                .Where(ft => ft.StartDate.Month == month.Month
-                    && ft.StartDate.Year == month.Year);
+                .Where(ft => ft.StartDate.Month == month.Month && ft.StartDate.Year == month.Year);
             if (!string.IsNullOrEmpty(status))
             {
                 matches = matches.Where(ft => ft.Status == status);
@@ -38,9 +40,9 @@ namespace BirdClubInfoHub.Controllers
             }
 
             List<FieldTripDTO> fieldTrips = matches
+                .OrderByDescending(ft => ft.StartDate)
                 .Skip((page - 1) * PageSize)
                 .Take(PageSize)
-                .OrderByDescending(ft => ft.StartDate)
                 .Select(ft => _mapper.Map<FieldTripDTO>(ft))
                 .ToList();
             return View(fieldTrips);
@@ -57,31 +59,38 @@ namespace BirdClubInfoHub.Controllers
                 return RedirectToAction("Index", "ClubEvents");
             }
 
-            // if not open, return unavailable
-            if (fieldTrip.Status != "Open")
+            FieldTripDTO dto = _mapper.Map<FieldTripDTO>(fieldTrip);
+            dto.FieldTripRegistrations = _dbContext.FieldTripRegistrations
+                .Where(ftr => ftr.FieldTripId == id)
+                .Include(ftr => ftr.User)
+                .Select(ftr => _mapper.Map<FieldTripRegistrationDTO>(ftr))
+                .ToList();
+
+            // not open
+            if (fieldTrip.Status != EventStatuses.RegOpened)
             {
                 ViewBag.Status = "Unavailable";
-                return View(fieldTrip);
+                return View(dto);
             }
 
-            // open but not logged in, return unauth
+            // open but not logged in
             int? userId = HttpContext.Session.GetInt32("USER_ID");
             if (userId == null)
             {
                 ViewBag.Status = "Unauth";
-                return View(fieldTrip);
+                return View(dto);
             }
             
             // open, logged in, already registered
             if (_dbContext.FieldTripRegistrations.FirstOrDefault(x => x.FieldTripId == id && x.UserId == userId) != null)
             {
                 ViewBag.Status = "Registered";
-                return View(fieldTrip);
+                return View(dto);
             }
 
             // open, logged in, not registered
             ViewBag.Status = "Available";
-            return View(fieldTrip);
+            return View(dto);
         }
     }
 }
