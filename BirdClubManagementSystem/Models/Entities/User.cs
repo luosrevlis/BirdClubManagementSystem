@@ -26,7 +26,7 @@ namespace BirdClubManagementSystem.Models.Entities
         [Required, MinLength(3), MaxLength(3)]
         public string Role { get; set; } = null!;
 
-        public byte[]? ProfilePicture { get; set; } = null!;
+        public byte[]? ProfilePicture { get; set; }
 
         [Required]
         public DateTime JoinDate { get; set; }

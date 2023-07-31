@@ -9,14 +9,14 @@ namespace BirdClubManagementSystem.Models.Entities
         [Required, MinLength(1), MaxLength(255)]
         public string Name { get; set; } = null!;
 
-        public DateTime? RegOpenDate { get; set; } = null!;
+        public DateTime? RegOpenDate { get; set; } 
 
-        public DateTime? RegCloseDate { get; set; } = null!;
+        public DateTime? RegCloseDate { get; set; }
 
         [Required]
         public DateTime StartDate { get; set; } = DateTime.Now;
 
-        public DateTime? ExpectedEndDate { get; set; } = null!;
+        public DateTime? ExpectedEndDate { get; set; }
 
         [Required, MinLength(1), MaxLength(255)]
         public string Address { get; set; } = "At Club";
@@ -25,7 +25,7 @@ namespace BirdClubManagementSystem.Models.Entities
         public int RegLimit { get; set; }
 
         [Required, MinLength(1)]
-        public string Description { get; set; } = null!;
+        public string Description { get; set; } = "No description";
 
         [Required, Range(1, 10000000)]
         public int Fee { get; set; }
@@ -33,7 +33,7 @@ namespace BirdClubManagementSystem.Models.Entities
         [Required, MinLength(3), MaxLength(3)]
         public string Status { get; set; } = null!;
 
-        public string? Highlights { get; set; } = null!;
+        public string? Highlights { get; set; }
 
         public ICollection<MeetingRegistration> MeetingRegistrations { get; set; } = new List<MeetingRegistration>();
     }

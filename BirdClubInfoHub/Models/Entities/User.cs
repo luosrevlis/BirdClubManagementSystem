@@ -26,17 +26,17 @@ namespace BirdClubInfoHub.Models.Entities
         [Required, MinLength(3), MaxLength(3)]
         public string Role { get; set; } = null!;
 
-        public byte[]? ProfilePicture { get; set; } = null!;
+        public byte[]? ProfilePicture { get; set; }
 
         [Required]
-        public DateTime JoinDate { get; set; }
+        public DateTime JoinDate { get; set; } = DateTime.Now;
 
         public DateTime? LastLogin { get; set; }
 
         public DateTime? ResetPasswordRequestTime { get; set; }
 
         [MaxLength(6)]
-        public string? ResetPasswordCode { get; set; } = null!;
+        public string? ResetPasswordCode { get; set; }
 
         public ICollection<Blog> Blogs { get; set; } = new List<Blog>();
 
