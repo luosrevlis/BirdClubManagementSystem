@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using BirdClubInfoHub.Data;
+﻿using BirdClubInfoHub.Data;
 using BirdClubInfoHub.Models.Entities;
 using BirdClubInfoHub.Services;
 using Microsoft.AspNetCore.Mvc;
