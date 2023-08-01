@@ -36,15 +36,15 @@
                     <td>@item.Title</td>
                     <td>@item.BlogCategory</td>
                     <td>@item.DateCreated</td>
-                    <td>@item.Status</td>
+                    <td>@BlogStatuses.Convert(item.Status)</td>
                     <td class="option">
-                        @if (item.Status == "Accepted")
+                        @if (item.Status == BlogStatuses.Accepted)
                         {
                             <a class="button action-button" asp-action="Details" asp-controller="Blogs" asp-route-id="@item.Id">
                                 <i class="fa-solid fa-eye"></i>
                             </a>
                         }
-                        @if (item.Status == "Pending")
+                        @if (item.Status == BlogStatuses.Pending)
                         {
                             <a class="button action-button" asp-action="Details" asp-route-id="@item.Id">
                                 <i class="fa-solid fa-eye"></i>

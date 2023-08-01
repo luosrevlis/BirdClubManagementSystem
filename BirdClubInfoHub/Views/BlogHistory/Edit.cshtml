@@ -1,4 +1,4 @@
-﻿@model Blog
+﻿@model BlogDTO
 
 @{
     ViewData["Title"] = "Edit";
@@ -23,10 +23,10 @@
 
         <div class="input-container">
             <label class="input-label" for="blog-category">Category</label>
-            <select id="blog-category" class="input" asp-for="BlogCategoryId" asp-items="ViewBag.CategoryOptions">
-                <option value="" hidden>Choose a category</option>
+            <select id="blog-category" class="input" asp-for="BlogCategory.Id" asp-items="ViewBag.CategoryOptions">
+                <option value="7" hidden>Choose a category</option>
             </select>
-            <span asp-validation-for="BlogCategoryId" class="text-danger"></span>
+            <span asp-validation-for="BlogCategory.Id" class="text-danger"></span>
         </div>
 
         <div class="input-container">
