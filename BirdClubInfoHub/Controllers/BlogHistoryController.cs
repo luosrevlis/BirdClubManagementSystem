@@ -3,6 +3,7 @@ using BirdClubInfoHub.Data;
 using BirdClubInfoHub.Filters;
 using BirdClubInfoHub.Models.DTOs;
 using BirdClubInfoHub.Models.Entities;
+using BirdClubInfoHub.Models.Statuses;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -72,7 +73,7 @@ namespace BirdClubInfoHub.Controllers
         public IActionResult Edit(int id)
         {
             Blog? blog = _dbContext.Blogs.Find(id);
-            if (blog == null || blog.Status != "Pending")
+            if (blog == null || blog.Status != BlogStatuses.Pending)
             {
                 TempData.Add("notification", "Blog not found!");
                 TempData.Add("error", "");
@@ -91,15 +92,16 @@ namespace BirdClubInfoHub.Controllers
         public IActionResult Edit(BlogDTO dto, IFormFile thumbnailFile)
         {
             Blog? blog = _dbContext.Blogs.Find(dto.Id);
-            if (blog == null || blog.Status != "Pending")
+            if (blog == null || blog.Status != BlogStatuses.Pending)
             {
                 TempData.Add("notification", "Blog not found!");
                 TempData.Add("error", "");
                 return RedirectToAction("Index");
             }
-            blog.BlogCategoryId = dto.BlogCategory.Id; //TODO test change category
+            blog.BlogCategory = _dbContext.BlogCategories.Find(dto.BlogCategory.Id)!;
             blog.Title = dto.Title;
             blog.Contents = dto.Contents;
+            blog.DateCreated = DateTime.Now;
             if (thumbnailFile != null)
             {
                 using MemoryStream memoryStream = new();
@@ -119,7 +121,7 @@ namespace BirdClubInfoHub.Controllers
         public IActionResult Delete(int id)
         {
             Blog? blog = _dbContext.Blogs.Find(id);
-            if (blog == null || blog.Status != "Pending")
+            if (blog == null || blog.Status != BlogStatuses.Pending)
             {
                 TempData.Add("notification", "Blog not found!");
                 TempData.Add("error", "");
