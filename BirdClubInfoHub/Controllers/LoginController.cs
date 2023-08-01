@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using BirdClubInfoHub.Data;
+﻿using BirdClubInfoHub.Data;
 using BirdClubInfoHub.Models.Entities;
 using FluentEmail.Core;
 using Microsoft.AspNetCore.Identity;
@@ -14,14 +13,12 @@ namespace BirdClubInfoHub.Controllers
     {
         private readonly BcmsDbContext _dbContext;
         private readonly IFluentEmailFactory _emailFactory;
-        private readonly IMapper _mapper;
 
         public LoginController
-            (BcmsDbContext dbContext, IFluentEmailFactory emailFactory, IMapper mapper)
+            (BcmsDbContext dbContext, IFluentEmailFactory emailFactory)
         {
             _dbContext = dbContext;
             _emailFactory = emailFactory;
-            _mapper = mapper;
         }
 
         public IActionResult Index()
@@ -88,7 +85,7 @@ namespace BirdClubInfoHub.Controllers
                 .AppendLine("To complete the password reset process, please use the following code: ")
                 .AppendLine(verificationCode)
                 .AppendLine("The verification code is valid for 30 minutes.")
-                .AppendLine($"If this request was not made by you, please ignore this email.");
+                .AppendLine("If this request was not made by you, please ignore this email.");
                 
             IFluentEmail email = _emailFactory
                 .Create()
