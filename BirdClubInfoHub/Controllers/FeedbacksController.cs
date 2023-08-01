@@ -20,6 +20,11 @@ namespace BirdClubInfoHub.Controllers
             _mapper = mapper;
         }
 
+        public IActionResult Index()
+        {
+            return View("Create");
+        }
+
         public IActionResult Create()
         {
             return View();

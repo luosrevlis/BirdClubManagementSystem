@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BirdClubManagementSystem.Data;
 using BirdClubManagementSystem.Filters;
+using BirdClubManagementSystem.Models.DTOs;
 using BirdClubManagementSystem.Models.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -12,6 +13,7 @@ namespace BirdClubManagementSystem.Controllers
     {
         private readonly BcmsDbContext _dbContext;
         private readonly IMapper _mapper;
+        private const int PageSize = 10;
 
         public FeedbacksController(BcmsDbContext dbContext, IMapper mapper)
         {
@@ -19,10 +21,14 @@ namespace BirdClubManagementSystem.Controllers
             _mapper = mapper;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(int page = 1, string keyword = "")
         {
-            List<Feedback> feedbacks = _dbContext.Feedbacks
+            List<FeedbackDTO> feedbacks = _dbContext.Feedbacks
+                .Where(feedback => feedback.Title.ToLower().Contains(keyword.ToLower()))
+                .Skip((page - 1) * PageSize)
+                .Take(PageSize)
                 .Include(feedback => feedback.User)
+                .Select(feedback => _mapper.Map<FeedbackDTO>(feedback))
                 .ToList();
             return View(feedbacks);
         }
@@ -36,7 +42,7 @@ namespace BirdClubManagementSystem.Controllers
                 TempData.Add("error", "");
                 return RedirectToAction("Index");
             }
-            return View(feedback);
+            return View(_mapper.Map<FeedbackDTO>(feedback));
         }
 
         [HttpPost]
