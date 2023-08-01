@@ -1,11 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
 using BirdClubManagementSystem.Data;
-using Microsoft.EntityFrameworkCore;
+using BirdClubManagementSystem.Filters;
+using BirdClubManagementSystem.Models.DTOs;
 using BirdClubManagementSystem.Models.Entities;
-using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 
 namespace BirdClubManagementSystem.Controllers
 {
+    [AdminAuthenticated]
     public class DashboardController : Controller
     {
         private readonly BcmsDbContext _dbContext;
@@ -30,7 +32,7 @@ namespace BirdClubManagementSystem.Controllers
             ViewBag.NewEvents = GetHostedEvents(30);
             ViewBag.Revenue = $"{GetRevenue(30):n0}";
             ViewBag.ActiveRate = $"{GetActiveRate(7):n0}";
-            return View(user);
+            return View(_mapper.Map<UserDTO>(user));
         }
 
         private int GetNewMembers(int days)

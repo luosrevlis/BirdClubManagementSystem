@@ -4,7 +4,6 @@ using BirdClubManagementSystem.Filters;
 using BirdClubManagementSystem.Models.DTOs;
 using BirdClubManagementSystem.Models.Entities;
 using BirdClubManagementSystem.Models.Statuses;
-using Humanizer;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BirdClubManagementSystem.Controllers
@@ -22,13 +21,12 @@ namespace BirdClubManagementSystem.Controllers
             _mapper = mapper;
         }
 
-        public IActionResult Index(int page = 1, string keyword = "", string status = "")
+        public IActionResult Index(DateTime month = new DateTime(), int page = 1, string keyword = "", string status = "")
         {
-            return Index(DateTime.Now, page, keyword, status);
-        }
-
-        public IActionResult Index(DateTime month, int page = 1, string keyword = "", string status = "")
-        {
+            if (month.Ticks < 1)
+            {
+                month = DateTime.Now;
+            }
             IQueryable<Tournament> matches = _dbContext.Tournaments
                 .Where(t => t.StartDate.Month == month.Month && t.StartDate.Year == month.Year);
             if (!string.IsNullOrEmpty(status))
@@ -41,9 +39,9 @@ namespace BirdClubManagementSystem.Controllers
             }
 
             List<TournamentDTO> tournaments = matches
+                .OrderByDescending(t => t.StartDate)
                 .Skip((page - 1) * PageSize)
                 .Take(PageSize)
-                .OrderByDescending(t => t.StartDate)
                 .Select(t => _mapper.Map<TournamentDTO>(t))
                 .ToList();
             return View(tournaments);
@@ -79,6 +77,7 @@ namespace BirdClubManagementSystem.Controllers
                 TempData.Add("error", "Event cannot take place before registration is closed!");
                 return View(dto);
             }
+            //TODO more validation
             Tournament tournament = _mapper.Map<Tournament>(dto);
             
             if (tournament.RegOpenDate < DateTime.Now && tournament.RegCloseDate > DateTime.Now)
@@ -121,6 +120,7 @@ namespace BirdClubManagementSystem.Controllers
                 TempData.Add("error", "Event cannot take place before registration is closed!");
                 return View(dto);
             }
+            //TODO more validation
             Tournament? tournament = _dbContext.Tournaments.Find(dto.Id);
             if (tournament == null)
             {
@@ -128,15 +128,24 @@ namespace BirdClubManagementSystem.Controllers
                 TempData.Add("error", "");
                 return RedirectToAction("Index", "ClubEvents");
             }
+
             tournament.Name = dto.Name;
             tournament.RegOpenDate = dto.RegOpenDate;
-            tournament.RegCloseDate = tournament.RegCloseDate;
+            tournament.RegCloseDate = dto.RegCloseDate;
             tournament.StartDate = dto.StartDate;
             tournament.ExpectedEndDate = dto.ExpectedEndDate;
             tournament.Address = dto.Address;
             tournament.RegLimit = dto.RegLimit;
-            tournament.Description = tournament.Description;
+            tournament.Description = dto.Description;
             tournament.Fee = dto.Fee;
+            if (tournament.RegOpenDate < DateTime.Now && tournament.RegCloseDate > DateTime.Now)
+            {
+                tournament.Status = EventStatuses.RegOpened;
+            }
+            else
+            {
+                tournament.Status = EventStatuses.RegClosed;
+            }
             _dbContext.Tournaments.Update(tournament);
             _dbContext.SaveChanges();
 
@@ -182,13 +191,13 @@ namespace BirdClubManagementSystem.Controllers
 
             TempData.Add("notification", "Status updated!");
             TempData.Add("success", "");
-            return RedirectToAction("Index", "ClubEvents");
+            return RedirectToAction("Details", new { id });
         }
 
         public IActionResult EditHighlights(int id)
         {
             Tournament? tournament = _dbContext.Tournaments.Find(id);
-            if (tournament == null || tournament.Status != "Ended")
+            if (tournament == null || tournament.Status != EventStatuses.Ended)
             {
                 TempData.Add("notification", "Tournament not found!");
                 TempData.Add("error", "");
@@ -202,7 +211,7 @@ namespace BirdClubManagementSystem.Controllers
         public IActionResult EditHighlights(TournamentDTO dto)
         {
             Tournament? tournament = _dbContext.Tournaments.Find(dto.Id);
-            if (tournament == null || tournament.Status != "Ended")
+            if (tournament == null || tournament.Status != EventStatuses.Ended)
             {
                 TempData.Add("notification", "Tournament not found!");
                 TempData.Add("error", "");
@@ -214,7 +223,7 @@ namespace BirdClubManagementSystem.Controllers
 
             TempData.Add("notification", "Highlights has been updated!");
             TempData.Add("success", "");
-            return RedirectToAction("Details", new { id = tournament.Id });
+            return RedirectToAction("Details", new { id = dto.Id });
         }
     }
 }

@@ -50,7 +50,7 @@ namespace BirdClubManagementSystem.Controllers
         {
             int fieldTripId = HttpContext.Session.GetInt32("FIELDTRIP_ID") ?? 0;
             FieldTripRegistration? registration = _dbContext.FieldTripRegistrations.Find(id);
-            if (registration == null)
+            if (registration == null || registration.FieldTripId != fieldTripId)
             {
                 TempData.Add("notification", "Participant not found!");
                 TempData.Add("error", "");
@@ -70,7 +70,7 @@ namespace BirdClubManagementSystem.Controllers
         {
             int fieldTripId = HttpContext.Session.GetInt32("FIELDTRIP_ID") ?? 0;
             FieldTripRegistration? registration = _dbContext.FieldTripRegistrations.Find(id);
-            if (registration == null)
+            if (registration == null || registration.FieldTripId != fieldTripId)
             {
                 TempData.Add("notification", "Participant not found!");
                 TempData.Add("error", "");

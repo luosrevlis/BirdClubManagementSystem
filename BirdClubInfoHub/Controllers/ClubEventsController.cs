@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using BirdClubInfoHub.Data;
 using BirdClubInfoHub.Models.DTOs;
-using BirdClubInfoHub.Models.Entities;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BirdClubInfoHub.Controllers

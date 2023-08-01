@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using BirdClubManagementSystem.Data;
 using BirdClubManagementSystem.Filters;
+using BirdClubManagementSystem.Models.DTOs;
 using BirdClubManagementSystem.Models.Entities;
+using BirdClubManagementSystem.Models.Statuses;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BirdClubManagementSystem.Controllers
@@ -11,11 +13,39 @@ namespace BirdClubManagementSystem.Controllers
     {
         private readonly BcmsDbContext _dbContext;
         private readonly IMapper _mapper;
+        private const int PageSize = 10;
 
         public FieldTripsController(BcmsDbContext dbContext, IMapper mapper)
         {
             _dbContext = dbContext;
             _mapper = mapper;
+        }
+
+        public IActionResult Index(DateTime month = new DateTime(), int page = 1, string keyword = "", string status = "")
+        {
+            if (month.Ticks < 1)
+            {
+                month = DateTime.Now;
+            }
+
+            IQueryable<FieldTrip> matches = _dbContext.FieldTrips
+                .Where(ft => ft.StartDate.Month == month.Month && ft.StartDate.Year == month.Year);
+            if (!string.IsNullOrEmpty(status))
+            {
+                matches = matches.Where(ft => ft.Status == status);
+            }
+            if (!string.IsNullOrEmpty(keyword))
+            {
+                matches = matches.Where(ft => ft.Name.ToLower().Contains(keyword.ToLower()));
+            }
+
+            List<FieldTripDTO> fieldTrips = matches
+                .OrderByDescending(ft => ft.StartDate)
+            .Skip((page - 1) * PageSize)
+                .Take(PageSize)
+                .Select(ft => _mapper.Map<FieldTripDTO>(ft))
+                .ToList();
+            return View(fieldTrips);
         }
 
         // GET: FieldTripsController/Details/5
@@ -28,7 +58,7 @@ namespace BirdClubManagementSystem.Controllers
                 TempData.Add("error", "");
                 return RedirectToAction("Index", "ClubEvents");
             }
-            return View(fieldTrip);
+            return View(_mapper.Map<FieldTripDTO>(fieldTrip));
         }
 
         // GET: FieldTripsController/Create
@@ -40,15 +70,24 @@ namespace BirdClubManagementSystem.Controllers
         // POST: FieldTripsController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(FieldTrip fieldTrip)
+        public IActionResult Create(FieldTripDTO dto)
         {
-            if (fieldTrip.StartDate < fieldTrip.RegCloseDate)
+            if (dto.StartDate < dto.RegCloseDate)
             {
                 TempData.Add("notification", "Date error!");
                 TempData.Add("error", "Event cannot take place before registration is closed!");
-                return View(fieldTrip);
+                return View(dto);
             }
-            fieldTrip.Status = "Open";
+
+            FieldTrip fieldTrip = _mapper.Map<FieldTrip>(dto);
+            if (fieldTrip.RegOpenDate < DateTime.Now && fieldTrip.RegCloseDate > DateTime.Now)
+            {
+                fieldTrip.Status = EventStatuses.RegOpened;
+            }
+            else
+            {
+                fieldTrip.Status = EventStatuses.RegClosed;
+            }
             _dbContext.FieldTrips.Add(fieldTrip);
             _dbContext.SaveChanges();
 
@@ -67,35 +106,48 @@ namespace BirdClubManagementSystem.Controllers
                 TempData.Add("error", "");
                 return RedirectToAction("Index", "ClubEvents");
             }
-            return View(fieldTrip);
+            return View(_mapper.Map<FieldTripDTO>(fieldTrip));
         }
 
         // POST: FieldTripsController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(FieldTrip fieldTrip)
+        public IActionResult Edit(FieldTripDTO dto)
         {
-            if (fieldTrip.StartDate < fieldTrip.RegCloseDate)
+            if (dto.StartDate < dto.RegCloseDate)
             {
                 TempData.Add("notification", "Date error!");
                 TempData.Add("error", "Event cannot take place before registration is closed!");
-                return View(fieldTrip);
+                return View(dto);
             }
-            FieldTrip? fieldTripInDb = _dbContext.FieldTrips.Find(fieldTrip.Id);
-            if (fieldTripInDb == null)
+            FieldTrip? fieldTrip = _dbContext.FieldTrips.Find(dto.Id);
+            if (fieldTrip == null)
             {
                 TempData.Add("notification", "Field trip not found!");
                 TempData.Add("error", "");
                 return RedirectToAction("Index", "ClubEvents");
             }
-            fieldTripInDb.Name = fieldTrip.Name;
-            fieldTripInDb.StartDate = fieldTrip.StartDate;
-            fieldTripInDb.RegCloseDate = fieldTrip.RegCloseDate;
-            fieldTripInDb.Description = fieldTrip.Description;
-            _dbContext.FieldTrips.Update(fieldTripInDb);
+            fieldTrip.Name = dto.Name;
+            fieldTrip.RegOpenDate = dto.RegOpenDate;
+            fieldTrip.RegCloseDate = dto.RegCloseDate;
+            fieldTrip.StartDate = dto.StartDate;
+            fieldTrip.ExpectedEndDate = dto.ExpectedEndDate;
+            fieldTrip.Address = dto.Address;
+            fieldTrip.RegLimit = dto.RegLimit;
+            fieldTrip.Description = dto.Description;
+            fieldTrip.Fee = dto.Fee;
+            if (fieldTrip.RegOpenDate < DateTime.Now && fieldTrip.RegCloseDate > DateTime.Now)
+            {
+                fieldTrip.Status = EventStatuses.RegOpened;
+            }
+            else
+            {
+                fieldTrip.Status = EventStatuses.RegClosed;
+            }
+            _dbContext.FieldTrips.Update(fieldTrip);
             _dbContext.SaveChanges();
 
-            TempData.Add("notification", fieldTripInDb.Name + " has been updated!");
+            TempData.Add("notification", fieldTrip.Name + " has been updated!");
             TempData.Add("success", "");
             return RedirectToAction("Index", "ClubEvents");
         }
@@ -123,7 +175,7 @@ namespace BirdClubManagementSystem.Controllers
         // POST: FieldTripsController/Close/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Close(int id)
+        public IActionResult UpdateStatus(int id, string statusCode)
         {
             FieldTrip? fieldTrip = _dbContext.FieldTrips.Find(id);
             if (fieldTrip == null)
@@ -132,61 +184,19 @@ namespace BirdClubManagementSystem.Controllers
                 TempData.Add("error", "");
                 return RedirectToAction("Index", "ClubEvents");
             }
-            fieldTrip.Status = "Registration Closed";
+            fieldTrip.Status = statusCode;
             _dbContext.FieldTrips.Update(fieldTrip);
             _dbContext.SaveChanges();
 
-            TempData.Add("notification", "Registration for " + fieldTrip.Name + " has been closed!");
+            TempData.Add("notification", "Status updated!");
             TempData.Add("success", "");
-            return RedirectToAction("Index", "ClubEvents");
-        }
-
-        // POST: FieldTripsController/MarkAsEnded/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult MarkAsEnded(int id)
-        {
-            FieldTrip? fieldTrip = _dbContext.FieldTrips.Find(id);
-            if (fieldTrip == null)
-            {
-                TempData.Add("notification", "Field trip not found!");
-                TempData.Add("error", "");
-                return RedirectToAction("Index", "ClubEvents");
-            }
-            fieldTrip.Status = "Ended";
-            _dbContext.FieldTrips.Update(fieldTrip);
-            _dbContext.SaveChanges();
-
-            TempData.Add("notification", fieldTrip.Name + " has been marked as ended!");
-            TempData.Add("success", "");
-            return RedirectToAction("Index", "ClubEvents");
-        }
-
-        // POST: FieldTripsController/Cancel/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Cancel(int id)
-        {
-            FieldTrip? fieldTrip = _dbContext.FieldTrips.Find(id);
-            if (fieldTrip == null)
-            {
-                TempData.Add("notification", "Field trip not found!");
-                TempData.Add("error", "");
-                return RedirectToAction("Index", "ClubEvents");
-            }
-            fieldTrip.Status = "Cancelled";
-            _dbContext.FieldTrips.Update(fieldTrip);
-            _dbContext.SaveChanges();
-
-            TempData.Add("notification", fieldTrip.Name + " has been cancelled!");
-            TempData.Add("success", "");
-            return RedirectToAction("Index", "ClubEvents");
+            return RedirectToAction("Details", new { id });
         }
 
         public IActionResult EditHighlights(int id)
         {
             FieldTrip? fieldTrip = _dbContext.FieldTrips.Find(id);
-            if (fieldTrip == null || fieldTrip.Status != "Ended")
+            if (fieldTrip == null || fieldTrip.Status != EventStatuses.Ended)
             {
                 TempData.Add("notification", "Field trip not found!");
                 TempData.Add("error", "");
@@ -197,22 +207,22 @@ namespace BirdClubManagementSystem.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult EditHighlights(FieldTrip fieldTrip)
+        public IActionResult EditHighlights(FieldTripDTO dto)
         {
-            FieldTrip? fieldTripInDb = _dbContext.FieldTrips.Find(fieldTrip.Id);
-            if (fieldTripInDb == null || fieldTripInDb.Status != "Ended")
+            FieldTrip? fieldTrip = _dbContext.FieldTrips.Find(dto.Id);
+            if (fieldTrip == null || fieldTrip.Status != EventStatuses.Ended)
             {
                 TempData.Add("notification", "Field trip not found!");
                 TempData.Add("error", "");
                 return RedirectToAction("Index", "ClubEvents");
             }
-            fieldTripInDb.Highlights = fieldTrip.Highlights;
-            _dbContext.FieldTrips.Update(fieldTripInDb);
+            fieldTrip.Highlights = dto.Highlights;
+            _dbContext.FieldTrips.Update(fieldTrip);
             _dbContext.SaveChanges();
 
             TempData.Add("notification", "Highlights has been updated!");
             TempData.Add("success", "");
-            return RedirectToAction("Details", new { id = fieldTrip.Id });
+            return RedirectToAction("Details", new { id = dto.Id });
         }
     }
 }
