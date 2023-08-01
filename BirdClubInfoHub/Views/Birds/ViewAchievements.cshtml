@@ -27,25 +27,7 @@
                 <tr>
                     <td>@item.Tournament.Name</td>
                     <td>@item.Tournament.StartDate</td>
-                    @switch (item.Placement)
-                    {
-                        case "1st":
-                            <td>First place</td>
-                            break;
-                        case "2nd":
-                            <td>Second place</td>
-                            break;
-                        case "3rd":
-                            <td>Third place</td>
-                            break;
-                        @* TO-DO: change this into "Participated" *@
-                        case "Participation":
-                            <td>Participation</td>
-                            break;
-                        default:
-                            <td></td>
-                            break;
-                    }
+                    <td>@TournamentPlacements.Convert(item.Placement)</td>
                 </tr>
             }
         </tbody>

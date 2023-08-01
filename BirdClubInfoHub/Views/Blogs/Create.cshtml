@@ -1,4 +1,4 @@
-﻿@model Blog
+﻿@model BlogDTO
 
 @section Styles
 {
@@ -15,13 +15,13 @@
 
     <form class="create-blog-form" asp-controller="Blogs" asp-action="Create" enctype="multipart/form-data" method="post">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-        <input type="hidden" asp-for="UserId" />
+        <input type="hidden" asp-for="User.Id" />
 
         <h2>Create Blog</h2>
 
         <div class="input-container">
             <label class="input-label" for="blog-category">Blog Category</label>
-            <select id="blog-category" class="input" asp-for="BlogCategoryId" asp-items="ViewBag.CategoryOptions">
+            <select id="blog-category" class="input" asp-for="BlogCategory.Id" asp-items="ViewBag.CategoryOptions">
                 <option value="7" hidden>Choose a category</option>
             </select>
         </div>

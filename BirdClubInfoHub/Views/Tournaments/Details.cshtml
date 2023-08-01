@@ -1,4 +1,4 @@
-﻿@model Tournament
+﻿@model TournamentDTO
 
 @section Styles
 {
@@ -56,7 +56,7 @@
 
 @if (Model.Status == "Ended")
 {
-    <div class="navtab ">
+    <div class="navtab">
         <button class="btn navtab-btn" id="1">Highlights</button>
         <button class="btn navtab-btn" id="2">Ranking</button>
     </div>
@@ -89,24 +89,7 @@
                                 <tr>
                                     <td>@item.Bird.Name</td>
                                     <td>@item.Bird.User.Name</td>
-                                    @switch (item.Placement)
-                                    {
-                                        case "1st":
-                                            <td>First place</td>
-                                            break;
-                                        case "2nd":
-                                            <td>Second place</td>
-                                            break;
-                                        case "3rd":
-                                            <td>Third place</td>
-                                            break;
-                                        case "Participation":
-                                            <td>Participation</td>
-                                            break;
-                                        default:
-                                            <td></td>
-                                            break;
-                                    }
+                                    <td>@TournamentPlacements.Convert(item.Placement)</td>
                                 </tr>
                             }
                         </tbody>
