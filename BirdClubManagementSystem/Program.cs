@@ -1,5 +1,6 @@
 using BirdClubManagementSystem.BatchJobs;
 using BirdClubManagementSystem.Data;
+using BirdClubManagementSystem.Middlewares;
 using Coravel;
 using Microsoft.EntityFrameworkCore;
 using System.Net.Mail;
@@ -43,6 +44,8 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthorization();
+
+app.UseMiddleware<GlobalExceptionHandlingMiddleware>();
 
 app.MapControllerRoute(
     name: "default",
