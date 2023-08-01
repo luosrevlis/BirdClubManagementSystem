@@ -27,3 +27,43 @@ btnList.forEach((btn) => {
             .classList.add("active")
     });
 });
+
+// edit for select box in table ranking
+const dropdowns = document.querySelectorAll(".select-menu");
+
+dropdowns.forEach(dropdown => {
+    // lấy các thành phần từ dropdown
+    const select = dropdown.querySelector('.select');
+    const caret = dropdown.querySelector('.caret');
+    const menu = dropdown.querySelector('.menu');
+    const options = dropdown.querySelectorAll('.menu li');
+    const selected = dropdown.querySelector('.selected');
+
+    // thêm click event
+    select.addEventListener('click', ()=>{
+        // Add the clicked select styles to the select element
+        select.classList.toggle('select-clicked');
+        //Add rotate style to caret
+        caret.classList.toggle('caret-rotate');
+        // Add the open styles to menu element
+        menu.classList.toggle('menu-open');
+
+    });
+    options.forEach(option =>{
+        option.addEventListener('click', () => {
+            selected.innerText = option.innerText;
+            // Add the clicked select styles to to select element
+            select.classList.remove('select-clicked');
+            // Add the rotate styles to the caret element
+            caret.classList.remove('caret-rotate');
+            // Add the open styles to the menu element
+            menu.classList.remove('menu-open');
+            // Remove active class from all option elements
+            options.forEach(option => {
+                option.classList.remove('active');
+            });
+            option.classList.add('active')
+
+        });
+    });
+});
