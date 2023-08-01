@@ -51,7 +51,7 @@ namespace BirdClubManagementSystem.Controllers
         {
             int meetingId = HttpContext.Session.GetInt32("MEETING_ID") ?? 0;
             MeetingRegistration? registration = _dbContext.MeetingRegistrations.Find(id);
-            if (registration == null)
+            if (registration == null || registration.MeetingId != meetingId)
             {
                 TempData.Add("notification", "Participant not found!");
                 TempData.Add("error", "");

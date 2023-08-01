@@ -54,7 +54,7 @@ namespace BirdClubManagementSystem.Controllers
         {
             int tournamentId = HttpContext.Session.GetInt32("TOURNAMENT_ID") ?? 0;
             TournamentRegistration? registration = _dbContext.TournamentRegistrations.Find(id);
-            if (registration == null)
+            if (registration == null || registration.TournamentId != tournamentId)
             {
                 TempData.Add("notification", "Participant not found!");
                 TempData.Add("error", "");
@@ -74,7 +74,7 @@ namespace BirdClubManagementSystem.Controllers
         {
             int tournamentId = HttpContext.Session.GetInt32("TOURNAMENT_ID") ?? 0;
             TournamentRegistration? registration = _dbContext.TournamentRegistrations.Find(id);
-            if (registration == null)
+            if (registration == null || registration.TournamentId != tournamentId)
             {
                 TempData.Add("notification", "Participant not found!");
                 TempData.Add("error", "");
