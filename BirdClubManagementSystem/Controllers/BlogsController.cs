@@ -40,19 +40,22 @@ namespace BirdClubManagementSystem.Controllers
 
         public IActionResult Index(int page = 1, string keyword = "", int categoryId = 0)
         {
-            IQueryable<Blog> matches = _dbContext.Blogs
-                .Where(blog => blog.Title.ToLower().Contains(keyword.ToLower()));
+            IQueryable<Blog> matches = _dbContext.Blogs;
+            if (!string.IsNullOrEmpty(keyword))
+            {
+                matches = matches.Where(blog => blog.Title.ToLower().Contains(keyword.ToLower()));
+            }
             if (categoryId != 0)
             {
                 matches = matches.Where(blog => blog.BlogCategoryId == categoryId);
             }
 
             List<BlogDTO> blogs = matches
+                .OrderByDescending(blog => blog.DateCreated)
                 .Skip((page - 1) * PageSize)
                 .Take(PageSize)
                 .Include(blog => blog.User)
                 .Include(blog => blog.BlogCategory)
-                .OrderByDescending(blog => blog.DateCreated)
                 .Select(blog => _mapper.Map<BlogDTO>(blog))
                 .ToList();
             return View(blogs);
@@ -87,8 +90,8 @@ namespace BirdClubManagementSystem.Controllers
         public IActionResult Create(BlogDTO dto, IFormFile thumbnailFile)
         {
             Blog blog = _mapper.Map<Blog>(dto);
-            blog.User = _dbContext.Users.Find(blog.UserId)!;
-            blog.BlogCategory = _dbContext.BlogCategories.Find(blog.BlogCategoryId)!;
+            blog.User = _dbContext.Users.Find(dto.User.Id)!;
+            blog.BlogCategory = _dbContext.BlogCategories.Find(dto.BlogCategory.Id)!;
             if (thumbnailFile != null)
             {
                 using MemoryStream memoryStream = new();
@@ -128,7 +131,7 @@ namespace BirdClubManagementSystem.Controllers
         public IActionResult Accept(int id)
         {
             Blog? blog = _dbContext.Blogs.Find(id);
-            if (blog == null || blog.Status != "Pending")
+            if (blog == null || blog.Status != BlogStatuses.Pending)
             {
                 TempData.Add("notification", "Blog not found!");
                 TempData.Add("error", "");
@@ -148,7 +151,7 @@ namespace BirdClubManagementSystem.Controllers
         public IActionResult Reject(int id)
         {
             Blog? blog = _dbContext.Blogs.Find(id);
-            if (blog == null || blog.Status != "Pending")
+            if (blog == null || blog.Status != BlogStatuses.Pending)
             {
                 TempData.Add("notification", "Blog not found!");
                 TempData.Add("error", "");
