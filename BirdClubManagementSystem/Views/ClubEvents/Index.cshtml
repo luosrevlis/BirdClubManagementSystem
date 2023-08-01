@@ -1,4 +1,4 @@
-﻿@model IEnumerable<IClubEvent>
+﻿@model IEnumerable<IClubEventDTO>
 
 @section Styles
 {
@@ -8,17 +8,17 @@
 @{
     ViewData["Title"] = "Index";
 
-    var dateBlocks = new Dictionary<DateTime, IEnumerable<IClubEvent>>();
+    var dateBlocks = new Dictionary<DateTime, IEnumerable<IClubEventDTO>>();
     if (Model.Any())
     {
         DateTime currentDateTime = Model.First().StartDate.Date;
-        var clubEvents = Enumerable.Empty<IClubEvent>();
+        var clubEvents = Enumerable.Empty<IClubEventDTO>();
         foreach (var item in Model)
         {
             if (item.StartDate.Date != currentDateTime) {
                 dateBlocks.Add(currentDateTime, clubEvents);
                 currentDateTime = item.StartDate.Date;
-                clubEvents = Enumerable.Empty<IClubEvent>();
+                clubEvents = Enumerable.Empty<IClubEventDTO>();
             }
             clubEvents = clubEvents.Append(item);
         }

@@ -1,4 +1,4 @@
-﻿@model TournamentStanding
+﻿@model TournamentStandingDTO
 
 @{
     ViewData["Title"] = "Create";
@@ -13,14 +13,14 @@
     <section class="container-template">
         <h2>Add ranking information</h2>
         <form asp-action="Create" class="form">
-            <input type="hidden" asp-for="TournamentId" />
+            <input type="hidden" asp-for="Tournament.Id" />
 
             <div class="column">
 
                 <div class="input-box bird-field">
                     <label>Bird</label>
                     <div class="select-box">
-                        <select asp-for="BirdId" asp-items="ViewBag.BirdOptions">
+                        <select asp-for="Bird.Id" asp-items="ViewBag.BirdOptions">
                             <option value="" hidden>Choose a bird</option>
                         </select>
                     </div>
@@ -31,10 +31,10 @@
                     <div class="select-box">
                         <select asp-for="Placement">
                             <option value="" hidden>Choose a ranking</option>
-                            <option value="1st">First place</option>
-                            <option value="2nd">Second place</option>
-                            <option value="3rd">Third place</option>
-                            <option value="Participation">Participation</option>
+                            <option value="1St">First Place</option>
+                            <option value="2ND">Second Place</option>
+                            <option value="3RD">Third Place</option>
+                            <option value="PAR">Participation</option>
                         </select>
                     </div>
                 </div>
@@ -44,7 +44,7 @@
             <input class="button" type="submit" value="Create" />
         </form>
         <div class="back-region">
-            <a asp-action="Index" asp-route-tournamentid="@Model.TournamentId" class="back-link">Back</a>
+            <a asp-action="Index" asp-route-tournamentid="@Model.Tournament.Id" class="back-link">Back</a>
         </div>
     </section>
 </div>

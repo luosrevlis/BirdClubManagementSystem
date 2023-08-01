@@ -1,4 +1,4 @@
-@model IClubEvent
+@model IClubEventDTO
 
 @{
     ViewData["Title"] = "Details";
@@ -19,7 +19,7 @@
             Delete
         </a>
     </div>
-    @if (Model.Status == "Ended")
+    @if (Model.Status == EventStatuses.Ended)
     {
         <div class="event-detail-edit-highlights">
             <a class="button edit-highlights-button" asp-action="EditHighlights" asp-route-id="@Model.Id">
@@ -46,21 +46,21 @@
         </div>
     </div>
     <div class="event-detail-status-links">
-        @if (Model.Status == "Open")
+        @if (Model.Status == EventStatuses.RegOpened)
         {
             <a class="button status-button" onclick="initClose()">
                 <i class="fa-solid fa-door-open"></i>
                 Close registration
             </a>
         }
-        @if (Model.Status == "Happening")
+        @if (Model.Status == EventStatuses.Start)
         {
             <a class="button status-button" onclick="initEnd()">
                 <i class="fa-solid fa-clock"></i>
                 Mark as ended
             </a>
         }
-        @if (Model.Status != "Ended" && Model.Status != "Cancelled")
+        @if (Model.Status != EventStatuses.Ended && Model.Status != EventStatuses.Cancelled)
         {
             <a class="button status-button" onclick="initCancel()">
                 <i class="fa-solid fa-xmark"></i>
@@ -84,6 +84,7 @@
     </form>
 </div>
 
+@*TODO 1 form for all status change*@
 @if (Model.Status == "Open")
 {
     <div class="close-registration-container">

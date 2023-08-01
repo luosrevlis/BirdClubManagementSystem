@@ -67,7 +67,7 @@ namespace BirdClubManagementSystem.Controllers
         // POST: UserManagementController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(UserDTO dto)
+        public IActionResult Create(User dto)
         {
             User? user = _dbContext.Users.FirstOrDefault(u => u.Email == dto.Email);
             if (user != null)
@@ -76,7 +76,7 @@ namespace BirdClubManagementSystem.Controllers
                 TempData.Add("error", "An account with the same email already existed!");
                 return RedirectToAction("Index");
             }
-            user = _mapper.Map<User>(dto);
+            user = dto;
             PasswordHasher<User> passwordHasher = new();
             user.Password = passwordHasher.HashPassword(user, user.Password);
             user.JoinDate = DateTime.Now;

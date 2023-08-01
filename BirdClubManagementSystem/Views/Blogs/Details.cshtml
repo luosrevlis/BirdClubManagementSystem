@@ -1,4 +1,4 @@
-﻿@model Blog
+﻿@model BlogDTO
 
 @section Styles
 {
@@ -21,7 +21,7 @@
                 <div class="blog-info-container">
                     <div class="blog-author-info-container">
                         <div class="blog-author-ava-container">
-                            <img class="blog-author-ava" src="@Url.Action("GetImageFromBytes", "Profile", new { id = Model.UserId })" alt="author" />
+                            <img class="blog-author-ava" src="@Url.Action("GetImageFromBytes", "Profile", new { id = Model.User.Id })" alt="author" />
                         </div>
 
                         <p class="blog-author-name">By @Model.User.Name</p>
@@ -39,7 +39,7 @@
 
     <div class="blog-utils-container">
         <div class="blog-control-container">
-            @if (@Model.Status.Equals("Pending"))
+            @if (@Model.Status.Equals(BlogStatuses.Pending))
             {
                 <button class="control-button confirm-button" type="button" onclick="initAccept(@Model.Id)">Accept</button>
                 <button type="button" class="control-button reject-button" onclick="initReject(@Model.Id)">Reject</button>
