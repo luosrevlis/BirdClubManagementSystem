@@ -49,12 +49,26 @@ namespace BirdClubInfoHub.Controllers
                 matches = matches.Where(bird => bird.Name.ToLower().Contains(keyword.ToLower()));
             }
 
+            int maxPage = (int)Math.Ceiling(matches.Count() / (double)PageSize);
+            if (page > maxPage)
+            {
+                page = maxPage;
+            }
+            if (page < 1)
+            {
+                page = 1;
+            }
+
             List<BirdDTO> birds = matches
                 .OrderBy(bird => bird.Name)
                 .Skip((page - 1) * PageSize)
                 .Take(PageSize)
                 .Select(bird => _mapper.Map<BirdDTO>(bird))
                 .ToList();
+
+            ViewBag.Page = page;
+            ViewBag.Keyword = keyword;
+            ViewBag.MaxPage = maxPage;
             return View(birds);
         }
 

@@ -62,7 +62,5 @@ function setUpActiveNavLink() {
         navLinks.item(3).classList.add("nav-active");
     } else if (path.includes("home") && path.includes("contact")) {
         navLinks.item(4).classList.add("nav-active");
-    } else {
-        navLinks.item(0).classList.add("nav-active");
     }
 }

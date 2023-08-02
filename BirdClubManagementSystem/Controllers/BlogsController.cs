@@ -38,16 +38,26 @@ namespace BirdClubManagementSystem.Controllers
             return File(blog.Thumbnail, "image/png");
         }
 
-        public IActionResult Index(int page = 1, string keyword = "", int categoryId = 0)
+        public IActionResult Index(int page = 1, string keyword = "", string status = "")
         {
             IQueryable<Blog> matches = _dbContext.Blogs;
             if (!string.IsNullOrEmpty(keyword))
             {
                 matches = matches.Where(blog => blog.Title.ToLower().Contains(keyword.ToLower()));
             }
-            if (categoryId != 0)
+            if (!string.IsNullOrEmpty(status))
             {
-                matches = matches.Where(blog => blog.BlogCategoryId == categoryId);
+                matches = matches.Where(blog => blog.Status == status);
+            }
+
+            int maxPage = (int)Math.Ceiling(matches.Count() / (double)PageSize);
+            if (page > maxPage)
+            {
+                page = maxPage;
+            }
+            if (page < 1)
+            {
+                page = 1;
             }
 
             List<BlogDTO> blogs = matches
@@ -58,6 +68,11 @@ namespace BirdClubManagementSystem.Controllers
                 .Include(blog => blog.BlogCategory)
                 .Select(blog => _mapper.Map<BlogDTO>(blog))
                 .ToList();
+
+            ViewBag.Page = page;
+            ViewBag.Keyword = keyword;
+            ViewBag.Status = status;
+            ViewBag.MaxPage = maxPage;
             return View(blogs);
         }
 

@@ -50,7 +50,17 @@ namespace BirdClubInfoHub.Controllers
             {
                 matches = matches.Where(blog => blog.BlogCategoryId == categoryId);
             }
-            
+
+            int maxPage = (int)Math.Ceiling(matches.Count() / (double)PageSize);
+            if (page > maxPage)
+            {
+                page = maxPage;
+            }
+            if (page < 1)
+            {
+                page = 1;
+            }
+
             List<BlogDTO> blogs = matches
                 .OrderByDescending(blog => blog.DateCreated)
                 .Skip((page - 1) * PageSize)
@@ -73,6 +83,10 @@ namespace BirdClubInfoHub.Controllers
                 .Select(blog => _mapper.Map<BlogDTO>(blog))
                 .ToList();
 
+            ViewBag.Page = page;
+            ViewBag.Keyword = keyword;
+            ViewBag.CategoryId = categoryId;
+            ViewBag.MaxPage = maxPage;
             return View(blogs);
         }
 

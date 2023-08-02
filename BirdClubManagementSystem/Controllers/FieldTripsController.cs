@@ -39,12 +39,28 @@ namespace BirdClubManagementSystem.Controllers
                 matches = matches.Where(ft => ft.Name.ToLower().Contains(keyword.ToLower()));
             }
 
+            int maxPage = (int)Math.Ceiling(matches.Count() / (double)PageSize);
+            if (page > maxPage)
+            {
+                page = maxPage;
+            }
+            if (page < 1)
+            {
+                page = 1;
+            }
+
             List<FieldTripDTO> fieldTrips = matches
                 .OrderByDescending(ft => ft.StartDate)
             .Skip((page - 1) * PageSize)
                 .Take(PageSize)
                 .Select(ft => _mapper.Map<FieldTripDTO>(ft))
                 .ToList();
+
+            ViewBag.Month = month;
+            ViewBag.Page = page;
+            ViewBag.Keyword = keyword;
+            ViewBag.Status = status;
+            ViewBag.MaxPage = maxPage;
             return View(fieldTrips);
         }
 

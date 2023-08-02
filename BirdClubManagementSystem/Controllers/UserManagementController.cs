@@ -35,13 +35,28 @@ namespace BirdClubManagementSystem.Controllers
             {
                 matches = matches.Where(user => user.Role == role);
             }
-            
+
+            int maxPage = (int)Math.Ceiling(matches.Count() / (double)PageSize);
+            if (page > maxPage)
+            {
+                page = maxPage;
+            }
+            if (page < 1)
+            {
+                page = 1;
+            }
+
             List<UserDTO> users = matches
                 .OrderByDescending(user => user.Name)
                 .Skip((page - 1) * PageSize)
                 .Take(PageSize)
                 .Select(user => _mapper.Map<UserDTO>(user))
                 .ToList();
+
+            ViewBag.Page = page;
+            ViewBag.Keyword = keyword;
+            ViewBag.Role = role;
+            ViewBag.MaxPage = maxPage;
             return View(users);
         }
 

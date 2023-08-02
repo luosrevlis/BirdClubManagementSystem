@@ -42,6 +42,16 @@ namespace BirdClubInfoHub.Controllers
                 matches = matches.Where(ftr => ftr.FieldTrip.Name.ToLower().Contains(keyword.ToLower()));
             }
 
+            int maxPage = (int)Math.Ceiling(matches.Count() / (double)PageSize);
+            if (page > maxPage)
+            {
+                page = maxPage;
+            }
+            if (page < 1)
+            {
+                page = 1;
+            }
+
             List<FieldTripRegistrationDTO> registrations = matches
                 .OrderByDescending(ftr => ftr.DateCreated)
                 .Skip((page - 1) * PageSize)
@@ -49,6 +59,10 @@ namespace BirdClubInfoHub.Controllers
                 .Select(ftr => _mapper.Map<FieldTripRegistrationDTO>(ftr))
                 .ToList();
             //registrations.RemoveAll(ftr => ftr.Status != "Open" && ftr.FieldTrip.Status != "Registration Closed");
+
+            ViewBag.Page = page;
+            ViewBag.Keyword = keyword;
+            ViewBag.MaxPage = maxPage;
             return View(registrations);
         }
 

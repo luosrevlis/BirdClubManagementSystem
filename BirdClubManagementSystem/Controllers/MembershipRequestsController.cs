@@ -45,12 +45,27 @@ namespace BirdClubManagementSystem.Controllers
                 matches = matches.Where(mr => mr.Status == status);
             }
 
+            int maxPage = (int)Math.Ceiling(matches.Count() / (double)PageSize);
+            if (page > maxPage)
+            {
+                page = maxPage;
+            }
+            if (page < 1)
+            {
+                page = 1;
+            }
+
             List<MembershipRequestDTO> requests = matches
                 .OrderByDescending(mr => mr.Id)
                 .Skip((page - 1) * PageSize)
                 .Take(PageSize)
                 .Select(mr => _mapper.Map<MembershipRequestDTO>(mr))
                 .ToList();
+
+            ViewBag.Page = page;
+            ViewBag.Keyword = keyword;
+            ViewBag.Status = status;
+            ViewBag.MaxPage = maxPage;
             return View(requests);
         }
 

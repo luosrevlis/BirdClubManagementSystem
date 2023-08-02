@@ -42,12 +42,27 @@ namespace BirdClubManagementSystem.Controllers
                 matches = matches.Where(ts => ts.Placement == placement);
             }
 
-            List<TournamentStandingDTO> standings = _dbContext.TournamentStandings
+            int maxPage = (int)Math.Ceiling(matches.Count() / (double)PageSize);
+            if (page > maxPage)
+            {
+                page = maxPage;
+            }
+            if (page < 1)
+            {
+                page = 1;
+            }
+
+            List<TournamentStandingDTO> standings = matches
                 .OrderBy(ts => ts.Placement)
                 .Skip((page - 1) * PageSize)
                 .Take(PageSize)
                 .Select(ts => _mapper.Map<TournamentStandingDTO>(ts))
                 .ToList();
+
+            ViewBag.Page = page;
+            ViewBag.Keyword = keyword;
+            ViewBag.Placement = placement;
+            ViewBag.MaxPage = maxPage;
             return View(standings);
         }
 
