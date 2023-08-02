@@ -69,8 +69,9 @@
         <tbody>
             @foreach (var item in Model)
             {
+                string title = item.Title.Length > 30 ? item.Title.Remove(30) + "..." : item.Title;
                 <tr>
-                    <td>@item.Title</td>
+                    <td>@title</td>
                     <td>@item.BlogCategory.Name</td>
                     <td>@item.DateCreated</td>
                     <td>@BlogStatuses.Convert(item.Status)</td>
