@@ -35,7 +35,7 @@ namespace BirdClubManagementSystem.Controllers
         public IActionResult SendNotification(Notification notification)
         {
             List<User> users = _dbContext.Users.ToList();
-            if (!notification.IsRoleSelected["Custom"])
+            if (!notification.IsRoleSelected["CUS"])
             {
                 notification.Recipients.Clear();
             }

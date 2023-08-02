@@ -14,7 +14,7 @@
     </h1>
 
     @*admin list here*@
-    @if (Context.Session.GetString("USER_ROLE") == "Admin")
+    @if (Context.Session.GetString("USER_ROLE") == UserRoles.Admin)
     {
         <div class="method-list">
             <!-- card 1 -->

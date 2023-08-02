@@ -4,10 +4,10 @@
     {
         public IDictionary<string, bool> IsRoleSelected { get; set; } = new Dictionary<string, bool>()
         {
-            { "Admin", false },
-            { "Staff", false },
-            { "Member", false },
-            { "Custom", false }
+            { "ADM", false },
+            { "STF", false },
+            { "MEM", false },
+            { "CUS", false }
         };
 
         public ICollection<string> Recipients { get; set; } = new HashSet<string>();
