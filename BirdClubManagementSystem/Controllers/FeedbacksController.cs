@@ -23,13 +23,33 @@ namespace BirdClubManagementSystem.Controllers
 
         public IActionResult Index(int page = 1, string keyword = "")
         {
-            List<FeedbackDTO> feedbacks = _dbContext.Feedbacks
-                .Where(feedback => feedback.Title.ToLower().Contains(keyword.ToLower()))
+            IQueryable<Feedback> matches = _dbContext.Feedbacks;
+            if (!string.IsNullOrEmpty(keyword))
+            {
+                matches = matches.Where(feedback => feedback.Title.ToLower().Contains(keyword.ToLower()));
+            }
+
+            int maxPage = (int)Math.Ceiling(matches.Count() / (double)PageSize);
+            if (page > maxPage)
+            {
+                page = maxPage;
+            }
+            if (page < 1)
+            {
+                page = 1;
+            }
+
+            List<FeedbackDTO> feedbacks = matches
+                .OrderByDescending(feedback => feedback.Id)
                 .Skip((page - 1) * PageSize)
                 .Take(PageSize)
                 .Include(feedback => feedback.User)
                 .Select(feedback => _mapper.Map<FeedbackDTO>(feedback))
                 .ToList();
+
+            ViewBag.Page = page;
+            ViewBag.Keyword = keyword;
+            ViewBag.MaxPage = maxPage;
             return View(feedbacks);
         }
 

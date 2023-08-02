@@ -34,12 +34,26 @@ namespace BirdClubManagementSystem.Controllers
                 matches = matches.Where(ftr => ftr.User.Name.ToLower().Contains(keyword.ToLower()));
             }
 
+            int maxPage = (int)Math.Ceiling(matches.Count() / (double)PageSize);
+            if (page > maxPage)
+            {
+                page = maxPage;
+            }
+            if (page < 1)
+            {
+                page = 1;
+            }
+
             List<FieldTripRegistrationDTO> registrations = matches
                 .OrderByDescending(ftr => ftr.DateCreated)
                 .Skip((page - 1) * PageSize)
                 .Take(PageSize)
                 .Select(ftr => _mapper.Map<FieldTripRegistrationDTO>(ftr))
                 .ToList();
+
+            ViewBag.Page = page;
+            ViewBag.Keyword = keyword;
+            ViewBag.MaxPage = maxPage;
             return View(registrations);
         }
 

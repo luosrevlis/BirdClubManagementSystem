@@ -39,6 +39,16 @@ namespace BirdClubInfoHub.Controllers
                 matches = matches.Where(mr => mr.Meeting.Name.ToLower().Contains(keyword.ToLower()));
             }
 
+            int maxPage = (int)Math.Ceiling(matches.Count() / (double)PageSize);
+            if (page > maxPage)
+            {
+                page = maxPage;
+            }
+            if (page < 1)
+            {
+                page = 1;
+            }
+
             List<MeetingRegistrationDTO> registrations = matches
                 .OrderByDescending(mr => mr.DateCreated)
                 .Skip((page - 1) * PageSize)
@@ -46,6 +56,10 @@ namespace BirdClubInfoHub.Controllers
                 .Select(mr => _mapper.Map<MeetingRegistrationDTO>(mr))
                 .ToList();
             //registrations.RemoveAll(mr => mr.Meeting.Status != "Open" && mr.Meeting.Status != "Registration Closed");
+
+            ViewBag.Page = page;
+            ViewBag.Keyword = keyword;
+            ViewBag.MaxPage = maxPage;
             return View(registrations);
         }
 

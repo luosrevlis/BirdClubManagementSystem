@@ -47,11 +47,28 @@ namespace BirdClubManagementSystem.Controllers
             {
                 eventList = eventList.Where(e => e.Status == status).ToList();
             }
+
+            int maxPage = (int)Math.Ceiling(eventList.Count / (double)PageSize);
+            if (page > maxPage)
+            {
+                page = maxPage;
+            }
+            if (page < 1)
+            {
+                page = 1;
+            }
+
             eventList = eventList
                 .OrderByDescending(e => e.StartDate)
                 .Skip((page - 1) * PageSize)
                 .Take(PageSize)
                 .ToList();
+
+            ViewBag.Month = month;
+            ViewBag.Page = page;
+            ViewBag.Keyword = keyword;
+            ViewBag.Status = status;
+            ViewBag.MaxPage = maxPage;
             return View(eventList);
         }
     }
