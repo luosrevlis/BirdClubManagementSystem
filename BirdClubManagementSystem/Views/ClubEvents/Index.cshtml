@@ -1,24 +1,23 @@
-﻿@model IEnumerable<IClubEvent>
+﻿@model IEnumerable<IClubEventDTO>
 
-@section Styles
-{
+@section Styles {
     <link rel="stylesheet" href="~/css/event/event.css" />
 }
 
 @{
     ViewData["Title"] = "Index";
 
-    var dateBlocks = new Dictionary<DateTime, IEnumerable<IClubEvent>>();
+    var dateBlocks = new Dictionary<DateTime, IEnumerable<IClubEventDTO>>();
     if (Model.Any())
     {
         DateTime currentDateTime = Model.First().StartDate.Date;
-        var clubEvents = Enumerable.Empty<IClubEvent>();
+        var clubEvents = Enumerable.Empty<IClubEventDTO>();
         foreach (var item in Model)
         {
             if (item.StartDate.Date != currentDateTime) {
                 dateBlocks.Add(currentDateTime, clubEvents);
                 currentDateTime = item.StartDate.Date;
-                clubEvents = Enumerable.Empty<IClubEvent>();
+                clubEvents = Enumerable.Empty<IClubEventDTO>();
             }
             clubEvents = clubEvents.Append(item);
         }
@@ -57,17 +56,17 @@
                         string bgColor = string.Empty;
                         switch (e)
                         {
-                            case FieldTrip:
+                            case FieldTripDTO:
                                 controller = "FieldTrips";
                                 image = "fieldtrip-banner.png";
                                 bgColor = "#4f78ff";
                                 break;
-                            case Meeting:
+                            case MeetingDTO:
                                 controller = "Meetings";
                                 image = "meeting-banner.png";
                                 bgColor = "#AD82D9";
                                 break;
-                            case Tournament:
+                            case TournamentDTO:
                                 controller = "Tournaments";
                                 image = "tournament-banner.png";
                                 bgColor = "#AD82D9";

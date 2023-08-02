@@ -29,6 +29,10 @@
     }
 }
 
+<p class="events-control">
+    <a class="control-button" asp-action="Create" asp-controller="Meetings">New Meeting</a>
+</p>
+
 <section class="event-section">
     <h1>Events</h1>
 
@@ -49,7 +53,7 @@
                     {
                         string image = "meeting-banner.png";
                         string bgColor = "#AD82D9";
-
+                        
                         <a class="event-container" asp-action="Details" asp-route-id="@e.Id">
                             <div class="event-name" style="background-color: @bgColor;">
                                 <h2>@e.Name</h2>

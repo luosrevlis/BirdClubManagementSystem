@@ -1,4 +1,4 @@
-﻿@model User
+﻿@model UserDTO
 
 @{
     ViewData["Title"] = "Edit";
@@ -12,6 +12,7 @@
     <section class="container-template">
         <h2>Edit user</h2>
         <form asp-action="Edit" class="form" onsubmit="return validateAll()">
+            <input type="hidden" asp-for="Id" />
 
             <div class="input-box fullname-field">
                 <label>Fullname</label>
@@ -50,9 +51,9 @@
                     <div class="select-box">
                         <select asp-for="Role" class="form-control">
                             <option value="" hidden>Choose a role</option>
-                            <option value="Admin">Admin</option>
-                            <option value="Staff">Staff</option>
-                            <option value="Member">Member</option>
+                            <option value=@UserRoles.Admin>@UserRoles.Convert(UserRoles.Admin)</option>
+                            <option value=@UserRoles.Staff>@UserRoles.Convert(UserRoles.Staff)</option>
+                            <option value=@UserRoles.Member>@UserRoles.Convert(UserRoles.Member)</option>
                         </select>
                     </div>
                 </div>

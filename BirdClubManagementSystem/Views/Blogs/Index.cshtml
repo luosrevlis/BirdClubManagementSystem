@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Blog>
+﻿@model IEnumerable<BlogDTO>
 
 @section Styles
 {
@@ -40,7 +40,7 @@
                     <td>@item.DateCreated</td>
                     <td>@item.Status</td>
                     <td class="option">
-                        @if (item.Status == "Accepted")
+                        @if (item.Status == BlogStatuses.Accepted)
                         {
                             <a class="button action-button" asp-action="Details" asp-controller="Blogs" asp-route-id="@item.Id">
                                 <i class="fa-solid fa-eye"></i>
@@ -49,7 +49,7 @@
                                 <i class="fa-solid fa-trash"></i>
                             </a>
                         }
-                        @if (item.Status == "Pending")
+                        @if (item.Status == BlogStatuses.Pending)
                         {
                             <a class="button action-button" asp-action="Details" asp-route-id="@item.Id">
                                 <i class="fa-solid fa-eye"></i>
@@ -61,7 +61,7 @@
                                 <i class="fa-solid fa-x"></i>
                             </a>
                         }
-                        @if (item.Status == "Rejected")
+                        @if (item.Status == BlogStatuses.Rejected)
                         {
                             <a class="button delete-button" onclick="initDelete(@item.Id)">
                                 <i class="fa-solid fa-trash"></i>

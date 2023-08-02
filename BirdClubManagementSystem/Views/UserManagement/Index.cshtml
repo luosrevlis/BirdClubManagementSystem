@@ -1,4 +1,4 @@
-﻿@model IEnumerable<User>
+﻿@model IEnumerable<UserDTO>
 
 @{
     ViewData["Title"] = "Index";
@@ -34,7 +34,7 @@
                 <tr>
                     <td>@item.Email</td>
                     <td>@item.Name</td>
-                    <td>@item.Role</td>
+                    <td>@UserRoles.Convert(item.Role)</td>
                     <td class="option">
                         <a class="button action-button" asp-action="Details" asp-route-id="@item.Id">
                             <i class="fa-solid fa-circle-info"></i>

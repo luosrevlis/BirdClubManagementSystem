@@ -21,7 +21,7 @@
             @foreach (KeyValuePair<string, bool> pair in Model.IsRoleSelected)
             {
                 <input asp-for="IsRoleSelected[pair.Key]" type="checkbox" />
-                @pair.Key
+                @UserRoles.Convert(pair.Key)
                 <br />
             }
 

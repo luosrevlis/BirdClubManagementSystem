@@ -46,7 +46,7 @@ namespace BirdClubManagementSystem.Controllers
             }
 
             List<MembershipRequestDTO> requests = matches
-                .Reverse()
+                .OrderByDescending(mr => mr.Id)
                 .Skip((page - 1) * PageSize)
                 .Take(PageSize)
                 .Select(mr => _mapper.Map<MembershipRequestDTO>(mr))

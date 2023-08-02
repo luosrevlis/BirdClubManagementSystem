@@ -1,7 +1,7 @@
-﻿@model IEnumerable<MembershipRequest>
+﻿@model IEnumerable<MembershipRequestDTO>
 
 @{
-    ViewData["Title"] = "Full List";
+    ViewData["Title"] = "Membership Requests";
 }
 
 
@@ -15,11 +15,6 @@
     <h2>Membership requests</h2>
     <h4>Full list</h4>
 </section>
-<div class="option">
-    <a class="button action-button" asp-action="ViewPending">
-        View pending list
-    </a>
-</div>
 <div class="sticky-table">
     <table>
         <thead>
@@ -42,7 +37,7 @@
                     <td>@item.Email</td>
                     <td>@item.Status</td>
                     <td class="option">
-                        @if (item.Status == "Pending")
+                        @if (item.Status == MemRequestStatuses.Pending)
                         {
                             <a class="button confirm-button" onclick="initAccept(@item.Id)">
                                 <i class="fa-solid fa-check"></i>

@@ -1,7 +1,6 @@
 ﻿@model IEnumerable<IClubEventDTO>
 
-@section Styles
-{
+@section Styles {
     <link rel="stylesheet" href="~/css/event/event.css" />
 }
 
@@ -51,17 +50,17 @@
                         string bgColor = string.Empty;
                         switch (e)
                         {
-                            case FieldTrip:
+                            case FieldTripDTO:
                                 controller = "FieldTrips";
                                 image = "fieldtrip-banner.png";
                                 bgColor = "#4f78ff";
                                 break;
-                            case Meeting:
+                            case MeetingDTO:
                                 controller = "Meetings";
                                 image = "meeting-banner.png";
                                 bgColor = "#AD82D9";
                                 break;
-                            case Tournament:
+                            case TournamentDTO:
                                 controller = "Tournaments";
                                 image = "tournament-banner.png";
                                 bgColor = "#AD82D9";

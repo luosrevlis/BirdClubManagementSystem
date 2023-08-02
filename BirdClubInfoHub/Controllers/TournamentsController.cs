@@ -115,6 +115,7 @@ namespace BirdClubInfoHub.Controllers
             if (unpaidRegistrations >= 2)
             {
                 ViewBag.Status = "Limited";
+                return View(dto);
             }
 
             // normal

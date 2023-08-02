@@ -1,7 +1,8 @@
-﻿@model IEnumerable<TournamentStanding>
+﻿@model IEnumerable<TournamentStandingDTO>
 
 @{
     ViewData["Title"] = "Index";
+    int tournamentId = Context.Session.GetInt32("TOURNAMENT_ID") ?? 0;
 }
 
 @section Styles {
@@ -13,7 +14,7 @@
     <h2>Tournament rankings</h2>
 </section>
 <div class="option">
-    <a class="button action-button" asp-action="Create" asp-route-tournamentid="@ViewBag.TournamentId">
+    <a class="button action-button" asp-action="Create" asp-route-tournamentid="@tournamentId">
         <i class="fa-solid fa-circle-plus"></i>
         Add ranking information
     </a>
@@ -34,24 +35,7 @@
                 <tr>
                     <td>@item.Bird.Name</td>
                     <td>@item.Bird.User.Name</td>
-                    @switch (item.Placement)
-                    {
-                        case "1st":
-                            <td>First place</td>
-                            break;
-                        case "2nd":
-                            <td>Second place</td>
-                            break;
-                        case "3rd":
-                            <td>Third place</td>
-                            break;
-                        case "Participation":
-                            <td>Participation</td>
-                            break;
-                        default:
-                            <td></td>
-                            break;
-                    }
+                    <td>@TournamentPlacements.Convert(item.Placement)</td>
                     <td class="option">
                         <a class="button action-button" asp-action="Edit" asp-route-id="@item.Id">
                             <i class="fa-solid fa-pen-to-square"></i>
