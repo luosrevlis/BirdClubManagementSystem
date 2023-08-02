@@ -5,6 +5,7 @@
     <link rel="stylesheet" href="~/css/blog/blog.css" />
     <link rel="stylesheet" href="~/css/reset.css" />
     <link rel="stylesheet" href="~/css/list.css" />
+    <link rel="stylesheet" href="~/css/search-form.css" />
 }
 
 @{
@@ -13,7 +14,41 @@
 
 <section class="table-header">
     <h2>Blog list</h2>
+    @if (!string.IsNullOrEmpty(ViewBag.Keyword) || !string.IsNullOrEmpty(ViewBag.Status))
+    {
+        <h4>Search results</h4>
+    }
 </section>
+<div class="search-form">
+    <form method="get" asp-action="Index">
+        <div class="select">
+            <select name="status" data-selected="@ViewBag.Status" class="status-list">
+                <option value="">All</option>
+                <option value="@BlogStatuses.Accepted">
+                    @BlogStatuses.Convert(BlogStatuses.Accepted)
+                </option>
+                <option value="@BlogStatuses.Pending">
+                    @BlogStatuses.Convert(BlogStatuses.Pending)
+                </option>
+                <option value="@BlogStatuses.Rejected">
+                    @BlogStatuses.Convert(BlogStatuses.Rejected)
+                </option>
+            </select>
+        </div>
+
+        <div class="search-group">
+            <input name="keyword" type="text" placeholder="Search by title" value="@ViewBag.Keyword" />
+            <button class="search-button" type="submit">
+                <i class="fa-solid fa-magnifying-glass"></i>
+            </button>
+        </div>
+
+        <br />
+        <div class="pagination">
+            <p>Page <input name="page" value="@ViewBag.Page" /> of @ViewBag.MaxPage</p>
+        </div>
+    </form>
+</div>
 <div class="option">
     <a class="button action-button" asp-action="Create" asp-controller="Blogs">
         <i class="fa-solid fa-circle-plus"></i>
@@ -38,7 +73,7 @@
                     <td>@item.Title</td>
                     <td>@item.BlogCategory.Name</td>
                     <td>@item.DateCreated</td>
-                    <td>@item.Status</td>
+                    <td>@BlogStatuses.Convert(item.Status)</td>
                     <td class="option">
                         @if (item.Status == BlogStatuses.Accepted)
                         {

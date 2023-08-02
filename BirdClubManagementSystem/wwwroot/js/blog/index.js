@@ -51,3 +51,12 @@ function cancelReject() {
         })
     })
 }
+
+var statusList = document.querySelector(".status-list");
+var selected = statusList.getAttribute("data-selected");
+var options = statusList.getElementsByTagName("option");
+for (option of options) {
+    if (option.getAttribute("value") == selected) {
+        option.setAttribute("selected", "true");
+    }
+}
