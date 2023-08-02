@@ -24,27 +24,44 @@
                 </span>
             </div>
 
-            <div class="input-box date-field">
-                <label>Date and time of meeting</label>
-                <input asp-for="StartDate" placeholder="Enter date and time" required class="date" />
-                <span class="error date-error">
-                    <img src="~/img/resetpass/alert-circle.svg" alt="">
-                    <p class="error-text">Event cannot take place before registration is closed!</p>
-                </span>
-            </div>
+            <div class="column">
 
-            <div class="input-box description-field">
-                <label>Description</label>
-                <textarea id="meeting-description" name="Description">
-                    @Html.Raw(Model.Description)
-                </textarea>
+                <div class="input-box start-date-field">
+                    <label>Event start date</label>
+                    <input asp-for="StartDate" required class="start-date" />
+                </div>
+
+                <div class="input-box end-date-field">
+                    <label>Event expected end date</label>
+                    <input asp-for="ExpectedEndDate" required class="end-date" />
+                </div>
+
             </div>
 
             <div class="column">
 
-                <div class="input-box reg-date-field">
-                    <label>Registration close date</label>
-                    <input asp-for="RegCloseDate" placeholder="Enter close date" required class="reg-date" />
+                <div class="input-box reg-open-date-field">
+                    <label>Open registration date</label>
+                    <input asp-for="RegOpenDate" required class="reg-open-date" />
+                </div>
+
+                <div class="input-box reg-open-date-field">
+                    <label>Close registration date</label>
+                    <input asp-for="RegCloseDate" required class="reg-close-date" />
+                </div>
+
+            </div>
+
+            <div class="column">
+
+                <div class="input-box reg-limit-field">
+                    <label>Maximum number of participants</label>
+                    <input asp-for="RegLimit" placeholder="How many participants can join this event?" required class="reg-limit" type="number" />
+                    <!-- add error message here -->
+                    <span class="error reg-limit-error">
+                        <img src="~/img/resetpass/alert-circle.svg" alt="">
+                        <p class="error-text">Must be between 1 and 200.</p>
+                    </span>
                 </div>
 
                 <div class="input-box fee-field">
@@ -52,6 +69,18 @@
                     <input asp-for="Fee" value="0" disabled class="fee" />
                 </div>
 
+            </div>
+
+            <div class="input-box address-field">
+                <label>Address</label>
+                <input asp-for="Address" placeholder="At Club" class="address" />
+            </div>
+
+            <div class="input-box description-field">
+                <label>Description</label>
+                <textarea id="meeting-description" name="Description">
+                    @Html.Raw(Model.Description)
+                </textarea>
             </div>
 
             <input class="button" type="submit" value="Save" />
