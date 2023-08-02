@@ -1,4 +1,4 @@
-﻿@model IEnumerable<MeetingDTO>
+﻿@model IEnumerable<TournamentDTO>
 
 @section Styles {
     <link rel="stylesheet" href="~/css/event/event.css" />
@@ -7,18 +7,18 @@
 @{
     ViewData["Title"] = "Index";
 
-    var dateBlocks = new Dictionary<DateTime, IEnumerable<MeetingDTO>>();
+    var dateBlocks = new Dictionary<DateTime, IEnumerable<TournamentDTO>>();
     if (Model.Any())
     {
         DateTime currentDateTime = Model.First().StartDate.Date;
-        var clubEvents = Enumerable.Empty<MeetingDTO>();
+        var clubEvents = Enumerable.Empty<TournamentDTO>();
         foreach (var item in Model)
         {
             if (item.StartDate.Date != currentDateTime)
             {
                 dateBlocks.Add(currentDateTime, clubEvents);
                 currentDateTime = item.StartDate.Date;
-                clubEvents = Enumerable.Empty<MeetingDTO>();
+                clubEvents = Enumerable.Empty<TournamentDTO>();
             }
             clubEvents = clubEvents.Append(item);
         }
@@ -28,6 +28,10 @@
         }
     }
 }
+
+<p class="events-control">
+    <a class="control-button" asp-action="Create" asp-controller="Tournaments">New Tournament</a>
+</p>
 
 <section class="event-section">
     <h1>Events</h1>
@@ -47,9 +51,9 @@
 
                     @foreach (var e in dateBlock.Value)
                     {
-                        string image = "meeting-banner.png";
+                        string image = "tournament-banner.png";
                         string bgColor = "#AD82D9";
-
+                        
                         <a class="event-container" asp-action="Details" asp-route-id="@e.Id">
                             <div class="event-name" style="background-color: @bgColor;">
                                 <h2>@e.Name</h2>

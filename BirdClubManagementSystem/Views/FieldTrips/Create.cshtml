@@ -55,7 +55,7 @@
 
                 <div class="input-box reg-limit-field">
                     <label>Maximum number of participants</label>
-                    <input asp-for="RegLimit" placeholder="How many participants can join this event?" required class="reg-limit" type="number" />
+                    <input asp-for="RegLimit" placeholder="How many participants can join?" required class="reg-limit" type="number" />
                     <!-- add error message here -->
                     <span class="error reg-limit-error">
                         <img src="~/img/resetpass/alert-circle.svg" alt="">
@@ -77,14 +77,12 @@
 
             <div class="input-box address-field">
                 <label>Address</label>
-                <input asp-for="Address" placeholder="At Club" class="address" />
+                <input asp-for="Address" placeholder="e.g. At Club" class="address" />
             </div>
 
             <div class="input-box description-field">
                 <label>Description</label>
-                <textarea id="field-trip-description" name="Description">
-                    @Html.Raw(Model.Description)
-                </textarea>
+                <textarea id="field-trip-description" name="Description"></textarea>
             </div>
 
             <input class="button" type="submit" value="Create" />

@@ -1,5 +1,75 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
+﻿@model IEnumerable<FieldTripDTO>
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/event/event.css" />
 }
+
+@{
+    ViewData["Title"] = "Index";
+
+    var dateBlocks = new Dictionary<DateTime, IEnumerable<FieldTripDTO>>();
+    if (Model.Any())
+    {
+        DateTime currentDateTime = Model.First().StartDate.Date;
+        var clubEvents = Enumerable.Empty<FieldTripDTO>();
+        foreach (var item in Model)
+        {
+            if (item.StartDate.Date != currentDateTime)
+            {
+                dateBlocks.Add(currentDateTime, clubEvents);
+                currentDateTime = item.StartDate.Date;
+                clubEvents = Enumerable.Empty<FieldTripDTO>();
+            }
+            clubEvents = clubEvents.Append(item);
+        }
+        if (Model.Any())
+        {
+            dateBlocks.Add(currentDateTime, clubEvents);
+        }
+    }
+}
+
+<section class="event-section">
+    <h1>Events</h1>
+
+    @if (dateBlocks.Any())
+    {
+        <section class="events-container">
+            @foreach (var dateBlock in dateBlocks)
+            {
+                <div class="events-as-date-container">
+                    <div class="date-breakline-container">
+                        <div class="date">
+                            <h2>@dateBlock.Key.ToShortDateString()</h2>
+                        </div>
+                        <div class="breakline"></div>
+                    </div>
+
+                    @foreach (var e in dateBlock.Value)
+                    {
+                        string image = "fieldtrip-banner.png";
+                        string bgColor = "#4f78ff";
+                        
+                        <a class="event-container" asp-action="Details" asp-route-id="@e.Id">
+                            <div class="event-name" style="background-color: @bgColor;">
+                                <h2>@e.Name</h2>
+                            </div>
+
+                            <div class="bg-container">
+                                <img class="bg" src="~/img/events/@image" alt="bg" />
+                            </div>
+
+                            <div class="event-time" style="background-color: @bgColor;">
+                                <p>@e.StartDate.TimeOfDay</p>
+                            </div>
+                        </a>
+                    }
+                </div>
+            }
+        </section>
+    }
+    else
+    {
+        <h2>No events was found</h2>
+    }
+</section>
