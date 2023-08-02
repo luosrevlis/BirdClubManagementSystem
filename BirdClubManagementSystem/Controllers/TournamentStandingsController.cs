@@ -52,7 +52,7 @@ namespace BirdClubManagementSystem.Controllers
                 page = 1;
             }
 
-            List<TournamentStandingDTO> standings = _dbContext.TournamentStandings
+            List<TournamentStandingDTO> standings = matches
                 .OrderBy(ts => ts.Placement)
                 .Skip((page - 1) * PageSize)
                 .Take(PageSize)
