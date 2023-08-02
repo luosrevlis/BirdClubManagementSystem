@@ -2,24 +2,47 @@
 
 @{
     ViewData["Title"] = "Index";
+    int tournamentId = Context.Session.GetInt32("TOURNAMENT_ID") ?? 0;
 }
 
 @section Styles {
     <link rel="stylesheet" href="~/css/reset.css" />
     <link rel="stylesheet" href="~/css/list.css" />
+    <link rel="stylesheet" href="~/css/search-form.css" />
     <link rel="stylesheet" href="~/css/event-registration/index.css" />
 }
 
 <section class="table-header">
     <h2>Participants list</h2>
+    @if (!string.IsNullOrEmpty(ViewBag.Keyword))
+    {
+        <h4>Search results</h4>
+    }
 </section>
+<div class="search-form">
+    <form method="get" asp-action="Index">
+        <input type="hidden" name="tournamentId" value="@tournamentId" />
+
+        <div class="search-group">
+            <input name="keyword" type="text" placeholder="Search by user or bird" value="@ViewBag.Keyword" />
+            <button class="search-button" type="submit">
+                <i class="fa-solid fa-magnifying-glass"></i>
+            </button>
+        </div>
+
+        <br />
+        <div class="pagination">
+            <p>Page <input name="page" value="@ViewBag.Page" /> of @ViewBag.MaxPage</p>
+        </div>
+    </form>
+</div>
 <div class="sticky-table">
     <table>
         <thead>
             <tr>
-                <th>User</th>
                 <th>Bird</th>
-                <th>Tournament</th>
+                <th>User</th>
+                <th>Email</th>
                 <th>Payment status</th>
                 <th>Options</th>
             </tr>
@@ -28,9 +51,9 @@
             @foreach (var item in Model)
             {
                 <tr>
-                    <td>@item.Bird.User.Name</td>
                     <td>@item.Bird.Name</td>
-                    <td>@item.Tournament.Name</td>
+                    <td>@item.Bird.User.Name</td>
+                    <td>@item.Bird.User.Email</td>
                     @if (item.PaymentReceived)
                     {
                         <td>Received</td>
