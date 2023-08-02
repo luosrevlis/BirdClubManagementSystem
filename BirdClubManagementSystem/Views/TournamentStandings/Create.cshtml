@@ -31,10 +31,18 @@
                     <div class="select-box">
                         <select asp-for="Placement">
                             <option value="" hidden>Choose a ranking</option>
-                            <option value="1St">First Place</option>
-                            <option value="2ND">Second Place</option>
-                            <option value="3RD">Third Place</option>
-                            <option value="PAR">Participation</option>
+                            <option value=@TournamentPlacements.FirstPlace>
+                                @TournamentPlacements.Convert(TournamentPlacements.FirstPlace)
+                            </option>
+                            <option value=@TournamentPlacements.SecondPlace>
+                                @TournamentPlacements.Convert(TournamentPlacements.SecondPlace)
+                            </option>
+                            <option value=@TournamentPlacements.ThirdPlace>
+                                @TournamentPlacements.Convert(TournamentPlacements.ThirdPlace)
+                            </option>
+                            <option value=@TournamentPlacements.Participation>
+                                @TournamentPlacements.Convert(TournamentPlacements.Participation)
+                            </option>
                         </select>
                     </div>
                 </div>

@@ -51,9 +51,9 @@
                     <div class="select-box">
                         <select asp-for="Role" class="form-control">
                             <option value="" hidden>Choose a role</option>
-                            <option value="ADM">Admin</option>
-                            <option value="STF">Staff</option>
-                            <option value="MEM">Member</option>
+                            <option value=@UserRoles.Admin>@UserRoles.Convert(UserRoles.Admin)</option>
+                            <option value=@UserRoles.Staff>@UserRoles.Convert(UserRoles.Staff)</option>
+                            <option value=@UserRoles.Member>@UserRoles.Convert(UserRoles.Member)</option>
                         </select>
                     </div>
                 </div>

@@ -44,7 +44,7 @@
                 <button class="button register-button" type="submit" asp-action="Register" asp-controller="TournamentRegistrations">
                     Register and pay entrance fee online with VNPay
                 </button>
-                @if (ViewBag.Status =="Available")
+                @if (ViewBag.Status == "Available")
                 {
                     <button class="button register-no-pay-button" type="submit" asp-action="RegisterNoPay" asp-controller="TournamentRegistrations">
                         Register now, pay later
