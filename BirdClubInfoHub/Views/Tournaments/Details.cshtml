@@ -54,7 +54,7 @@
     </div>
 }
 
-@if (Model.Status == "Ended")
+@if (Model.Status == EventStatuses.Ended)
 {
     <div class="navtab">
         <button class="btn navtab-btn" id="1">Highlights</button>
@@ -76,7 +76,7 @@
                     @* add search here *@
                     <div class="input-group">
                         <input type="search" placeholder="Search something...">
-                        <img src="./img/event/search_icon.svg" alt="">
+                        <img src="~/img/events/search_icon.svg" alt="">
                     </div>
                     @* add select-menu *@
                     <div class="select-menu">
