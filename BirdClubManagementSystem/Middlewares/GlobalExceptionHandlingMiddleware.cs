@@ -25,6 +25,7 @@ namespace BirdClubManagementSystem.Middlewares
             {
                 _logger.LogError(e, e.Message);
                 context.Response.StatusCode = (int) HttpStatusCode.InternalServerError;
+                context.Response.Redirect("/Home/Error");
             }
         }
     }
