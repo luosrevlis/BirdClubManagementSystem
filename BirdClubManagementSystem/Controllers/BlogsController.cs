@@ -104,8 +104,13 @@ namespace BirdClubManagementSystem.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create(BlogDTO dto, IFormFile thumbnailFile)
         {
+            User? user = _dbContext.Users.Find(HttpContext.Session.GetInt32("USER_ID"));
+            if (user == null)
+            {
+                return RedirectToAction("Index", "Login");
+            }
             Blog blog = _mapper.Map<Blog>(dto);
-            blog.User = _dbContext.Users.Find(dto.User.Id)!;
+            blog.User = user;
             blog.BlogCategory = _dbContext.BlogCategories.Find(dto.BlogCategory.Id)!;
             if (thumbnailFile != null)
             {
