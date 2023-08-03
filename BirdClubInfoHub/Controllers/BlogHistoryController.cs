@@ -23,7 +23,7 @@ namespace BirdClubInfoHub.Controllers
             _mapper = mapper;
         }
 
-        public IActionResult Index(int page = 1, string keyword = "", int categoryId = 0)
+        public IActionResult Index(int page = 1, string keyword = "", string status = "")
         {
             int? userId = HttpContext.Session.GetInt32("USER_ID");
             if (userId == null)
@@ -37,9 +37,9 @@ namespace BirdClubInfoHub.Controllers
             {
                 matches = matches.Where(blog => blog.Title.ToLower().Contains(keyword.ToLower()));
             }
-            if (categoryId != 0)
+            if (!string.IsNullOrEmpty(status))
             {
-                matches = matches.Where(blog => blog.BlogCategoryId == categoryId);
+                matches = matches.Where(blog => blog.Status == status);
             }
 
             int maxPage = (int)Math.Ceiling(matches.Count() / (double)PageSize);
@@ -62,7 +62,7 @@ namespace BirdClubInfoHub.Controllers
 
             ViewBag.Page = page;
             ViewBag.Keyword = keyword;
-            ViewBag.CategoryId = categoryId;
+            ViewBag.Status = status;
             ViewBag.MaxPage = maxPage;
             return View(createdBlogs);
         }

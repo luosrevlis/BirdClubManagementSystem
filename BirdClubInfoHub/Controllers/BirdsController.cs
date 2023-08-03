@@ -5,7 +5,6 @@ using BirdClubInfoHub.Models.DTOs;
 using BirdClubInfoHub.Models.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
 
 namespace BirdClubInfoHub.Controllers
 {
@@ -195,8 +194,10 @@ namespace BirdClubInfoHub.Controllers
             return RedirectToAction("Index");
         }
 
-        public ActionResult ViewAchievements(int id)
+        public ActionResult ViewAchievements(int id, int page = 1, string keyword = "", string placement = "")
         {
+            HttpContext.Session.SetInt32("BIRD_ID", id);
+            
             int? userId = HttpContext.Session.GetInt32("USER_ID");
             Bird? bird = _dbContext.Birds.Find(id);
             if (bird == null || bird.UserId != userId)
@@ -205,12 +206,40 @@ namespace BirdClubInfoHub.Controllers
                 TempData.Add("error", "");
                 return RedirectToAction("Index");
             }
-            List<TournamentStandingDTO> tournamentStandings =
-                _dbContext.TournamentStandings
+
+            IQueryable<TournamentStanding> matches = _dbContext.TournamentStandings
                 .Where(ts => ts.BirdId == id)
-                .Include(ts => ts.Tournament)
+                .Include(ts => ts.Tournament);
+            if (!string.IsNullOrEmpty(keyword))
+            {
+                matches = matches.Where(ts => ts.Tournament.Name.ToLower().Contains(keyword.ToLower()));
+            }
+            if (!string.IsNullOrEmpty(placement))
+            {
+                matches = matches.Where(ts => ts.Placement == placement);
+            }
+
+            int maxPage = (int)Math.Ceiling(matches.Count() / (double)PageSize);
+            if (page > maxPage)
+            {
+                page = maxPage;
+            }
+            if (page < 1)
+            {
+                page = 1;
+            }
+
+            List<TournamentStandingDTO> tournamentStandings = matches
+                .OrderByDescending(ts => ts.Tournament.StartDate)
+                .Skip((page - 1) * PageSize)
+                .Take(PageSize)
                 .Select(ts => _mapper.Map<TournamentStandingDTO>(ts))
                 .ToList();
+
+            ViewBag.Page = page;
+            ViewBag.Keyword = keyword;
+            ViewBag.Placement = placement;
+            ViewBag.MaxPage = maxPage;
             return View(tournamentStandings);
         }
     }

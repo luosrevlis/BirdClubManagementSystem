@@ -18,6 +18,12 @@
         <h4>Search results</h4>
     }
 </section>
+<div class="option">
+    <a class="button action-button" asp-action="Create" asp-route-tournamentid="@tournamentId">
+        <i class="fa-solid fa-circle-plus"></i>
+        Add ranking information
+    </a>
+</div>
 <div class="search-form">
     <form method="get" asp-action="Index">
         <input type="hidden" name="tournamentId" value="@tournamentId" />
@@ -51,12 +57,6 @@
             <p>Page <input name="page" value="@ViewBag.Page" /> of @ViewBag.MaxPage</p>
         </div>
     </form>
-</div>
-<div class="option">
-    <a class="button action-button" asp-action="Create" asp-route-tournamentid="@tournamentId">
-        <i class="fa-solid fa-circle-plus"></i>
-        Add ranking information
-    </a>
 </div>
 <div class="sticky-table">
     <table>

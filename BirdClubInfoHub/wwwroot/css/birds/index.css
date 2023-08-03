@@ -184,6 +184,18 @@ body {
     width: 100%;
 }
 
+.search-form {
+    width: 40%;
+}
+
+.search-form .search-group {
+    width: 100%;
+}
+
+.search-form .pagination p {
+    color: #fff;
+}
+
 @media screen and (max-width: 767px) {
     .bird-main{
         display: flex;
