@@ -1,5 +1,7 @@
-﻿using BirdClubInfoHub.Data;
+﻿using AutoMapper;
+using BirdClubInfoHub.Data;
 using BirdClubInfoHub.Filters;
+using BirdClubInfoHub.Models.DTOs;
 using BirdClubInfoHub.Models.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -10,13 +12,17 @@ namespace BirdClubInfoHub.Controllers
     public class MeetingRegistrationsController : Controller
     {
         private readonly BcmsDbContext _dbContext;
+        private readonly IMapper _mapper;
+        private const int PageSize = 10;
 
-        public MeetingRegistrationsController(BcmsDbContext dbContext)
+        public MeetingRegistrationsController
+            (BcmsDbContext dbContext, IMapper mapper)
         {
             _dbContext = dbContext;
+            _mapper = mapper;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(int page = 1, string keyword = "")
         {
             int? userId = HttpContext.Session.GetInt32("USER_ID");
             User? user = _dbContext.Users.Find(userId);
@@ -24,12 +30,36 @@ namespace BirdClubInfoHub.Controllers
             {
                 return RedirectToAction("Index", "Login");
             }
-            List<MeetingRegistration> registrations = _dbContext.MeetingRegistrations
+
+            IQueryable<MeetingRegistration> matches = _dbContext.MeetingRegistrations
                 .Where(mr => mr.UserId == userId)
-                .Include(mr => mr.User)
-                .Include(mr => mr.Meeting)
+                .Include(mr => mr.Meeting);
+            if (!string.IsNullOrEmpty(keyword))
+            {
+                matches = matches.Where(mr => mr.Meeting.Name.ToLower().Contains(keyword.ToLower()));
+            }
+
+            int maxPage = (int)Math.Ceiling(matches.Count() / (double)PageSize);
+            if (page > maxPage)
+            {
+                page = maxPage;
+            }
+            if (page < 1)
+            {
+                page = 1;
+            }
+
+            List<MeetingRegistrationDTO> registrations = matches
+                .OrderByDescending(mr => mr.DateCreated)
+                .Skip((page - 1) * PageSize)
+                .Take(PageSize)
+                .Select(mr => _mapper.Map<MeetingRegistrationDTO>(mr))
                 .ToList();
-            registrations.RemoveAll(mr => mr.Meeting.Status != "Open" && mr.Meeting.Status != "Registration Closed");
+            //registrations.RemoveAll(mr => mr.Meeting.Status != "Open" && mr.Meeting.Status != "Registration Closed");
+
+            ViewBag.Page = page;
+            ViewBag.Keyword = keyword;
+            ViewBag.MaxPage = maxPage;
             return View(registrations);
         }
 
@@ -48,6 +78,13 @@ namespace BirdClubInfoHub.Controllers
                 TempData.Add("error", "");
                 return RedirectToAction("Index", "ClubEvents");
             }
+            int regCount = _dbContext.MeetingRegistrations.Where(mr => mr.MeetingId == id).Count();
+            if (regCount >= meeting.RegLimit)
+            {
+                TempData.Add("notification", "This event has reached maximum participants!");
+                TempData.Add("error", "");
+                return RedirectToAction("Details", "Meetings", new { id });
+            }
             MeetingRegistration registration = new()
             {
                 User = user,
@@ -58,7 +95,7 @@ namespace BirdClubInfoHub.Controllers
 
             TempData.Add("notification", "Registration success!");
             TempData.Add("success", "");
-            return RedirectToAction("Details", "Meetings", new { id = meeting.Id });
+            return RedirectToAction("Index");
         }
 
         [HttpPost]

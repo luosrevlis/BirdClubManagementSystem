@@ -1,17 +1,57 @@
-﻿@model Bird
+﻿@model IEnumerable<TournamentStandingDTO>
 
 @{
     ViewData["Title"] = "Index";
+    int birdId = Context.Session.GetInt32("BIRD_ID") ?? 0;
 }
 
 @section Styles {
     <link rel="stylesheet" href="~/css/reset.css" />
     <link rel="stylesheet" href="~/css/list.css" />
+    <link rel="stylesheet" href="~/css/search-form.css" />
 }
 
 <section class="table-header">
-    <h2>@Model.Name's tournament rankings</h2>
+    <h2>Tournament rankings</h2>
+    @if (!string.IsNullOrEmpty(ViewBag.Keyword) || !string.IsNullOrEmpty(ViewBag.Placement))
+    {
+        <h4>Search results</h4>
+    }
 </section>
+<div class="search-form">
+    <form method="get" asp-action="Index">
+        <input type="hidden" name="id" value="@birdId" />
+        <div class="select">
+            <select name="placement" data-selected="@ViewBag.Placement" class="placement-list">
+                <option value="">All</option>
+                <option value="@TournamentPlacements.FirstPlace">
+                    @TournamentPlacements.Convert(TournamentPlacements.FirstPlace)
+                </option>
+                <option value="@TournamentPlacements.SecondPlace">
+                    @TournamentPlacements.Convert(TournamentPlacements.SecondPlace)
+                </option>
+                <option value="@TournamentPlacements.ThirdPlace">
+                    @TournamentPlacements.Convert(TournamentPlacements.ThirdPlace)
+                </option>
+                <option value="@TournamentPlacements.Participation">
+                    @TournamentPlacements.Convert(TournamentPlacements.Participation)
+                </option>
+            </select>
+        </div>
+
+        <div class="search-group">
+            <input name="keyword" type="text" placeholder="Search by tournament name" value="@ViewBag.Keyword" />
+            <button class="search-button" type="submit">
+                <i class="fa-solid fa-magnifying-glass"></i>
+            </button>
+        </div>
+
+        <br />
+        <div class="pagination">
+            <p>Page <input name="page" value="@ViewBag.Page" /> of @ViewBag.MaxPage</p>
+        </div>
+    </form>
+</div>
 <div class="sticky-table">
     <table>
         <thead>
@@ -22,31 +62,18 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var item in Model.TournamentStandings)
+            @foreach (var item in Model)
             {
                 <tr>
                     <td>@item.Tournament.Name</td>
                     <td>@item.Tournament.StartDate</td>
-                    @switch (item.Placement)
-                    {
-                        case "1st":
-                            <td>First place</td>
-                            break;
-                        case "2nd":
-                            <td>Second place</td>
-                            break;
-                        case "3rd":
-                            <td>Third place</td>
-                            break;
-                        case "Participation":
-                            <td>Participation</td>
-                            break;
-                        default:
-                            <td></td>
-                            break;
-                    }
+                    <td>@TournamentPlacements.Convert(item.Placement)</td>
                 </tr>
             }
         </tbody>
     </table>
 </div>
+
+@section Scripts {
+    <script src="~/js/birds/view-achievements.js"></script>
+}

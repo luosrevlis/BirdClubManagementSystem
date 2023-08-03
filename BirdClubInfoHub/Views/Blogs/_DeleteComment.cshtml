@@ -1,4 +1,4 @@
-﻿@model Comment
+﻿@model CommentDTO
 
 <div class="delete-comment-container" data-comment-delete-id="@Model.Id">
     <form class="delete-comment-form" asp-controller="Blogs" asp-action="DeleteComment">
@@ -9,6 +9,6 @@
             <button class="cancel-button" type="button" onclick="cancelDelete(@Model.Id)">Cancel</button>
         </div>
 
-        <input type="hidden" asp-for="Id" value="@Model.Id" />
+        <input type="hidden" asp-for="Id" />
     </form>
 </div>

@@ -1,5 +1,6 @@
 using BirdClubManagementSystem.BatchJobs;
 using BirdClubManagementSystem.Data;
+using BirdClubManagementSystem.Middlewares;
 using Coravel;
 using Microsoft.EntityFrameworkCore;
 using System.Net.Mail;
@@ -22,6 +23,7 @@ builder.Services.AddFluentEmail(config.GetSection("Mail")["Sender"], config.GetS
         Port = 25
     });
 builder.Services.AddSession();
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 var app = builder.Build();
 
@@ -42,6 +44,8 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthorization();
+
+//app.UseMiddleware<GlobalExceptionHandlingMiddleware>();
 
 app.MapControllerRoute(
     name: "default",

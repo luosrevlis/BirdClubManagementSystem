@@ -59,7 +59,7 @@
                             </a>
                             <hr />
 
-                            @if (userRole == "Admin")
+                            @if (userRole == UserRoles.Admin)
                             {
                                 <a asp-action="Index" asp-controller="UserManagement" class="sub-menu-link">
                                     <img src="~/img/icon_svg/profile.svg" alt="icon">

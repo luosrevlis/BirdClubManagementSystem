@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using BirdClubManagementSystem.Data;
 using BirdClubManagementSystem.Filters;
+using BirdClubManagementSystem.Models.DTOs;
 using BirdClubManagementSystem.Models.Entities;
+using BirdClubManagementSystem.Models.Statuses;
 using FluentEmail.Core;
 using Microsoft.AspNetCore.Mvc;
 using System.Text;
@@ -15,8 +17,13 @@ namespace BirdClubManagementSystem.Controllers
         private readonly IMapper _mapper;
         private readonly IConfiguration _configuration;
         private readonly IFluentEmailFactory _emailFactory;
+        private const int PageSize = 10;
 
-        public MembershipRequestsController(BcmsDbContext dbContext, IMapper mapper, IConfiguration configuration, IFluentEmailFactory emailFactory)
+        public MembershipRequestsController(
+            BcmsDbContext dbContext,
+            IMapper mapper,
+            IConfiguration configuration,
+            IFluentEmailFactory emailFactory)
         {
             _dbContext = dbContext;
             _mapper = mapper;
@@ -24,15 +31,41 @@ namespace BirdClubManagementSystem.Controllers
             _emailFactory = emailFactory;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(int page = 1, string keyword = "", string status = "")
         {
-            List<MembershipRequest> requests = _dbContext.MembershipRequests.ToList();
-            return View(requests);
-        }
+            IQueryable<MembershipRequest> matches = _dbContext.MembershipRequests;
+            if (!string.IsNullOrEmpty(keyword))
+            {
+                matches = matches
+                    .Where(mr => mr.Name.ToLower().Contains(keyword.ToLower())
+                    || mr.Email.ToLower().Contains(keyword.ToLower()));
+            }
+            if (!string.IsNullOrEmpty(status))
+            {
+                matches = matches.Where(mr => mr.Status == status);
+            }
 
-        public IActionResult ViewPending()
-        {
-            List<MembershipRequest> requests = _dbContext.MembershipRequests.Where(request => request.Status == "Pending").ToList();
+            int maxPage = (int)Math.Ceiling(matches.Count() / (double)PageSize);
+            if (page > maxPage)
+            {
+                page = maxPage;
+            }
+            if (page < 1)
+            {
+                page = 1;
+            }
+
+            List<MembershipRequestDTO> requests = matches
+                .OrderByDescending(mr => mr.Id)
+                .Skip((page - 1) * PageSize)
+                .Take(PageSize)
+                .Select(mr => _mapper.Map<MembershipRequestDTO>(mr))
+                .ToList();
+
+            ViewBag.Page = page;
+            ViewBag.Keyword = keyword;
+            ViewBag.Status = status;
+            ViewBag.MaxPage = maxPage;
             return View(requests);
         }
 
@@ -47,7 +80,7 @@ namespace BirdClubManagementSystem.Controllers
                 TempData.Add("error", "");
                 return RedirectToAction("Index");
             }
-            request.Status = "Accepted";
+            request.Status = MemRequestStatuses.Accepted;
             _dbContext.MembershipRequests.Update(request);
             _dbContext.SaveChanges();
 
@@ -80,7 +113,7 @@ namespace BirdClubManagementSystem.Controllers
                 TempData.Add("error", "");
                 return RedirectToAction("Index");
             }
-            request.Status = "Rejected";
+            request.Status = MemRequestStatuses.Rejected;
             _dbContext.MembershipRequests.Update(request);
             _dbContext.SaveChanges();
 

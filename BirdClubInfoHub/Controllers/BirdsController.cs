@@ -1,19 +1,23 @@
-﻿using BirdClubInfoHub.Data;
+﻿using AutoMapper;
+using BirdClubInfoHub.Data;
 using BirdClubInfoHub.Filters;
+using BirdClubInfoHub.Models.DTOs;
 using BirdClubInfoHub.Models.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
 
 namespace BirdClubInfoHub.Controllers
 {
     public class BirdsController : Controller
     {
         private readonly BcmsDbContext _dbContext;
+        private readonly IMapper _mapper;
+        private const int PageSize = 10;
 
-        public BirdsController(BcmsDbContext dbContext)
+        public BirdsController(BcmsDbContext dbContext, IMapper mapper)
         {
             _dbContext = dbContext;
+            _mapper = mapper;
         }
 
         public ActionResult GetImageFromBytes(int id)
@@ -24,7 +28,7 @@ namespace BirdClubInfoHub.Controllers
                 return NotFound();
             }
             //if bytearray is empty return default
-            if (bird.ProfilePicture.Length == 0)
+            if (bird.ProfilePicture == null || bird.ProfilePicture.Length == 0)
             {
                 return File("/img/placeholder/bird.png", "image/png");
             }
@@ -33,10 +37,37 @@ namespace BirdClubInfoHub.Controllers
 
         // GET: BirdsController
         [Authenticated]
-        public ActionResult Index()
+        public ActionResult Index(int page = 1, string keyword = "")
         {
             int? userId = HttpContext.Session.GetInt32("USER_ID");
-            List<Bird> birds = _dbContext.Birds.Where(bird => bird.UserId == userId).ToList();
+
+            IQueryable<Bird> matches = _dbContext.Birds
+                .Where(bird => bird.UserId == userId);
+            if (!string.IsNullOrEmpty(keyword))
+            {
+                matches = matches.Where(bird => bird.Name.ToLower().Contains(keyword.ToLower()));
+            }
+
+            int maxPage = (int)Math.Ceiling(matches.Count() / (double)PageSize);
+            if (page > maxPage)
+            {
+                page = maxPage;
+            }
+            if (page < 1)
+            {
+                page = 1;
+            }
+
+            List<BirdDTO> birds = matches
+                .OrderBy(bird => bird.Name)
+                .Skip((page - 1) * PageSize)
+                .Take(PageSize)
+                .Select(bird => _mapper.Map<BirdDTO>(bird))
+                .ToList();
+
+            ViewBag.Page = page;
+            ViewBag.Keyword = keyword;
+            ViewBag.MaxPage = maxPage;
             return View(birds);
         }
 
@@ -51,7 +82,7 @@ namespace BirdClubInfoHub.Controllers
                 TempData.Add("error", "");
                 return RedirectToAction("Index");
             }
-            return View(bird);
+            return View(_mapper.Map<BirdDTO>(bird));
         }
 
         // GET: BirdsController/Create
@@ -64,7 +95,7 @@ namespace BirdClubInfoHub.Controllers
         // POST: BirdsController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Bird bird, IFormFile profilePicture)
+        public ActionResult Create(BirdDTO dto, IFormFile profilePicture)
         {
             int? userId = HttpContext.Session.GetInt32("USER_ID");
             User? user = _dbContext.Users.Find(userId);
@@ -72,12 +103,14 @@ namespace BirdClubInfoHub.Controllers
             {
                 return RedirectToAction("Index", "Login");
             }
+
+            Bird bird = _mapper.Map<Bird>(dto);
             bird.User = user;
-            if (bird.Species.IsNullOrEmpty())
+            if (string.IsNullOrEmpty(bird.Species))
             {
                 bird.Species = "Unknown";
             }
-            if (bird.Description.IsNullOrEmpty())
+            if (string.IsNullOrEmpty(bird.Description))
             {
                 bird.Description = "No description";
             }
@@ -107,32 +140,32 @@ namespace BirdClubInfoHub.Controllers
                 TempData.Add("error", "");
                 return RedirectToAction("Index");
             }
-            return View(bird);
+            return View(_mapper.Map<BirdDTO>(bird));
         }
 
         // POST: BirdsController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(Bird bird, IFormFile profilePicture)
+        public ActionResult Edit(BirdDTO dto, IFormFile profilePicture)
         {
             int? userId =  HttpContext.Session.GetInt32("USER_ID");
-            Bird? birdInDb = _dbContext.Birds.Find(bird.Id);
-            if (birdInDb == null || birdInDb.UserId != userId)
+            Bird? bird = _dbContext.Birds.Find(dto.Id);
+            if (bird == null || bird.UserId != userId)
             {
                 TempData.Add("notification", "Bird not found!");
                 TempData.Add("error", "");
                 return RedirectToAction("Index");
             }
-            birdInDb.Name = bird.Name;
-            birdInDb.Species = bird.Species.IsNullOrEmpty() ? "Unknown" : bird.Species;
-            birdInDb.Description = bird.Description.IsNullOrEmpty() ? "No description" : bird.Description;
+            bird.Name = dto.Name;
+            bird.Species = string.IsNullOrEmpty(dto.Species) ? "Unknown" : dto.Species;
+            bird.Description = string.IsNullOrEmpty(dto.Description) ? "No description" : dto.Description;
             if (profilePicture != null)
             {
                 using MemoryStream memoryStream = new();
                 profilePicture.CopyTo(memoryStream);
-                birdInDb.ProfilePicture = memoryStream.ToArray();
+                bird.ProfilePicture = memoryStream.ToArray();
             }
-            _dbContext.Birds.Update(birdInDb);
+            _dbContext.Birds.Update(bird);
             _dbContext.SaveChanges();
 
             TempData.Add("notification", "Bird updated!");
@@ -161,8 +194,10 @@ namespace BirdClubInfoHub.Controllers
             return RedirectToAction("Index");
         }
 
-        public ActionResult ViewAchievements(int id)
+        public ActionResult ViewAchievements(int id, int page = 1, string keyword = "", string placement = "")
         {
+            HttpContext.Session.SetInt32("BIRD_ID", id);
+            
             int? userId = HttpContext.Session.GetInt32("USER_ID");
             Bird? bird = _dbContext.Birds.Find(id);
             if (bird == null || bird.UserId != userId)
@@ -171,11 +206,41 @@ namespace BirdClubInfoHub.Controllers
                 TempData.Add("error", "");
                 return RedirectToAction("Index");
             }
-            bird.TournamentStandings = _dbContext.TournamentStandings
+
+            IQueryable<TournamentStanding> matches = _dbContext.TournamentStandings
                 .Where(ts => ts.BirdId == id)
-                .Include(ts => ts.Tournament)
+                .Include(ts => ts.Tournament);
+            if (!string.IsNullOrEmpty(keyword))
+            {
+                matches = matches.Where(ts => ts.Tournament.Name.ToLower().Contains(keyword.ToLower()));
+            }
+            if (!string.IsNullOrEmpty(placement))
+            {
+                matches = matches.Where(ts => ts.Placement == placement);
+            }
+
+            int maxPage = (int)Math.Ceiling(matches.Count() / (double)PageSize);
+            if (page > maxPage)
+            {
+                page = maxPage;
+            }
+            if (page < 1)
+            {
+                page = 1;
+            }
+
+            List<TournamentStandingDTO> tournamentStandings = matches
+                .OrderByDescending(ts => ts.Tournament.StartDate)
+                .Skip((page - 1) * PageSize)
+                .Take(PageSize)
+                .Select(ts => _mapper.Map<TournamentStandingDTO>(ts))
                 .ToList();
-            return View(bird);
+
+            ViewBag.Page = page;
+            ViewBag.Keyword = keyword;
+            ViewBag.Placement = placement;
+            ViewBag.MaxPage = maxPage;
+            return View(tournamentStandings);
         }
     }
 }

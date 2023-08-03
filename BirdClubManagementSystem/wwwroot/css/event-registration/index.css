@@ -9,6 +9,7 @@
     display: none;
     justify-content: center;
     align-items: center;
+    z-index: 5;
 }
 
 .toggle-form {
@@ -27,5 +28,13 @@
 }
 
 .toggle-control .button {
+    width: 100%;
+}
+
+.search-form {
+    width: 40%;
+}
+
+.search-group {
     width: 100%;
 }

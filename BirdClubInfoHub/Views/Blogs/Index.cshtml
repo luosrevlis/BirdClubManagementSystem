@@ -1,17 +1,13 @@
-﻿@model IEnumerable<Blog>
+﻿@model IEnumerable<BlogDTO>
 
 @section Styles
 {
     <link rel="stylesheet" href="~/css/blog/blog.css" />
 }
 
-@if (ViewBag.SearchKey != null)
+@if (!string.IsNullOrEmpty(ViewBag.Keyword) || ViewBag.CategoryId != 0)
 {
-    <h1>Showing search results for "@ViewBag.SearchKey"</h1>
-}
-@if (ViewBag.Category != null)
-{
-    <h1>Showing blogs of category "@ViewBag.Category"</h1>
+    <h1>Search results</h1>
 }
 <section class="blogs-section">
     <div class="blogs-container">
@@ -26,7 +22,7 @@
                     <div class="blog-info-container">
                         <div class="blog-author-info-container">
                             <div class="blog-author-ava-container">
-                                <img class="blog-author-ava" src="@Url.Action("GetImageFromBytes", "Profile", new { id = item.UserId })" alt="author" />
+                                <img class="blog-author-ava" src="@Url.Action("GetImageFromBytes", "Profile", new { id = item.User.Id })" alt="author" />
                             </div>
 
                             <p class="blog-author-name">By @item.User.Name</p>
@@ -47,23 +43,23 @@
 
     <div class="blog-utils-container">
         <a class="create-blog-button" asp-controller="Blogs" asp-action="Create">Create Blog</a>
-        <div class="search-blogs-container">
-            <h2>Search</h2>
-            <form asp-action="Search" class="search-box-container">
-                <input name="keyword" class="search-box" type="text" placeholder="Search..." />
+        <div class="search-form">
+            <form method="get" asp-action="Index">
+                <div class="select">
+                    <select name="categoryId" data-selected="@ViewBag.CategoryId" class="category-list" asp-items="@ViewBag.CategoryOptions">
+                        <option value="">All</option>
+                    </select>
+                </div>
+
+                <div class="search-group">
+                    <input name="keyword" type="text" placeholder="Search by title" value="@ViewBag.Keyword" />
+                </div>
+
+                <div class="pagination">
+                    Page <input name="page" value="@ViewBag.Page" /> of @ViewBag.MaxPage
+                </div>
                 <button class="search-button" type="submit">
                     <i class="fa-solid fa-magnifying-glass"></i>
-                </button>
-            </form>
-        </div>
-        <div class="filter-blogs-container">
-            <h2>Filter</h2>
-            <form asp-action="Filter" class="filter-box-container">
-                <select name="blogCategoryId" class="filter-select" asp-items="ViewBag.CategoryOptions">
-                    <option value="" hidden>Choose a category</option>
-                </select>
-                <button class="filter-button" type="submit">
-                    <i class="fa-solid fa-filter"></i>
                 </button>
             </form>
         </div>
@@ -72,14 +68,19 @@
 
             @foreach (var item in ViewBag.NewBlogs)
             {
+                string title = item.Title.Length > 20 ? item.Title.Remove(20) + "..." : item.Title;
                 <a class="latest-blog" asp-action="Details" asp-route-id="@item.Id">
                     <div class="latest-blog-thumbnail-container">
                         <img class="latest-blog-thumbnail" src="@Url.Action("GetImageFromBytes", "Blogs", new { id = item.Id })" alt="thumbnail" />
                     </div>
 
-                    <div class="latest-blog-title">@item.Title</div>
+                    <div class="latest-blog-title">@title</div>
                 </a>
             }
         </div>
     </div>
 </section>
+
+@section Scripts {
+    <script src="~/js/blog/index.js"></script>
+}

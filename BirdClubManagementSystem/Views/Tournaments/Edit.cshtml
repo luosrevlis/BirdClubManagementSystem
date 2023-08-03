@@ -1,7 +1,10 @@
-﻿@model Tournament
+﻿@model TournamentDTO
 
 @{
     ViewData["Title"] = "Edit";
+    string lowerBound = DateTime.Now.ToString("yyyy-MM-ddThh:mm");
+    string upperBound = DateTime.Now.AddYears(1).ToString("yyyy-MM-ddThh:mm");
+    string regOpenLowerBound = DateTime.Now.AddMonths(-4).ToString("yyyy-MM-ddThh:mm");
 }
 
 @section Styles {
@@ -20,17 +23,81 @@
                 <!-- add error message here -->
                 <span class="error name-error">
                     <img src="~/img/resetpass/alert-circle.svg" alt="">
-                    <p class="error-text">Tournament name cannot be empty.</p>
+                    <p class="error-text">Name must have 0 - 255 characters.</p>
                 </span>
             </div>
 
-            <div class="input-box date-field">
-                <label>Date and time of tournament</label>
-                <input asp-for="StartDate" placeholder="Enter date and time" required class="date" />                                        
-                <span class="error date-error">
-                    <img src="~/img/resetpass/alert-circle.svg" alt="">
-                    <p class="error-text">Event cannot take place before registration is closed!</p>
-                </span>
+            <div class="column">
+
+                <div class="input-box start-date-field">
+                    <label>Event start date</label>
+                    <input asp-for="StartDate" min="@lowerBound" max="@upperBound" required class="start-date" />
+                    <span class="error date-error">
+                        <img src="~/img/resetpass/alert-circle.svg" alt="">
+                        <p class="error-text"></p>
+                    </span>
+                </div>
+
+                <div class="input-box end-date-field">
+                    <label>Event expected end date</label>
+                    <input asp-for="ExpectedEndDate" min="@lowerBound" max="@upperBound" required class="end-date" />
+                    <span class="error date-error">
+                        <img src="~/img/resetpass/alert-circle.svg" alt="">
+                        <p class="error-text"></p>
+                    </span>
+                </div>
+
+            </div>
+
+            <div class="column">
+
+                <div class="input-box reg-open-date-field">
+                    <label>Open registration date</label>
+                    <input asp-for="RegOpenDate" min="@regOpenLowerBound" max="@upperBound" required class="reg-open-date" />
+                    <span class="error date-error">
+                        <img src="~/img/resetpass/alert-circle.svg" alt="">
+                        <p class="error-text"></p>
+                    </span>
+                </div>
+
+                <div class="input-box reg-close-date-field">
+                    <label>Close registration date</label>
+                    <input asp-for="RegCloseDate" min="@lowerBound" max="@upperBound" required class="reg-close-date" />
+                    <span class="error date-error">
+                        <img src="~/img/resetpass/alert-circle.svg" alt="">
+                        <p class="error-text"></p>
+                    </span>
+                </div>
+
+            </div>
+
+            <div class="column">
+
+                <div class="input-box reg-limit-field">
+                    <label>Maximum number of participants</label>
+                    <input asp-for="RegLimit" placeholder="How many participants can join?" required class="reg-limit" type="number" />
+                    <!-- add error message here -->
+                    <span class="error reg-limit-error">
+                        <img src="~/img/resetpass/alert-circle.svg" alt="">
+                        <p class="error-text">Must be between 1 and 200.</p>
+                    </span>
+                </div>
+
+                <div class="input-box fee-field">
+                    <label>Entrance fee</label>
+                    <input asp-for="Fee" placeholder="Enter entrance fee" required class="fee" type="number" />
+                    <!-- add error message here -->
+                    <span class="error fee-error">
+                        <img src="~/img/resetpass/alert-circle.svg" alt="">
+                        <p class="error-text">Fee must be between 1 and 100,000,000.</p>
+                    </span>
+                </div>
+
+            </div>
+
+            <div class="input-box address-field">
+                <label>Address</label>
+                <input asp-for="Address" placeholder="e.g. At Club" class="address" />
             </div>
 
             <div class="input-box description-field">
@@ -38,25 +105,6 @@
                 <textarea id="tournament-description" name="Description">
                     @Html.Raw(Model.Description)
                 </textarea>
-            </div>
-
-            <div class="column">
-
-                <div class="input-box reg-date-field">
-                    <label>Registration close date</label>
-                    <input asp-for="RegCloseDate" placeholder="Enter close date" required class="reg-date" />
-                </div>
-
-                <div class="input-box fee-field">
-                    <label>Entrance fee</label>
-                    <input asp-for="Fee" placeholder="Enter entrance fee" required class="fee" />
-                    <!-- add error message here -->
-                    <span class="error fee-error">
-                        <img src="~/img/resetpass/alert-circle.svg" alt="">
-                        <p class="error-text">Fee cannot be empty.</p>
-                    </span>
-                </div>
-
             </div>
 
             <input class="button" type="submit" value="Save" />

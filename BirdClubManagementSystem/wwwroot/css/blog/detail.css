@@ -147,7 +147,7 @@
     color: #fff;
 }
 
-.search-blogs-container,
+.search-form,
 .latest-blogs-container {
     width: 100%;
     margin-top: 2rem;
@@ -155,16 +155,38 @@
     padding: 1rem;
 }
 
-.search-box-container {
-    margin-top: 1rem;
-}
-
-.search-box {
+.category-list,
+.search-group input {
     width: 100%;
     font-size: 1rem;
+    margin: 0.25rem 0;
     padding: 0.5rem;
     border-radius: 0.5rem;
     border: 0.1rem solid #888682;
+    box-sizing: border-box;
+}
+
+.pagination {
+    font-size: 1rem;
+    display: inline-block;
+    width: 77%;
+}
+
+    .pagination input {
+        background-color: #fff;
+        width: 30px;
+        font-size: 1rem;
+        border-radius: .25rem;
+        text-align: center;
+    }
+
+.search-button {
+    width: 20%;
+    background-color: #b8d9d0;
+    font-size: 1rem;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    border: 0.1rem solid #b8d9d0;
     box-sizing: border-box;
 }
 
@@ -221,6 +243,7 @@
     display: none;
     justify-content: center;
     align-items: center;
+    z-index: 5;
 }
 
 .delete-form,
@@ -240,13 +263,8 @@
         flex-flow: column-reverse nowrap;
     }
 
-    .blog-comment-container,
     .blog-utils-container {
         width: 100%;
-    }
-
-    .blog-comment-container {
-        margin-top: 2rem;
     }
 
     .create-blog-button {
@@ -261,36 +279,15 @@
         width: fit-content;
         display: flex;
     }
+
+    .select,
+    .search-group {
+        width: 48.5%;
+        display: inline-flex;
+    }
 }
 
 @media screen and (max-width: 768px) {
-    .comment-body {
-        flex-flow: column nowrap;
-    }
-
-    .comment-body > * {
-        margin: 0;
-    }
-
-    .comment-content-container {
-        width: 100%;
-    }
-
-    .comment-author-ava-container {
-        width: 3rem;
-        height: 3rem;
-    }
-
-    .comment-info-container {
-        flex-flow: column nowrap;
-        align-items: flex-start;
-    }
-
-    .edit-comment-container {
-        width: 100%;
-        margin-top: 1rem;
-    }
-
     .blog-info-container {
         flex-flow: column nowrap;
         align-items: flex-start;

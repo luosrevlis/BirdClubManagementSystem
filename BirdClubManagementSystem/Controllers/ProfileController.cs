@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BirdClubManagementSystem.Data;
 using BirdClubManagementSystem.Filters;
+using BirdClubManagementSystem.Models.DTOs;
 using BirdClubManagementSystem.Models.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -27,7 +28,7 @@ namespace BirdClubManagementSystem.Controllers
                 return NotFound();
             }
             //if image is empty return default
-            if (user.ProfilePicture.Length == 0)
+            if (user.ProfilePicture == null || user.ProfilePicture.Length == 0)
             {
                 return File("/img/placeholder/user.jpg", "image/png");
             }
@@ -43,7 +44,7 @@ namespace BirdClubManagementSystem.Controllers
             {
                 return RedirectToAction("Index", "Login");
             }
-            return View(user);
+            return View(_mapper.Map<UserDTO>(user));
         }
 
         // GET: ProfileController/Edit/5
@@ -55,23 +56,23 @@ namespace BirdClubManagementSystem.Controllers
             {
                 return RedirectToAction("Index", "Login");
             }
-            return View(user);
+            return View(_mapper.Map<UserDTO>(user));
         }
 
         // POST: ProfileController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(User user)
+        public ActionResult Edit(UserDTO dto)
         {
-            User? userInDb = _dbContext.Users.Find(user.Id);
-            if (userInDb == null)
+            User? user = _dbContext.Users.Find(dto.Id);
+            if (user == null)
             {
                 return RedirectToAction("Index", "Login");
             }
-            userInDb.Name = user.Name;
-            userInDb.Address = user.Address;
-            userInDb.Phone = user.Phone;
-            _dbContext.Users.Update(userInDb);
+            user.Name = dto.Name;
+            user.Address = dto.Address;
+            user.Phone = dto.Phone;
+            _dbContext.Users.Update(user);
             _dbContext.SaveChanges();
 
             TempData.Add("notification", "Profile updated!");
@@ -88,7 +89,7 @@ namespace BirdClubManagementSystem.Controllers
             {
                 return RedirectToAction("Index", "Login");
             }
-            return View(user);
+            return View(_mapper.Map<UserDTO>(user));
         }
 
         // POST: ProfileController/ChangeProfilePicture/5
@@ -99,7 +100,7 @@ namespace BirdClubManagementSystem.Controllers
             User? user = _dbContext.Users.Find(id);
             if (user == null)
             {
-                return NotFound();
+                return RedirectToAction("Index", "Login");
             }
             using (MemoryStream memoryStream = new())
             {
@@ -118,9 +119,9 @@ namespace BirdClubManagementSystem.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult ChangePassword(IFormCollection formCollection)
         {
-            string oldPassword = formCollection["OldPassword"]!;
-            string newPassword = formCollection["NewPassword"]!;
-            string confirmPassword = formCollection["ConfirmPassword"]!;
+            string oldPassword = formCollection["OldPassword"].ToString();
+            string newPassword = formCollection["NewPassword"].ToString();
+            string confirmPassword = formCollection["ConfirmPassword"].ToString();
             User? user = _dbContext.Users.Find(HttpContext.Session.GetInt32("USER_ID"));
             if (user == null)
             {

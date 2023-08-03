@@ -1,6 +1,5 @@
-using AutoMapper;
 using BirdClubInfoHub.Data;
-using BirdClubInfoHub.Mappings;
+using BirdClubInfoHub.Middlewares;
 using BirdClubInfoHub.Services;
 using Microsoft.EntityFrameworkCore;
 using System.Net.Mail;
@@ -37,27 +36,18 @@ if (!app.Environment.IsDevelopment())
 
 //app.UseStatusCodePagesWithRedirects("/StatusCodeError/{0}");
 
-try
-{
-    app.UseHttpsRedirection();
-    app.UseSession();
-    app.UseStaticFiles();
+app.UseHttpsRedirection();
+app.UseSession();
+app.UseStaticFiles();
 
-    app.UseRouting();
+app.UseRouting();
 
-    app.UseAuthorization();
+app.UseAuthorization();
 
-    app.MapControllerRoute(
-        name: "default",
-        pattern: "{controller=Home}/{action=Index}/{id?}");
+//app.UseMiddleware<GlobalExceptionHandlingMiddleware>();
 
-    app.Run();
-}
-catch
-{
-    // TO-DO: implement error page
-}
-finally
-{
-    // TO-DO: implement error page
-}
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Home}/{action=Index}/{id?}");
+
+app.Run();

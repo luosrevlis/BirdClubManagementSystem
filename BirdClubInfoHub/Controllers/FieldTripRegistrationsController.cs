@@ -1,5 +1,7 @@
-﻿using BirdClubInfoHub.Data;
+﻿using AutoMapper;
+using BirdClubInfoHub.Data;
 using BirdClubInfoHub.Filters;
+using BirdClubInfoHub.Models.DTOs;
 using BirdClubInfoHub.Models.Entities;
 using BirdClubInfoHub.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -12,14 +14,18 @@ namespace BirdClubInfoHub.Controllers
     {
         private readonly BcmsDbContext _dbContext;
         private readonly IVnPayService _vnPayService;
+        private readonly IMapper _mapper;
+        private const int PageSize = 10;
 
-        public FieldTripRegistrationsController(BcmsDbContext dbContext, IVnPayService vnPayService)
+        public FieldTripRegistrationsController
+            (BcmsDbContext dbContext, IVnPayService vnPayService, IMapper mapper)
         {
             _dbContext = dbContext;
             _vnPayService = vnPayService;
+            _mapper = mapper;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(int page = 1, string keyword = "")
         {
             int? userId = HttpContext.Session.GetInt32("USER_ID");
             User? user = _dbContext.Users.Find(userId);
@@ -27,12 +33,36 @@ namespace BirdClubInfoHub.Controllers
             {
                 return RedirectToAction("Index", "Login");
             }
-            List<FieldTripRegistration> registrations = _dbContext.FieldTripRegistrations
+
+            IQueryable<FieldTripRegistration> matches = _dbContext.FieldTripRegistrations
                 .Where(ftr => ftr.UserId == userId)
-                .Include(ftr => ftr.User)
-                .Include(ftr => ftr.FieldTrip)
+                .Include(ftr => ftr.FieldTrip);
+            if (!string.IsNullOrEmpty(keyword))
+            {
+                matches = matches.Where(ftr => ftr.FieldTrip.Name.ToLower().Contains(keyword.ToLower()));
+            }
+
+            int maxPage = (int)Math.Ceiling(matches.Count() / (double)PageSize);
+            if (page > maxPage)
+            {
+                page = maxPage;
+            }
+            if (page < 1)
+            {
+                page = 1;
+            }
+
+            List<FieldTripRegistrationDTO> registrations = matches
+                .OrderByDescending(ftr => ftr.DateCreated)
+                .Skip((page - 1) * PageSize)
+                .Take(PageSize)
+                .Select(ftr => _mapper.Map<FieldTripRegistrationDTO>(ftr))
                 .ToList();
-            registrations.RemoveAll(ftr => ftr.FieldTrip.Status != "Open" && ftr.FieldTrip.Status != "Registration Closed");
+            //registrations.RemoveAll(ftr => ftr.Status != "Open" && ftr.FieldTrip.Status != "Registration Closed");
+
+            ViewBag.Page = page;
+            ViewBag.Keyword = keyword;
+            ViewBag.MaxPage = maxPage;
             return View(registrations);
         }
 
@@ -50,6 +80,13 @@ namespace BirdClubInfoHub.Controllers
                 TempData.Add("notification", "Field trip not found!");
                 TempData.Add("error", "");
                 return RedirectToAction("Index", "ClubEvents");
+            }
+            int regCount = _dbContext.FieldTripRegistrations.Where(ftr => ftr.FieldTripId == id).Count();
+            if (regCount >= fieldTrip.RegLimit)
+            {
+                TempData.Add("notification", "This event has reached maximum participants!");
+                TempData.Add("error", "");
+                return RedirectToAction("Details", "FieldTrips", new { id });
             }
             FieldTripRegistration registration = new()
             {
@@ -112,15 +149,15 @@ namespace BirdClubInfoHub.Controllers
             FieldTripRegistration? registration = _dbContext.FieldTripRegistrations.Find(id);
             if (registration == null)
             {
-                TempData.Add("notification", "Error");
-                TempData.Add("error", "It seems like something went wrong. Please re-register.");
-                return RedirectToAction("Index", "ClubEvents");
+                TempData.Add("notification", "Registration not found!");
+                TempData.Add("error", "");
+                return RedirectToAction("Index");
             }
             if (!model.Success || model.VnPayResponseCode != "00")
             {
                 TempData.Add("notification", "Payment failed!");
                 TempData.Add("error", "Please reattempt the payment process.");
-                return RedirectToAction("Details", "FieldTrips", new { id = registration.FieldTripId });
+                return RedirectToAction("Index");
             }
             registration.PaymentReceived = true;
             _dbContext.FieldTripRegistrations.Update(registration);

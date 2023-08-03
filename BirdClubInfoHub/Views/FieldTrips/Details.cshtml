@@ -1,4 +1,4 @@
-﻿@model FieldTrip
+﻿@model FieldTripDTO
 
 @section Styles
 {
@@ -15,6 +15,10 @@
     @if (ViewBag.Status == "Unauth")
     {
         <a class="button login-button" asp-action="Index" asp-controller="Login">Login to register</a>
+    }
+    @if (ViewBag.Status == "NoSlots")
+    {
+        <button class="button disabled-button" type="button" disabled>This event has reached maximum participants!</button>
     }
     @if (ViewBag.Status == "Registered")
     {
@@ -50,9 +54,9 @@
     </div>
 }
 
-@if (Model.Status == "Ended")
+@if (Model.Status == EventStatuses.Ended)
 {
-    <div class="navtab ">
+    <div class="navtab">
         <button class="btn navtab-btn" id="1">Highlights</button>
     </div>
     <div class="ranking-container">

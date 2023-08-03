@@ -1,4 +1,4 @@
-﻿@model IClubEvent
+﻿@model TournamentDTO
 
 @section Styles
 {
@@ -9,21 +9,52 @@
     ViewData["Title"] = "Details";
 }
 
-@await Html.PartialAsync("~/Views/ClubEvents/_EventDetail.cshtml", Model)
-
-<div>
-    <a class="button participants-list-button" asp-action="Index" asp-controller="TournamentRegistrations" asp-route-tournamentid="@Model.Id">
-        <i class="fa-solid fa-dove"></i>
-        View participants list
+<div class="event-detail-header-links">
+    <a class="button back-button" asp-controller="ClubEvents" asp-action="Index">
+        <i class="fa-solid fa-backward"></i>
+        Club events
     </a>
-    @if (Model.Status == "Ended")
-    {
-        <a class="button rankings-button" asp-action="Index" asp-controller="TournamentStandings" asp-route-tournamentid="@Model.Id">
-            <i class="fa-solid fa-trophy"></i>
-            View rankings
-        </a>
-    }
+    <div class="dropdown-event-actions">
+        <button class="button dropdown-button" onclick="showDropdown()">
+            <i class="fa-solid fa-bars"></i>
+            Options
+        </button>
+        <div id="dropdown-content" class="dropdown-content">
+            <a class="button dropdown-content-button" asp-controller="TournamentRegistrations" asp-action="Index" asp-route-tournamentid="@Model.Id">
+                <i class="fa-solid fa-dove"></i>
+                View participants list
+            </a>
+            @if (Model.Status == EventStatuses.Ended)
+            {
+                <a class="button dropdown-content-button" asp-controller="TournamentStandings" asp-action="Index" asp-route-tournamentid="@Model.Id">
+                    <i class="fa-solid fa-trophy"></i>
+                    View rankings
+                </a>
+            }
+            <a class="button dropdown-content-button" asp-action="Edit" asp-route-id="@Model.Id">
+                <i class="fa-solid fa-pen-to-square"></i>
+                Edit
+            </a>
+            <a class="button dropdown-content-button" onclick="initStatus()">
+                <i class="fa-solid fa-pen-to-square"></i>
+                Update status
+            </a>
+            @if (Model.Status == EventStatuses.Ended)
+            {
+                <a class="button dropdown-content-button" asp-action="EditHighlights" asp-route-id="@Model.Id">
+                    <i class="fa-solid fa-pen-to-square"></i>
+                    Edit highlights
+                </a>
+            }
+            <a class="button dropdown-content-button" onclick="initDelete()">
+                <i class="fa-solid fa-trash"></i>
+                Delete
+            </a>
+        </div>
+    </div>
 </div>
+
+@await Html.PartialAsync("~/Views/ClubEvents/_EventDetail.cshtml", Model)
 
 @section Scripts {
     <script src="~/js/event/detail.js"></script>

@@ -10,7 +10,7 @@ namespace BirdClubInfoHub.Filters
             string? role = context.HttpContext.Session.GetString("USER_ROLE");
             if (role == null)
             {
-                context.Result = new RedirectToRouteResult(new RouteValueDictionary(new { controller = "Login", action="Index" }));
+                context.Result = new RedirectToRouteResult(new RouteValueDictionary(new { controller = "Login", action = "Index" }));
             }
             base.OnActionExecuting(context);
         }

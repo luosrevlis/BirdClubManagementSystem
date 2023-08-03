@@ -1,7 +1,7 @@
-﻿@model IEnumerable<MembershipRequest>
+﻿@model IEnumerable<MembershipRequestDTO>
 
 @{
-    ViewData["Title"] = "Full List";
+    ViewData["Title"] = "Membership Requests";
 }
 
 
@@ -9,16 +9,48 @@
     <link rel="stylesheet" href="~/css/reset.css" />
     <link rel="stylesheet" href="~/css/list.css" />
     <link rel="stylesheet" href="~/css/membership-request/index.css" />
+    <link rel="stylesheet" href="~/css/search-form.css" />
 }
 
 <section class="table-header">
     <h2>Membership requests</h2>
-    <h4>Full list</h4>
+    @if (!string.IsNullOrEmpty(ViewBag.Keyword) || !string.IsNullOrEmpty(ViewBag.Status))
+    {
+        <h4>Search results</h4>
+    }
 </section>
-<div class="option">
-    <a class="button action-button" asp-action="ViewPending">
-        View pending list
-    </a>
+<div class="search-form">
+    <form method="get" asp-action="Index">
+        <div class="select">
+            <select name="status" data-selected="@ViewBag.Status" class="status-list">
+                <option value="">All</option>
+                <option value="@MemRequestStatuses.PaymentReceived">
+                    @MemRequestStatuses.Convert(MemRequestStatuses.PaymentReceived)
+                </option>
+                <option value="@MemRequestStatuses.Accepted">
+                    @MemRequestStatuses.Convert(MemRequestStatuses.Accepted)
+                </option>
+                <option value="@MemRequestStatuses.Pending">
+                    @MemRequestStatuses.Convert(MemRequestStatuses.Pending)
+                </option>
+                <option value="@MemRequestStatuses.Rejected">
+                    @MemRequestStatuses.Convert(MemRequestStatuses.Rejected)
+                </option>
+            </select>
+        </div>
+
+        <div class="search-group">
+            <input name="keyword" type="text" placeholder="Search by name or email" value="@ViewBag.Keyword" />
+            <button class="search-button" type="submit">
+                <i class="fa-solid fa-magnifying-glass"></i>
+            </button>
+        </div>
+        
+        <br />
+        <div class="pagination">
+            <p>Page <input name="page" value="@ViewBag.Page" /> of @ViewBag.MaxPage</p>
+        </div>
+    </form>
 </div>
 <div class="sticky-table">
     <table>
@@ -40,9 +72,9 @@
                     <td>@item.Address</td>
                     <td>@item.PhoneNumber</td>
                     <td>@item.Email</td>
-                    <td>@item.Status</td>
+                    <td>@MemRequestStatuses.Convert(item.Status)</td>
                     <td class="option">
-                        @if (item.Status == "Pending")
+                        @if (item.Status == MemRequestStatuses.Pending)
                         {
                             <a class="button confirm-button" onclick="initAccept(@item.Id)">
                                 <i class="fa-solid fa-check"></i>

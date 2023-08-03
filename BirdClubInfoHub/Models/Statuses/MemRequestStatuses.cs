@@ -7,7 +7,7 @@
         public const string Rejected = "REJ";
         public const string PaymentReceived = "REC";
 
-        public static string Convert(String code)
+        public static string Convert(string code)
         {
             return code switch
             {

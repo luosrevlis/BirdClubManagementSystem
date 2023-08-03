@@ -2,6 +2,10 @@
     width: 80%;
 }
 
+    .event-section .search-form {
+        width: 100%;
+    }
+
 .events-container {
     width: 100%;
     display: flex;

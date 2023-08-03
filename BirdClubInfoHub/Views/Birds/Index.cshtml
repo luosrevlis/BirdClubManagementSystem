@@ -1,10 +1,11 @@
-@model IEnumerable<Bird>
+@model IEnumerable<BirdDTO>
 
 @{
     ViewData["Title"] = "Your Birds";
 }
 
 @section Styles {
+    <link rel="stylesheet" href="~/css/search-form.css" />
     <link rel="stylesheet" href="~/css/birds/index.css" />
 }
 
@@ -16,6 +17,22 @@
 </div>
 
 <hr style="border: 1px solid #9e6b55;">
+
+<div class="search-form">
+    <form method="get" asp-action="Index">
+        <div class="search-group">
+            <input name="keyword" type="text" placeholder="Search by name" value="@ViewBag.Keyword" />
+            <button class="search-button" type="submit">
+                <i class="fa-solid fa-magnifying-glass"></i>
+            </button>
+        </div>
+
+        <br />
+        <div class="pagination">
+            <p>Page <input name="page" value="@ViewBag.Page" /> of @ViewBag.MaxPage</p>
+        </div>
+    </form>
+</div>
 
 <section class="bird-main">
     @foreach (var item in Model)

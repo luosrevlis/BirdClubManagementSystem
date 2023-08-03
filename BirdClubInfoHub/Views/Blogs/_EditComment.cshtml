@@ -1,9 +1,9 @@
-﻿@model Comment
+﻿@model CommentDTO
 
 <form class="edit-comment-container" data-comment-edit-id="@Model.Id" asp-controller="Blogs" asp-action="EditComment" method="post">
-    <input type="hidden" asp-for="Id" value="@Model.Id" />
-    <input type="hidden" asp-for="UserId" value="@Model.UserId" />
-    <input type="hidden" asp-for="BlogId" value="@Model.BlogId" />
+    <input type="hidden" asp-for="Id" />
+    <input type="hidden" asp-for="User.Id" />
+    <input type="hidden" asp-for="Blog.Id" />
     <textarea class="edit-comment-box" asp-for="Contents" rows="5">@Model.Contents</textarea>
 
     <div class="edit-control-container">

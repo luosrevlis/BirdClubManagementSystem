@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BirdClubManagementSystem.Data;
 using BirdClubManagementSystem.Filters;
+using BirdClubManagementSystem.Models.DTOs;
 using BirdClubManagementSystem.Models.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -12,6 +13,7 @@ namespace BirdClubManagementSystem.Controllers
     {
         private readonly BcmsDbContext _dbContext;
         private readonly IMapper _mapper;
+        private const int PageSize = 10;
 
         public FeedbacksController(BcmsDbContext dbContext, IMapper mapper)
         {
@@ -19,11 +21,35 @@ namespace BirdClubManagementSystem.Controllers
             _mapper = mapper;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(int page = 1, string keyword = "")
         {
-            List<Feedback> feedbacks = _dbContext.Feedbacks
+            IQueryable<Feedback> matches = _dbContext.Feedbacks;
+            if (!string.IsNullOrEmpty(keyword))
+            {
+                matches = matches.Where(feedback => feedback.Title.ToLower().Contains(keyword.ToLower()));
+            }
+
+            int maxPage = (int)Math.Ceiling(matches.Count() / (double)PageSize);
+            if (page > maxPage)
+            {
+                page = maxPage;
+            }
+            if (page < 1)
+            {
+                page = 1;
+            }
+
+            List<FeedbackDTO> feedbacks = matches
+                .OrderByDescending(feedback => feedback.Id)
+                .Skip((page - 1) * PageSize)
+                .Take(PageSize)
                 .Include(feedback => feedback.User)
+                .Select(feedback => _mapper.Map<FeedbackDTO>(feedback))
                 .ToList();
+
+            ViewBag.Page = page;
+            ViewBag.Keyword = keyword;
+            ViewBag.MaxPage = maxPage;
             return View(feedbacks);
         }
 
@@ -36,7 +62,7 @@ namespace BirdClubManagementSystem.Controllers
                 TempData.Add("error", "");
                 return RedirectToAction("Index");
             }
-            return View(feedback);
+            return View(_mapper.Map<FeedbackDTO>(feedback));
         }
 
         [HttpPost]

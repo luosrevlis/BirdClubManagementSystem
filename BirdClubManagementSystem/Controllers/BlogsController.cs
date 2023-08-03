@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using BirdClubManagementSystem.Data;
 using BirdClubManagementSystem.Filters;
+using BirdClubManagementSystem.Models.DTOs;
 using BirdClubManagementSystem.Models.Entities;
+using BirdClubManagementSystem.Models.Statuses;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -13,6 +15,7 @@ namespace BirdClubManagementSystem.Controllers
     {
         private readonly BcmsDbContext _dbContext;
         private readonly IMapper _mapper;
+        private const int PageSize = 10;
 
         public BlogsController(BcmsDbContext dbContext, IMapper mapper)
         {
@@ -28,20 +31,48 @@ namespace BirdClubManagementSystem.Controllers
                 return NotFound();
             }
             // if thumbnail is empty return default thumbnail
-            if (blog.Thumbnail.Length == 0)
+            if (blog.Thumbnail == null || blog.Thumbnail.Length == 0)
             {
                 return File("/img/placeholder/blog.png", "image/png");
             }
             return File(blog.Thumbnail, "image/png");
         }
 
-        public IActionResult Index()
+        public IActionResult Index(int page = 1, string keyword = "", string status = "")
         {
-            List<Blog> blogs = _dbContext.Blogs
+            IQueryable<Blog> matches = _dbContext.Blogs;
+            if (!string.IsNullOrEmpty(keyword))
+            {
+                matches = matches.Where(blog => blog.Title.ToLower().Contains(keyword.ToLower()));
+            }
+            if (!string.IsNullOrEmpty(status))
+            {
+                matches = matches.Where(blog => blog.Status == status);
+            }
+
+            int maxPage = (int)Math.Ceiling(matches.Count() / (double)PageSize);
+            if (page > maxPage)
+            {
+                page = maxPage;
+            }
+            if (page < 1)
+            {
+                page = 1;
+            }
+
+            List<BlogDTO> blogs = matches
+                .OrderByDescending(blog => blog.DateCreated)
+                .Skip((page - 1) * PageSize)
+                .Take(PageSize)
                 .Include(blog => blog.User)
                 .Include(blog => blog.BlogCategory)
-                .OrderByDescending(blog => blog.DateCreated)
+                .Select(blog => _mapper.Map<BlogDTO>(blog))
                 .ToList();
+
+            ViewBag.Page = page;
+            ViewBag.Keyword = keyword;
+            ViewBag.Status = status;
+            ViewBag.MaxPage = maxPage;
             return View(blogs);
         }
 
@@ -56,34 +87,38 @@ namespace BirdClubManagementSystem.Controllers
             }
             blog.User = _dbContext.Users.Find(blog.UserId)!;
             blog.BlogCategory = _dbContext.BlogCategories.Find(blog.BlogCategoryId)!;
-            return View(blog);
+            return View(_mapper.Map<BlogDTO>(blog));
         }
 
         public IActionResult Create()
         {
-            int? userId = HttpContext.Session.GetInt32("USER_ID");
-            SelectList categoryOptions = new(_dbContext.BlogCategories, nameof(BlogCategory.Id), nameof(BlogCategory.Name));
+            SelectList categoryOptions = new(
+                _dbContext.BlogCategories,
+                nameof(BlogCategory.Id),
+                nameof(BlogCategory.Name));
             ViewBag.CategoryOptions = categoryOptions;
-            return View(new Blog() { UserId = (int)userId! });
+            return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(Blog blog, IFormFile thumbnailFile)
+        public IActionResult Create(BlogDTO dto, IFormFile thumbnailFile)
         {
-            blog.User = _dbContext.Users.Find(blog.UserId)!;
-            if (blog.BlogCategoryId == 0)
+            User? user = _dbContext.Users.Find(HttpContext.Session.GetInt32("USER_ID"));
+            if (user == null)
             {
-                blog.BlogCategoryId = 7;
+                return RedirectToAction("Index", "Login");
             }
-            blog.BlogCategory = _dbContext.BlogCategories.Find(blog.BlogCategoryId)!;
+            Blog blog = _mapper.Map<Blog>(dto);
+            blog.User = user;
+            blog.BlogCategory = _dbContext.BlogCategories.Find(dto.BlogCategory.Id)!;
             if (thumbnailFile != null)
             {
                 using MemoryStream memoryStream = new();
                 thumbnailFile.CopyTo(memoryStream);
                 blog.Thumbnail = memoryStream.ToArray();
             }
-            blog.Status = "Accepted";
+            blog.Status = BlogStatuses.Accepted;
             _dbContext.Blogs.Add(blog);
             _dbContext.SaveChanges();
 
@@ -116,13 +151,13 @@ namespace BirdClubManagementSystem.Controllers
         public IActionResult Accept(int id)
         {
             Blog? blog = _dbContext.Blogs.Find(id);
-            if (blog == null || blog.Status != "Pending")
+            if (blog == null || blog.Status != BlogStatuses.Pending)
             {
                 TempData.Add("notification", "Blog not found!");
                 TempData.Add("error", "");
                 return RedirectToAction("Index");
             }
-            blog.Status = "Accepted";
+            blog.Status = BlogStatuses.Accepted;
             _dbContext.Blogs.Update(blog);
             _dbContext.SaveChanges();
 
@@ -136,13 +171,13 @@ namespace BirdClubManagementSystem.Controllers
         public IActionResult Reject(int id)
         {
             Blog? blog = _dbContext.Blogs.Find(id);
-            if (blog == null || blog.Status != "Pending")
+            if (blog == null || blog.Status != BlogStatuses.Pending)
             {
                 TempData.Add("notification", "Blog not found!");
                 TempData.Add("error", "");
                 return RedirectToAction("Index");
             }
-            blog.Status = "Rejected";
+            blog.Status = BlogStatuses.Rejected;
             _dbContext.Blogs.Update(blog);
             _dbContext.SaveChanges();
 

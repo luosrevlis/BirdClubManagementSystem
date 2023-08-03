@@ -1,4 +1,4 @@
-﻿@model User
+﻿@model UserDTO
 
 @{
     ViewData["Title"] = "Edit";
@@ -12,6 +12,7 @@
     <section class="container-template">
         <h2>Edit profile</h2>
         <form asp-action="Edit" class="form" onsubmit="return validateAll()">
+            <input type="hidden" asp-for="Id" />
 
             <div class="input-box fullname-field">
                 <label>Fullname</label>
@@ -33,17 +34,14 @@
                 </span>
             </div>
 
-            <div class="column">
-
-                <div class="input-box phonenumber-field">
-                    <label>Phone number</label>
-                    <input asp-for="Phone" placeholder="Enter phone number" required class="phonenumber" type="number" />
-                    <!-- add error message here -->
-                    <span class="error phonenumber-error">
-                        <img src="~/img/resetpass/alert-circle.svg" alt="">
-                        <p class="error-text">Please enter a valid phone number.</p>
-                    </span>
-                </div>
+            <div class="input-box phonenumber-field">
+                <label>Phone number</label>
+                <input asp-for="Phone" placeholder="Enter phone number" required class="phonenumber" type="number" />
+                <!-- add error message here -->
+                <span class="error phonenumber-error">
+                    <img src="~/img/resetpass/alert-circle.svg" alt="">
+                    <p class="error-text">Please enter a valid phone number.</p>
+                </span>
             </div>
 
             <input class="button" type="submit" value="Save" />

@@ -2,6 +2,7 @@
 using BirdClubManagementSystem.Data;
 using BirdClubManagementSystem.Filters;
 using BirdClubManagementSystem.Models.Entities;
+using BirdClubManagementSystem.Models.Statuses;
 using FluentEmail.Core;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -35,7 +36,7 @@ namespace BirdClubManagementSystem.Controllers
         public IActionResult SendNotification(Notification notification)
         {
             List<User> users = _dbContext.Users.ToList();
-            if (!notification.IsRoleSelected["Custom"])
+            if (!notification.IsRoleSelected[UserRoles.Custom])
             {
                 notification.Recipients.Clear();
             }

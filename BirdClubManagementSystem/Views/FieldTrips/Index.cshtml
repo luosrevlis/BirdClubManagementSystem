@@ -1,0 +1,136 @@
+﻿@model IEnumerable<FieldTripDTO>
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/search-form.css" />
+    <link rel="stylesheet" href="~/css/event/event.css" />
+}
+
+@{
+    ViewData["Title"] = "Index";
+
+    var dateBlocks = new Dictionary<DateTime, IEnumerable<FieldTripDTO>>();
+    if (Model.Any())
+    {
+        DateTime currentDateTime = Model.First().StartDate.Date;
+        var clubEvents = Enumerable.Empty<FieldTripDTO>();
+        foreach (var item in Model)
+        {
+            if (item.StartDate.Date != currentDateTime)
+            {
+                dateBlocks.Add(currentDateTime, clubEvents);
+                currentDateTime = item.StartDate.Date;
+                clubEvents = Enumerable.Empty<FieldTripDTO>();
+            }
+            clubEvents = clubEvents.Append(item);
+        }
+        if (Model.Any())
+        {
+            dateBlocks.Add(currentDateTime, clubEvents);
+        }
+    }
+
+    var monthString = ViewBag.Month.ToString("yyyy-MM");
+}
+
+<p class="events-control">
+    <a class="control-button" asp-action="Create" asp-controller="FieldTrips">New Field Trip</a>
+</p>
+
+<section class="event-section">
+    <h1>Field trips</h1>
+
+    <div class="search-form">
+        <form id="search-form" method="get" asp-action="Index">
+            <div class="select">
+                <select class="event-type-list" onchange="updateController()">
+                    <option value="ClubEvents" selected>All Event Types</option>
+                    <option value="FieldTrips">Field Trips</option>
+                    <option value="Meetings">Meetings</option>
+                    <option value="Tournaments">Tournaments</option>
+                </select>
+            </div>
+
+            <div class="search-group">
+                <input name="month" type="month" value="@monthString" />
+            </div>
+
+            <div class="select">
+                <select name="status" data-selected="@ViewBag.Status" class="status-list">
+                    <option value="">All Status</option>
+                    <option value="@EventStatuses.RegOpened">
+                        @EventStatuses.Convert(EventStatuses.RegOpened)
+                    </option>
+                    <option value="@EventStatuses.RegClosed">
+                        @EventStatuses.Convert(EventStatuses.RegClosed)
+                    </option>
+                    <option value="@EventStatuses.Start">
+                        @EventStatuses.Convert(EventStatuses.Start)
+                    </option>
+                    <option value="@EventStatuses.Ended">
+                        @EventStatuses.Convert(EventStatuses.Ended)
+                    </option>
+                    <option value="@EventStatuses.Cancelled">
+                        @EventStatuses.Convert(EventStatuses.Cancelled)
+                    </option>
+                </select>
+            </div>
+
+            <div class="search-group">
+                <input name="keyword" type="text" placeholder="Search by name" value="@ViewBag.Keyword" />
+                <button class="search-button" type="submit">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </button>
+            </div>
+
+            <br />
+            <div class="pagination">
+                <p>Page <input name="page" value="@ViewBag.Page" /> of @ViewBag.MaxPage</p>
+            </div>
+        </form>
+    </div>
+
+    @if (dateBlocks.Any())
+    {
+        <section class="events-container">
+            @foreach (var dateBlock in dateBlocks)
+            {
+                <div class="events-as-date-container">
+                    <div class="date-breakline-container">
+                        <div class="date">
+                            <h2>@dateBlock.Key.ToShortDateString()</h2>
+                        </div>
+                        <div class="breakline"></div>
+                    </div>
+
+                    @foreach (var e in dateBlock.Value)
+                    {
+                        string image = "fieldtrip-banner.png";
+                        string bgColor = "#4f78ff";
+                        
+                        <a class="event-container" asp-action="Details" asp-route-id="@e.Id">
+                            <div class="event-name" style="background-color: @bgColor;">
+                                <h2>@e.Name</h2>
+                            </div>
+
+                            <div class="bg-container">
+                                <img class="bg" src="~/img/events/@image" alt="bg" />
+                            </div>
+
+                            <div class="event-time" style="background-color: @bgColor;">
+                                <p>@e.StartDate.TimeOfDay</p>
+                            </div>
+                        </a>
+                    }
+                </div>
+            }
+        </section>
+    }
+    else
+    {
+        <h2>No events was found</h2>
+    }
+</section>
+
+@section Scripts {
+    <script src="~/js/event/index.js"></script>
+}

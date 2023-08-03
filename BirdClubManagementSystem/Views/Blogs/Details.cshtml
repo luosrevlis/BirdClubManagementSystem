@@ -1,4 +1,4 @@
-﻿@model Blog
+﻿@model BlogDTO
 
 @section Styles
 {
@@ -8,6 +8,7 @@
 
 @{
     ViewData["Title"] = "Details";
+    string title = Model.Title.Length > 20 ? Model.Title.Remove(20) + "..." : Model.Title;
 }
 
 <section class="blog-section">
@@ -21,7 +22,7 @@
                 <div class="blog-info-container">
                     <div class="blog-author-info-container">
                         <div class="blog-author-ava-container">
-                            <img class="blog-author-ava" src="@Url.Action("GetImageFromBytes", "Profile", new { id = Model.UserId })" alt="author" />
+                            <img class="blog-author-ava" src="@Url.Action("GetImageFromBytes", "Profile", new { id = Model.User.Id })" alt="author" />
                         </div>
 
                         <p class="blog-author-name">By @Model.User.Name</p>
@@ -39,7 +40,7 @@
 
     <div class="blog-utils-container">
         <div class="blog-control-container">
-            @if (@Model.Status.Equals("Pending"))
+            @if (@Model.Status.Equals(BlogStatuses.Pending))
             {
                 <button class="control-button confirm-button" type="button" onclick="initAccept(@Model.Id)">Accept</button>
                 <button type="button" class="control-button reject-button" onclick="initReject(@Model.Id)">Reject</button>
@@ -47,10 +48,24 @@
             <a class="control-button cancel-button" asp-action="Index">Back to List</a>
         </div>
 
-        <div class="search-blogs-container">
-            <h2>Search</h2>
-            <form class="search-box-container">
-                <input class="search-box" type="text" placeholder="Search something..." />
+        <div class="search-form">
+            <form method="get" asp-action="Index">
+                <div class="select">
+                    <select name="categoryId" class="category-list" disabled>
+                        <option value="">All</option>
+                    </select>
+                </div>
+
+                <div class="search-group">
+                    <input name="keyword" type="text" placeholder="Search by title" disabled />
+                </div>
+
+                <div class="pagination">
+                    Page <input name="page" value="1" disabled /> of 1
+                </div>
+                <button class="search-button" type="submit">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </button>
             </form>
         </div>
         <div class="latest-blogs-container">
@@ -60,7 +75,7 @@
                     <img class="latest-blog-thumbnail" src="@Url.Action("GetImageFromBytes", "Blogs", new { id = Model.Id })" alt="thumbnail" />
                 </div>
 
-                <div class="latest-blog-title">@Model.Title</div>
+                <div class="latest-blog-title">@title</div>
             </div>
         </div>
     </div>

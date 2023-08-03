@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using BirdClubManagementSystem.Models.Statuses;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace BirdClubManagementSystem.Filters
@@ -8,7 +9,7 @@ namespace BirdClubManagementSystem.Filters
         public override void OnActionExecuting(ActionExecutingContext context)
         {
             string? role = context.HttpContext.Session.GetString("USER_ROLE");
-            if (role == null || role != "Admin")
+            if (role == null || role != UserRoles.Admin)
             {
                 context.Result = new RedirectToRouteResult(new RouteValueDictionary(new { controller = "Login", action = "Index" }));
             }
