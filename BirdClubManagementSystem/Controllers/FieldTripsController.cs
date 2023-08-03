@@ -104,6 +104,10 @@ namespace BirdClubManagementSystem.Controllers
             {
                 fieldTrip.Status = EventStatuses.RegClosed;
             }
+            if (string.IsNullOrEmpty(fieldTrip.Address))
+            {
+                fieldTrip.Address = "At Club";
+            }
             _dbContext.FieldTrips.Add(fieldTrip);
             _dbContext.SaveChanges();
 
@@ -148,7 +152,7 @@ namespace BirdClubManagementSystem.Controllers
             fieldTrip.RegCloseDate = dto.RegCloseDate;
             fieldTrip.StartDate = dto.StartDate;
             fieldTrip.ExpectedEndDate = dto.ExpectedEndDate;
-            fieldTrip.Address = dto.Address;
+            fieldTrip.Address = dto.Address ?? "At Club";
             fieldTrip.RegLimit = dto.RegLimit;
             fieldTrip.Description = dto.Description;
             fieldTrip.Fee = dto.Fee;

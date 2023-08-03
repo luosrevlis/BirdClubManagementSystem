@@ -104,6 +104,10 @@ namespace BirdClubManagementSystem.Controllers
             {
                 tournament.Status = EventStatuses.RegClosed;
             }
+            if (string.IsNullOrEmpty(tournament.Address))
+            {
+                tournament.Address = "At Club";
+            }
             _dbContext.Tournaments.Add(tournament);
             _dbContext.SaveChanges();
 
@@ -150,7 +154,7 @@ namespace BirdClubManagementSystem.Controllers
             tournament.RegCloseDate = dto.RegCloseDate;
             tournament.StartDate = dto.StartDate;
             tournament.ExpectedEndDate = dto.ExpectedEndDate;
-            tournament.Address = dto.Address;
+            tournament.Address = dto.Address ?? "At Club";
             tournament.RegLimit = dto.RegLimit;
             tournament.Description = dto.Description;
             tournament.Fee = dto.Fee;

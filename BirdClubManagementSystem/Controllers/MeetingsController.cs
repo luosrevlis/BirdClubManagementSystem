@@ -103,6 +103,10 @@ namespace BirdClubManagementSystem.Controllers
             {
                 meeting.Status = EventStatuses.RegClosed;
             }
+            if (string.IsNullOrEmpty(meeting.Address))
+            {
+                meeting.Address = "At Club";
+            }
             _dbContext.Meetings.Add(meeting);
             _dbContext.SaveChanges();
 
@@ -148,7 +152,7 @@ namespace BirdClubManagementSystem.Controllers
             meeting.RegCloseDate = dto.RegCloseDate;
             meeting.StartDate = dto.StartDate;
             meeting.ExpectedEndDate = dto.ExpectedEndDate;
-            meeting.Address = dto.Address;
+            meeting.Address = dto.Address ?? "At Club";
             meeting.RegLimit = dto.RegLimit;
             meeting.Description = dto.Description;
             if (meeting.RegOpenDate < DateTime.Now && meeting.RegCloseDate > DateTime.Now)
