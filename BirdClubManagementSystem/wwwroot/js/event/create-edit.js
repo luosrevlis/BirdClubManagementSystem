@@ -131,7 +131,7 @@ function checkRegLimit() {
 function checkFee() {
     var parseValue = parseInt(feeInput.value);
     feeInput.value = parseValue;
-    if (parseValue < 1 || parseValue > 100000000) {
+    if (parseValue < 0 || parseValue > 100000000) {
         feeField.classList.add("invalid");
         return false;
     }

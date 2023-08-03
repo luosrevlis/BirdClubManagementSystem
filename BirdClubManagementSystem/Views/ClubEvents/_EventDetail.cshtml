@@ -7,19 +7,30 @@
 <section class="event-section">
     <div class="event-body">
         <h1 class="event-title">@Model.Name</h1>
-        <p class="event-date">@Model.StartDate</p>
+
+        <div class="address-info">
+            <p><b>This event takes place at:</b> @Model.Address</p>
+        </div>
+
+        <div class="date-info">
+            <p><b>Start date:</b> @Model.StartDate</p>
+            <p><b>Expected end date:</b> @Model.ExpectedEndDate</p>
+            <p><b>Registration period:</b> @Model.RegOpenDate - @Model.RegCloseDate</p>
+        </div>
         
+        <div class="event-entrance-container">
+            <p><b>Number of participants:</b> @Model.RegLimit</p>
+            <p><b>Fee:</b> @Model.Fee</p>
+            <p><b>Status:</b> @EventStatuses.Convert(Model.Status)</p>
+        </div>
+
         <div class="event-description-container">
             <h2 class="event-description-title">Description</h2>
             <div class="event-description">
                 @Html.Raw(Model.Description)
             </div>
         </div>
-        <p class="event-registration-date"><b>Registration close date:</b> @Model.RegCloseDate</p>
-        <div class="event-entrance-container">
-            <p class="event-fee"><b>Fee:</b> @Model.Fee</p>
-            <p class="status"><b>Status:</b> @EventStatuses.Convert(Model.Status)</p>
-        </div>
+        
     </div>
 </section>
 
