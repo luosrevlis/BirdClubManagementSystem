@@ -2,6 +2,9 @@
 
 @{
     ViewData["Title"] = "Create";
+    string lowerBound = DateTime.Now.ToString("yyyy-MM-ddThh:mm");
+    string upperBound = DateTime.Now.AddYears(1).ToString("yyyy-MM-ddThh:mm");
+    string regOpenLowerBound = DateTime.Now.AddMonths(-4).ToString("yyyy-MM-ddThh:mm");
 }
 
 @section Styles {
@@ -28,12 +31,20 @@
 
                 <div class="input-box start-date-field">
                     <label>Event start date</label>
-                    <input asp-for="StartDate" required class="start-date" />
+                    <input asp-for="StartDate" min="@lowerBound" max="@upperBound" required class="start-date" />
+                    <span class="error date-error">
+                        <img src="~/img/resetpass/alert-circle.svg" alt="">
+                        <p class="error-text"></p>
+                    </span>
                 </div>
 
                 <div class="input-box end-date-field">
                     <label>Event expected end date</label>
-                    <input asp-for="ExpectedEndDate" required class="end-date" />
+                    <input asp-for="ExpectedEndDate" min="@lowerBound" max="@upperBound" required class="end-date" />
+                    <span class="error date-error">
+                        <img src="~/img/resetpass/alert-circle.svg" alt="">
+                        <p class="error-text"></p>
+                    </span>
                 </div>
 
             </div>
@@ -42,12 +53,20 @@
 
                 <div class="input-box reg-open-date-field">
                     <label>Open registration date</label>
-                    <input asp-for="RegOpenDate" required class="reg-open-date" />
+                    <input asp-for="RegOpenDate" min="@regOpenLowerBound" max="@upperBound" required class="reg-open-date" />
+                    <span class="error date-error">
+                        <img src="~/img/resetpass/alert-circle.svg" alt="">
+                        <p class="error-text"></p>
+                    </span>
                 </div>
 
-                <div class="input-box reg-open-date-field">
+                <div class="input-box reg-close-date-field">
                     <label>Close registration date</label>
-                    <input asp-for="RegCloseDate" required class="reg-close-date" />
+                    <input asp-for="RegCloseDate" min="@lowerBound" max="@upperBound" required class="reg-close-date" />
+                    <span class="error date-error">
+                        <img src="~/img/resetpass/alert-circle.svg" alt="">
+                        <p class="error-text"></p>
+                    </span>
                 </div>
 
             </div>
