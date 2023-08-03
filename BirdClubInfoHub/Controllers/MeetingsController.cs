@@ -96,6 +96,14 @@ namespace BirdClubInfoHub.Controllers
                 return View(dto);
             }
 
+            // reg limit reached
+            int regCount = dto.MeetingRegistrations.Count;
+            if (regCount >= dto.RegLimit)
+            {
+                ViewBag.Status = "NoSlots";
+                return View(dto);
+            }
+
             // open, logged in, already registered
             if (_dbContext.MeetingRegistrations.FirstOrDefault(x => x.MeetingId == id && x.UserId == userId) != null)
             {

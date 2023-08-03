@@ -94,6 +94,7 @@ namespace BirdClubInfoHub.Controllers
                 TempData.Add("error", "");
                 return RedirectToAction("Index");
             }
+            blog.BlogCategory.Id = blog.BlogCategoryId;
             SelectList categoryOptions = new(
                 _dbContext.BlogCategories,
                 nameof(BlogCategory.Id),

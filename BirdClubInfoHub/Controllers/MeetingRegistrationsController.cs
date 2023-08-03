@@ -78,6 +78,13 @@ namespace BirdClubInfoHub.Controllers
                 TempData.Add("error", "");
                 return RedirectToAction("Index", "ClubEvents");
             }
+            int regCount = _dbContext.MeetingRegistrations.Where(mr => mr.MeetingId == id).Count();
+            if (regCount >= meeting.RegLimit)
+            {
+                TempData.Add("notification", "This event has reached maximum participants!");
+                TempData.Add("error", "");
+                return RedirectToAction("Details", "Meetings", new { id });
+            }
             MeetingRegistration registration = new()
             {
                 User = user,

@@ -81,6 +81,13 @@ namespace BirdClubInfoHub.Controllers
                 TempData.Add("error", "");
                 return RedirectToAction("Index", "ClubEvents");
             }
+            int regCount = _dbContext.FieldTripRegistrations.Where(ftr => ftr.FieldTripId == id).Count();
+            if (regCount >= fieldTrip.RegLimit)
+            {
+                TempData.Add("notification", "This event has reached maximum participants!");
+                TempData.Add("error", "");
+                return RedirectToAction("Details", "FieldTrips", new { id });
+            }
             FieldTripRegistration registration = new()
             {
                 User = user,

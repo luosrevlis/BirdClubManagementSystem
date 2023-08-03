@@ -95,7 +95,15 @@ namespace BirdClubInfoHub.Controllers
                 ViewBag.Status = "Unauth";
                 return View(dto);
             }
-            
+
+            // reg limit reached
+            int regCount = dto.FieldTripRegistrations.Count;
+            if (regCount >= dto.RegLimit)
+            {
+                ViewBag.Status = "NoSlots";
+                return View(dto);
+            }
+
             // open, logged in, already registered
             if (_dbContext.FieldTripRegistrations.FirstOrDefault(x => x.FieldTripId == id && x.UserId == userId) != null)
             {

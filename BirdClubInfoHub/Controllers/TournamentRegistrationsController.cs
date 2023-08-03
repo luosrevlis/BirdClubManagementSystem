@@ -76,6 +76,13 @@ namespace BirdClubInfoHub.Controllers
                 TempData.Add("error", "");
                 return RedirectToAction("Index", "ClubEvents");
             }
+            int regCount = _dbContext.TournamentRegistrations.Where(tr => tr.TournamentId == id).Count();
+            if (regCount >= tournament.RegLimit)
+            {
+                TempData.Add("notification", "This event has reached maximum participants!");
+                TempData.Add("error", "");
+                return RedirectToAction("Details", "Tournaments", new { id });
+            }
             Bird? bird = _dbContext.Birds.Find(birdId);
             if (bird == null || bird.UserId != HttpContext.Session.GetInt32("USER_ID"))
             {
@@ -140,6 +147,13 @@ namespace BirdClubInfoHub.Controllers
                 TempData.Add("notification", "Tournament not found!");
                 TempData.Add("error", "");
                 return RedirectToAction("Index", "ClubEvents");
+            }
+            int regCount = _dbContext.TournamentRegistrations.Where(tr => tr.TournamentId == id).Count();
+            if (regCount >= tournament.RegLimit)
+            {
+                TempData.Add("notification", "This event has reached maximum participants!");
+                TempData.Add("error", "");
+                return RedirectToAction("Details", "Tournaments", new { id });
             }
             int? userId = HttpContext.Session.GetInt32("USER_ID");
             Bird? bird = _dbContext.Birds.Find(birdId);

@@ -16,6 +16,10 @@
     {
         <a class="button login-button" asp-action="Index" asp-controller="Login">Login to register</a>
     }
+    @if (ViewBag.Status == "NoSlots")
+    {
+        <button class="button disabled-button" type="button" disabled>This event has reached maximum participants!</button>
+    }
     @if (ViewBag.Status == "Registered")
     {
         <button class="button disabled-button" type="button" disabled>Already registered</button>
