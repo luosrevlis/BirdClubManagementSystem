@@ -93,7 +93,8 @@ body {
 /* dropdown end */
 
 .event-title,
-.event-date,
+.address-info,
+.date-info,
 .event-entrance-container,
 .event-description-container {
     width: 100%;
@@ -101,10 +102,6 @@ body {
 
 .event-title {
     text-align: center;
-}
-
-.event-date {
-    text-align: right;
 }
 
 .event-description-container {
@@ -123,6 +120,8 @@ body {
     max-width: 100% !important;
 }
 
+.address-info,
+.date-info,
 .event-entrance-container {
     /*display: flex;*/
     flex-flow: row nowrap;
