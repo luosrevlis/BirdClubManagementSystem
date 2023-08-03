@@ -163,6 +163,7 @@ body {
     display: none;
     justify-content: center;
     align-items: center;
+    z-index: 5;
 }
 
 .delete-form {
@@ -182,6 +183,18 @@ body {
 
 .delete-control .bird-btn {
     width: 100%;
+}
+
+.search-form {
+    width: 40%;
+}
+
+.search-form .search-group {
+    width: 100%;
+}
+
+.search-form .pagination p {
+    color: #fff;
 }
 
 @media screen and (max-width: 767px) {

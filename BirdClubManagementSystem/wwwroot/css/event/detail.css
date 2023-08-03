@@ -31,9 +31,7 @@ body {
     margin-top: 2rem;
 }
 
-.event-detail-header-links,
-.event-detail-edit-highlights,
-.event-detail-status-links {
+.event-detail-header-links {
     display: flex;
     margin: 0.5rem 0;
 }
@@ -50,9 +48,7 @@ body {
 }
 
 .back-button,
-.edit-button,
-.edit-highlights-button,
-.participants-list-button {
+.dropdown-button {
     background-color: #4F77FF;
     color: #fff;
 }
@@ -63,15 +59,38 @@ body {
     color: #fff;
 }
 
-.rankings-button {
-    background-color: #FFD700;
-    color: #fff;
-}
-
+.dropdown-content-button,
 .cancel-button {
     background-color: #0000;
     color: #4F77FF;
 }
+
+/* dropdown menu */
+.dropdown-button {
+    font-size: 1rem;
+}
+
+.dropdown-event-actions {
+    position: relative;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #F7F5F1;
+    width: 250px;
+    z-index: 3;
+}
+
+.dropdown-content a {
+    display: block;
+}
+
+.dropdown-show {
+    display: block;
+}
+
+/* dropdown end */
 
 .event-title,
 .event-date,
@@ -112,9 +131,7 @@ body {
 }
 
 .delete-event-container,
-.close-registration-container,
-.end-event-container,
-.cancel-event-container {
+.update-status-container {
     position: fixed;
     top: 50%;
     left: 50%;
@@ -125,12 +142,11 @@ body {
     display: none;
     justify-content: center;
     align-items: center;
+    z-index: 5;
 }
 
 .delete-event-form,
-.close-registration-form,
-.end-event-form,
-.cancel-event-form {
+.update-status-form {
     display: flex;
     flex-flow: column nowrap;
     justify-content: center;
@@ -141,24 +157,19 @@ body {
 }
 
 .delete-event-control,
-.close-registration-control,
-.end-event-control,
-.cancel-event-control {
+.update-status-control {
     margin-top: 2rem;
     width: 100%;
 }
 
 .delete-event-control .button,
-.close-registration-control .button,
-.end-event-control .button,
-.cancel-event-control .button {
+.update-status-control .button {
     width: 100%;
 }
 
 .event-registration-date {
     align-self: flex-start;
 }
-
 
 @media screen and (max-width: 1200px) {
     .event-section {
@@ -175,14 +186,6 @@ body {
     }
 
     .event-detail-header-links > *:nth-child(n + 2) {
-        margin-top: 1rem;
-    }
-
-    .event-detail-status-links {
-        flex-flow: column nowrap;
-    }
-
-    .event-detail-status-links > * {
         margin-top: 1rem;
     }
 }

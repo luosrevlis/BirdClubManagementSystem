@@ -6,26 +6,14 @@ function cancelDelete() {
     document.querySelector(".delete-event-container").style.display = "none";
 }
 
-function initClose() {
-    document.querySelector(".close-registration-container").style.display = "flex";
+function initStatus() {
+    document.querySelector(".update-status-container").style.display = "flex";
 }
 
-function cancelClose() {
-    document.querySelector(".close-registration-container").style.display = "none";
+function cancelStatus() {
+    document.querySelector(".update-status-container").style.display = "none";
 }
 
-function initEnd() {
-    document.querySelector(".end-event-container").style.display = "flex";
-}
-
-function cancelEnd() {
-    document.querySelector(".end-event-container").style.display = "none";
-}
-
-function initCancel() {
-    document.querySelector(".cancel-event-container").style.display = "flex";
-}
-
-function cancelCancel() {
-    document.querySelector(".cancel-event-container").style.display = "none";
+function showDropdown() {
+    document.getElementById("dropdown-content").classList.toggle("dropdown-show");
 }
