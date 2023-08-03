@@ -107,6 +107,14 @@ namespace BirdClubInfoHub.Controllers
                 return View(dto);
             }
 
+            // reg limit reached
+            int regCount = dto.TournamentRegistrations.Count;
+            if (regCount >= dto.RegLimit)
+            {
+                ViewBag.Status = "NoSlots";
+                return View(dto);
+            }
+
             // open, logged in, no eligible birds
             IQueryable<TournamentRegistration> registrations = _dbContext.TournamentRegistrations
                 .Include(tr => tr.Bird)
