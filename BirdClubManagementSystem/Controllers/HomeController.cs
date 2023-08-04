@@ -15,6 +15,11 @@ namespace BirdClubManagementSystem.Controllers
             _logger = logger;
         }
 
+        public IActionResult Error()
+        {
+            return View();
+        }
+
         public IActionResult Index()
         {
             return View();
@@ -25,20 +30,20 @@ namespace BirdClubManagementSystem.Controllers
             return View();
         }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
+        //[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        //public IActionResult Error()
+        //{
+        //    return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        //}
 
-        [Route("/StatusCodeError/{statusCode}")]
-        public IActionResult StatusCodeError(int statusCode)
-        {
-            if (statusCode == 404)
-            {
-                ViewBag.Message = "404 Not Found";
-            }
-            return View();
-        }
+        //[Route("/StatusCodeError/{statusCode}")]
+        //public IActionResult StatusCodeError(int statusCode)
+        //{
+        //    if (statusCode == 404)
+        //    {
+        //        ViewBag.Message = "404 Not Found";
+        //    }
+        //    return View();
+        //}
     }
 }
