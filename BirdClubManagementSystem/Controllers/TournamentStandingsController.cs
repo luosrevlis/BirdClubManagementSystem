@@ -141,7 +141,9 @@ namespace BirdClubManagementSystem.Controllers
             SelectList birdOptions = new(birds, nameof(Bird.Id), nameof(Bird.Name));
             ViewBag.BirdOptions = birdOptions;
 
-            return View(_mapper.Map<TournamentStandingDTO>(standing));
+            TournamentStandingDTO dto = _mapper.Map<TournamentStandingDTO>(standing);
+            dto.Tournament.Id = tournamentId;
+            return View(dto);
         }
 
         // POST: TournamentStandingsController/Edit/5
