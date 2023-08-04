@@ -1,4 +1,5 @@
 ﻿using BirdClubInfoHub.Models.Entities;
+using BirdClubInfoHub.Models.Statuses;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Cryptography;
 
@@ -14,7 +15,7 @@ namespace BirdClubInfoHub.Services
                 Name = request.Name,
                 Address = request.Address,
                 Phone = request.PhoneNumber,
-                Role = "Member",
+                Role = UserRoles.Member,
                 JoinDate = DateTime.Now
             };
             string randomString = Convert.ToBase64String(RandomNumberGenerator.GetBytes(4)).Remove(6);
